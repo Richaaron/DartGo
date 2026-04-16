@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
 import { SubjectResult, Student, Subject } from '../types'
-import { calculateGrade, calculateGradePoint, calculatePercentage, getGradeDescription } from '../utils/calculations'
+import { calculateGrade, calculateGradePoint, calculatePercentage } from '../utils/calculations'
 
 interface SubjectResultFormProps {
   onSubmit: (result: SubjectResult | Omit<SubjectResult, 'id'>) => void
@@ -45,7 +45,6 @@ export default function SubjectResultForm({
     const percentage = calculatePercentage(total, 100)
     const grade = calculateGrade(percentage)
     const gradePoint = calculateGradePoint(percentage)
-    const gradeDescription = getGradeDescription(grade)
     
     let remarks = ''
     if (grade === 'A') {

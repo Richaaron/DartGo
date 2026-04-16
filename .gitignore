@@ -30,3 +30,17 @@ dist-ssr
 
 # Build files
 *.tsbuildinfo
+.codersinflow
+.vscode
+.venv
+.codex
+out
+*.vsix
+.claude
+CLAUDE.md
+.git
+*.tmp
+__pycache__
+*.pyc
+.next
+.github

@@ -25,7 +25,6 @@ const itemVariants = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: [0.25, 1, 0.5, 1]
     }
   }
 }
@@ -212,7 +211,7 @@ export default function Dashboard() {
                   dataKey="value"
                   stroke="none"
                 >
-                  {studentStatusData.map((entry, index) => (
+                  {studentStatusData.map((_, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
@@ -237,7 +236,7 @@ export default function Dashboard() {
                   <div className="w-2.5 h-2.5 rounded-full" style={{backgroundColor: COLORS[index % COLORS.length]}} />
                   <div className="flex flex-col">
                     <span className="text-[10px] text-gray-400 font-black uppercase tracking-widest leading-none mb-1">{entry.name}</span>
-                    <span className="text-sm text-gray-900 dark:text-white font-bold leading-none">{entry.value}</span>
+                    <span className="text-sm text-gray-900 dark:text-white font-bold leading-none">{String(entry.value)}</span>
                   </div>
                 </div>
               ))}
@@ -258,7 +257,7 @@ export default function Dashboard() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {recentResults.map((result, idx) => (
+            {recentResults.map((result) => (
               <motion.div 
                 key={result.id} 
                 whileHover={{ scale: 1.02 }}

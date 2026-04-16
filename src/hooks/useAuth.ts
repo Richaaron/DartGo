@@ -7,7 +7,6 @@ const MOCK_USERS: Record<string, User | Teacher | Admin> = {
     email: 'admin@folusho.com',
     name: 'Admin User',
     role: 'Admin',
-    password: 'admin123',
   },
   'teacher@folusho.com': {
     id: 'TEACHER001',
@@ -15,10 +14,10 @@ const MOCK_USERS: Record<string, User | Teacher | Admin> = {
     name: 'Mr. Adeyemi',
     role: 'Teacher',
     teacherId: 'T001',
+    username: 'teacher',
     subject: 'Mathematics',
     level: 'Secondary',
     assignedClasses: ['SSS1A', 'SSS1B', 'SSS2A'],
-    password: 'teacher123',
   } as Teacher,
 }
 
@@ -53,17 +52,14 @@ export function useAuth() {
       return false
     }
 
-    if ((user as any).password !== password) {
+    const storedPassword = email === 'admin@folusho.com' ? 'admin123' : 'teacher123'
+    if (password !== storedPassword) {
       console.log('Password mismatch')
       return false
     }
 
-    // Remove password from stored user
-    const userToStore = { ...user } as any
-    delete userToStore.password
-
     const newSession: AuthSession = {
-      user: userToStore,
+      user,
       isAuthenticated: true,
       lastLogin: new Date().toISOString(),
     }

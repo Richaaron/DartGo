@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Plus, Trash2, Download, Search, Upload, FileText, CheckCircle, AlertCircle } from 'lucide-react'
+import { Plus, Trash2, Search, Upload, FileText, CheckCircle, AlertCircle } from 'lucide-react'
 import Papa from 'papaparse'
 import { SubjectResult, Student, Subject } from '../types'
 import SubjectResultForm from '../components/SubjectResultForm'

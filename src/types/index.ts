@@ -126,6 +126,7 @@ export interface Teacher extends User {
   role: 'Teacher'
   teacherId: string
   username: string
+  password?: string
   subject: string
   level: SchoolLevel
   assignedClasses: string[] // Class names like "JSS1A", "JSS2B"

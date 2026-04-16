@@ -8,7 +8,6 @@ import { fetchStudents, createStudent, updateStudent, deleteStudent } from '../s
 
 export default function StudentManagement() {
   const [students, setStudents] = useState<Student[]>([])
-  const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedLevel, setSelectedLevel] = useState<SchoolLevel | 'All'>('All')
   const [showForm, setShowForm] = useState(false)
@@ -19,14 +18,11 @@ export default function StudentManagement() {
   }, [])
 
   const loadStudents = async () => {
-    setIsLoading(true)
     try {
       const data = await fetchStudents()
       setStudents(data)
     } catch (error) {
       console.error('Failed to load students', error)
-    } finally {
-      setIsLoading(false)
     }
   }
 

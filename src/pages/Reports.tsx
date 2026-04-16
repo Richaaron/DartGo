@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
-import { Printer, Download, Search, FileText, ChevronLeft, Save, Star } from 'lucide-react'
+import { Printer, Search, FileText, ChevronLeft, Save, Star, GraduationCap } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Student, SubjectResult, Subject } from '../types'
 import { fetchStudents, fetchResults, fetchSubjects, fetchObservations, saveObservation, fetchConfig } from '../services/api'
@@ -17,7 +17,7 @@ const itemVariants = {
   visible: { 
     opacity: 1, 
     y: 0,
-    transition: { duration: 0.4, ease: [0.25, 1, 0.5, 1] }
+    transition: { duration: 0.4 }
   }
 }
 

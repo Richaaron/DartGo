@@ -1,18 +1,17 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Plus, Trash2, Download, Search } from 'lucide-react'
-import { Result, Student, Subject } from '../types'
-import ResultForm from '../components/ResultForm'
+import { Plus, Trash2, Search, Download } from 'lucide-react'
+import { SubjectResult, Student, Subject } from '../types'
+import SubjectResultForm from '../components/SubjectResultForm'
 import Table from '../components/Table'
-import { calculateGrade, calculatePercentage, formatDate, exportToCSV } from '../utils/calculations'
-import { fetchStudents, fetchResults, fetchSubjects, createResult, updateResult, deleteResult } from '../services/api'
+import { formatDate, exportToCSV } from '../utils/calculations'
+import { fetchStudents, fetchResults, fetchSubjects, deleteResult, createResult, updateResult } from '../services/api'
 
 export default function ResultEntry() {
-  const [results, setResults] = useState<Result[]>([])
+  const [results, setResults] = useState<SubjectResult[]>([])
   const [students, setStudents] = useState<Student[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
-  const [isLoading, setIsLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
-  const [editingResult, setEditingResult] = useState<Result | null>(null)
+  const [editingResult, setEditingResult] = useState<SubjectResult | null>(null)
   const [filterTerm, setFilterTerm] = useState('')
   const [selectedTerm, setSelectedTerm] = useState<string>('All')
 
@@ -21,7 +20,6 @@ export default function ResultEntry() {
   }, [])
 
   const loadData = async () => {
-    setIsLoading(true)
     try {
       const [studentsData, resultsData, subjectsData] = await Promise.all([
         fetchStudents(),
@@ -33,24 +31,17 @@ export default function ResultEntry() {
       setSubjects(subjectsData)
     } catch (error) {
       console.error('Failed to load results data', error)
-    } finally {
-      setIsLoading(false)
     }
   }
 
-  const getResultDetails = (result: Result) => {
+  const getResultDetails = (result: SubjectResult) => {
     const student = students.find((s) => s.id === result.studentId)
     const subject = subjects.find((sub) => sub.id === result.subjectId)
-    const percentage = calculatePercentage(result.score, result.totalScore)
-    const grade = calculateGrade(percentage)
 
     return {
       ...result,
       studentName: student ? `${student.firstName} ${student.lastName}` : 'Unknown Student',
       subjectName: subject?.name || 'Unknown Subject',
-      percentage: `${percentage.toFixed(2)}%`,
-      grade,
-      scoreDisplay: `${result.score}/${result.totalScore}`,
     }
   }
 
@@ -69,7 +60,7 @@ export default function ResultEntry() {
       .map(getResultDetails)
   }, [results, students, subjects, filterTerm, selectedTerm])
 
-  const handleAddResult = async (newResult: Omit<Result, 'id'>) => {
+  const handleAddResult = async (newResult: Omit<SubjectResult, 'id'>) => {
     try {
       await createResult(newResult)
       await loadData()
@@ -79,7 +70,7 @@ export default function ResultEntry() {
     }
   }
 
-  const handleUpdateResult = async (updatedResult: Result) => {
+  const handleUpdateResult = async (updatedResult: SubjectResult) => {
     try {
       await updateResult(updatedResult.id, updatedResult)
       await loadData()
@@ -90,11 +81,11 @@ export default function ResultEntry() {
     }
   }
 
-  const handleSubmitResult = (result: Result | Omit<Result, 'id'>) => {
+  const handleSubmitResult = (result: SubjectResult | Omit<SubjectResult, 'id'>) => {
     if ('id' in result) {
-      handleUpdateResult(result as Result)
+      handleUpdateResult(result as SubjectResult)
     } else {
-      handleAddResult(result as Omit<Result, 'id'>)
+      handleAddResult(result as Omit<SubjectResult, 'id'>)
     }
   }
 
@@ -113,8 +104,9 @@ export default function ResultEntry() {
     const dataToExport = filteredResults.map((result) => ({
       'Student Name': result.studentName,
       Subject: result.subjectName,
-      'Assessment Type': result.assessmentType,
-      Score: result.score,
+      'First CA': result.firstCA,
+      'Second CA': result.secondCA,
+      Exam: result.exam,
       'Total Score': result.totalScore,
       Percentage: result.percentage,
       Grade: result.grade,
@@ -128,16 +120,17 @@ export default function ResultEntry() {
   const columns = [
     { key: 'studentName', label: 'Student Name' },
     { key: 'subjectName', label: 'Subject' },
-    { key: 'assessmentType', label: 'Type' },
-    { key: 'score', label: 'Score' },
+    { key: 'firstCA', label: '1st CA' },
+    { key: 'secondCA', label: '2nd CA' },
+    { key: 'exam', label: 'Exam' },
+    { key: 'totalScore', label: 'Total' },
     { key: 'grade', label: 'Grade' },
-    { key: 'percentage', label: 'Percentage' },
+    { key: 'percentage', label: '%' },
     { key: 'term', label: 'Term' },
   ]
 
   return (
     <div className="p-8">
-      {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Result Entry</h1>
@@ -164,7 +157,6 @@ export default function ResultEntry() {
         </div>
       </div>
 
-      {/* Search and Filter */}
       <div className="card-lg mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -200,11 +192,10 @@ export default function ResultEntry() {
         </div>
       </div>
 
-      {/* Form Modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <ResultForm
+            <SubjectResultForm
               onSubmit={handleSubmitResult}
               initialData={editingResult || undefined}
               onCancel={() => setShowForm(false)}
@@ -216,13 +207,11 @@ export default function ResultEntry() {
         </div>
       )}
 
-      {/* Table */}
       <div className="card-lg">
         <Table
           columns={columns}
           data={filteredResults.map((result) => ({
             ...result,
-            score: result.scoreDisplay,
             actions: (
               <div className="flex gap-2">
                 <button
@@ -233,7 +222,7 @@ export default function ResultEntry() {
                   className="p-1 text-blue-500 hover:bg-blue-50 rounded transition-colors"
                   title="Edit"
                 >
-                  Edit
+                  <Plus size={18} />
                 </button>
                 <button
                   onClick={() => handleDeleteResult(result.id)}
@@ -253,7 +242,6 @@ export default function ResultEntry() {
         )}
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
         <div className="card-lg text-center">
           <p className="text-gray-600 text-sm">Total Results</p>
@@ -261,34 +249,18 @@ export default function ResultEntry() {
         </div>
         <div className="card-lg text-center">
           <p className="text-gray-600 text-sm">Average Score</p>
-          <p className="text-3xl font-bold text-blue-600">
+          <p className="text-3xl font-bold text-gray-900">
             {filteredResults.length > 0
-              ? Math.round(
-                  (filteredResults.reduce(
-                    (sum, r) => sum + calculatePercentage(r.score, r.totalScore),
-                    0
-                  ) /
-                    filteredResults.length) *
-                    100
-                ) / 100
-              : 0}
-            %
+              ? Math.round(filteredResults.reduce((sum, r) => sum + r.percentage, 0) / filteredResults.length)
+              : 0}%
           </p>
         </div>
         <div className="card-lg text-center">
           <p className="text-gray-600 text-sm">Pass Rate</p>
           <p className="text-3xl font-bold text-green-600">
             {filteredResults.length > 0
-              ? Math.round(
-                  (filteredResults.filter(
-                    (r) =>
-                      calculatePercentage(r.score, r.totalScore) >= 60
-                  ).length /
-                    filteredResults.length) *
-                    100
-                )
-              : 0}
-            %
+              ? Math.round((filteredResults.filter((r) => r.percentage >= 50).length / filteredResults.length) * 100)
+              : 0}%
           </p>
         </div>
       </div>

@@ -4,7 +4,6 @@ import StatCard from '../components/StatCard'
 import Table from '../components/Table'
 import { useAuthContext } from '../context/AuthContext'
 import { Student, SubjectResult, Subject, Parent } from '../types'
-import { calculateGrade, calculatePercentage, formatDate } from '../utils/calculations'
 import { fetchStudents, fetchResults, fetchSubjects } from '../services/api'
 
 export default function ParentDashboard() {

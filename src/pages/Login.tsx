@@ -50,16 +50,6 @@ export default function Login({ onLoginSuccess }: LoginProps) {
     }
   }
 
-  const fillAdminCredentials = () => {
-    setEmail('admin@folusho.com')
-    setPassword('admin123')
-  }
-
-  const fillTeacherCredentials = () => {
-    setEmail('teacher@folusho.com')
-    setPassword('teacher123')
-  }
-
   const handleBack = () => {
     setLoginType(null)
     setEmail('')
