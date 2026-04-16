@@ -10,6 +10,7 @@ import authRoutes from './routes/auth'
 import attendanceRoutes from './routes/attendance'
 import configRoutes from './routes/config'
 import observationRoutes from './routes/observations'
+import notificationRoutes from './routes/notifications'
 
 dotenv.config()
 
@@ -27,6 +28,7 @@ app.use('/api/results', resultRoutes)
 app.use('/api/attendance', attendanceRoutes)
 app.use('/api/config', configRoutes)
 app.use('/api/observations', observationRoutes)
+app.use('/api/notifications', notificationRoutes)
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' })

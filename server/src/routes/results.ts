@@ -43,7 +43,7 @@ router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req, res)
     // Fetch student to get parent email
     const student = await Student.findById(result.studentId)
     if (student && student.email) {
-      sendResultPublishedEmail(student.email, `${student.firstName} ${student.lastName}`, result.term, result.academicYear)
+      sendResultPublishedEmail(student.email, `${student.firstName} ${student.lastName}`, result.term, result.academicYear, result.studentId.toString())
         .catch(err => console.error('Failed to send result email', err))
     }
     

@@ -31,7 +31,7 @@ router.post('/', authenticate, authorize(['Admin']), async (req, res) => {
     
     // Send email notification
     if (student.email) {
-      sendStudentRegistrationEmail(student.email, `${student.firstName} ${student.lastName}`, student.registrationNumber)
+      sendStudentRegistrationEmail(student.email, `${student.firstName} ${student.lastName}`, student.registrationNumber, student._id.toString())
         .catch(err => console.error('Failed to send registration email', err))
     }
     
