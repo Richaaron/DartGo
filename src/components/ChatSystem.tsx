@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { messageService, Message, Conversation } from '../services/messageService'
 import { useAuthContext } from '../context/AuthContext'
-import { Send, User, Clock, AlertTriangle, Calendar, CheckCircle, Search } from 'lucide-react'
+import { Send, User, Clock, AlertTriangle, CheckCircle, Search } from 'lucide-react'
 
 export default function ChatSystem() {
   const { user } = useAuthContext()

@@ -163,6 +163,7 @@ export type UserRole = 'Admin' | 'Teacher' | 'Student' | 'Parent'
 
 export interface User {
   id: string
+  _id?: string // MongoDB ID
   email: string
   name: string
   role: UserRole

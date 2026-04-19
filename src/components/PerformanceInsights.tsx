@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { analyticsService, StudentInsight } from '../services/analyticsService'
-import { Brain, TrendingUp, TrendingDown, AlertCircle, CheckCircle2, Lightbulb, Search, Filter } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { Brain, TrendingUp, TrendingDown, AlertCircle, CheckCircle2, Lightbulb, Search } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 export default function PerformanceInsights() {
   const [insights, setInsights] = useState<StudentInsight[]>([])

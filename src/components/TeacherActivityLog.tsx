@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
+import { Eye, Clock, User, Info, Search } from 'lucide-react'
 import { activityService, Activity } from '../services/activityService'
-import { Eye, Clock, User, Info, Search, Filter } from 'lucide-react'
 
 export default function TeacherActivityLog() {
   const [activities, setActivities] = useState<Activity[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedTeacher, setSelectedTeacher] = useState<string>('all')
+  const [selectedTeacher] = useState<string>('all')
 
   useEffect(() => {
     loadActivities()

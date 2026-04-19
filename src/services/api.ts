@@ -142,6 +142,44 @@ async function apiFetch(endpoint: string, options: any = {}) {
   return res.json()
 }
 
+// Generic API methods for compatibility with Axios-like usage
+async function get<T>(url: string, config: any = {}): Promise<{ data: T }> {
+  const data = await apiFetch(url, { method: 'GET', ...config })
+  return { data }
+}
+
+async function post<T>(url: string, data: any = {}, config: any = {}): Promise<{ data: T }> {
+  const result = await apiFetch(url, { 
+    method: 'POST', 
+    body: JSON.stringify(data),
+    ...config 
+  })
+  return { data: result }
+}
+
+async function put<T>(url: string, data: any = {}, config: any = {}): Promise<{ data: T }> {
+  const result = await apiFetch(url, { 
+    method: 'PUT', 
+    body: JSON.stringify(data),
+    ...config 
+  })
+  return { data: result }
+}
+
+async function patch<T>(url: string, data: any = {}, config: any = {}): Promise<{ data: T }> {
+  const result = await apiFetch(url, { 
+    method: 'PATCH', 
+    body: JSON.stringify(data),
+    ...config 
+  })
+  return { data: result }
+}
+
+async function del<T>(url: string, config: any = {}): Promise<{ data: T }> {
+  const result = await apiFetch(url, { method: 'DELETE', ...config })
+  return { data: result }
+}
+
 // Students
 export async function fetchStudents(): Promise<Student[]> {
   return apiFetch('/students')
@@ -217,6 +255,19 @@ export async function createSubject(data: Partial<Subject>): Promise<Subject> {
   return apiFetch('/subjects', {
     method: 'POST',
     body: JSON.stringify(data),
+  })
+}
+
+export async function updateSubject(id: string, data: Partial<Subject>): Promise<Subject> {
+  return apiFetch(`/subjects/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  })
+}
+
+export async function deleteSubject(id: string): Promise<void> {
+  return apiFetch(`/subjects/${id}`, {
+    method: 'DELETE'
   })
 }
 
@@ -386,7 +437,53 @@ export async function deleteSchemeOfWork(id: string): Promise<void> {
   })
 }
 
+// Additional missing functions and aliases for the api object
+export async function fetchSubjectResult(id: string): Promise<SubjectResult> {
+  return apiFetch(`/results/${id}`)
+}
+
+export async function updateObservation(id: string, data: any): Promise<any> {
+  return apiFetch(`/observations/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  })
+}
+
+export async function deleteObservation(id: string): Promise<void> {
+  return apiFetch(`/observations/${id}`, {
+    method: 'DELETE'
+  })
+}
+
+export async function fetchNotifications(): Promise<any[]> {
+  try {
+    return await apiFetch('/notifications')
+  } catch (error) {
+    return []
+  }
+}
+
+export async function markNotificationAsRead(id: string): Promise<any> {
+  return apiFetch(`/notifications/${id}/read`, {
+    method: 'PATCH'
+  })
+}
+
+export async function markAllNotificationsAsRead(): Promise<any> {
+  return apiFetch('/notifications/read-all', {
+    method: 'PATCH'
+  })
+}
+
 const api = {
+  // Axios-compatible methods
+  get,
+  post,
+  put,
+  patch,
+  delete: del,
+
+  // Domain methods
   fetchStudents,
   fetchStudent,
   createStudent,
@@ -402,15 +499,15 @@ const api = {
   createSubject,
   updateSubject,
   deleteSubject,
-  fetchSubjectResults,
+  fetchSubjectResults: fetchResults,
   fetchSubjectResult,
-  createSubjectResult,
-  updateSubjectResult,
-  deleteSubjectResult,
-  fetchResultsByStudent,
-  fetchResultsByClass,
-  fetchObservationsByStudent,
-  createObservation,
+  createSubjectResult: createResult,
+  updateSubjectResult: updateResult,
+  deleteSubjectResult: deleteResult,
+  fetchResultsByStudent: (studentId: string) => fetchResults({ studentId }),
+  fetchResultsByClass: (classId: string) => fetchResults({ classId } as any),
+  fetchObservationsByStudent: (studentId: string) => fetchObservations({ studentId }),
+  createObservation: saveObservation,
   updateObservation,
   deleteObservation,
   fetchNotifications,
