@@ -1,0 +1,50 @@
+# Koyeb Configuration for Folusho Backend
+# This file allows for easy deployment to Koyeb (https://www.koyeb.com)
+# Koyeb's free tier stays awake 24/7, unlike Render.
+
+name: folusho-backend
+services:
+  - name: api
+    type: web
+    image: node:20
+    ports:
+      - port: 10000
+        protocol: http
+    env:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "10000"
+      - key: MONGO_URI
+        type: secret
+        name: MONGO_URI
+      - key: JWT_SECRET
+        type: secret
+        name: JWT_SECRET
+      - key: CORS_ORIGIN
+        value: "*" # Update this to your Vercel frontend URL
+      - key: SESSION_TIMEOUT_MS
+        value: "3600000"
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USER
+        type: secret
+        name: SMTP_USER
+      - key: SMTP_PASS
+        type: secret
+        name: SMTP_PASS
+      - key: SMTP_FROM
+        type: secret
+        name: SMTP_FROM
+    regions:
+      - fra # Frankfurt (Europe) or choose 'was' for Washington DC (US)
+    instance_types:
+      - nano
+    build:
+      command: npm install && npm run build
+      workdir: server
+    run:
+      command: npm start
+      workdir: server
