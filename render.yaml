@@ -19,13 +19,13 @@ services:
         value: https://your-frontend-url.vercel.app
       - key: SESSION_TIMEOUT_MS
         value: 3600000
-      - key: SMTP_HOST
+      - key: EMAIL_HOST
         value: smtp.gmail.com
-      - key: SMTP_PORT
+      - key: EMAIL_PORT
         value: 587
-      - key: SMTP_USER
+      - key: EMAIL_USER
         sync: false
-      - key: SMTP_PASS
+      - key: EMAIL_PASS
         sync: false
-      - key: SMTP_FROM
+      - key: EMAIL_FROM
         sync: false

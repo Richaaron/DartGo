@@ -16,11 +16,11 @@ export interface EnvConfig {
   JWT_SECRET: string
   JWT_EXPIRY: string
   CORS_ORIGIN: string
-  SMTP_HOST: string
-  SMTP_PORT: number
-  SMTP_USER: string
-  SMTP_PASS: string
-  SMTP_FROM: string
+  EMAIL_HOST: string
+  EMAIL_PORT: number
+  EMAIL_USER: string
+  EMAIL_PASS: string
+  EMAIL_FROM: string
   FRONTEND_URL: string
   LOG_LEVEL: 'debug' | 'info' | 'warn' | 'error'
   MAX_LOGIN_ATTEMPTS: number
@@ -35,15 +35,15 @@ export interface EnvConfig {
 const DEVELOPMENT_DEFAULTS: Partial<Record<keyof EnvConfig, string>> = {
   MONGO_URI: 'mongodb://localhost:27017/folusho',
   JWT_SECRET: 'FolushoVictorySchools_SecureJWTSecret_2024_Production_Key_#@!$%',
-  SMTP_HOST: 'smtp.gmail.com',
-  SMTP_USER: 'folushovictoryschool@gmail.com',
-  SMTP_PASS: 'kewv hcfl ssxw nauf',
+  EMAIL_HOST: 'smtp.gmail.com',
+  EMAIL_USER: 'folushovictoryschool@gmail.com',
+  EMAIL_PASS: 'kewv hcfl ssxw nauf',
   NODE_ENV: 'development',
   PORT: '3001',
   FRONTEND_URL: 'http://localhost:5173',
   CORS_ORIGIN: 'http://localhost:5173',
-  SMTP_PORT: '587',
-  SMTP_FROM: 'noreply@folusho.com',
+  EMAIL_PORT: '587',
+  EMAIL_FROM: 'noreply@folusho.com',
   JWT_EXPIRY: '7d',
   LOG_LEVEL: 'info',
   MAX_LOGIN_ATTEMPTS: '5',
@@ -58,9 +58,9 @@ const DEVELOPMENT_DEFAULTS: Partial<Record<keyof EnvConfig, string>> = {
 const CRITICAL_VARS: (keyof EnvConfig)[] = [
   'MONGO_URI',
   'JWT_SECRET',
-  'SMTP_HOST',
-  'SMTP_USER',
-  'SMTP_PASS',
+  'EMAIL_HOST',
+  'EMAIL_USER',
+  'EMAIL_PASS',
 ]
 
 /**
@@ -86,7 +86,15 @@ export function validateEnv(): EnvConfig {
   const missingVars: string[] = []
 
   for (const varName of CRITICAL_VARS) {
-    const envValue = process.env[varName]
+    // Special handling for EMAIL/SMTP aliases
+    let envValue: string | undefined
+    if (varName.startsWith('EMAIL_')) {
+      const smtpAlias = varName.replace('EMAIL_', 'SMTP_')
+      envValue = process.env[varName] || process.env[smtpAlias]
+    } else {
+      envValue = process.env[varName]
+    }
+
     const hasValue = envValue && envValue.trim() !== ''
 
     if (!hasValue) {
@@ -130,11 +138,11 @@ export function validateEnv(): EnvConfig {
     JWT_SECRET: process.env.JWT_SECRET || DEVELOPMENT_DEFAULTS.JWT_SECRET || '',
     JWT_EXPIRY: process.env.JWT_EXPIRY || DEVELOPMENT_DEFAULTS.JWT_EXPIRY || '7d',
     CORS_ORIGIN: process.env.CORS_ORIGIN || DEVELOPMENT_DEFAULTS.CORS_ORIGIN || 'http://localhost:5173',
-    SMTP_HOST: process.env.SMTP_HOST || DEVELOPMENT_DEFAULTS.SMTP_HOST || '',
-    SMTP_PORT: validatePort(parseInt(process.env.SMTP_PORT || DEVELOPMENT_DEFAULTS.SMTP_PORT || '587', 10)),
-    SMTP_USER: process.env.SMTP_USER || DEVELOPMENT_DEFAULTS.SMTP_USER || '',
-    SMTP_PASS: process.env.SMTP_PASS || DEVELOPMENT_DEFAULTS.SMTP_PASS || '',
-    SMTP_FROM: process.env.SMTP_FROM || DEVELOPMENT_DEFAULTS.SMTP_FROM || 'noreply@folusho.com',
+    EMAIL_HOST: process.env.EMAIL_HOST || process.env.SMTP_HOST || DEVELOPMENT_DEFAULTS.EMAIL_HOST || '',
+    EMAIL_PORT: validatePort(parseInt(process.env.EMAIL_PORT || process.env.SMTP_PORT || DEVELOPMENT_DEFAULTS.EMAIL_PORT || '587', 10)),
+    EMAIL_USER: process.env.EMAIL_USER || process.env.SMTP_USER || DEVELOPMENT_DEFAULTS.EMAIL_USER || '',
+    EMAIL_PASS: process.env.EMAIL_PASS || process.env.SMTP_PASS || DEVELOPMENT_DEFAULTS.EMAIL_PASS || '',
+    EMAIL_FROM: process.env.EMAIL_FROM || process.env.SMTP_FROM || DEVELOPMENT_DEFAULTS.EMAIL_FROM || 'noreply@folusho.com',
     FRONTEND_URL: process.env.FRONTEND_URL || DEVELOPMENT_DEFAULTS.FRONTEND_URL || 'http://localhost:5173',
     LOG_LEVEL: (process.env.LOG_LEVEL || DEVELOPMENT_DEFAULTS.LOG_LEVEL || 'info') as 'debug' | 'info' | 'warn' | 'error',
     MAX_LOGIN_ATTEMPTS: parseInt(process.env.MAX_LOGIN_ATTEMPTS || DEVELOPMENT_DEFAULTS.MAX_LOGIN_ATTEMPTS || '5', 10),

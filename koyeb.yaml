@@ -25,19 +25,19 @@ services:
         value: "*" # Update this to your Vercel frontend URL
       - key: SESSION_TIMEOUT_MS
         value: "3600000"
-      - key: SMTP_HOST
+      - key: EMAIL_HOST
         value: smtp.gmail.com
-      - key: SMTP_PORT
+      - key: EMAIL_PORT
         value: "587"
-      - key: SMTP_USER
+      - key: EMAIL_USER
         type: secret
-        name: SMTP_USER
-      - key: SMTP_PASS
+        name: EMAIL_USER
+      - key: EMAIL_PASS
         type: secret
-        name: SMTP_PASS
-      - key: SMTP_FROM
+        name: EMAIL_PASS
+      - key: EMAIL_FROM
         type: secret
-        name: SMTP_FROM
+        name: EMAIL_FROM
     regions:
       - fra # Frankfurt (Europe) or choose 'was' for Washington DC (US)
     instance_types:

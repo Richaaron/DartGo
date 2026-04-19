@@ -123,8 +123,14 @@ async function checkPort(port: number): Promise<{ status: 'available' | 'in-use'
  * Validate environment variables
  */
 function validateEnv(): { status: 'valid' | 'invalid'; message: string } {
-  const required = ['MONGO_URI', 'JWT_SECRET', 'SMTP_HOST', 'SMTP_USER', 'SMTP_PASS']
-  const missing = required.filter(v => !process.env[v])
+  const required = ['MONGO_URI', 'JWT_SECRET', 'EMAIL_HOST', 'EMAIL_USER', 'EMAIL_PASS']
+  const missing = required.filter(v => {
+    if (v.startsWith('EMAIL_')) {
+      const smtpAlias = v.replace('EMAIL_', 'SMTP_')
+      return !process.env[v] && !process.env[smtpAlias]
+    }
+    return !process.env[v]
+  })
   
   if (missing.length > 0) {
     const isDev = process.env.NODE_ENV === 'development'

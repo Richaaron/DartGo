@@ -7,36 +7,42 @@ import path from 'path'
 dotenv.config({ path: path.join(__dirname, '../.env') })
 
 async function testConnection() {
-  console.log('--- SMTP Connection Test ---')
-  console.log(`Host: ${process.env.SMTP_HOST}`)
-  console.log(`Port: ${process.env.SMTP_PORT}`)
-  console.log(`User: ${process.env.SMTP_USER}`)
+  const host = process.env.EMAIL_HOST || process.env.SMTP_HOST
+  const port = process.env.EMAIL_PORT || process.env.SMTP_PORT
+  const user = process.env.EMAIL_USER || process.env.SMTP_USER
+  const pass = process.env.EMAIL_PASS || process.env.SMTP_PASS
+  const from = process.env.EMAIL_FROM || process.env.SMTP_FROM
+  
+  console.log('--- Email Connection Test ---')
+  console.log(`Host: ${host}`)
+  console.log(`Port: ${port}`)
+  console.log(`User: ${user}`)
   
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: process.env.SMTP_PORT === '465', // true for 465, false for other ports
+    host: host,
+    port: parseInt(port || '587'),
+    secure: port === '465', // true for 465, false for other ports
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
+      user: user,
+      pass: pass,
     },
   })
 
   try {
     // Verify connection configuration
     await transporter.verify()
-    console.log('✅ Success: SMTP connection verified!')
+    console.log('✅ Success: Email connection verified!')
     
     // Optionally send a test email
-    if (process.env.SMTP_USER && process.env.SMTP_FROM) {
+    if (user && from) {
       console.log('Sending test email...')
       await transporter.sendMail({
-        from: process.env.SMTP_FROM,
-        to: process.env.SMTP_USER, // Send to self
-        subject: 'SMTP Connection Test - Folusho Result System',
-        text: 'If you are reading this, your SMTP connection is working perfectly!',
+        from: from,
+        to: user, // Send to self
+        subject: 'Email Connection Test - Folusho Result System',
+        text: 'If you are reading this, your Email connection is working perfectly!',
       })
-      console.log(`✅ Success: Test email sent to ${process.env.SMTP_USER}`)
+      console.log(`✅ Success: Test email sent to ${user}`)
     }
   } catch (error) {
     console.error('❌ Error: SMTP connection failed')

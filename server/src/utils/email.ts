@@ -1,13 +1,16 @@
 import nodemailer from 'nodemailer'
 import { Notification } from '../models/Notification.js'
 import mongoose from 'mongoose'
+import { getEnvConfig } from './envConfig.js'
+
+const config = getEnvConfig()
 
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.mailtrap.io',
-  port: parseInt(process.env.SMTP_PORT || '2525'),
+  host: config.EMAIL_HOST,
+  port: config.EMAIL_PORT,
   auth: {
-    user: process.env.SMTP_USER || '',
-    pass: process.env.SMTP_PASS || '',
+    user: config.EMAIL_USER,
+    pass: config.EMAIL_PASS,
   },
 })
 
@@ -26,7 +29,7 @@ export const sendEmail = async (options: EmailOptions) => {
     const { to, subject, text, html, type, studentId, metadata } = options
     
     const info = await transporter.sendMail({
-      from: `"Folusho Victory Schools" <${process.env.SMTP_FROM || 'noreply@folusho.com'}>`,
+      from: `"Folusho Victory Schools" <${config.EMAIL_FROM}>`,
       to,
       subject,
       text,
@@ -81,7 +84,7 @@ export const sendStudentRegistrationEmail = async (studentEmail: string, student
       <li><strong>Registration Number:</strong> ${registrationNumber}</li>
     </ul>
     <p>You can now log in to the parent portal using your credentials.</p>
-    <p><a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}">Access Parent Portal</a></p>
+    <p><a href="${config.FRONTEND_URL}">Access Parent Portal</a></p>
     <p>Best regards,<br/>Folusho Victory Schools Administration</p>
   `
   return sendEmail({

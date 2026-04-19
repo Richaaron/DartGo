@@ -60,15 +60,27 @@ export function verifyEnvLoading(): void {
   const criticalVars = [
     'MONGO_URI',
     'JWT_SECRET',
-    'SMTP_HOST',
-    'SMTP_USER',
-    'SMTP_PASS',
+    'EMAIL_HOST',
+    'EMAIL_USER',
+    'EMAIL_PASS',
   ]
   
   console.log('[ENV-LOADER] Verifying environment variables...')
   
-  const loaded = criticalVars.filter(v => process.env[v])
-  const missing = criticalVars.filter(v => !process.env[v])
+  const loaded = criticalVars.filter(v => {
+    if (v.startsWith('EMAIL_')) {
+      const smtpAlias = v.replace('EMAIL_', 'SMTP_')
+      return process.env[v] || process.env[smtpAlias]
+    }
+    return process.env[v]
+  })
+  const missing = criticalVars.filter(v => {
+    if (v.startsWith('EMAIL_')) {
+      const smtpAlias = v.replace('EMAIL_', 'SMTP_')
+      return !process.env[v] && !process.env[smtpAlias]
+    }
+    return !process.env[v]
+  })
   
   if (loaded.length > 0) {
     console.log(`[ENV-LOADER] ✓ Loaded: ${loaded.join(', ')}`)
