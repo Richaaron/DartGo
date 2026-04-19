@@ -100,6 +100,34 @@ folusho-result-system/
    npm run build
    ```
 
+## Deployment Guide (Safe Setup)
+
+This project is configured for a dual-deployment setup (Backend on Render, Frontend on Vercel) to ensure maximum performance and safety.
+
+### 1. Backend Deployment (Render.com)
+1. Sign up for a free account at [Render.com](https://render.com).
+2. Connect your GitHub repository.
+3. Select "New" -> "Blueprint".
+4. Render will automatically detect the `render.yaml` file and set up the backend.
+5. In the Render dashboard, go to your service and manually add the following **Environment Variables**:
+   - `MONGO_URI`: Your MongoDB Atlas connection string.
+   - `JWT_SECRET`: A long, random string.
+   - `EMAIL_USER` / `EMAIL_PASS`: For email notifications.
+
+### 2. Frontend Deployment (Vercel)
+1. Sign up for a free account at [Vercel](https://vercel.com).
+2. Connect your GitHub repository.
+3. Vercel will detect the `vercel.json` file.
+4. Add the following **Environment Variable** in the Vercel dashboard:
+   - `VITE_API_URL`: Set this to your Render backend URL (e.g., `https://folusho-backend.onrender.com/api`).
+5. Click "Deploy".
+
+### 3. Staging Environment (Testing)
+To test new features like **AI Insights** or **Chat** without affecting your live data:
+1. Create a second database in MongoDB Atlas (e.g., `folusho_staging`).
+2. Deploy a second version of the app using this new database URI.
+3. Once satisfied, update your production environment variables to point to the new code.
+
 4. **Preview production build**:
    ```bash
    npm run preview

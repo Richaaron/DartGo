@@ -25,6 +25,11 @@ import observationRoutes from './routes/observations'
 import notificationRoutes from './routes/notifications'
 import curriculumRoutes from './routes/curriculum'
 import schemeOfWorkRoutes from './routes/schemeOfWork'
+import messageRoutes from './routes/messages'
+import activityRoutes from './routes/activities'
+import analyticsRoutes from './routes/analytics'
+import { activityLogger } from './middleware/activityLogger'
+import { authenticate } from './middleware/auth'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -105,16 +110,23 @@ app.use(requestLogger)
 app.use(generalLimiter)
 
 app.use('/api/auth', authRoutes)
-app.use('/api/students', studentRoutes)
-app.use('/api/teachers', teacherRoutes)
-app.use('/api/subjects', subjectRoutes)
-app.use('/api/results', resultRoutes)
-app.use('/api/attendance', attendanceRoutes)
 app.use('/api/config', configRoutes)
-app.use('/api/observations', observationRoutes)
 app.use('/api/notifications', notificationRoutes)
 app.use('/api/curriculum', curriculumRoutes)
 app.use('/api/scheme-of-work', schemeOfWorkRoutes)
+app.use('/api/observations', observationRoutes)
+
+// Chat and Activity routes
+app.use('/api/messages', authenticate, messageRoutes)
+app.use('/api/activities', authenticate, activityRoutes)
+app.use('/api/analytics', authenticate, analyticsRoutes)
+
+// Action routes with activity logging
+app.use('/api/results', authenticate, activityLogger, resultRoutes)
+app.use('/api/attendance', authenticate, activityLogger, attendanceRoutes)
+app.use('/api/students', authenticate, activityLogger, studentRoutes)
+app.use('/api/teachers', authenticate, activityLogger, teacherRoutes)
+app.use('/api/subjects', authenticate, activityLogger, subjectRoutes)
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' })

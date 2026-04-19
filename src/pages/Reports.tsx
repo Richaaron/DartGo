@@ -1,8 +1,10 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
-import { Printer, Search, FileText, ChevronLeft, Save, Star, GraduationCap } from 'lucide-react'
+import { Printer, Search, FileText, ChevronLeft, Save, Star, GraduationCap, Download } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Student, SubjectResult, Subject } from '../types'
 import { fetchStudents, fetchResults, fetchSubjects, fetchObservations, saveObservation, fetchConfig } from '../services/api'
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -120,6 +122,33 @@ export default function Reports() {
     window.print()
   }
 
+  const exportToPDF = async () => {
+    if (!reportRef.current) return
+    
+    try {
+      setIsLoading(true)
+      const canvas = await html2canvas(reportRef.current, {
+        scale: 2,
+        useCORS: true,
+        logging: false
+      })
+      
+      const imgData = canvas.toDataURL('image/png')
+      const pdf = new jsPDF('p', 'mm', 'a4')
+      const imgProps = pdf.getImageProperties(imgData)
+      const pdfWidth = pdf.internal.pageSize.getWidth()
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
+      
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
+      pdf.save(`${selectedStudent?.firstName}_${selectedStudent?.lastName}_Report_Card.pdf`)
+    } catch (error) {
+      console.error('Failed to export PDF:', error)
+      alert('Failed to generate PDF. Please try printing instead.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   const handleSaveObservation = async () => {
     try {
       const saved = await saveObservation({
@@ -185,6 +214,12 @@ export default function Reports() {
               className={`btn-secondary text-xs`}
             >
               {isEditingObservation ? 'Cancel Edit' : 'Edit Observations'}
+            </button>
+            <button 
+              onClick={exportToPDF}
+              className="btn-secondary text-xs flex items-center gap-2"
+            >
+              <Download size={16} /> Download PDF
             </button>
             <button 
               onClick={handlePrint}

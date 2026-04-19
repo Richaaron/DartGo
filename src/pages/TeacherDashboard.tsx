@@ -9,6 +9,8 @@ import { useAuthContext } from '../context/AuthContext'
 import { Student, SubjectResult, Subject } from '../types'
 import { formatDate } from '../utils/calculations'
 import { fetchStudents, fetchResults, fetchSubjects } from '../services/api'
+import ChatSystem from '../components/ChatSystem'
+import PerformanceInsights from '../components/PerformanceInsights'
 
 export default function TeacherDashboard() {
   const { user } = useAuthContext()
@@ -17,7 +19,7 @@ export default function TeacherDashboard() {
   const [results, setResults] = useState<SubjectResult[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'results' | 'curriculum' | 'scheme'>('results')
+  const [activeTab, setActiveTab] = useState<'results' | 'curriculum' | 'scheme' | 'messages' | 'insights'>('results')
 
   useEffect(() => {
     loadData()
@@ -151,7 +153,7 @@ export default function TeacherDashboard() {
 
       {/* Tab Navigation */}
       <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-        {(['results', 'curriculum', 'scheme'] as const).map((tab) => (
+        {(['results', 'curriculum', 'scheme', 'messages', 'insights'] as const).map((tab) => (
           <motion.button
             key={tab}
             whileHover={{ scale: 1.05 }}
@@ -166,6 +168,8 @@ export default function TeacherDashboard() {
             {tab === 'results' && 'Class Results'}
             {tab === 'curriculum' && 'Curriculum'}
             {tab === 'scheme' && 'Scheme of Work'}
+            {tab === 'messages' && 'Admin Chat'}
+            {tab === 'insights' && 'AI Insights'}
           </motion.button>
         ))}
       </div>
@@ -207,6 +211,31 @@ export default function TeacherDashboard() {
           animate={{ opacity: 1, y: 0 }}
         >
           <SchemeOfWorkManager teacherId={teacher.email} level={teacher.level} />
+        </motion.div>
+      )}
+
+      {/* Messages Tab */}
+      {activeTab === 'messages' && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-lg shadow-lg p-6"
+        >
+          <div className="mb-4">
+            <h2 className="text-xl font-bold text-gray-900">Message Admin</h2>
+            <p className="text-sm text-gray-500">Contact the school administration for support or reports</p>
+          </div>
+          <ChatSystem />
+        </motion.div>
+      )}
+
+      {/* Insights Tab */}
+      {activeTab === 'insights' && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <PerformanceInsights />
         </motion.div>
       )}
     </div>

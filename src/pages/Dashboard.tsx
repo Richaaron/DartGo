@@ -5,6 +5,9 @@ import { motion } from 'framer-motion'
 import StatCard from '../components/StatCard'
 import { Student, SubjectResult } from '../types'
 import { fetchStudents, fetchResults } from '../services/api'
+import ChatSystem from '../components/ChatSystem'
+import TeacherActivityLog from '../components/TeacherActivityLog'
+import PerformanceInsights from '../components/PerformanceInsights'
 
 const COLORS = ['#7c3aed', '#fbbf24', '#9333ea', '#d97706', '#6b21a8']
 
@@ -374,6 +377,24 @@ export default function Dashboard() {
             ))}
           </div>
         )}
+      </motion.div>
+
+      {/* AI Performance Insights Section */}
+      <motion.div variants={itemVariants} className="mt-8 mb-8">
+        <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-4">AI-Powered Performance Analytics</h2>
+        <PerformanceInsights />
+      </motion.div>
+
+      {/* Teacher Activity and Messages Section */}
+      <motion.div variants={itemVariants} className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        <div className="space-y-4">
+          <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-4">Teacher Activity Monitor</h2>
+          <TeacherActivityLog />
+        </div>
+        <div className="space-y-4">
+          <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-4">Message Center</h2>
+          <ChatSystem />
+        </div>
       </motion.div>
 
       {/* Change Password Modal */}
