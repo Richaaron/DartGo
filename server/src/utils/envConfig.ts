@@ -58,7 +58,6 @@ const DEVELOPMENT_DEFAULTS: Partial<Record<keyof EnvConfig, string>> = {
 const CRITICAL_VARS: (keyof EnvConfig)[] = [
   'MONGO_URI',
   'JWT_SECRET',
-  'EMAIL_HOST',
   'EMAIL_USER',
   'EMAIL_PASS',
 ]
