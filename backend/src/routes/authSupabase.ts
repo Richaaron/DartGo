@@ -1,5 +1,4 @@
 import { Router, Response, NextFunction } from 'express';
-import bcrypt from 'bcryptjs';
 import { body, validationResult } from 'express-validator';
 import { User, UserRole } from '../models/UserSimple';
 import { generateToken, authenticateToken, AuthRequest } from '../middleware/authSupabase';
@@ -69,7 +68,7 @@ router.post('/register', registerValidation, async (req: any, res: Response, nex
       },
     });
   } catch (error: any) {
-    next(error);
+    return next(error);
   }
 });
 
@@ -120,7 +119,7 @@ router.post('/login', loginValidation, async (req: any, res: Response, next: Nex
       },
     });
   } catch (error: any) {
-    next(error);
+    return next(error);
   }
 });
 
@@ -134,7 +133,7 @@ router.get('/me', authenticateToken, async (req: AuthRequest, res: Response, nex
       },
     });
   } catch (error: any) {
-    next(error);
+    return next(error);
   }
 });
 
@@ -178,7 +177,7 @@ router.put('/change-password', authenticateToken, [
       message: 'Password changed successfully',
     });
   } catch (error: any) {
-    next(error);
+    return next(error);
   }
 });
 
@@ -216,7 +215,7 @@ router.put('/profile', authenticateToken, [
       },
     });
   } catch (error: any) {
-    next(error);
+    return next(error);
   }
 });
 

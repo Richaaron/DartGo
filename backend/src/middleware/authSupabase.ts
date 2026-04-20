@@ -14,10 +14,10 @@ export const generateToken = (user: User): string => {
   };
   
   const secret = process.env['JWT_SECRET'];
-if (!secret) throw new Error('JWT_SECRET is required');
-return jwt.sign(payload, secret, {
-  expiresIn: process.env['JWT_EXPIRES_IN'] || '24h',
-});
+  if (!secret) throw new Error('JWT_SECRET is required');
+  return jwt.sign(payload, secret as string, {
+    expiresIn: process.env['JWT_EXPIRES_IN'] || '24h',
+  } as any);
 };
 
 export const verifyToken = (token: string): any => {

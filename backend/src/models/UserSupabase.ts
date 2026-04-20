@@ -194,10 +194,10 @@ export class User {
     Object.assign(this, userData);
   }
 
-  toJSON(): UserAttributes {
+  toJSON(): Omit<UserAttributes, 'password'> {
     const values = { ...this };
     const { password, ...rest } = values;
-    return rest;
+    return rest as Omit<UserAttributes, 'password'>;
   }
 
   async comparePassword(candidatePassword: string): Promise<boolean> {
@@ -209,7 +209,9 @@ export class User {
     if (this.id) {
       return User.update(this.id, this.toJSON());
     } else {
-      return User.create(this.toJSON() as UserCreationAttributes);
+      // For creation, we need to include password
+      const userData = { ...this } as any;
+      return User.create(userData);
     }
   }
 

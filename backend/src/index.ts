@@ -8,12 +8,14 @@ import { createServer } from 'http';
 import { Server as SocketIOServer } from 'socket.io';
 
 import { testConnection } from './config/supabase';
+import { initializeEmailService } from './services/emailService';
 import { authLimiter, generalLimiter } from './middleware/authSimple';
 import { errorHandler } from './middleware/errorHandler';
 import { notFoundHandler } from './middleware/notFoundHandler';
 
 // Import routes
 import authRoutes from './routes/authSupabase';
+import notificationRoutes from './routes/notifications';
 
 // Load environment variables
 dotenv.config();
@@ -67,6 +69,7 @@ app.get('/health', (_req, res) => {
 
 // API routes
 app.use('/api/auth', authRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Error handling middleware
 app.use(notFoundHandler);
@@ -90,6 +93,9 @@ const startServer = async () => {
       throw new Error('Failed to connect to Supabase');
     }
     console.log('Database connection established successfully');
+
+    // Initialize email service
+    await initializeEmailService();
 
     // Start server
     server.listen(PORT, () => {
