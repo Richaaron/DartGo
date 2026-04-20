@@ -8,7 +8,7 @@ import { createServer } from 'http';
 import { Server as SocketIOServer } from 'socket.io';
 
 import { testConnection } from './config/supabase';
-import { authLimiter, generalLimiter } from './middleware/authSimple';
+import { authLimiter, generalLimiter } from './middleware/authSupabase';
 import { errorHandler } from './middleware/errorHandler';
 import { notFoundHandler } from './middleware/notFoundHandler';
 
@@ -56,7 +56,7 @@ app.use('/api/auth', authLimiter);
 app.use('/api', generalLimiter);
 
 // Health check endpoint
-app.get('/health', (_req, res) => {
+app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'OK',
     timestamp: new Date().toISOString(),

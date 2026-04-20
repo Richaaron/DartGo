@@ -6,10 +6,10 @@ export interface AppError extends Error {
 }
 
 export const errorHandler = (
-  err: AppError,
-  req: Request,
+  err: any,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ): void => {
   let error = { ...err };
   error.message = err.message;
@@ -50,6 +50,6 @@ export const errorHandler = (
   res.status(error.statusCode || 500).json({
     success: false,
     error: error.message || 'Server Error',
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
+    ...(process.env['NODE_ENV'] === 'development' && { stack: err.stack }),
   });
 };
