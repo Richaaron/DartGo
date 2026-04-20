@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type { ChangeEvent, FormEvent } from 'react'
 import { X } from 'lucide-react'
 import { Result, Student, Subject } from '../types'
 import { calculateGrade, calculatePercentage } from '../utils/calculations'
@@ -58,7 +59,7 @@ export default function ResultForm({
   }
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: ChangeEvent<any>
   ) => {
     const { name, value } = e.target
     const newValue = name === 'score' || name === 'totalScore' ? parseFloat(value) || 0 : value
@@ -77,7 +78,7 @@ export default function ResultForm({
     }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (validateForm()) {
       onSubmit(formData as any)

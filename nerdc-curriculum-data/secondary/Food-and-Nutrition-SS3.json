@@ -1,0 +1,149 @@
+{
+  "subjectName": "Food and Nutrition",
+  "subjectCode": "FDN-SS3",
+  "level": "Secondary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Beverages and Nutritive Value",
+      "objectives": [
+        "Define and classify beverages",
+        "Understand nutritive value",
+        "Distinguish alcoholic and non-alcoholic beverages"
+      ],
+      "duration": 40,
+      "resources": ["Beverage samples", "Nutritional charts", "Classification guides"],
+      "assessmentMethod": "Classification exercise"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Non-Alcoholic Beverages",
+      "objectives": [
+        "Classify non-alcoholic beverages",
+        "Understand health benefits",
+        "Study production methods"
+      ],
+      "duration": 40,
+      "resources": ["Beverage samples", "Production guides"],
+      "assessmentMethod": "Practical preparation"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Special Diets",
+      "objectives": [
+        "Define special diets",
+        "Study vegetarian diet types",
+        "Analyze therapeutic diets"
+      ],
+      "duration": 40,
+      "resources": ["Diet samples", "Nutritional guidelines"],
+      "assessmentMethod": "Diet planning"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Practical on Beverages and Special Diets",
+      "objectives": [
+        "Prepare various beverages",
+        "Cook special diet dishes",
+        "Serve appropriately"
+      ],
+      "duration": 40,
+      "resources": ["Kitchen equipment", "Beverage and food samples"],
+      "assessmentMethod": "Practical demonstration"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Examination",
+      "objectives": ["Assess learning"],
+      "duration": 60,
+      "resources": ["Test papers"],
+      "assessmentMethod": "Exam"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Cultural Food Habits and Traditional Dishes",
+      "objectives": [
+        "Understand food habits and taboos",
+        "Study traditional dishes",
+        "Prepare and serve traditional foods"
+      ],
+      "duration": 40,
+      "resources": ["Cultural materials", "Recipe books"],
+      "assessmentMethod": "Cultural presentation"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Midterm Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Foreign Dishes and Table Setting",
+      "objectives": [
+        "Identify foreign dishes",
+        "Learn table etiquette",
+        "Master formal and informal settings"
+      ],
+      "duration": 40,
+      "resources": ["Foreign recipes", "Table setup diagrams"],
+      "assessmentMethod": "Practical setup"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Art of Entertainment",
+      "objectives": [
+        "Understand party types",
+        "Plan event menus",
+        "Organize entertainment"
+      ],
+      "duration": 40,
+      "resources": ["Party planning guides", "Event materials"],
+      "assessmentMethod": "Event planning project"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Food Service",
+      "objectives": [
+        "Define food service types",
+        "Study service protocols",
+        "Practice serving skills"
+      ],
+      "duration": 40,
+      "resources": ["Service guidelines", "Practice materials"],
+      "assessmentMethod": "Service demonstration"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Self-Employment in Catering",
+      "objectives": [
+        "Plan catering business",
+        "Understand entrepreneurship",
+        "Study work ethics and packaging"
+      ],
+      "duration": 40,
+      "resources": ["Business guides", "Packaging materials"],
+      "assessmentMethod": "Business proposal"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Examination",
+      "objectives": ["Final assessment"],
+      "duration": 180,
+      "resources": ["Examination papers"],
+      "assessmentMethod": "Final exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

@@ -586,10 +586,38 @@ async function seed() {
   console.log(`✅ Created ${subjects.length} Nigerian curriculum subjects with topics`)
 
   // Create default curriculum
+  const preNurserySubjects = subjects.filter(s => s.level === 'Pre-Nursery').map(s => s._id.toString())
+  const nurserySubjects = subjects.filter(s => s.level === 'Nursery').map(s => s._id.toString())
   const primarySubjects = subjects.filter(s => s.level === 'Primary').map(s => s._id.toString())
   const secondarySubjects = subjects.filter(s => s.level === 'Secondary').map(s => s._id.toString())
+  const juniorSecondarySubjects = subjects.filter(s => s.level === 'Junior Secondary').map(s => s._id.toString())
+  const vocationalSubjects = subjects.filter(s => s.level === 'Vocational').map(s => s._id.toString())
 
   await Curriculum.create([
+    {
+      name: 'Nigerian Pre-Nursery Curriculum',
+      version: '2023.1',
+      level: 'Pre-Nursery',
+      yearsOfStudy: 2,
+      subjects: preNurserySubjects,
+      implementationDate: new Date('2023-09-01'),
+      description: 'Nigerian pre-nursery curriculum',
+      curriculum: 'NIGERIAN',
+      status: 'ACTIVE',
+      createdBy: 'admin@folusho.com',
+    },
+    {
+      name: 'Nigerian Nursery Curriculum',
+      version: '2023.1',
+      level: 'Nursery',
+      yearsOfStudy: 1,
+      subjects: nurserySubjects,
+      implementationDate: new Date('2023-09-01'),
+      description: 'Nigerian nursery school curriculum',
+      curriculum: 'NIGERIAN',
+      status: 'ACTIVE',
+      createdBy: 'admin@folusho.com',
+    },
     {
       name: 'Nigerian Primary School Curriculum',
       version: '2023.1',
@@ -603,6 +631,18 @@ async function seed() {
       createdBy: 'admin@folusho.com',
     },
     {
+      name: 'Nigerian Junior Secondary School Curriculum',
+      version: '2023.1',
+      level: 'Junior Secondary',
+      yearsOfStudy: 3,
+      subjects: juniorSecondarySubjects,
+      implementationDate: new Date('2023-09-01'),
+      description: 'Nigerian junior secondary school curriculum (JSS 1-3)',
+      curriculum: 'NIGERIAN',
+      status: 'ACTIVE',
+      createdBy: 'admin@folusho.com',
+    },
+    {
       name: 'Nigerian Secondary School Curriculum',
       version: '2023.1',
       level: 'Secondary',
@@ -610,6 +650,18 @@ async function seed() {
       subjects: secondarySubjects,
       implementationDate: new Date('2023-09-01'),
       description: 'Current Nigerian secondary school curriculum (JSS 1-3, SSS 1-3)',
+      curriculum: 'NIGERIAN',
+      status: 'ACTIVE',
+      createdBy: 'admin@folusho.com',
+    },
+    {
+      name: 'Nigerian Vocational Training Curriculum',
+      version: '2023.1',
+      level: 'Vocational',
+      yearsOfStudy: 1,
+      subjects: vocationalSubjects,
+      implementationDate: new Date('2023-09-01'),
+      description: 'Nigerian vocational and technical training curriculum',
       curriculum: 'NIGERIAN',
       status: 'ACTIVE',
       createdBy: 'admin@folusho.com',
@@ -630,8 +682,12 @@ async function seed() {
   console.log('✅ Created default teacher')
 
   // Get curriculum IDs
+  const preNurseryCurr = await Curriculum.findOne({ level: 'Pre-Nursery' })
+  const nurseryCurr = await Curriculum.findOne({ level: 'Nursery' })
   const primaryCurr = await Curriculum.findOne({ level: 'Primary' })
   const secondaryCurr = await Curriculum.findOne({ level: 'Secondary' })
+  const juniorSecondaryCurr = await Curriculum.findOne({ level: 'Junior Secondary' })
+  const vocationalCurr = await Curriculum.findOne({ level: 'Vocational' })
 
   // Define classes by level
   const classMap: Record<string, string[]> = {
@@ -639,13 +695,28 @@ async function seed() {
     'Nursery': ['Nursery A', 'Nursery B', 'Nursery C'],
     'Primary': ['Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6'],
     'Secondary': ['JSS 1A', 'JSS 1B', 'JSS 2A', 'JSS 2B', 'JSS 3A', 'JSS 3B', 'SSS 1A', 'SSS 1B', 'SSS 2A', 'SSS 2B', 'SSS 3A', 'SSS 3B'],
+    'Junior Secondary': ['JSS 1A', 'JSS 1B', 'JSS 2A', 'JSS 2B', 'JSS 3A', 'JSS 3B'],
+    'Vocational': ['Class A', 'Class B', 'Class C'],
+  }
+
+  // Helper function to get curriculum for a subject level
+  const getCurriculumForLevel = (level: string) => {
+    const curriculumMap: Record<string, any> = {
+      'Pre-Nursery': preNurseryCurr,
+      'Nursery': nurseryCurr,
+      'Primary': primaryCurr,
+      'Secondary': secondaryCurr,
+      'Junior Secondary': juniorSecondaryCurr,
+      'Vocational': vocationalCurr,
+    }
+    return curriculumMap[level]
   }
 
   // Generate scheme of work for each subject
   const schemesData: any[] = []
   for (const subject of subjects) {
     const classes = classMap[subject.level] || [subject.level + ' A']
-    const curriculum = subject.level.includes('Primary') ? primaryCurr : secondaryCurr
+    const curriculum = getCurriculumForLevel(subject.level)
 
     // Create 3 schemes per subject (for 3 terms)
     for (let term = 1; term <= 3; term++) {
@@ -691,7 +762,7 @@ async function seed() {
 
   console.log('\n🎓 Seed completed successfully!')
   console.log(`Total Subjects: ${subjects.length}`)
-  console.log('Available Levels: Pre-Nursery, Nursery, Primary, Secondary')
+  console.log('Available Levels: Pre-Nursery, Nursery, Primary, Junior Secondary, Secondary, Vocational')
   process.exit(0)
 }
 

@@ -1,0 +1,148 @@
+{
+  "subjectName": "Financial Accounting",
+  "subjectCode": "FAC-SS3",
+  "level": "Secondary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Consignment Account",
+      "objectives": [
+        "Define consignment",
+        "Study consignor and consignee roles",
+        "Understand consignment features"
+      ],
+      "duration": 40,
+      "resources": ["Accounting guides", "Consignment samples"],
+      "assessmentMethod": "Account preparation"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Consignment Accounting Treatment",
+      "objectives": [
+        "Record consignment transactions",
+        "Prepare consignment accounts",
+        "Value unsold stock"
+      ],
+      "duration": 40,
+      "resources": ["Ledger templates", "Accounting worksheets"],
+      "assessmentMethod": "Account entries"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Joint Venture Account",
+      "objectives": [
+        "Define joint ventures",
+        "Study accounting procedures",
+        "Compare with partnerships"
+      ],
+      "duration": 40,
+      "resources": ["Joint venture guides", "Accounting records"],
+      "assessmentMethod": "Joint account preparation"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Contract Account",
+      "objectives": [
+        "Define contracts",
+        "Study contract accounting",
+        "Calculate profit on incomplete contracts"
+      ],
+      "duration": 40,
+      "resources": ["Contract documents", "Accounting guides"],
+      "assessmentMethod": "Contract accounting"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Examination",
+      "objectives": ["Assess learning"],
+      "duration": 60,
+      "resources": ["Test papers"],
+      "assessmentMethod": "Exam"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Departmental Account",
+      "objectives": [
+        "Define departmental accounts",
+        "Allocate and apportion expenses",
+        "Prepare departmental accounts"
+      ],
+      "duration": 40,
+      "resources": ["Department data", "Allocation guides"],
+      "assessmentMethod": "Departmental account"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Midterm Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Branch Account",
+      "objectives": [
+        "Define branch types",
+        "Study branch accounting systems",
+        "Prepare branch accounts"
+      ],
+      "duration": 40,
+      "resources": ["Branch accounting guides", "System comparisons"],
+      "assessmentMethod": "Branch accounting"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Public Sector Accounting",
+      "objectives": [
+        "Define public sector accounting",
+        "Study revenue and expenditure",
+        "Prepare public sector accounts"
+      ],
+      "duration": 40,
+      "resources": ["Public finance documents", "Accounting guides"],
+      "assessmentMethod": "Public account preparation"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Non-Profit Organisation Accounts",
+      "objectives": [
+        "Define non-profit organizations",
+        "Prepare specific accounts",
+        "Understand fund accounting"
+      ],
+      "duration": 40,
+      "resources": ["Non-profit guides", "Fund accounting records"],
+      "assessmentMethod": "Non-profit accounting"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Revision",
+      "objectives": [
+        "Review all accounting topics",
+        "Consolidate knowledge"
+      ],
+      "duration": 40,
+      "resources": ["Revision materials"],
+      "assessmentMethod": "Mock exam"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Examination",
+      "objectives": ["Final assessment"],
+      "duration": 180,
+      "resources": ["Examination papers"],
+      "assessmentMethod": "Final exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

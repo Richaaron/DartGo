@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import type { ChangeEvent, FormEvent } from 'react'
 import { X, Upload, User as UserIcon } from 'lucide-react'
 import { Teacher } from '../types'
 
@@ -15,7 +16,7 @@ export default function TeacherForm({
   onCancel,
   isEditing = false,
 }: TeacherFormProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const fileInputRef = useRef<any>(null)
   const [formData, setFormData] = useState<Omit<Teacher, 'id'> & { id?: string }>({
     name: '',
     email: '',
@@ -38,8 +39,7 @@ export default function TeacherForm({
 
     if (!formData.name.trim()) newErrors.name = 'Full name is required'
     if (!formData.email.includes('@')) newErrors.email = 'Valid email is required'
-    if (!isEditing && !formData.username.trim() && false) newErrors.username = 'Username is required' // Disabled for auto-gen
-    if (!isEditing && !formData.password && false) newErrors.password = 'Password is required' // Disabled for auto-gen
+    // Username/password are auto-generated for new teachers; validate only when editing.
     if (isEditing && !formData.username.trim()) newErrors.username = 'Username is required'
     if (!formData.subject.trim()) newErrors.subject = 'Subject is required'
     if (formData.assignedClasses.length === 0) newErrors.assignedClasses = 'At least one class is required'
@@ -48,10 +48,10 @@ export default function TeacherForm({
     return Object.keys(newErrors).length === 0
   }
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (e: ChangeEvent<any>) => {
     const file = e.target.files?.[0]
     if (file) {
-      const reader = new FileReader()
+      const reader = new window.FileReader()
       reader.onloadend = () => {
         setFormData((prev) => ({ ...prev, image: reader.result as string }))
       }
@@ -60,7 +60,7 @@ export default function TeacherForm({
   }
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: ChangeEvent<any>
   ) => {
     const { name, value } = e.target
     setFormData((prev) => ({
@@ -93,7 +93,7 @@ export default function TeacherForm({
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (validateForm()) {
       onSubmit(formData as any)

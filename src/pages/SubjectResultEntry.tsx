@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
+import type { ChangeEvent } from 'react'
 import { Plus, Trash2, Search, Upload, FileText, CheckCircle, AlertCircle } from 'lucide-react'
 import Papa from 'papaparse'
 import { SubjectResult, Student, Subject } from '../types'
@@ -41,22 +42,22 @@ export default function SubjectResultEntry() {
     }
   }
 
-  const getResultDetails = (result: SubjectResult) => {
-    const student = students.find((s) => s.id === result.studentId)
-    const subject = subjects.find((sub) => sub.id === result.subjectId)
-
-    return {
-      ...result,
-      studentName: student ? `${student.firstName} ${student.lastName}` : 'Unknown Student',
-      subjectName: subject?.name || 'Unknown Subject',
-      class: student?.class || '',
-    }
-  }
-
   const filteredResults = useMemo(() => {
+    const getResultDetailsForFilter = (result: SubjectResult) => {
+      const student = students.find((s) => s.id === result.studentId)
+      const subject = subjects.find((sub) => sub.id === result.subjectId)
+
+      return {
+        ...result,
+        studentName: student ? `${student.firstName} ${student.lastName}` : 'Unknown Student',
+        subjectName: subject?.name || 'Unknown Subject',
+        class: student?.class || '',
+      }
+    }
+
     return results
       .filter((result) => {
-        const details = getResultDetails(result)
+        const details = getResultDetailsForFilter(result)
         const matchesFilter =
           details.studentName.toLowerCase().includes(filterTerm.toLowerCase()) ||
           details.subjectName.toLowerCase().includes(filterTerm.toLowerCase())
@@ -66,7 +67,7 @@ export default function SubjectResultEntry() {
 
         return matchesFilter && matchesTerm && matchesStudent
       })
-      .map(getResultDetails)
+      .map(getResultDetailsForFilter)
   }, [results, students, subjects, filterTerm, selectedTerm, selectedStudent])
 
   const handleSubmitResult = async (resultData: SubjectResult | Omit<SubjectResult, 'id'>) => {
@@ -80,24 +81,24 @@ export default function SubjectResultEntry() {
       }
       setShowForm(false)
       setMessage({ type: 'success', text: 'Result saved successfully!' })
-      setTimeout(() => setMessage({ type: '', text: '' }), 3000)
-    } catch (error) {
-      alert('Failed to save result')
+      window.setTimeout(() => setMessage({ type: '', text: '' }), 3000)
+    } catch {
+      window.alert('Failed to save result')
     }
   }
 
   const handleDeleteResult = async (id: string) => {
-    if (confirm('Are you sure you want to delete this result?')) {
+    if (window.confirm('Are you sure you want to delete this result?')) {
       try {
         await deleteResult(id)
         setResults(prev => prev.filter(r => r.id !== id))
-      } catch (error) {
-        alert('Failed to delete result')
+      } catch {
+        window.alert('Failed to delete result')
       }
     }
   }
 
-  const handleBulkUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBulkUpload = (event: ChangeEvent<any>) => {
     const file = event.target.files?.[0]
     if (!file) return
 
@@ -123,7 +124,7 @@ export default function SubjectResultEntry() {
         }).filter(r => r.subjectId && r.registrationNumber)
 
         if (processedResults.length === 0) {
-          alert('No valid results found in CSV. Please check columns: registrationNumber, subjectName, firstCA, secondCA, exam')
+          window.alert('No valid results found in CSV. Please check columns: registrationNumber, subjectName, firstCA, secondCA, exam')
           return
         }
 
@@ -133,11 +134,11 @@ export default function SubjectResultEntry() {
             academicYear: processedResults[0].academicYear,
             results: processedResults
           })
-          alert(res.message)
+          window.alert(res.message)
           loadData()
           setShowBulkModal(false)
-        } catch (error) {
-          alert('Failed to process bulk upload')
+        } catch {
+          window.alert('Failed to process bulk upload')
         }
       }
     })

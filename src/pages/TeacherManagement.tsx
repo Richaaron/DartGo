@@ -14,10 +14,22 @@ export default function TeacherManagement() {
   const [editingTeacher, setEditingTeacher] = useState<Teacher | null>(null)
 
   useEffect(() => {
-    loadTeachers()
+    let isMounted = true
+
+    fetchTeachers()
+      .then((data) => {
+        if (isMounted) setTeachers(data)
+      })
+      .catch((error) => {
+        console.error('Failed to load teachers', error)
+      })
+
+    return () => {
+      isMounted = false
+    }
   }, [])
 
-  const loadTeachers = async () => {
+  async function loadTeachers() {
     try {
       const data = await fetchTeachers()
       setTeachers(data)
@@ -53,8 +65,8 @@ export default function TeacherManagement() {
       await createTeacher(teacherData)
       await loadTeachers()
       setShowForm(false)
-    } catch (error) {
-      alert('Failed to add teacher')
+    } catch {
+      window.alert('Failed to add teacher')
     }
   }
 
@@ -64,8 +76,8 @@ export default function TeacherManagement() {
       await loadTeachers()
       setEditingTeacher(null)
       setShowForm(false)
-    } catch (error) {
-      alert('Failed to update teacher')
+    } catch {
+      window.alert('Failed to update teacher')
     }
   }
 
@@ -78,12 +90,12 @@ export default function TeacherManagement() {
   }
 
   const handleDeleteTeacher = async (id: string) => {
-    if (confirm('Are you sure you want to delete this teacher? This will also remove their access to the system.')) {
+    if (window.confirm('Are you sure you want to delete this teacher? This will also remove their access to the system.')) {
       try {
         await deleteTeacher(id)
         await loadTeachers()
-      } catch (error) {
-        alert('Failed to delete teacher')
+      } catch {
+        window.alert('Failed to delete teacher')
       }
     }
   }

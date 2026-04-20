@@ -1,0 +1,149 @@
+{
+  "subjectName": "Physics",
+  "subjectCode": "PHY-SS3",
+  "level": "Secondary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Conversion of Energy",
+      "objectives": [
+        "Understand energy conversion principles",
+        "Apply conservation of energy",
+        "Analyze practical energy conversions"
+      ],
+      "duration": 40,
+      "resources": ["Energy diagrams", "Demonstration equipment", "Solar panels"],
+      "assessmentMethod": "Practical demonstration"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Transmission Systems",
+      "objectives": [
+        "Understand mechanical transmission",
+        "Study gears and pulleys",
+        "Analyze electrical transmission"
+      ],
+      "duration": 40,
+      "resources": ["Mechanical models", "Pulley systems", "Transmission diagrams"],
+      "assessmentMethod": "Practical work"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Uses of Machines",
+      "objectives": [
+        "Define machines and simple machines",
+        "Calculate mechanical advantage",
+        "Apply machines in real situations"
+      ],
+      "duration": 40,
+      "resources": ["Simple machine models", "Efficiency calculations"],
+      "assessmentMethod": "Problem-solving"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Repair and Maintenance of Machines",
+      "objectives": [
+        "Understand machine maintenance",
+        "Identify common faults",
+        "Practice preventive maintenance"
+      ],
+      "duration": 40,
+      "resources": ["Machine manuals", "Maintenance checklists"],
+      "assessmentMethod": "Case studies"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Examination",
+      "objectives": ["Assess first term understanding"],
+      "duration": 60,
+      "resources": ["Examination papers"],
+      "assessmentMethod": "Exam"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Dams and Energy Production",
+      "objectives": [
+        "Understand hydroelectric power",
+        "Study dam types and functions",
+        "Analyze energy production in Nigeria"
+      ],
+      "duration": 40,
+      "resources": ["Dam diagrams", "Energy statistics", "Case studies"],
+      "assessmentMethod": "Research project"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Midterm Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Rockets and Satellites",
+      "objectives": [
+        "Understand rocket propulsion",
+        "Study satellite types and functions",
+        "Apply Newton's laws"
+      ],
+      "duration": 40,
+      "resources": ["Rocket diagrams", "Satellite information", "Videos"],
+      "assessmentMethod": "Class discussion"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Niger-SAT 1",
+      "objectives": [
+        "Understand Nigeria's satellite program",
+        "Study Niger-SAT applications",
+        "Analyze development impact"
+      ],
+      "duration": 40,
+      "resources": ["Niger-SAT documentation", "Satellite imagery"],
+      "assessmentMethod": "Presentation"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "NICOM-SAT 1",
+      "objectives": [
+        "Understand NICOM-SAT purpose",
+        "Study communication satellite uses",
+        "Evaluate development benefits"
+      ],
+      "duration": 40,
+      "resources": ["NICOM-SAT information", "Communication diagrams"],
+      "assessmentMethod": "Assignment"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Revision",
+      "objectives": [
+        "Review all topics",
+        "Practice problem-solving",
+        "Consolidate knowledge"
+      ],
+      "duration": 40,
+      "resources": ["Revision notes", "Past questions"],
+      "assessmentMethod": "Mock exam"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Examination",
+      "objectives": ["Final assessment"],
+      "duration": 180,
+      "resources": ["Examination papers"],
+      "assessmentMethod": "Final exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

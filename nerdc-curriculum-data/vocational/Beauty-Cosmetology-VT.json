@@ -1,0 +1,149 @@
+{
+  "subjectName": "Beauty and Cosmetology",
+  "subjectCode": "BEA-VT",
+  "level": "Vocational",
+  "creditUnits": 4,
+  "subjectCategory": "VOCATIONAL",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Beauty Industry Overview",
+      "objectives": [
+        "Understand beauty industry",
+        "Study career opportunities",
+        "Explore business setup"
+      ],
+      "duration": 40,
+      "resources": ["Industry guides", "Business plans"],
+      "assessmentMethod": "Industry analysis"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Skin Care and Analysis",
+      "objectives": [
+        "Understand skin types",
+        "Learn skin care routines",
+        "Analyze skin conditions"
+      ],
+      "duration": 40,
+      "resources": ["Skin models", "Product samples"],
+      "assessmentMethod": "Skin analysis"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Facial Treatments and Techniques",
+      "objectives": [
+        "Master facial treatments",
+        "Learn massage techniques",
+        "Practice professional skills"
+      ],
+      "duration": 40,
+      "resources": ["Treatment models", "Product supplies"],
+      "assessmentMethod": "Treatment practice"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Hair Care and Styling",
+      "objectives": [
+        "Understand hair types",
+        "Learn styling techniques",
+        "Practice cut and color"
+      ],
+      "duration": 40,
+      "resources": ["Hair models", "Styling tools"],
+      "assessmentMethod": "Styling demonstration"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Assessment",
+      "objectives": ["Assess learning"],
+      "duration": 60,
+      "resources": ["Assessment papers"],
+      "assessmentMethod": "Practical test"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Makeup Application and Design",
+      "objectives": [
+        "Master makeup application",
+        "Learn color theory",
+        "Create makeup designs"
+      ],
+      "duration": 40,
+      "resources": ["Makeup supplies", "Color guides"],
+      "assessmentMethod": "Makeup project"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Nail Care and Design",
+      "objectives": [
+        "Learn nail care",
+        "Master nail design",
+        "Practice application"
+      ],
+      "duration": 40,
+      "resources": ["Nail supplies", "Design samples"],
+      "assessmentMethod": "Nail design practice"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Health, Safety and Hygiene",
+      "objectives": [
+        "Understand safety protocols",
+        "Learn hygiene standards",
+        "Practice sanitation"
+      ],
+      "duration": 40,
+      "resources": ["Safety guides", "Hygiene materials"],
+      "assessmentMethod": "Safety assessment"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Customer Service and Salon Management",
+      "objectives": [
+        "Master customer service",
+        "Learn salon operations",
+        "Develop business skills"
+      ],
+      "duration": 40,
+      "resources": ["Customer guides", "Management tools"],
+      "assessmentMethod": "Customer service"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Final Project - Complete Makeover",
+      "objectives": [
+        "Plan complete makeover",
+        "Execute all techniques",
+        "Document process"
+      ],
+      "duration": 60,
+      "resources": ["All supplies"],
+      "assessmentMethod": "Capstone project"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Final Assessment",
+      "objectives": ["Final evaluation"],
+      "duration": 180,
+      "resources": ["Assessment criteria"],
+      "assessmentMethod": "Practical exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Course closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

@@ -1,12 +1,4 @@
-import axios from 'axios'
-
-const getBaseUrl = () => {
-  const envUrl = import.meta.env.VITE_API_URL
-  if (!envUrl) return 'http://localhost:3001/api'
-  return envUrl.endsWith('/api') ? envUrl : `${envUrl}/api`
-}
-
-const API_URL = getBaseUrl()
+import api from './api'
 
 export interface Notification {
   _id: string
@@ -23,38 +15,57 @@ export interface Notification {
   createdAt: string
 }
 
+interface NotificationListResponse {
+  notifications: Notification[]
+  pagination?: {
+    total: number
+    page: number
+    pages: number
+    limit: number
+  }
+}
+
+interface NotificationStatsResponse {
+  summary: {
+    totalSent: number
+    totalFailed: number
+    totalPending: number
+    total: number
+  }
+}
+
 export const notificationAPI = {
   // Get all notifications (admin only)
-  getAll: async (status?: string, type?: string, limit = 50, page = 1) => {
+  getAll: async (status?: string, type?: string, limit = 50, page = 1): Promise<NotificationListResponse> => {
     const params: any = { limit, page }
     if (status) params.status = status
     if (type) params.type = type
-    
-    const response = await axios.get(`${API_URL}/notifications`, { params })
+
+    const response = await api.get<NotificationListResponse>('/notifications', { params })
     return response.data
   },
 
   // Get notifications for a specific student
-  getByStudent: async (studentId: string) => {
-    const response = await axios.get(`${API_URL}/notifications/student/${studentId}`)
+  getByStudent: async (studentId: string): Promise<Notification[]> => {
+    const response = await api.get<Notification[]>(`/notifications/student/${studentId}`)
     return response.data
   },
 
   // Get notification statistics
-  getStats: async () => {
-    const response = await axios.get(`${API_URL}/notifications/stats/summary`)
+  getStats: async (): Promise<NotificationStatsResponse> => {
+    const response = await api.get<NotificationStatsResponse>('/notifications/stats/summary')
     return response.data
   },
 
   // Resend a failed notification
-  resend: async (notificationId: string) => {
-    const response = await axios.post(`${API_URL}/notifications/${notificationId}/resend`)
+  resend: async (notificationId: string): Promise<{ message: string }> => {
+    const response = await api.post<{ message: string }>(`/notifications/${notificationId}/resend`)
     return response.data
   },
 
   // Delete a notification record
-  delete: async (notificationId: string) => {
-    const response = await axios.delete(`${API_URL}/notifications/${notificationId}`)
+  delete: async (notificationId: string): Promise<{ message: string }> => {
+    const response = await api.delete<{ message: string }>(`/notifications/${notificationId}`)
     return response.data
   },
 

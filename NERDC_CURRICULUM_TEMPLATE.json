@@ -1,0 +1,160 @@
+{
+  "curriculumMetadata": {
+    "version": "2025",
+    "curriculumType": "NIGERIAN",
+    "implementationDate": "2025-01-01",
+    "description": "NERDC National Curriculum Framework 2025"
+  },
+  "schoolLevels": {
+    "PreNursery": {
+      "levelName": "Pre-Nursery",
+      "yearsOfStudy": 1,
+      "classes": ["Pre-Nursery"],
+      "subjects": []
+    },
+    "Nursery": {
+      "levelName": "Nursery",
+      "yearsOfStudy": 2,
+      "classes": ["Nursery 1", "Nursery 2"],
+      "subjects": []
+    },
+    "Primary": {
+      "levelName": "Primary",
+      "yearsOfStudy": 6,
+      "classes": ["Primary 1", "Primary 2", "Primary 3", "Primary 4", "Primary 5", "Primary 6"],
+      "subjects": [
+        {
+          "code": "ENG101",
+          "name": "English Language",
+          "level": "Primary",
+          "creditUnits": 5,
+          "subjectCategory": "CORE",
+          "curriculumType": "NIGERIAN",
+          "description": "English Language for Primary Schools",
+          "termTopics": {
+            "term1": [
+              {
+                "weekNumber": 1,
+                "topic": "Phonics and Letter Recognition",
+                "duration": 1,
+                "objectives": [
+                  "Students will recognize all letter shapes",
+                  "Students will identify initial consonant sounds"
+                ],
+                "resources": ["Flashcards", "Picture cards", "Alphabet chart"],
+                "assessmentMethod": "Observation and verbal assessment"
+              },
+              {
+                "weekNumber": 2,
+                "topic": "Word Building and Basic Sight Words",
+                "duration": 1,
+                "objectives": [
+                  "Students will blend sounds into simple words",
+                  "Students will recognize common sight words"
+                ],
+                "resources": ["Word cards", "Sound blending charts", "Reading materials"],
+                "assessmentMethod": "Oral reading and written exercises"
+              }
+            ],
+            "term2": [],
+            "term3": []
+          }
+        },
+        {
+          "code": "MATH101",
+          "name": "Mathematics",
+          "level": "Primary",
+          "creditUnits": 5,
+          "subjectCategory": "CORE",
+          "curriculumType": "NIGERIAN",
+          "description": "Mathematics for Primary Schools",
+          "termTopics": {
+            "term1": [
+              {
+                "weekNumber": 1,
+                "topic": "Number Recognition (0-10)",
+                "duration": 1,
+                "objectives": [
+                  "Recognize numbers 0-10",
+                  "Write numbers in numerals and words"
+                ],
+                "resources": ["Number flashcards", "Counting materials", "Workbooks"],
+                "assessmentMethod": "Written and practical assessment"
+              }
+            ],
+            "term2": [],
+            "term3": []
+          }
+        }
+      ]
+    },
+    "Secondary": {
+      "levelName": "Secondary",
+      "yearsOfStudy": 6,
+      "classes": ["JSS 1", "JSS 2", "JSS 3", "SSS 1", "SSS 2", "SSS 3"],
+      "subjects": [
+        {
+          "code": "ENG201",
+          "name": "English Language",
+          "level": "Secondary",
+          "creditUnits": 5,
+          "subjectCategory": "CORE",
+          "curriculumType": "NIGERIAN",
+          "description": "English Language for Secondary Schools",
+          "termTopics": {
+            "term1": [
+              {
+                "weekNumber": 1,
+                "topic": "Comprehension and Vocabulary Development",
+                "duration": 1,
+                "objectives": [
+                  "Students will improve reading comprehension skills",
+                  "Students will expand vocabulary"
+                ],
+                "resources": ["Textbooks", "Comprehension passages", "Vocabulary lists"],
+                "assessmentMethod": "Written comprehension test"
+              }
+            ],
+            "term2": [],
+            "term3": []
+          }
+        },
+        {
+          "code": "MATH201",
+          "name": "Mathematics",
+          "level": "Secondary",
+          "creditUnits": 5,
+          "subjectCategory": "CORE",
+          "curriculumType": "NIGERIAN",
+          "description": "Mathematics for Secondary Schools",
+          "termTopics": {
+            "term1": [
+              {
+                "weekNumber": 1,
+                "topic": "Numbers and Basic Operations",
+                "duration": 2,
+                "objectives": [
+                  "Understand number systems",
+                  "Perform arithmetic operations efficiently"
+                ],
+                "resources": ["Mathematics textbooks", "Calculators", "Past papers"],
+                "assessmentMethod": "Problem solving and tests"
+              }
+            ],
+            "term2": [],
+            "term3": []
+          }
+        }
+      ]
+    }
+  },
+  "instructionsForUse": {
+    "step1": "Extract subjects and classes from your NERDC PDF files",
+    "step2": "For each subject, organize topics by term (1, 2, 3)",
+    "step3": "For each term, list topics by week number (1-12/13 weeks per term)",
+    "step4": "Fill in topic details: name, duration, objectives, resources, assessment methods",
+    "step5": "Use the seed script to import all data into the database",
+    "note": "Duration is in weeks (typically 1-2 weeks per topic)",
+    "example": "Week 1-2: Introduction to Photosynthesis (2 weeks) with learning outcomes and assessment methods"
+  }
+}

@@ -37,6 +37,21 @@ const DEVELOPMENT_FALLBACK_USERS = [
       assignedClasses: ['SSS1A', 'SSS1B', 'SSS2A'],
     },
   },
+  {
+    loginIds: ['dart-teacher@folusho.com', 'dartteacher'],
+    password: 'DartTeacher123!@#',
+    user: {
+      id: 'dev-teacher-dart',
+      email: 'dart-teacher@folusho.com',
+      name: 'Ms. Johnson',
+      role: 'Teacher' as const,
+      teacherId: 'T002',
+      username: 'dartteacher',
+      subject: 'Dart Programming',
+      level: 'Secondary' as const,
+      assignedClasses: ['SSS2A', 'SSS2B', 'SSS3A'],
+    },
+  },
 ]
 
 interface AuthContextType {

@@ -1,0 +1,148 @@
+{
+  "subjectName": "Mathematics",
+  "subjectCode": "MAT-JSS3",
+  "level": "Junior Secondary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Numbers and Numeration",
+      "objectives": [
+        "Understand number systems",
+        "Master place value concepts",
+        "Practice number operations"
+      ],
+      "duration": 40,
+      "resources": ["Number charts", "Calculation worksheets"],
+      "assessmentMethod": "Numerical exercises"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Integers and Operations",
+      "objectives": [
+        "Understand positive and negative integers",
+        "Master addition and subtraction",
+        "Practice multiplication and division"
+      ],
+      "duration": 40,
+      "resources": ["Integer worksheets", "Operation guides"],
+      "assessmentMethod": "Integer calculations"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Fractions and Decimals",
+      "objectives": [
+        "Understand fraction concepts",
+        "Master decimal operations",
+        "Convert between forms"
+      ],
+      "duration": 40,
+      "resources": ["Fraction models", "Decimal guides"],
+      "assessmentMethod": "Fraction and decimal test"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Percentages and Ratios",
+      "objectives": [
+        "Understand percentages",
+        "Master ratio concepts",
+        "Apply to real situations"
+      ],
+      "duration": 40,
+      "resources": ["Percentage guides", "Ratio examples"],
+      "assessmentMethod": "Percentage and ratio problems"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Examination",
+      "objectives": ["Assess learning"],
+      "duration": 60,
+      "resources": ["Test papers"],
+      "assessmentMethod": "Exam"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Algebra - Equations and Expressions",
+      "objectives": [
+        "Understand algebraic expressions",
+        "Solve linear equations",
+        "Apply algebraic concepts"
+      ],
+      "duration": 40,
+      "resources": ["Algebra worksheets", "Equation guides"],
+      "assessmentMethod": "Algebraic problem-solving"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Midterm Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Geometry - Shapes and Properties",
+      "objectives": [
+        "Identify geometric shapes",
+        "Understand properties",
+        "Calculate areas and perimeters"
+      ],
+      "duration": 40,
+      "resources": ["Geometric shapes", "Formula guides"],
+      "assessmentMethod": "Geometry calculations"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Statistics and Data Analysis",
+      "objectives": [
+        "Collect and organize data",
+        "Create graphs and charts",
+        "Analyze statistics"
+      ],
+      "duration": 40,
+      "resources": ["Data sets", "Graph templates"],
+      "assessmentMethod": "Data analysis project"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Probability",
+      "objectives": [
+        "Understand probability concepts",
+        "Calculate probabilities",
+        "Apply to real events"
+      ],
+      "duration": 40,
+      "resources": ["Probability guides", "Practical experiments"],
+      "assessmentMethod": "Probability problems"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Revision",
+      "objectives": [
+        "Review all mathematical topics",
+        "Consolidate problem-solving"
+      ],
+      "duration": 40,
+      "resources": ["Revision materials"],
+      "assessmentMethod": "Mock exam"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Examination",
+      "objectives": ["Final assessment"],
+      "duration": 180,
+      "resources": ["Examination papers"],
+      "assessmentMethod": "Final exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "subjectName": "Visual Arts",
+  "subjectCode": "VAR-SS3",
+  "level": "Secondary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Drawing and Painting - Materials and Techniques",
+      "objectives": [
+        "List painting materials and tools",
+        "Practice drawing and painting techniques",
+        "Apply color effectively on objects"
+      ],
+      "duration": 40,
+      "resources": ["Art materials", "Painting samples", "Nature objects"],
+      "assessmentMethod": "Practical art work"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "History of Western Art",
+      "objectives": [
+        "Study Early Christian, Byzantine, Islamic art",
+        "Understand Renaissance art",
+        "Analyze artists and media"
+      ],
+      "duration": 40,
+      "resources": ["Art history books", "Artist slides", "Museum images"],
+      "assessmentMethod": "Art analysis report"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Impressionism Art Movement",
+      "objectives": [
+        "Understand Impressionism (19th century)",
+        "Study involved artists",
+        "Apply impressionist techniques"
+      ],
+      "duration": 40,
+      "resources": ["Impressionist works", "Artist biographies"],
+      "assessmentMethod": "Practical imitation"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Nigerian Contemporary Artists",
+      "objectives": [
+        "Study Nigerian art history",
+        "Analyze contemporary artists",
+        "Value artistic contributions"
+      ],
+      "duration": 40,
+      "resources": ["Nigerian artist works", "Exhibition catalogs"],
+      "assessmentMethod": "Artist presentation"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Cubism Art Movement",
+      "objectives": [
+        "Understand Cubism (20th century)",
+        "Study exponents and styles",
+        "Apply cubist principles"
+      ],
+      "duration": 40,
+      "resources": ["Cubist artworks", "Movement guides"],
+      "assessmentMethod": "Cubist artwork creation"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Furniture and Design",
+      "objectives": [
+        "Understand furniture function",
+        "Design furniture pieces",
+        "Use materials effectively"
+      ],
+      "duration": 40,
+      "resources": ["Furniture designs", "Materials samples"],
+      "assessmentMethod": "Design and construction"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Midterm Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Oriental and Oceanic Art",
+      "objectives": [
+        "Study Chinese, Japanese, Indian art",
+        "Understand Oceanic art",
+        "Analyze cultural influences"
+      ],
+      "duration": 40,
+      "resources": ["Oriental artworks", "Oceanic art samples"],
+      "assessmentMethod": "Comparative analysis"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Sculpture",
+      "objectives": [
+        "Understand relief sculpture",
+        "Practice sculpting techniques",
+        "Create and finish sculpture"
+      ],
+      "duration": 40,
+      "resources": ["Sculpting materials", "Tools", "Examples"],
+      "assessmentMethod": "Sculpture creation"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Photography and Film",
+      "objectives": [
+        "Understand photography",
+        "Operate cameras",
+        "Study film making"
+      ],
+      "duration": 40,
+      "resources": ["Cameras", "Photography guides", "Film equipment"],
+      "assessmentMethod": "Photo project"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Revision",
+      "objectives": [
+        "Review all art forms",
+        "Consolidate techniques"
+      ],
+      "duration": 40,
+      "resources": ["Art portfolio review"],
+      "assessmentMethod": "Portfolio assessment"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Examination",
+      "objectives": ["Final assessment"],
+      "duration": 180,
+      "resources": ["Examination papers"],
+      "assessmentMethod": "Final exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

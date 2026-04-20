@@ -1,0 +1,148 @@
+{
+  "subjectName": "English Language",
+  "subjectCode": "ENG-JSS3",
+  "level": "Junior Secondary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Communication and Language Skills",
+      "objectives": [
+        "Understand communication process",
+        "Develop listening skills",
+        "Practice speaking and presentation"
+      ],
+      "duration": 40,
+      "resources": ["Listening materials", "Speech guides", "Communication diagrams"],
+      "assessmentMethod": "Oral presentation"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Writing Skills - Composition",
+      "objectives": [
+        "Master paragraph writing",
+        "Write narrative essays",
+        "Develop descriptive writing"
+      ],
+      "duration": 40,
+      "resources": ["Writing prompts", "Essay samples", "Grammar guides"],
+      "assessmentMethod": "Written composition"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Reading Comprehension",
+      "objectives": [
+        "Understand main ideas",
+        "Identify supporting details",
+        "Analyze author's purpose"
+      ],
+      "duration": 40,
+      "resources": ["Reading passages", "Comprehension questions"],
+      "assessmentMethod": "Comprehension test"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Grammar - Parts of Speech",
+      "objectives": [
+        "Identify nouns, verbs, adjectives",
+        "Master pronoun usage",
+        "Practice prepositions and conjunctions"
+      ],
+      "duration": 40,
+      "resources": ["Grammar worksheets", "Usage guides"],
+      "assessmentMethod": "Grammar exercises"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Examination",
+      "objectives": ["Assess learning"],
+      "duration": 60,
+      "resources": ["Test papers"],
+      "assessmentMethod": "Exam"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Literature - Poetry and Drama",
+      "objectives": [
+        "Understand poetic devices",
+        "Analyze dramatic works",
+        "Identify themes and messages"
+      ],
+      "duration": 40,
+      "resources": ["Poetry texts", "Drama scripts"],
+      "assessmentMethod": "Literary analysis"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Midterm Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Punctuation and Spelling",
+      "objectives": [
+        "Master punctuation marks",
+        "Practice correct spelling",
+        "Apply rules consistently"
+      ],
+      "duration": 40,
+      "resources": ["Punctuation guides", "Spelling lists"],
+      "assessmentMethod": "Spelling and punctuation test"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Vocabulary Development",
+      "objectives": [
+        "Learn new word meanings",
+        "Understand word origins",
+        "Use words in context"
+      ],
+      "duration": 40,
+      "resources": ["Vocabulary lists", "Synonym guides"],
+      "assessmentMethod": "Vocabulary exercises"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Writing Different Text Types",
+      "objectives": [
+        "Write letters and reports",
+        "Create notices and announcements",
+        "Develop formal writing"
+      ],
+      "duration": 40,
+      "resources": ["Text samples", "Writing formats"],
+      "assessmentMethod": "Text writing"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Revision",
+      "objectives": [
+        "Review all language skills",
+        "Consolidate knowledge"
+      ],
+      "duration": 40,
+      "resources": ["Revision materials"],
+      "assessmentMethod": "Mock exam"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Examination",
+      "objectives": ["Final assessment"],
+      "duration": 180,
+      "resources": ["Examination papers"],
+      "assessmentMethod": "Final exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

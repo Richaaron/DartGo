@@ -1,4 +1,5 @@
 import { useMemo, useEffect, useState } from 'react'
+import type { FormEvent } from 'react'
 import { Users, BookOpen, TrendingUp, AlertCircle, Lock, Eye, EyeOff, Check, X } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 import { motion } from 'framer-motion'
@@ -133,11 +134,11 @@ export default function Dashboard() {
     if (!/[A-Z]/.test(password)) errors.push('One uppercase letter')
     if (!/[a-z]/.test(password)) errors.push('One lowercase letter')
     if (!/[0-9]/.test(password)) errors.push('One number')
-    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) errors.push('One special character')
+    if (!/[^A-Za-z0-9]/.test(password)) errors.push('One special character')
     return errors
   }
 
-  const handlePasswordChange = async (e: React.FormEvent) => {
+  const handlePasswordChange = async (e: FormEvent) => {
     e.preventDefault()
     setPasswordError('')
     setPasswordSuccess('')
@@ -165,8 +166,8 @@ export default function Dashboard() {
 
     setIsChangingPassword(true)
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch('http://localhost:3001/api/auth/change-password', {
+      const token = window.localStorage.getItem('token')
+      const response = await window.fetch('http://localhost:3001/api/auth/change-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -186,7 +187,7 @@ export default function Dashboard() {
 
       setPasswordSuccess('Password changed successfully!')
       setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' })
-      setTimeout(() => {
+      window.setTimeout(() => {
         setShowPasswordModal(false)
         setPasswordSuccess('')
       }, 2000)
@@ -332,7 +333,6 @@ export default function Dashboard() {
             <div className="flex flex-col gap-4 ml-8">
               {studentStatusData.map((entry, index) => (
                 <div key={entry.name} className="flex items-center gap-3">
-                  {/* eslint-disable-next-line react/style-prop-object */}
                   <div className="w-2.5 h-2.5 rounded-full" style={{backgroundColor: COLORS[index % COLORS.length]}} />
                   <div className="flex flex-col">
                     <span className="text-[10px] text-gray-400 font-black uppercase tracking-widest leading-none mb-1">{entry.name}</span>

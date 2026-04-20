@@ -16,7 +16,28 @@ export default function SchemeOfWorkManager({ teacherId }: SchemeOfWorkManagerPr
   const [selectedScheme, setSelectedScheme] = useState<SchemeOfWork | null>(null)
 
   useEffect(() => {
-    loadSchemesAndSubjects()
+    let isMounted = true
+    setIsLoading(true)
+    setError(null)
+
+    Promise.all([fetchSchemesOfWork(teacherId), fetchSubjects()])
+      .then(([schemeData, subjectData]) => {
+        if (!isMounted) return
+        setSchemes(schemeData)
+        setSubjects(subjectData)
+      })
+      .catch((error: any) => {
+        if (!isMounted) return
+        console.error('Failed to load schemes of work', error)
+        setError(error.message || 'Failed to load schemes. Check connection or permissions.')
+      })
+      .finally(() => {
+        if (isMounted) setIsLoading(false)
+      })
+
+    return () => {
+      isMounted = false
+    }
   }, [teacherId])
 
   const loadSchemesAndSubjects = async () => {
@@ -86,24 +107,28 @@ export default function SchemeOfWorkManager({ teacherId }: SchemeOfWorkManagerPr
   }
 
   const classOrder = [
-    'Pre-Nursery',
-    'Nursery 1',
-    'Nursery 2',
-    'Primary 1',
-    'Primary 2',
-    'Primary 3',
-    'Primary 4',
-    'Primary 5',
-    'Jss 1',
-    'Jss 2',
-    'Jss 3',
-    'Ss1',
-    'Ss2',
-    'Ss3',
+    'pre nursery',
+    'nursery',
+    'primary 1',
+    'primary 2',
+    'primary 3',
+    'primary 4',
+    'primary 5',
+    'primary 6',
+    'jss 1',
+    'jss 2',
+    'jss 3',
+    'sss 1',
+    'sss 2',
+    'sss 3',
   ]
 
   const getClassSortValue = (classId: string) => {
-    const normalizedClassId = classId.trim().toLowerCase()
+    const normalizedClassId = classId
+      .trim()
+      .toLowerCase()
+      .replace(/-/g, ' ')
+      .replace(/\s+/g, ' ')
 
     const classIndex = classOrder.findIndex((className) =>
       normalizedClassId.startsWith(className.toLowerCase())

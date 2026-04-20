@@ -1,0 +1,148 @@
+{
+  "subjectName": "Commerce",
+  "subjectCode": "COM-SS3",
+  "level": "Secondary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "History of Nigerian Capital Market",
+      "objectives": [
+        "Study capital market development",
+        "Understand stock exchange establishment",
+        "Analyze SEC role"
+      ],
+      "duration": 40,
+      "resources": ["Market history documents", "Stock exchange data"],
+      "assessmentMethod": "Historical research"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Stock Exchange",
+      "objectives": [
+        "Define stock exchange",
+        "Study member types and functions",
+        "Understand securities trading"
+      ],
+      "duration": 40,
+      "resources": ["Stock exchange guides", "Market information"],
+      "assessmentMethod": "Exchange structure study"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Second Tier Securities Market (SSM)",
+      "objectives": [
+        "Understand SSM purpose",
+        "Study listing requirements",
+        "Analyze procedures for dealing"
+      ],
+      "duration": 40,
+      "resources": ["SSM documentation", "Listing guides"],
+      "assessmentMethod": "SSM analysis"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Economic Grouping in West Africa",
+      "objectives": [
+        "Define economic grouping",
+        "Study ECOWAS and regional bodies",
+        "Analyze objectives and achievements"
+      ],
+      "duration": 40,
+      "resources": ["Regional organization data", "Economic statistics"],
+      "assessmentMethod": "Regional analysis"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Examination",
+      "objectives": ["Assess learning"],
+      "duration": 60,
+      "resources": ["Test papers"],
+      "assessmentMethod": "Exam"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Business Law",
+      "objectives": [
+        "Define business law",
+        "Study sources and types",
+        "Understand contract and company law"
+      ],
+      "duration": 40,
+      "resources": ["Legal documents", "Business law texts"],
+      "assessmentMethod": "Legal case study"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Midterm Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Contract of Employment",
+      "objectives": [
+        "Define employment contracts",
+        "Study employer and employee rights",
+        "Understand government regulations"
+      ],
+      "duration": 40,
+      "resources": ["Employment contracts", "Labor law guides"],
+      "assessmentMethod": "Contract analysis"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Negotiable Instruments",
+      "objectives": [
+        "Define negotiable instruments",
+        "Study cheques and bills of exchange",
+        "Understand promissory notes"
+      ],
+      "duration": 40,
+      "resources": ["Instrument samples", "Banking guides"],
+      "assessmentMethod": "Instrument creation"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Consumer Protection and Environmental Law",
+      "objectives": [
+        "Study consumer rights",
+        "Understand environmental regulations",
+        "Analyze protection mechanisms"
+      ],
+      "duration": 40,
+      "resources": ["Protection laws", "Regulatory documents"],
+      "assessmentMethod": "Law application"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Revision",
+      "objectives": [
+        "Review all commercial topics",
+        "Consolidate business knowledge"
+      ],
+      "duration": 40,
+      "resources": ["Revision materials"],
+      "assessmentMethod": "Mock exam"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Examination",
+      "objectives": ["Final assessment"],
+      "duration": 180,
+      "resources": ["Examination papers"],
+      "assessmentMethod": "Final exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

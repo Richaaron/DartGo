@@ -1,10 +1,7 @@
-// @ts-ignore
 import nodemailer from 'nodemailer'
 import dotenv from 'dotenv'
-import path from 'path'
 
-// Load .env from server directory
-dotenv.config({ path: path.join(__dirname, '../.env') })
+dotenv.config()
 
 async function testConnection() {
   const host = process.env.EMAIL_HOST || process.env.SMTP_HOST

@@ -17,20 +17,23 @@ export default function CurriculumManager({ level }: CurriculumManagerProps) {
   const [selectedSubject, setSelectedSubject] = useState<any>(null)
 
   useEffect(() => {
-    loadCurriculums()
-  }, [level])
+    let isMounted = true
 
-  const loadCurriculums = async () => {
-    setIsLoading(true)
-    try {
-      const data = await fetchCurriculums({ level, status: 'ACTIVE' })
-      setCurriculums(data)
-    } catch (error) {
-      console.error('Failed to load curriculums', error)
-    } finally {
-      setIsLoading(false)
+    fetchCurriculums({ level, status: 'ACTIVE' })
+      .then((data) => {
+        if (isMounted) setCurriculums(data)
+      })
+      .catch((error) => {
+        console.error('Failed to load curriculums', error)
+      })
+      .finally(() => {
+        if (isMounted) setIsLoading(false)
+      })
+
+    return () => {
+      isMounted = false
     }
-  }
+  }, [level])
 
   const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this curriculum?')) {

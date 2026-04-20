@@ -68,7 +68,7 @@ export function validatePassword(password: string): ValidationResult {
     errors.push('Password must contain at least one number')
   }
   
-  if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+  if (!/[^A-Za-z0-9]/.test(password)) {
     errors.push('Password must contain at least one special character (!@#$%^&* etc.)')
   }
   
@@ -197,7 +197,7 @@ export function validateRegistrationNumber(regNum: string): ValidationResult {
   }
   
   // Format: SCHOOL-YEAR-CLASS-SEQUENCE (e.g., FVS-2024-P1-001)
-  if (!/^[A-Z0-9\-]{5,20}$/.test(regNum)) {
+  if (!/^[A-Z0-9-]{5,20}$/.test(regNum)) {
     errors.push('Invalid registration number format')
   }
   

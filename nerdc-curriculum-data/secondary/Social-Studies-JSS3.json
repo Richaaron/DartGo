@@ -1,0 +1,148 @@
+{
+  "subjectName": "Social Studies",
+  "subjectCode": "SOC-JSS3",
+  "level": "Junior Secondary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Community and Society",
+      "objectives": [
+        "Understand community structure",
+        "Study social relationships",
+        "Analyze community roles"
+      ],
+      "duration": 40,
+      "resources": ["Community diagrams", "Social structure guides"],
+      "assessmentMethod": "Community analysis"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Culture and Tradition",
+      "objectives": [
+        "Understand cultural practices",
+        "Study traditional values",
+        "Respect diverse cultures"
+      ],
+      "duration": 40,
+      "resources": ["Cultural materials", "Tradition guides"],
+      "assessmentMethod": "Cultural presentation"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Government and Leadership",
+      "objectives": [
+        "Understand government structure",
+        "Study leadership roles",
+        "Analyze decision-making"
+      ],
+      "duration": 40,
+      "resources": ["Government diagrams", "Leadership guides"],
+      "assessmentMethod": "Government structure study"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Rights and Responsibilities",
+      "objectives": [
+        "Understand human rights",
+        "Study civic responsibilities",
+        "Practice good citizenship"
+      ],
+      "duration": 40,
+      "resources": ["Rights documents", "Responsibility guides"],
+      "assessmentMethod": "Rights and duties analysis"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Examination",
+      "objectives": ["Assess learning"],
+      "duration": 60,
+      "resources": ["Test papers"],
+      "assessmentMethod": "Exam"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Nigeria - Geography and Resources",
+      "objectives": [
+        "Study Nigerian geography",
+        "Identify natural resources",
+        "Analyze economic importance"
+      ],
+      "duration": 40,
+      "resources": ["Nigeria maps", "Resource data"],
+      "assessmentMethod": "Geography study"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Midterm Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Health and Wellness",
+      "objectives": [
+        "Understand healthy living",
+        "Study disease prevention",
+        "Promote wellness practices"
+      ],
+      "duration": 40,
+      "resources": ["Health guides", "Wellness materials"],
+      "assessmentMethod": "Health plan"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Environmental Issues",
+      "objectives": [
+        "Understand environmental problems",
+        "Study conservation",
+        "Develop sustainability practices"
+      ],
+      "duration": 40,
+      "resources": ["Environmental data", "Conservation guides"],
+      "assessmentMethod": "Environmental project"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Economic Activities",
+      "objectives": [
+        "Understand economic systems",
+        "Study production and trade",
+        "Analyze employment"
+      ],
+      "duration": 40,
+      "resources": ["Economic diagrams", "Trade information"],
+      "assessmentMethod": "Economic analysis"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Revision",
+      "objectives": [
+        "Review all social studies topics",
+        "Consolidate knowledge"
+      ],
+      "duration": 40,
+      "resources": ["Revision materials"],
+      "assessmentMethod": "Mock exam"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Examination",
+      "objectives": ["Final assessment"],
+      "duration": 180,
+      "resources": ["Examination papers"],
+      "assessmentMethod": "Final exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

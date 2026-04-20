@@ -14,10 +14,22 @@ export default function StudentManagement() {
   const [editingStudent, setEditingStudent] = useState<Student | null>(null)
 
   useEffect(() => {
-    loadStudents()
+    let isMounted = true
+
+    fetchStudents()
+      .then((data) => {
+        if (isMounted) setStudents(data)
+      })
+      .catch((error) => {
+        console.error('Failed to load students', error)
+      })
+
+    return () => {
+      isMounted = false
+    }
   }, [])
 
-  const loadStudents = async () => {
+  async function loadStudents() {
     try {
       const data = await fetchStudents()
       setStudents(data)
@@ -50,8 +62,8 @@ export default function StudentManagement() {
       await createStudent(studentData)
       await loadStudents()
       setShowForm(false)
-    } catch (error) {
-      alert('Failed to add student')
+    } catch {
+      window.alert('Failed to add student')
     }
   }
 
@@ -61,8 +73,8 @@ export default function StudentManagement() {
       await loadStudents()
       setEditingStudent(null)
       setShowForm(false)
-    } catch (error) {
-      alert('Failed to update student')
+    } catch {
+      window.alert('Failed to update student')
     }
   }
 
@@ -75,12 +87,12 @@ export default function StudentManagement() {
   }
 
   const handleDeleteStudent = async (id: string) => {
-    if (confirm('Are you sure you want to delete this student?')) {
+    if (window.confirm('Are you sure you want to delete this student?')) {
       try {
         await deleteStudent(id)
         await loadStudents()
-      } catch (error) {
-        alert('Failed to delete student')
+      } catch {
+        window.alert('Failed to delete student')
       }
     }
   }

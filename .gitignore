@@ -7,10 +7,32 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Node.js
 node_modules
 dist
 dist-ssr
 *.local
+
+# Dart/Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+*.apk
+*.ipa
+*.dill
+
+# Backend specific
+backend/node_modules
+backend/dist
+backend/.env
+backend/.env.local
+backend/.env.*.local
+backend/logs
+backend/uploads
 
 # Editor directories and files
 .vscode/*

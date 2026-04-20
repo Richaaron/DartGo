@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Eye, Clock, User, Info, Search } from 'lucide-react'
 import { activityService, Activity } from '../services/activityService'
 
@@ -8,13 +8,7 @@ export default function TeacherActivityLog() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedTeacher] = useState<string>('all')
 
-  useEffect(() => {
-    loadActivities()
-    const interval = setInterval(loadActivities, 30000) // Refresh every 30s
-    return () => clearInterval(interval)
-  }, [selectedTeacher])
-
-  const loadActivities = async () => {
+  const loadActivities = useCallback(async () => {
     try {
       setLoading(true)
       const data = selectedTeacher === 'all' 
@@ -26,7 +20,13 @@ export default function TeacherActivityLog() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [selectedTeacher])
+
+  useEffect(() => {
+    loadActivities()
+    const interval = window.setInterval(loadActivities, 30000) // Refresh every 30s
+    return () => window.clearInterval(interval)
+  }, [loadActivities])
 
   const filteredActivities = activities.filter(a => 
     a.userName.toLowerCase().includes(searchTerm.toLowerCase()) ||

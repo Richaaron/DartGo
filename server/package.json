@@ -7,7 +7,9 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "seed": "tsx scripts/seed.ts"
+    "seed": "tsx scripts/seed.ts",
+    "parse-txt": "tsx scripts/parse-txt-nerdc.ts",
+    "import-nerdc": "tsx scripts/import-nerdc.ts"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.6",

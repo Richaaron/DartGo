@@ -1,0 +1,149 @@
+{
+  "subjectName": "Livestock Farming",
+  "subjectCode": "LIV-VT",
+  "level": "Vocational",
+  "creditUnits": 4,
+  "subjectCategory": "VOCATIONAL",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Introduction to Livestock Production",
+      "objectives": [
+        "Understand livestock systems",
+        "Study animal types",
+        "Explore production methods"
+      ],
+      "duration": 40,
+      "resources": ["Animal guides", "Farm diagrams"],
+      "assessmentMethod": "Knowledge assessment"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Farm Structures and Equipment",
+      "objectives": [
+        "Learn housing requirements",
+        "Understand equipment needs",
+        "Design farm layouts"
+      ],
+      "duration": 40,
+      "resources": ["Farm plans", "Equipment manuals"],
+      "assessmentMethod": "Farm design project"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Animal Nutrition and Feeding",
+      "objectives": [
+        "Study nutritional requirements",
+        "Master feed formulation",
+        "Practice proper feeding"
+      ],
+      "duration": 40,
+      "resources": ["Nutrition guides", "Feed samples"],
+      "assessmentMethod": "Feeding plan"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Breeding and Reproduction",
+      "objectives": [
+        "Understand breeding principles",
+        "Study reproduction",
+        "Learn selection criteria"
+      ],
+      "duration": 40,
+      "resources": ["Breeding guides", "Genetics materials"],
+      "assessmentMethod": "Breeding plan"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Assessment",
+      "objectives": ["Assess learning"],
+      "duration": 60,
+      "resources": ["Assessment papers"],
+      "assessmentMethod": "Practical test"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Health and Disease Management",
+      "objectives": [
+        "Identify health issues",
+        "Learn disease prevention",
+        "Practice basic treatment"
+      ],
+      "duration": 40,
+      "resources": ["Health guides", "Medical supplies"],
+      "assessmentMethod": "Health management"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Waste Management and Sanitation",
+      "objectives": [
+        "Learn waste handling",
+        "Practice sanitation",
+        "Manage environmental impact"
+      ],
+      "duration": 40,
+      "resources": ["Sanitation guides", "Waste materials"],
+      "assessmentMethod": "Sanitation project"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Record Keeping and Farm Management",
+      "objectives": [
+        "Maintain farm records",
+        "Track production",
+        "Manage finances"
+      ],
+      "duration": 40,
+      "resources": ["Record templates", "Management guides"],
+      "assessmentMethod": "Record system"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Marketing and Product Value Addition",
+      "objectives": [
+        "Understand market systems",
+        "Learn value addition",
+        "Develop marketing plans"
+      ],
+      "duration": 40,
+      "resources": ["Market data", "Marketing guides"],
+      "assessmentMethod": "Marketing plan"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Final Project - Farm Operation Plan",
+      "objectives": [
+        "Design complete farm",
+        "Develop all systems",
+        "Create operation manual"
+      ],
+      "duration": 60,
+      "resources": ["All farm resources"],
+      "assessmentMethod": "Capstone project"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Final Assessment",
+      "objectives": ["Final evaluation"],
+      "duration": 180,
+      "resources": ["Assessment criteria"],
+      "assessmentMethod": "Practical exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Course closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

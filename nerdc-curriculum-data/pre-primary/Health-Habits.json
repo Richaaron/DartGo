@@ -1,0 +1,256 @@
+{
+  "subjectName": "Health Habits",
+  "subjectCode": "HH-PN",
+  "level": "Pre-Nursery",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Introduction to Our Body",
+      "objectives": [
+        "Identify body parts (head, hands, legs, face, body)",
+        "Recognize names of body parts",
+        "Touch and locate own body parts",
+        "Understand the concept of body"
+      ],
+      "duration": 40,
+      "resources": [
+        "Charts",
+        "Pictures",
+        "Dolls",
+        "Mirrors",
+        "Body parts poster",
+        "Video clips"
+      ],
+      "assessmentMethod": "Observation and demonstration of body part identification"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Care of the Skin I - Bathing Regularly",
+      "objectives": [
+        "Understand the importance of daily bathing",
+        "Learn proper bathing procedure",
+        "Identify bathing materials",
+        "Practice bathing routine"
+      ],
+      "duration": 40,
+      "resources": [
+        "Doll",
+        "Basin",
+        "Water",
+        "Soap",
+        "Sponge",
+        "Towel",
+        "Charts",
+        "Pictures",
+        "Video clips"
+      ],
+      "assessmentMethod": "Demonstration of bathing actions and mime activities"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Care of the Skin II - Applying Body Cream",
+      "objectives": [
+        "Understand importance of moisturizing skin",
+        "Learn how to apply body cream and hair cream",
+        "Identify cream materials",
+        "Practice application techniques"
+      ],
+      "duration": 40,
+      "resources": [
+        "Towel",
+        "Body cream",
+        "Hair cream",
+        "Lotion",
+        "Charts",
+        "Pictures",
+        "Dolls",
+        "Video clips"
+      ],
+      "assessmentMethod": "Observation of cream application and identification of materials"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Care of the Skin III - Materials Used",
+      "objectives": [
+        "Identify all skin care materials",
+        "Understand use of each material",
+        "Match materials to their purposes",
+        "Develop familiarity with skin care items"
+      ],
+      "duration": 40,
+      "resources": [
+        "Soap",
+        "Sponge",
+        "Towel",
+        "Body cream",
+        "Hair cream",
+        "Charts",
+        "Pictures",
+        "Sorting baskets"
+      ],
+      "assessmentMethod": "Material identification and sorting games"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Mid-Term Assessment",
+      "objectives": [
+        "Assess knowledge of body parts",
+        "Evaluate understanding of skin care",
+        "Demonstrate simple bathing actions",
+        "Identify hygiene materials"
+      ],
+      "duration": 40,
+      "resources": [
+        "Assessment sheets",
+        "All materials for demonstration"
+      ],
+      "assessmentMethod": "Comprehensive observation and demonstration assessment"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Mid-Term Break",
+      "objectives": [
+        "Rest and relaxation",
+        "Family engagement with learning"
+      ],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "N/A"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Care of the Mouth and Teeth I - Introduction",
+      "objectives": [
+        "Identify mouth and teeth",
+        "Understand importance of teeth",
+        "Learn teeth function",
+        "Recognize healthy teeth"
+      ],
+      "duration": 40,
+      "resources": [
+        "Large teeth model",
+        "Mirrors",
+        "Charts",
+        "Pictures",
+        "Video clips",
+        "Posters"
+      ],
+      "assessmentMethod": "Observation and mirror activities"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Care of the Mouth and Teeth II - Brushing Twice Daily",
+      "objectives": [
+        "Learn proper teeth brushing technique",
+        "Understand morning and night routine",
+        "Practice brushing actions",
+        "Develop brushing habit awareness"
+      ],
+      "duration": 40,
+      "resources": [
+        "Large teeth model",
+        "Toothbrush",
+        "Charts",
+        "Sun/moon pictures",
+        "Video clips",
+        "Sequence cards"
+      ],
+      "assessmentMethod": "Mime brushing demonstration and routine understanding"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Care of the Mouth and Teeth III - Using Mouthwash",
+      "objectives": [
+        "Understand mouthwash purpose",
+        "Learn rinsing and spitting actions",
+        "Recognize need for parental guidance",
+        "Practice mouth care routine"
+      ],
+      "duration": 40,
+      "resources": [
+        "Mouthwash bottle (for display)",
+        "Cup",
+        "Water",
+        "Charts",
+        "Pictures",
+        "Video clips"
+      ],
+      "assessmentMethod": "Mime rinsing and spitting actions, routine participation"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Care of the Mouth and Teeth IV - Materials Used",
+      "objectives": [
+        "Identify mouth care materials",
+        "Understand use of each material",
+        "Match materials to purposes",
+        "Demonstrate complete mouth care routine"
+      ],
+      "duration": 40,
+      "resources": [
+        "Toothbrush",
+        "Toothpaste",
+        "Mouthwash",
+        "Cup",
+        "Charts",
+        "Pictures",
+        "Toy dental sets"
+      ],
+      "assessmentMethod": "Material identification and routine demonstration"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Revision",
+      "objectives": [
+        "Review all health habits learned",
+        "Demonstrate hygiene practices",
+        "Recall materials and procedures",
+        "Prepare for examination"
+      ],
+      "duration": 40,
+      "resources": [
+        "All materials from weeks 1-10",
+        "Charts",
+        "Pictures",
+        "Games"
+      ],
+      "assessmentMethod": "Review games and demonstrations"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "End of Term Examination",
+      "objectives": [
+        "Demonstrate all hygiene practices",
+        "Show understanding of body care",
+        "Identify all materials",
+        "Complete assessment activities"
+      ],
+      "duration": 40,
+      "resources": [
+        "Assessment materials",
+        "All demonstration items"
+      ],
+      "assessmentMethod": "Comprehensive practical assessment"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing and Awards",
+      "objectives": [
+        "Celebrate learning achievements",
+        "Recognize progress in health habits",
+        "Provide encouragement",
+        "Distribute awards and reports"
+      ],
+      "duration": 40,
+      "resources": [
+        "Reports",
+        "Certificates",
+        "Stickers",
+        "Treats"
+      ],
+      "assessmentMethod": "Celebration and recognition activity"
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "subjectName": "English Language",
+  "subjectCode": "ENG-PRIMARY6",
+  "level": "Primary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Listening and Speaking",
+      "objectives": [
+        "Develop listening skills",
+        "Improve speaking ability",
+        "Practice clear pronunciation"
+      ],
+      "duration": 40,
+      "resources": ["Audio materials", "Speaking guides"],
+      "assessmentMethod": "Oral assessment"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Reading Skills",
+      "objectives": [
+        "Build reading fluency",
+        "Understand story elements",
+        "Extract main ideas"
+      ],
+      "duration": 40,
+      "resources": ["Reading books", "Story texts"],
+      "assessmentMethod": "Reading comprehension"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Writing - Sentences and Paragraphs",
+      "objectives": [
+        "Form correct sentences",
+        "Write simple paragraphs",
+        "Develop writing skills"
+      ],
+      "duration": 40,
+      "resources": ["Writing templates", "Grammar guides"],
+      "assessmentMethod": "Writing samples"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Vocabulary Building",
+      "objectives": [
+        "Learn new words",
+        "Use words in sentences",
+        "Understand word meanings"
+      ],
+      "duration": 40,
+      "resources": ["Word lists", "Picture dictionaries"],
+      "assessmentMethod": "Vocabulary exercises"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Examination",
+      "objectives": ["Assess learning"],
+      "duration": 60,
+      "resources": ["Test papers"],
+      "assessmentMethod": "Exam"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Grammar Basics",
+      "objectives": [
+        "Learn parts of speech",
+        "Understand tenses",
+        "Apply grammar rules"
+      ],
+      "duration": 40,
+      "resources": ["Grammar worksheets", "Practice sheets"],
+      "assessmentMethod": "Grammar exercises"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Midterm Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Composition Writing",
+      "objectives": [
+        "Write descriptive passages",
+        "Create narratives",
+        "Express ideas clearly"
+      ],
+      "duration": 40,
+      "resources": ["Writing prompts", "Sample essays"],
+      "assessmentMethod": "Composition"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Poetry and Rhymes",
+      "objectives": [
+        "Understand rhythm and rhyme",
+        "Appreciate poetry",
+        "Create simple poems"
+      ],
+      "duration": 40,
+      "resources": ["Poetry texts", "Rhyme guides"],
+      "assessmentMethod": "Poetry creation"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Literature - Stories and Fables",
+      "objectives": [
+        "Understand story structure",
+        "Learn moral lessons",
+        "Discuss character traits"
+      ],
+      "duration": 40,
+      "resources": ["Story books", "Fable collections"],
+      "assessmentMethod": "Story comprehension"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Revision",
+      "objectives": [
+        "Review all language skills",
+        "Consolidate knowledge"
+      ],
+      "duration": 40,
+      "resources": ["Revision materials"],
+      "assessmentMethod": "Mock exam"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Examination",
+      "objectives": ["Final assessment"],
+      "duration": 180,
+      "resources": ["Examination papers"],
+      "assessmentMethod": "Final exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

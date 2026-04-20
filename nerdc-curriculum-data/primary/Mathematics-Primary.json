@@ -1,0 +1,148 @@
+{
+  "subjectName": "Mathematics",
+  "subjectCode": "MAT-PRIMARY6",
+  "level": "Primary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Numbers and Counting",
+      "objectives": [
+        "Count accurately",
+        "Understand number values",
+        "Practice number sequences"
+      ],
+      "duration": 40,
+      "resources": ["Number cards", "Counting materials"],
+      "assessmentMethod": "Counting exercises"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Addition and Subtraction",
+      "objectives": [
+        "Master addition facts",
+        "Learn subtraction strategies",
+        "Solve simple problems"
+      ],
+      "duration": 40,
+      "resources": ["Math worksheets", "Manipulatives"],
+      "assessmentMethod": "Addition/Subtraction test"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Multiplication and Division",
+      "objectives": [
+        "Learn multiplication tables",
+        "Understand division",
+        "Apply to real problems"
+      ],
+      "duration": 40,
+      "resources": ["Times tables", "Division guides"],
+      "assessmentMethod": "Multiplication/Division test"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Fractions and Decimals",
+      "objectives": [
+        "Understand equal parts",
+        "Learn fractions basics",
+        "Introduce decimal concepts"
+      ],
+      "duration": 40,
+      "resources": ["Fraction models", "Visual aids"],
+      "assessmentMethod": "Fraction exercises"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Examination",
+      "objectives": ["Assess learning"],
+      "duration": 60,
+      "resources": ["Test papers"],
+      "assessmentMethod": "Exam"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Measurement",
+      "objectives": [
+        "Measure length, mass, capacity",
+        "Use standard units",
+        "Compare measurements"
+      ],
+      "duration": 40,
+      "resources": ["Measuring tools", "Unit guides"],
+      "assessmentMethod": "Measurement activities"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Midterm Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Time and Money",
+      "objectives": [
+        "Tell time accurately",
+        "Understand currency",
+        "Practice calculations"
+      ],
+      "duration": 40,
+      "resources": ["Clocks", "Money materials"],
+      "assessmentMethod": "Time and money problems"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Geometry - Shapes",
+      "objectives": [
+        "Identify shapes",
+        "Understand properties",
+        "Create patterns"
+      ],
+      "duration": 40,
+      "resources": ["Shape models", "Pattern guides"],
+      "assessmentMethod": "Shape recognition"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Statistics and Graphs",
+      "objectives": [
+        "Collect data",
+        "Create simple graphs",
+        "Interpret information"
+      ],
+      "duration": 40,
+      "resources": ["Graph paper", "Data sets"],
+      "assessmentMethod": "Graph creation"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Revision",
+      "objectives": [
+        "Review all math topics",
+        "Consolidate skills"
+      ],
+      "duration": 40,
+      "resources": ["Revision materials"],
+      "assessmentMethod": "Mock exam"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Examination",
+      "objectives": ["Final assessment"],
+      "duration": 180,
+      "resources": ["Examination papers"],
+      "assessmentMethod": "Final exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

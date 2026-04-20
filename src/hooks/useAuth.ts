@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { User, Teacher, Admin, UserRole, AuthSession } from '../types'
 
 const MOCK_USERS: Record<string, User | Teacher | Admin> = {
@@ -22,26 +22,24 @@ const MOCK_USERS: Record<string, User | Teacher | Admin> = {
 }
 
 export function useAuth() {
-  const [session, setSession] = useState<AuthSession>({
-    user: null,
-    isAuthenticated: false,
-  })
-  const [isHydrated, setIsHydrated] = useState(false)
-
-  // Load session from localStorage on mount
-  useEffect(() => {
-    const stored = localStorage.getItem('authSession')
+  const [session, setSession] = useState<AuthSession>(() => {
+    const stored = window.localStorage.getItem('authSession')
     if (stored) {
       try {
         const parsed = JSON.parse(stored)
         console.log('Loaded session from localStorage:', parsed)
-        setSession(parsed)
+        return parsed
       } catch (e) {
         console.error('Failed to load auth session:', e)
       }
     }
-    setIsHydrated(true)
-  }, [])
+
+    return {
+      user: null,
+      isAuthenticated: false,
+    }
+  })
+  const isHydrated = true
 
   const login = useCallback((email: string, password: string) => {
     console.log('Login attempt:', email)
@@ -66,7 +64,7 @@ export function useAuth() {
     
     console.log('Setting session:', newSession)
     setSession(newSession)
-    localStorage.setItem('authSession', JSON.stringify(newSession))
+    window.localStorage.setItem('authSession', JSON.stringify(newSession))
     
     // Force a small delay to ensure state updates
     return true
@@ -78,7 +76,7 @@ export function useAuth() {
       user: null,
       isAuthenticated: false,
     })
-    localStorage.removeItem('authSession')
+    window.localStorage.removeItem('authSession')
   }, [])
 
   const hasRole = useCallback((role: UserRole | UserRole[]) => {

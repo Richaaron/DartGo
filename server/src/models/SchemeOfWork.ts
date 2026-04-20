@@ -67,4 +67,10 @@ const SchemeOfWorkSchema = new Schema<ISchemeOfWork>(
   { timestamps: true }
 )
 
+// Create indexes for faster queries
+SchemeOfWorkSchema.index({ teacherId: 1 })
+SchemeOfWorkSchema.index({ teacherId: 1, academicYear: -1, term: -1 })
+SchemeOfWorkSchema.index({ subjectId: 1 })
+SchemeOfWorkSchema.index({ classId: 1 })
+
 export const SchemeOfWork = mongoose.model<ISchemeOfWork>('SchemeOfWork', SchemeOfWorkSchema)

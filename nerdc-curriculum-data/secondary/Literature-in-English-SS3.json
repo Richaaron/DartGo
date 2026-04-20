@@ -1,0 +1,153 @@
+{
+  "subjectName": "Literature-in-English",
+  "subjectCode": "LIT-SS3",
+  "level": "Secondary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Antony and Cleopatra - Introduction",
+      "objectives": [
+        "Understand Shakespeare's background",
+        "Grasp the play's historical context",
+        "Identify main themes and characters"
+      ],
+      "duration": 40,
+      "resources": ["Shakespeare texts", "Historical background materials"],
+      "assessmentMethod": "Class discussion"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Dramatic Personae and Character Analysis",
+      "objectives": [
+        "Analyze main characters",
+        "Understand character relationships",
+        "Study character development"
+      ],
+      "duration": 40,
+      "resources": ["Character analysis guides", "Dramatic texts"],
+      "assessmentMethod": "Character study assignment"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Antony and Cleopatra - Act I",
+      "objectives": [
+        "Analyze Act I events and conflicts",
+        "Study themes of love and power",
+        "Examine dramatic techniques"
+      ],
+      "duration": 40,
+      "resources": ["Act I text", "Scene analysis guides"],
+      "assessmentMethod": "Scene analysis test"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Antony and Cleopatra - Acts II and III",
+      "objectives": [
+        "Analyze dramatic turning points",
+        "Study character conflicts",
+        "Examine language and imagery"
+      ],
+      "duration": 40,
+      "resources": ["Acts text", "Analysis worksheets"],
+      "assessmentMethod": "Written analysis"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Antony and Cleopatra - Acts IV and V",
+      "objectives": [
+        "Analyze tragic resolution",
+        "Study major themes",
+        "Examine final imagery and symbolism"
+      ],
+      "duration": 40,
+      "resources": ["Final acts text", "Thematic analysis"],
+      "assessmentMethod": "Comprehensive test"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Mid-Term Break / Open Day",
+      "objectives": ["Rest and preparation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Introduction to Unseen Prose",
+      "objectives": [
+        "Learn prose analysis techniques",
+        "Understand comprehension methods",
+        "Practice passage analysis"
+      ],
+      "duration": 40,
+      "resources": ["Prose samples", "Analysis guidelines"],
+      "assessmentMethod": "Practical prose analysis"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Introduction to Unseen Poetry",
+      "objectives": [
+        "Learn poetic devices",
+        "Understand poem analysis",
+        "Practice poetry interpretation"
+      ],
+      "duration": 40,
+      "resources": ["Poetry samples", "Device identification guides"],
+      "assessmentMethod": "Poetry analysis exercises"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Context and Literature Questions",
+      "objectives": [
+        "Master examination question types",
+        "Develop accurate responses",
+        "Practice exam techniques"
+      ],
+      "duration": 40,
+      "resources": ["Past questions", "Answer guides"],
+      "assessmentMethod": "Mock examination"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Prescribed Texts Review - Prose and Drama",
+      "objectives": [
+        "Review all prose texts",
+        "Review all drama texts",
+        "Prepare for final examination"
+      ],
+      "duration": 40,
+      "resources": ["Text summaries", "Revision notes"],
+      "assessmentMethod": "Comprehensive review test"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Prescribed Texts Review - Poetry",
+      "objectives": [
+        "Review all poetry texts",
+        "Master poetic analysis",
+        "Consolidate knowledge"
+      ],
+      "duration": 40,
+      "resources": ["Poetry collections", "Analysis notes"],
+      "assessmentMethod": "Poetry examination"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Examination",
+      "objectives": ["Final assessment of all texts"],
+      "duration": 180,
+      "resources": ["Examination papers"],
+      "assessmentMethod": "Final exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

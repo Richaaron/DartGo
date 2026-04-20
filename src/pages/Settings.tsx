@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import type { ChangeEvent } from 'react'
 import { Save, Palette, Globe, Image as ImageIcon, CheckCircle } from 'lucide-react'
 import { fetchConfig, updateConfig } from '../services/api'
 
@@ -33,20 +34,20 @@ export default function Settings() {
     try {
       await updateConfig(config)
       setMessage({ type: 'success', text: 'Settings updated successfully!' })
-      setTimeout(() => setMessage({ type: '', text: '' }), 3000)
+      window.setTimeout(() => setMessage({ type: '', text: '' }), 3000)
       // Apply theme color globally
       document.documentElement.style.setProperty('--primary-color', config.themeColor)
-    } catch (error) {
+    } catch {
       setMessage({ type: 'error', text: 'Failed to update settings' })
     } finally {
       setIsSaving(false)
     }
   }
 
-  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLogoUpload = (e: ChangeEvent<any>) => {
     const file = e.target.files?.[0]
     if (!file) return
-    const reader = new FileReader()
+    const reader = new window.FileReader()
     reader.onloadend = () => {
       setConfig({ ...config, schoolLogo: reader.result as string })
     }

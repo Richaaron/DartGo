@@ -72,8 +72,8 @@ export default function AttendancePage() {
       }))
       await saveBulkAttendance(selectedDate, recordsToSave)
       setMessage({ type: 'success', text: 'Attendance saved successfully!' })
-      setTimeout(() => setMessage({ type: '', text: '' }), 3000)
-    } catch (error) {
+      window.setTimeout(() => setMessage({ type: '', text: '' }), 3000)
+    } catch {
       setMessage({ type: 'error', text: 'Failed to save attendance. Please try again.' })
     } finally {
       setIsSaving(false)

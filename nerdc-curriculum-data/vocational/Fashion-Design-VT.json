@@ -1,0 +1,149 @@
+{
+  "subjectName": "Fashion Design and Garment Making",
+  "subjectCode": "FAS-VT",
+  "level": "Vocational",
+  "creditUnits": 4,
+  "subjectCategory": "VOCATIONAL",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Fashion Industry Basics",
+      "objectives": [
+        "Understand fashion trends",
+        "Study industry structure",
+        "Explore career paths"
+      ],
+      "duration": 40,
+      "resources": ["Fashion magazines", "Industry guides"],
+      "assessmentMethod": "Industry analysis"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Design Principles and Elements",
+      "objectives": [
+        "Learn design fundamentals",
+        "Study color and texture",
+        "Practice sketching"
+      ],
+      "duration": 40,
+      "resources": ["Sketch pads", "Color guides", "Design samples"],
+      "assessmentMethod": "Design sketches"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Pattern Making and Grading",
+      "objectives": [
+        "Master pattern creation",
+        "Learn pattern grading",
+        "Study size variations"
+      ],
+      "duration": 40,
+      "resources": ["Pattern templates", "Grading tools"],
+      "assessmentMethod": "Pattern project"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Fabric Selection and Properties",
+      "objectives": [
+        "Identify fabric types",
+        "Understand properties",
+        "Select appropriate fabrics"
+      ],
+      "duration": 40,
+      "resources": ["Fabric samples", "Property guides"],
+      "assessmentMethod": "Fabric analysis"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Assessment",
+      "objectives": ["Assess learning"],
+      "duration": 60,
+      "resources": ["Assessment papers"],
+      "assessmentMethod": "Design test"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Sewing Techniques and Equipment",
+      "objectives": [
+        "Master sewing stitches",
+        "Learn equipment operation",
+        "Practice basic techniques"
+      ],
+      "duration": 40,
+      "resources": ["Sewing machines", "Thread", "Needles"],
+      "assessmentMethod": "Sewing practice"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Garment Construction",
+      "objectives": [
+        "Construct garment pieces",
+        "Apply assembly techniques",
+        "Learn finishing methods"
+      ],
+      "duration": 40,
+      "resources": ["Fabric", "Sewing supplies"],
+      "assessmentMethod": "Garment construction"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Alterations and Customization",
+      "objectives": [
+        "Learn alteration techniques",
+        "Practice customization",
+        "Repair garments"
+      ],
+      "duration": 40,
+      "resources": ["Alteration tools", "Sample garments"],
+      "assessmentMethod": "Alteration project"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Quality Control and Finishing",
+      "objectives": [
+        "Inspect quality",
+        "Apply professional finishes",
+        "Package products"
+      ],
+      "duration": 40,
+      "resources": ["Quality checklists", "Finishing materials"],
+      "assessmentMethod": "Quality assessment"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Final Project - Complete Garment",
+      "objectives": [
+        "Design complete garment",
+        "Construct from pattern",
+        "Finish professionally"
+      ],
+      "duration": 60,
+      "resources": ["Fabric", "Equipment"],
+      "assessmentMethod": "Capstone project"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Final Assessment",
+      "objectives": ["Final evaluation"],
+      "duration": 180,
+      "resources": ["Assessment criteria"],
+      "assessmentMethod": "Portfolio review"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Course closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

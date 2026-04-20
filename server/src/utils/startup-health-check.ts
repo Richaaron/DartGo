@@ -30,7 +30,7 @@ export interface HealthCheckResult {
 async function checkMongoDB(mongoUri: string): Promise<{ status: 'healthy' | 'unhealthy'; message: string }> {
   try {
     // Try to parse the URI and extract connection info
-    const url = new URL(mongoUri)
+    const url = new globalThis.URL(mongoUri)
     const host = url.hostname
     const port = url.port || '27017'
     

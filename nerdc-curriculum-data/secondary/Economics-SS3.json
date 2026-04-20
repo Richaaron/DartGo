@@ -1,0 +1,149 @@
+{
+  "subjectName": "Economics",
+  "subjectCode": "ECO-SS3",
+  "level": "Secondary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Economic Lessons from Asian Tigers and Japan",
+      "objectives": [
+        "Study economic history 1960-2000",
+        "Analyze development strategies",
+        "Apply lessons to Nigeria"
+      ],
+      "duration": 40,
+      "resources": ["Economic data", "Case studies", "Development charts"],
+      "assessmentMethod": "Comparative analysis"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Economic Lessons from Europe and America",
+      "objectives": [
+        "Study development strategies",
+        "Analyze success factors",
+        "Extract applicable lessons"
+      ],
+      "duration": 40,
+      "resources": ["Economic records", "Development models"],
+      "assessmentMethod": "Research project"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Human Capital Development",
+      "objectives": [
+        "Define human capital",
+        "Study efficiency factors",
+        "Analyze brain drain effects"
+      ],
+      "duration": 40,
+      "resources": ["Education data", "Labor statistics"],
+      "assessmentMethod": "Data analysis"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Petroleum and the Nigerian Economy",
+      "objectives": [
+        "Study petroleum industry development",
+        "Analyze positive/negative contributions",
+        "Understand NNPC and OPEC roles"
+      ],
+      "duration": 40,
+      "resources": ["Petroleum data", "Industry reports"],
+      "assessmentMethod": "Case study"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Examination",
+      "objectives": ["Assess first term learning"],
+      "duration": 60,
+      "resources": ["Test papers"],
+      "assessmentMethod": "Exam"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Manufacturing and Construction",
+      "objectives": [
+        "Study manufacturing types",
+        "Analyze construction sector",
+        "Evaluate GDP contributions"
+      ],
+      "duration": 40,
+      "resources": ["Manufacturing data", "Industry analysis"],
+      "assessmentMethod": "Sector analysis"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Midterm Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Service Industries",
+      "objectives": [
+        "Define service industries",
+        "Classify service types",
+        "Analyze contributions to economy"
+      ],
+      "duration": 40,
+      "resources": ["Service industry data", "Economic statistics"],
+      "assessmentMethod": "Industry report"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Financial Market Regulation",
+      "objectives": [
+        "Understand money market",
+        "Study capital market regulation",
+        "Analyze regulatory agencies"
+      ],
+      "duration": 40,
+      "resources": ["Financial regulations", "Market structures"],
+      "assessmentMethod": "Policy analysis"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "International Trade",
+      "objectives": [
+        "Define and classify trade",
+        "Study comparative advantage",
+        "Understand trade barriers"
+      ],
+      "duration": 40,
+      "resources": ["Trade data", "Economic theory"],
+      "assessmentMethod": "Theory application"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Globalization",
+      "objectives": [
+        "Define globalization",
+        "Analyze features and challenges",
+        "Evaluate opportunities for Nigeria"
+      ],
+      "duration": 40,
+      "resources": ["Globalization data", "Economic analysis"],
+      "assessmentMethod": "Essay"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Examination",
+      "objectives": ["Final assessment"],
+      "duration": 180,
+      "resources": ["Examination papers"],
+      "assessmentMethod": "Final exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

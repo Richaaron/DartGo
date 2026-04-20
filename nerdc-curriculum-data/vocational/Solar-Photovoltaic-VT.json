@@ -1,0 +1,149 @@
+{
+  "subjectName": "Solar Photovoltaic Installation and Maintenance",
+  "subjectCode": "SOL-VT",
+  "level": "Vocational",
+  "creditUnits": 4,
+  "subjectCategory": "VOCATIONAL",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Introduction to Solar Energy",
+      "objectives": [
+        "Understand solar energy basics",
+        "Learn about photovoltaic technology",
+        "Study energy conversion"
+      ],
+      "duration": 40,
+      "resources": ["Solar panels", "Energy diagrams"],
+      "assessmentMethod": "Knowledge test"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Solar Panel Components and Specifications",
+      "objectives": [
+        "Identify panel components",
+        "Understand electrical specifications",
+        "Calculate power output"
+      ],
+      "duration": 40,
+      "resources": ["Panel samples", "Technical specifications"],
+      "assessmentMethod": "Component identification"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "System Design and Planning",
+      "objectives": [
+        "Design solar systems",
+        "Calculate energy requirements",
+        "Plan installations"
+      ],
+      "duration": 40,
+      "resources": ["Design software", "Planning templates"],
+      "assessmentMethod": "Design project"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Electrical Fundamentals for Solar",
+      "objectives": [
+        "Understand DC and AC circuits",
+        "Study voltage and current",
+        "Learn safety practices"
+      ],
+      "duration": 40,
+      "resources": ["Electrical tools", "Safety guides"],
+      "assessmentMethod": "Electrical knowledge test"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Assessment",
+      "objectives": ["Assess learning"],
+      "duration": 60,
+      "resources": ["Assessment papers"],
+      "assessmentMethod": "Practical test"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Installation Techniques and Safety",
+      "objectives": [
+        "Master mounting systems",
+        "Learn installation procedures",
+        "Practice safety protocols"
+      ],
+      "duration": 40,
+      "resources": ["Installation equipment", "Safety gear"],
+      "assessmentMethod": "Installation practice"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Inverters and Balance of System",
+      "objectives": [
+        "Understand inverters",
+        "Study battery systems",
+        "Learn monitoring equipment"
+      ],
+      "duration": 40,
+      "resources": ["Inverters", "Battery samples", "Monitors"],
+      "assessmentMethod": "Equipment study"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Maintenance and Troubleshooting",
+      "objectives": [
+        "Learn maintenance procedures",
+        "Identify common problems",
+        "Practice repairs"
+      ],
+      "duration": 40,
+      "resources": ["Maintenance guides", "Diagnostic tools"],
+      "assessmentMethod": "Troubleshooting exercise"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Grid Connection and Documentation",
+      "objectives": [
+        "Understand grid integration",
+        "Learn documentation requirements",
+        "Study regulations"
+      ],
+      "duration": 40,
+      "resources": ["Grid guides", "Document templates"],
+      "assessmentMethod": "Documentation project"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Final Project - Complete Installation",
+      "objectives": [
+        "Design and install system",
+        "Complete all procedures",
+        "Document work"
+      ],
+      "duration": 60,
+      "resources": ["All equipment"],
+      "assessmentMethod": "Capstone project"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Final Assessment",
+      "objectives": ["Final evaluation"],
+      "duration": 180,
+      "resources": ["Assessment papers"],
+      "assessmentMethod": "Practical exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Course closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

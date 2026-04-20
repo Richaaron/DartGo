@@ -1,0 +1,148 @@
+{
+  "subjectName": "Social Studies",
+  "subjectCode": "SOC-PRIMARY6",
+  "level": "Primary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Community and Family",
+      "objectives": [
+        "Understand family structure",
+        "Learn community roles",
+        "Appreciate social bonds"
+      ],
+      "duration": 40,
+      "resources": ["Family diagrams", "Community pictures"],
+      "assessmentMethod": "Community mapping"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Nigerian Culture and Tradition",
+      "objectives": [
+        "Learn Nigerian cultures",
+        "Appreciate traditions",
+        "Respect diversity"
+      ],
+      "duration": 40,
+      "resources": ["Cultural materials", "Traditional items"],
+      "assessmentMethod": "Cultural presentation"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Basic Government and Leadership",
+      "objectives": [
+        "Understand governance",
+        "Learn leadership roles",
+        "Study decision-making"
+      ],
+      "duration": 40,
+      "resources": ["Government guides", "Leadership pictures"],
+      "assessmentMethod": "Leadership discussion"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Rights and Responsibilities",
+      "objectives": [
+        "Learn basic rights",
+        "Understand duties",
+        "Practice good behavior"
+      ],
+      "duration": 40,
+      "resources": ["Rights guides", "Behavior charts"],
+      "assessmentMethod": "Responsibility project"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Assessment",
+      "objectives": ["Assess learning"],
+      "duration": 60,
+      "resources": ["Assessment papers"],
+      "assessmentMethod": "Test"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Nigeria - Geography and People",
+      "objectives": [
+        "Study Nigerian map",
+        "Learn about regions",
+        "Understand population"
+      ],
+      "duration": 40,
+      "resources": ["Nigeria map", "Geography pictures"],
+      "assessmentMethod": "Map study"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Occupations and Work",
+      "objectives": [
+        "Learn different jobs",
+        "Understand work importance",
+        "Explore careers"
+      ],
+      "duration": 40,
+      "resources": ["Occupation pictures", "Career guides"],
+      "assessmentMethod": "Career exploration"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Health and Wellness",
+      "objectives": [
+        "Understand healthy living",
+        "Learn hygiene practices",
+        "Practice wellness"
+      ],
+      "duration": 40,
+      "resources": ["Health guides", "Hygiene pictures"],
+      "assessmentMethod": "Health chart"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Environmental Care",
+      "objectives": [
+        "Understand environment",
+        "Learn conservation",
+        "Practice care"
+      ],
+      "duration": 40,
+      "resources": ["Environmental guides", "Nature pictures"],
+      "assessmentMethod": "Environment project"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Revision",
+      "objectives": [
+        "Review all topics",
+        "Consolidate knowledge"
+      ],
+      "duration": 40,
+      "resources": ["Revision materials"],
+      "assessmentMethod": "Mock exam"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Final Assessment",
+      "objectives": ["Final evaluation"],
+      "duration": 180,
+      "resources": ["Assessment papers"],
+      "assessmentMethod": "Final exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

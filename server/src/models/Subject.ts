@@ -12,7 +12,7 @@ export interface ITopic {
 export interface ISubject extends Document {
   name: string
   code: string
-  level: 'Pre-Nursery' | 'Nursery' | 'Primary' | 'Secondary'
+  level: 'Pre-Nursery' | 'Nursery' | 'Primary' | 'Secondary' | 'Junior Secondary' | 'Vocational'
   creditUnits: number
   subjectCategory?: 'CORE' | 'ELECTIVE' | 'VOCATIONAL'
   description?: string
@@ -34,7 +34,7 @@ const SubjectSchema = new Schema<ISubject>(
   {
     name: { type: String, required: true },
     code: { type: String, required: true, unique: true },
-    level: { type: String, enum: ['Pre-Nursery', 'Nursery', 'Primary', 'Secondary'], required: true },
+    level: { type: String, enum: ['Pre-Nursery', 'Nursery', 'Primary', 'Secondary', 'Junior Secondary', 'Vocational'], required: true },
     creditUnits: { type: Number, default: 0 },
     subjectCategory: { type: String, enum: ['CORE', 'ELECTIVE', 'VOCATIONAL'], default: 'CORE' },
     description: { type: String },

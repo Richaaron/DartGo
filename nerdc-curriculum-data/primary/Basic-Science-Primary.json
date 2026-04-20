@@ -1,0 +1,148 @@
+{
+  "subjectName": "Basic Science",
+  "subjectCode": "SCI-PRIMARY6",
+  "level": "Primary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Living Things Around Us",
+      "objectives": [
+        "Observe living organisms",
+        "Classify living things",
+        "Understand basic needs"
+      ],
+      "duration": 40,
+      "resources": ["Pictures", "Real specimens"],
+      "assessmentMethod": "Observation"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Plants and Seeds",
+      "objectives": [
+        "Study plant parts",
+        "Understand seed growth",
+        "Observe plant life cycles"
+      ],
+      "duration": 40,
+      "resources": ["Seeds", "Plants", "Growth journals"],
+      "assessmentMethod": "Plant experiment"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Animals and Habitats",
+      "objectives": [
+        "Identify animal types",
+        "Understand habitats",
+        "Study animal behavior"
+      ],
+      "duration": 40,
+      "resources": ["Animal pictures", "Habitat diagrams"],
+      "assessmentMethod": "Habitat study"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "The Human Body",
+      "objectives": [
+        "Learn body parts",
+        "Understand basic functions",
+        "Practice health habits"
+      ],
+      "duration": 40,
+      "resources": ["Body diagrams", "Health guides"],
+      "assessmentMethod": "Body part identification"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Examination",
+      "objectives": ["Assess learning"],
+      "duration": 60,
+      "resources": ["Test papers"],
+      "assessmentMethod": "Exam"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Matter and Materials",
+      "objectives": [
+        "Identify materials",
+        "Understand properties",
+        "Classify substances"
+      ],
+      "duration": 40,
+      "resources": ["Material samples", "Classification guides"],
+      "assessmentMethod": "Material classification"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Midterm Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Energy and Light",
+      "objectives": [
+        "Understand light sources",
+        "Study energy forms",
+        "Experiment with light"
+      ],
+      "duration": 40,
+      "resources": ["Light experiments", "Energy materials"],
+      "assessmentMethod": "Light experiment"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Sound and Vibration",
+      "objectives": [
+        "Understand sound production",
+        "Study vibrations",
+        "Create sounds"
+      ],
+      "duration": 40,
+      "resources": ["Musical instruments", "Sound makers"],
+      "assessmentMethod": "Sound observation"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Weather and Climate",
+      "objectives": [
+        "Observe weather patterns",
+        "Understand seasons",
+        "Record data"
+      ],
+      "duration": 40,
+      "resources": ["Weather charts", "Observation guides"],
+      "assessmentMethod": "Weather log"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Revision",
+      "objectives": [
+        "Review all science topics",
+        "Consolidate knowledge"
+      ],
+      "duration": 40,
+      "resources": ["Revision materials"],
+      "assessmentMethod": "Mock exam"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Examination",
+      "objectives": ["Final assessment"],
+      "duration": 180,
+      "resources": ["Examination papers"],
+      "assessmentMethod": "Final exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

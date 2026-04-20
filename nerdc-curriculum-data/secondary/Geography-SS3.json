@@ -1,0 +1,148 @@
+{
+  "subjectName": "Geography",
+  "subjectCode": "GEO-SS3",
+  "level": "Secondary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Denudation Processes",
+      "objectives": [
+        "Define denudation",
+        "Study weathering, erosion, and deposition",
+        "Analyze agents of denudation"
+      ],
+      "duration": 40,
+      "resources": ["Geomorphology diagrams", "Rock samples", "Field study guides"],
+      "assessmentMethod": "Practical observation"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Weathering",
+      "objectives": [
+        "Define weathering types",
+        "Study factors influencing weathering",
+        "Analyze environmental effects"
+      ],
+      "duration": 40,
+      "resources": ["Weathered rock samples", "Process diagrams"],
+      "assessmentMethod": "Experimental work"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Mass Movements",
+      "objectives": [
+        "Define mass movement types",
+        "Study causes and effects",
+        "Analyze impact on human activities"
+      ],
+      "duration": 40,
+      "resources": ["Landslide diagrams", "Case studies"],
+      "assessmentMethod": "Case study analysis"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Climatic Change",
+      "objectives": [
+        "Define climate change",
+        "Study causes (natural and human)",
+        "Analyze environmental and agricultural impacts"
+      ],
+      "duration": 40,
+      "resources": ["Climate data", "Impact assessments", "Response strategies"],
+      "assessmentMethod": "Data analysis"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Examination",
+      "objectives": ["Assess learning"],
+      "duration": 60,
+      "resources": ["Test papers"],
+      "assessmentMethod": "Exam"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "ECOWAS",
+      "objectives": [
+        "Understand ECOWAS formation",
+        "Study objectives and functions",
+        "Analyze achievements and challenges"
+      ],
+      "duration": 40,
+      "resources": ["ECOWAS documents", "Regional analysis"],
+      "assessmentMethod": "Organization study"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Midterm Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Trade",
+      "objectives": [
+        "Define trade types",
+        "Study trade patterns",
+        "Analyze trade problems in West Africa"
+      ],
+      "duration": 40,
+      "resources": ["Trade data", "Economic maps"],
+      "assessmentMethod": "Data interpretation"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Tourism",
+      "objectives": [
+        "Define tourism types",
+        "Study tourist attractions",
+        "Analyze benefits and challenges"
+      ],
+      "duration": 40,
+      "resources": ["Tourism data", "Tourist site information"],
+      "assessmentMethod": "Tourism project"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Satellite Remote Sensing and GIS",
+      "objectives": [
+        "Understand remote sensing principles",
+        "Study GIS components",
+        "Apply technology in resource management"
+      ],
+      "duration": 40,
+      "resources": ["Satellite imagery", "GIS software", "Maps"],
+      "assessmentMethod": "Technology application"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Revision",
+      "objectives": [
+        "Review all topics",
+        "Consolidate knowledge"
+      ],
+      "duration": 40,
+      "resources": ["Revision materials"],
+      "assessmentMethod": "Mock exam"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Examination",
+      "objectives": ["Final assessment"],
+      "duration": 180,
+      "resources": ["Examination papers"],
+      "assessmentMethod": "Final exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "subjectName": "Agricultural Science",
+  "subjectCode": "AGR-SS3",
+  "level": "Secondary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Crop Improvement",
+      "objectives": [
+        "Define crop improvement",
+        "Study improvement methods",
+        "Understand genetic improvement benefits"
+      ],
+      "duration": 40,
+      "resources": ["Crop samples", "Breeding diagrams", "Research papers"],
+      "assessmentMethod": "Literature review"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Animal Improvement",
+      "objectives": [
+        "Define animal improvement methods",
+        "Study breeding techniques",
+        "Analyze advantages and limitations"
+      ],
+      "duration": 40,
+      "resources": ["Animal records", "Breeding diagrams"],
+      "assessmentMethod": "Research project"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Animal Health Management",
+      "objectives": [
+        "Study common livestock diseases",
+        "Learn prevention measures",
+        "Practice health management"
+      ],
+      "duration": 40,
+      "resources": ["Disease information", "Prevention guides"],
+      "assessmentMethod": "Case study"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Aquaculture",
+      "objectives": [
+        "Define aquaculture systems",
+        "Study fish farming",
+        "Understand food security role"
+      ],
+      "duration": 40,
+      "resources": ["Aquaculture systems diagrams", "Fish farming guides"],
+      "assessmentMethod": "System design"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Examination",
+      "objectives": ["Assess learning"],
+      "duration": 60,
+      "resources": ["Test papers"],
+      "assessmentMethod": "Exam"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Apiculture and Agricultural Finance",
+      "objectives": [
+        "Understand bee keeping",
+        "Study agricultural financing",
+        "Analyze financial problems"
+      ],
+      "duration": 40,
+      "resources": ["Apiculture guides", "Financial records"],
+      "assessmentMethod": "Practical and analysis"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Midterm Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Farm Records and Accounts",
+      "objectives": [
+        "Understand record keeping",
+        "Learn account preparation",
+        "Master farm management documentation"
+      ],
+      "duration": 40,
+      "resources": ["Record templates", "Accounting guides"],
+      "assessmentMethod": "Record keeping exercise"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Marketing of Agricultural Produce",
+      "objectives": [
+        "Define agricultural marketing",
+        "Study marketing channels",
+        "Analyze marketing problems"
+      ],
+      "duration": 40,
+      "resources": ["Market data", "Marketing guides"],
+      "assessmentMethod": "Marketing plan"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Agricultural Insurance and Extension",
+      "objectives": [
+        "Understand agricultural insurance",
+        "Study extension services",
+        "Analyze extension methods"
+      ],
+      "duration": 40,
+      "resources": ["Insurance information", "Extension materials"],
+      "assessmentMethod": "Information gathering"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Revision",
+      "objectives": [
+        "Review all topics",
+        "Consolidate agricultural knowledge"
+      ],
+      "duration": 40,
+      "resources": ["Revision materials"],
+      "assessmentMethod": "Mock exam"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Examination",
+      "objectives": ["Final assessment"],
+      "duration": 180,
+      "resources": ["Examination papers"],
+      "assessmentMethod": "Final exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

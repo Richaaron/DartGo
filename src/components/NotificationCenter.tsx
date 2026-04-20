@@ -9,8 +9,34 @@ export default function NotificationCenter() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    loadNotifications()
-    loadStats()
+    let isMounted = true
+    const status = filter === 'all' ? undefined : filter
+    setLoading(true)
+
+    notificationAPI
+      .getAll(status, undefined, 50)
+      .then((data) => {
+        if (isMounted) setNotifications(data.notifications)
+      })
+      .catch((error) => {
+        console.error('Failed to load notifications:', error)
+      })
+      .finally(() => {
+        if (isMounted) setLoading(false)
+      })
+
+    notificationAPI
+      .getStats()
+      .then((data) => {
+        if (isMounted) setStats(data)
+      })
+      .catch((error) => {
+        console.error('Failed to load stats:', error)
+      })
+
+    return () => {
+      isMounted = false
+    }
   }, [filter])
 
   const loadNotifications = async () => {

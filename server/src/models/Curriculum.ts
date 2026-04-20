@@ -3,7 +3,7 @@ import mongoose, { Schema, Document } from 'mongoose'
 export interface ICurriculum extends Document {
   name: string
   version: string
-  level: 'Pre-Nursery' | 'Nursery' | 'Primary' | 'Secondary'
+  level: 'Pre-Nursery' | 'Nursery' | 'Primary' | 'Secondary' | 'Junior Secondary' | 'Vocational'
   yearsOfStudy: number
   subjects: any[] // Subject IDs or populated Subject documents
   implementationDate: Date
@@ -22,7 +22,7 @@ const CurriculumSchema = new Schema<ICurriculum>(
     version: { type: String, required: true },
     level: { 
       type: String, 
-      enum: ['Pre-Nursery', 'Nursery', 'Primary', 'Secondary'], 
+      enum: ['Pre-Nursery', 'Nursery', 'Primary', 'Secondary', 'Junior Secondary', 'Vocational'], 
       required: true 
     },
     yearsOfStudy: { type: Number, required: true },

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type { ChangeEvent, FormEvent } from 'react'
 import { X } from 'lucide-react'
 import { SubjectResult, Student, Subject } from '../types'
 import { calculateGrade, calculateGradePoint, calculatePercentage } from '../utils/calculations'
@@ -63,7 +64,7 @@ export default function SubjectResultForm({
   }
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: ChangeEvent<any>
   ) => {
     const { name, value } = e.target
     let newValue: string | number = value
@@ -114,7 +115,7 @@ export default function SubjectResultForm({
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (validateForm()) {
       onSubmit(formData as any)

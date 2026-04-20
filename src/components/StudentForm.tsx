@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
+import type { ChangeEvent, FormEvent } from 'react'
 import { X, Upload, User as UserIcon } from 'lucide-react'
 import { Student } from '../types'
 
@@ -22,7 +23,7 @@ export default function StudentForm({
   onCancel,
   isEditing = false,
 }: StudentFormProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const fileInputRef = useRef<any>(null)
   
   const [formData, setFormData] = useState<Omit<Student, 'id'> & { id?: string }>(() => {
     if (initialData && initialData.parentUsername && initialData.parentPassword) {
@@ -52,13 +53,6 @@ export default function StudentForm({
 
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  useEffect(() => {
-    if (!isEditing && initialData && initialData.firstName && initialData.lastName) {
-      const creds = generateParentCredentials(initialData.firstName, initialData.lastName)
-      setFormData(prev => ({ ...prev, ...creds }))
-    }
-  }, [initialData?.firstName, initialData?.lastName])
-
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
 
@@ -83,10 +77,10 @@ export default function StudentForm({
     return Object.keys(newErrors).length === 0
   }
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (e: ChangeEvent<any>) => {
     const file = e.target.files?.[0]
     if (file) {
-      const reader = new FileReader()
+      const reader = new window.FileReader()
       reader.onloadend = () => {
         setFormData((prev) => ({ ...prev, image: reader.result as string }))
       }
@@ -95,7 +89,7 @@ export default function StudentForm({
   }
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: ChangeEvent<any>
   ) => {
     const { name, value } = e.target
     setFormData((prev) => ({
@@ -111,7 +105,7 @@ export default function StudentForm({
     }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (validateForm()) {
       onSubmit(formData as any)

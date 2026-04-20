@@ -15,11 +15,7 @@ export default function ResultEntry() {
   const [filterTerm, setFilterTerm] = useState('')
   const [selectedTerm, setSelectedTerm] = useState<string>('All')
 
-  useEffect(() => {
-    loadData()
-  }, [])
-
-  const loadData = async () => {
+  async function loadData() {
     try {
       const [studentsData, resultsData, subjectsData] = await Promise.all([
         fetchStudents(),
@@ -34,21 +30,40 @@ export default function ResultEntry() {
     }
   }
 
-  const getResultDetails = (result: SubjectResult) => {
-    const student = students.find((s) => s.id === result.studentId)
-    const subject = subjects.find((sub) => sub.id === result.subjectId)
+  useEffect(() => {
+    let isMounted = true
 
-    return {
-      ...result,
-      studentName: student ? `${student.firstName} ${student.lastName}` : 'Unknown Student',
-      subjectName: subject?.name || 'Unknown Subject',
+    Promise.all([fetchStudents(), fetchResults(), fetchSubjects()])
+      .then(([studentsData, resultsData, subjectsData]) => {
+        if (!isMounted) return
+        setStudents(studentsData)
+        setResults(resultsData)
+        setSubjects(subjectsData)
+      })
+      .catch((error) => {
+        console.error('Failed to load results data', error)
+      })
+
+    return () => {
+      isMounted = false
     }
-  }
+  }, [])
 
   const filteredResults = useMemo(() => {
+    const getResultDetailsForFilter = (result: SubjectResult) => {
+      const student = students.find((s) => s.id === result.studentId)
+      const subject = subjects.find((sub) => sub.id === result.subjectId)
+
+      return {
+        ...result,
+        studentName: student ? `${student.firstName} ${student.lastName}` : 'Unknown Student',
+        subjectName: subject?.name || 'Unknown Subject',
+      }
+    }
+
     return results
       .filter((result) => {
-        const details = getResultDetails(result)
+        const details = getResultDetailsForFilter(result)
         const matchesFilter =
           details.studentName.toLowerCase().includes(filterTerm.toLowerCase()) ||
           details.subjectName.toLowerCase().includes(filterTerm.toLowerCase())
@@ -57,7 +72,7 @@ export default function ResultEntry() {
 
         return matchesFilter && matchesTerm
       })
-      .map(getResultDetails)
+      .map(getResultDetailsForFilter)
   }, [results, students, subjects, filterTerm, selectedTerm])
 
   const handleAddResult = async (newResult: Omit<SubjectResult, 'id'>) => {
@@ -65,8 +80,8 @@ export default function ResultEntry() {
       await createResult(newResult)
       await loadData()
       setShowForm(false)
-    } catch (error) {
-      alert('Failed to add result')
+    } catch {
+      window.alert('Failed to add result')
     }
   }
 
@@ -76,8 +91,8 @@ export default function ResultEntry() {
       await loadData()
       setEditingResult(null)
       setShowForm(false)
-    } catch (error) {
-      alert('Failed to update result')
+    } catch {
+      window.alert('Failed to update result')
     }
   }
 
@@ -90,12 +105,12 @@ export default function ResultEntry() {
   }
 
   const handleDeleteResult = async (id: string) => {
-    if (confirm('Are you sure you want to delete this result?')) {
+    if (window.confirm('Are you sure you want to delete this result?')) {
       try {
         await deleteResult(id)
         await loadData()
-      } catch (error) {
-        alert('Failed to delete result')
+      } catch {
+        window.alert('Failed to delete result')
       }
     }
   }

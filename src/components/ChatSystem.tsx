@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import type { FormEvent } from 'react'
 import { messageService, Message, Conversation } from '../services/messageService'
 import { useAuthContext } from '../context/AuthContext'
 import { Send, User, Clock, AlertTriangle, CheckCircle, Search } from 'lucide-react'
@@ -12,46 +13,9 @@ export default function ChatSystem() {
   const [messageType, setMessageType] = useState<'general' | 'deadline' | 'caution'>('general')
   const [loading, setLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const messagesEndRef = useRef<any>(null)
 
-  useEffect(() => {
-    loadConversations()
-    const interval = setInterval(loadConversations, 10000) // Poll for new messages
-    return () => clearInterval(interval)
-  }, [])
-
-  useEffect(() => {
-    if (selectedConvo) {
-      loadMessages(selectedConvo.user._id)
-      const interval = setInterval(() => loadMessages(selectedConvo.user._id), 5000)
-      return () => clearInterval(interval)
-    }
-  }, [selectedConvo])
-
-  useEffect(() => {
-    scrollToBottom()
-  }, [messages])
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
-
-  const loadConversations = async () => {
-    try {
-      const data = await messageService.getConversations()
-      setConversations(data)
-      
-      // If teacher, automatically select admin conversation if it exists
-      if (user?.role === 'Teacher' && !selectedConvo && data.length > 0) {
-        const adminConvo = data.find(c => c.user.role === 'Admin')
-        if (adminConvo) setSelectedConvo(adminConvo)
-      }
-    } catch (error) {
-      console.error('Failed to load conversations:', error)
-    }
-  }
-
-  const loadMessages = async (otherUserId: string) => {
+  const loadMessages = useCallback(async (otherUserId: string) => {
     try {
       const allMessages = await messageService.getMessages()
       const filtered = allMessages.filter(
@@ -67,9 +31,46 @@ export default function ChatSystem() {
     } catch (error) {
       console.error('Failed to load messages:', error)
     }
+  }, [user?._id])
+
+  const loadConversations = useCallback(async () => {
+    try {
+      const data = await messageService.getConversations()
+      setConversations(data)
+      
+      // If teacher, automatically select admin conversation if it exists
+      if (user?.role === 'Teacher' && !selectedConvo && data.length > 0) {
+        const adminConvo = data.find(c => c.user.role === 'Admin')
+        if (adminConvo) setSelectedConvo(adminConvo)
+      }
+    } catch (error) {
+      console.error('Failed to load conversations:', error)
+    }
+  }, [user?.role, selectedConvo])
+
+  useEffect(() => {
+    loadConversations()
+    const interval = window.setInterval(loadConversations, 10000) // Poll for new messages
+    return () => window.clearInterval(interval)
+  }, [loadConversations])
+
+  useEffect(() => {
+    if (selectedConvo) {
+      loadMessages(selectedConvo.user._id)
+      const interval = window.setInterval(() => loadMessages(selectedConvo.user._id), 5000)
+      return () => window.clearInterval(interval)
+    }
+  }, [selectedConvo, loadMessages])
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const handleSendMessage = async (e: React.FormEvent) => {
+  const handleSendMessage = async (e: FormEvent) => {
     e.preventDefault()
     if (!newMessage.trim() || !selectedConvo) return
 

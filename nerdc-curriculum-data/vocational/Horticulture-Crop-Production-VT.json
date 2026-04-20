@@ -1,0 +1,149 @@
+{
+  "subjectName": "Horticulture and Crop Production",
+  "subjectCode": "HOR-VT",
+  "level": "Vocational",
+  "creditUnits": 4,
+  "subjectCategory": "VOCATIONAL",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Introduction to Horticulture",
+      "objectives": [
+        "Understand horticulture principles",
+        "Study crop types",
+        "Explore production systems"
+      ],
+      "duration": 40,
+      "resources": ["Crop guides", "Farm diagrams"],
+      "assessmentMethod": "Knowledge assessment"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Soil Science and Preparation",
+      "objectives": [
+        "Understand soil composition",
+        "Learn soil preparation",
+        "Test soil quality"
+      ],
+      "duration": 40,
+      "resources": ["Soil samples", "Testing kits"],
+      "assessmentMethod": "Soil testing"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Plant Propagation Methods",
+      "objectives": [
+        "Master seed propagation",
+        "Learn vegetative propagation",
+        "Practice tissue culture basics"
+      ],
+      "duration": 40,
+      "resources": ["Seeds", "Propagation materials"],
+      "assessmentMethod": "Propagation project"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Crop Selection and Planning",
+      "objectives": [
+        "Select appropriate crops",
+        "Plan crop rotations",
+        "Design planting schedules"
+      ],
+      "duration": 40,
+      "resources": ["Crop data", "Planning tools"],
+      "assessmentMethod": "Crop plan"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Assessment",
+      "objectives": ["Assess learning"],
+      "duration": 60,
+      "resources": ["Assessment papers"],
+      "assessmentMethod": "Practical test"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Irrigation and Water Management",
+      "objectives": [
+        "Understand water requirements",
+        "Learn irrigation systems",
+        "Practice water conservation"
+      ],
+      "duration": 40,
+      "resources": ["Irrigation equipment", "Water guides"],
+      "assessmentMethod": "Irrigation design"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Pest and Disease Management",
+      "objectives": [
+        "Identify pests and diseases",
+        "Learn control methods",
+        "Practice integrated management"
+      ],
+      "duration": 40,
+      "resources": ["Pest guides", "Control materials"],
+      "assessmentMethod": "Management plan"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Nutrient Management and Fertilization",
+      "objectives": [
+        "Understand nutrient needs",
+        "Learn fertilizer types",
+        "Practice application"
+      ],
+      "duration": 40,
+      "resources": ["Fertilizer samples", "Nutrient guides"],
+      "assessmentMethod": "Fertilization plan"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Harvesting and Post-Harvest Handling",
+      "objectives": [
+        "Learn harvest timing",
+        "Master harvesting techniques",
+        "Practice storage methods"
+      ],
+      "duration": 40,
+      "resources": ["Harvest equipment", "Storage facilities"],
+      "assessmentMethod": "Harvest practice"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Final Project - Complete Crop Production",
+      "objectives": [
+        "Plan complete crop cycle",
+        "Implement all practices",
+        "Document results"
+      ],
+      "duration": 60,
+      "resources": ["All farm resources"],
+      "assessmentMethod": "Capstone project"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Final Assessment",
+      "objectives": ["Final evaluation"],
+      "duration": 180,
+      "resources": ["Assessment criteria"],
+      "assessmentMethod": "Practical exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Course closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

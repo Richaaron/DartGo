@@ -34,7 +34,7 @@ export default function Reports() {
   const [selectedStudentId, setSelectedStudentId] = useState<string>('')
   const [searchTerm, setSearchTerm] = useState('')
   const [isEditingObservation, setIsEditingObservation] = useState(false)
-  const reportRef = useRef<HTMLDivElement>(null)
+  const reportRef = useRef<any>(null)
 
   const [editObservation, setEditObservation] = useState<any>({
     affectiveDomain: { punctuality: 3, neatness: 3, honesty: 3, leadership: 3, cooperation: 3, selfControl: 3 },
@@ -143,7 +143,7 @@ export default function Reports() {
       pdf.save(`${selectedStudent?.firstName}_${selectedStudent?.lastName}_Report_Card.pdf`)
     } catch (error) {
       console.error('Failed to export PDF:', error)
-      alert('Failed to generate PDF. Please try printing instead.')
+      window.alert('Failed to generate PDF. Please try printing instead.')
     } finally {
       setIsLoading(false)
     }
@@ -167,8 +167,8 @@ export default function Reports() {
         return [...prev, saved]
       })
       setIsEditingObservation(false)
-    } catch (error) {
-      alert('Failed to save observation')
+    } catch {
+      window.alert('Failed to save observation')
     }
   }
 
@@ -425,7 +425,7 @@ export default function Reports() {
               <div className="space-y-4">
                 {Object.entries(editObservation.affectiveDomain).map(([key, val]: [string, any]) => (
                   <div key={key} className="flex justify-between items-center group">
-                    <span className="text-xs text-gray-500 font-black uppercase tracking-widest group-hover:text-gray-900 transition-colors capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
+                    <span className="text-xs text-gray-500 font-black tracking-widest group-hover:text-gray-900 transition-colors capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
                     {renderRating(val)}
                   </div>
                 ))}
@@ -436,7 +436,7 @@ export default function Reports() {
               <div className="space-y-4">
                 {Object.entries(editObservation.psychomotorSkills).map(([key, val]: [string, any]) => (
                   <div key={key} className="flex justify-between items-center group">
-                    <span className="text-xs text-gray-500 font-black uppercase tracking-widest group-hover:text-gray-900 transition-colors capitalize">{key}</span>
+                    <span className="text-xs text-gray-500 font-black tracking-widest group-hover:text-gray-900 transition-colors capitalize">{key}</span>
                     {renderRating(val)}
                   </div>
                 ))}

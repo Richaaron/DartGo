@@ -1,6 +1,4 @@
 /* global localStorage, fetch, URLSearchParams */
-/* eslint-disable no-undef */
-
 import { Student, Teacher, Subject, SubjectResult, Curriculum, SchemeOfWork, DEFAULT_SUBJECTS } from '../types'
 
 const getBaseUrl = () => {
@@ -242,7 +240,7 @@ export async function deleteTeacher(id: string): Promise<void> {
 export async function fetchSubjects(): Promise<Subject[]> {
   try {
     return await apiFetch('/subjects')
-  } catch (error) {
+  } catch {
     return DEV_SUBJECTS
   }
 }
@@ -348,7 +346,7 @@ export async function fetchCurriculums(params: { level?: string, status?: string
 
   try {
     return await apiFetch(`/curriculum?${query}`)
-  } catch (error) {
+  } catch {
     return DEV_CURRICULUMS.filter((curriculum) => {
       const matchesLevel = !params.level || curriculum.level === params.level
       const matchesStatus = !params.status || curriculum.status === params.status
@@ -389,7 +387,7 @@ export async function fetchCurriculumsByLevel(level: string): Promise<Curriculum
 export async function fetchSchemesOfWork(teacherId: string): Promise<SchemeOfWork[]> {
   try {
     return await apiFetch(`/scheme-of-work/teacher/${teacherId}`)
-  } catch (error) {
+  } catch {
     return DEV_SCHEMES_OF_WORK.filter((scheme) => scheme.teacherId === teacherId)
   }
 }
@@ -458,7 +456,7 @@ export async function deleteObservation(id: string): Promise<void> {
 export async function fetchNotifications(): Promise<any[]> {
   try {
     return await apiFetch('/notifications')
-  } catch (error) {
+  } catch {
     return []
   }
 }

@@ -1,0 +1,226 @@
+{
+  "subjectName": "Numeracy",
+  "subjectCode": "NUM-PN",
+  "level": "Pre-Nursery",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Numbers 1-5",
+      "objectives": [
+        "Count from 1 to 5",
+        "Recognize number symbols 1-5",
+        "Match number to quantity"
+      ],
+      "duration": 30,
+      "resources": [
+        "Number cards 1-5",
+        "Counting objects (beads, blocks)",
+        "Flashcards",
+        "Picture cards"
+      ],
+      "assessmentMethod": "Observation and counting demonstration"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Numbers 6-10",
+      "objectives": [
+        "Count from 6 to 10",
+        "Recognize number symbols 6-10",
+        "Understand sequence"
+      ],
+      "duration": 30,
+      "resources": [
+        "Number cards 6-10",
+        "Counters",
+        "Number line 1-10",
+        "Picture cards"
+      ],
+      "assessmentMethod": "Counting exercise and observation"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Number Order and Sequence",
+      "objectives": [
+        "Arrange numbers in order",
+        "Understand number sequence",
+        "Identify missing numbers"
+      ],
+      "duration": 30,
+      "resources": [
+        "Number cards 1-10",
+        "Sequence puzzles",
+        "Worksheets"
+      ],
+      "assessmentMethod": "Sequence ordering activity"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Shapes and Sizes",
+      "objectives": [
+        "Identify basic shapes (circle, square, triangle)",
+        "Understand size concepts (big, small)",
+        "Classify by shape and size"
+      ],
+      "duration": 30,
+      "resources": [
+        "Shape cutouts",
+        "Picture cards",
+        "Real objects",
+        "Shape sorting game"
+      ],
+      "assessmentMethod": "Shape identification and sorting"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Colors and Patterns",
+      "objectives": [
+        "Identify primary colors",
+        "Recognize simple patterns",
+        "Create patterns"
+      ],
+      "duration": 30,
+      "resources": [
+        "Colored objects",
+        "Pattern cards",
+        "Color flashcards",
+        "Markers"
+      ],
+      "assessmentMethod": "Color and pattern activity"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Quantity Concepts - More and Less",
+      "objectives": [
+        "Understand more and less",
+        "Compare quantities",
+        "Use comparative language"
+      ],
+      "duration": 30,
+      "resources": [
+        "Counters",
+        "Picture cards",
+        "Objects for comparison",
+        "Worksheets"
+      ],
+      "assessmentMethod": "Comparison activity and observation"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Addition - Combining Sets",
+      "objectives": [
+        "Understand combining concept",
+        "Add small numbers",
+        "Use addition vocabulary"
+      ],
+      "duration": 30,
+      "resources": [
+        "Counters",
+        "Picture cards",
+        "Simple addition cards",
+        "Manipulatives"
+      ],
+      "assessmentMethod": "Combining and counting activity"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Subtraction - Taking Away",
+      "objectives": [
+        "Understand taking away concept",
+        "Subtract small numbers",
+        "Use subtraction vocabulary"
+      ],
+      "duration": 30,
+      "resources": [
+        "Counters",
+        "Picture cards",
+        "Simple subtraction cards",
+        "Manipulatives"
+      ],
+      "assessmentMethod": "Taking away activity"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Position and Direction",
+      "objectives": [
+        "Understand position words (in, on, under, beside)",
+        "Follow directional instructions",
+        "Identify positions"
+      ],
+      "duration": 30,
+      "resources": [
+        "Picture cards",
+        "Objects for positioning",
+        "Movement space"
+      ],
+      "assessmentMethod": "Positioning activity and following directions"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Time Concepts - Days and Seasons",
+      "objectives": [
+        "Recognize days of the week",
+        "Understand seasons",
+        "Know daily routines"
+      ],
+      "duration": 30,
+      "resources": [
+        "Calendar",
+        "Season pictures",
+        "Daily routine charts",
+        "Picture cards"
+      ],
+      "assessmentMethod": "Discussion and identification activity"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Measurement - Length and Height",
+      "objectives": [
+        "Understand length and height",
+        "Compare sizes",
+        "Use measurement vocabulary"
+      ],
+      "duration": 30,
+      "resources": [
+        "Measuring objects",
+        "Ruler (non-standard)",
+        "Picture cards",
+        "Real objects to measure"
+      ],
+      "assessmentMethod": "Comparison and measurement activity"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Money and Counting",
+      "objectives": [
+        "Recognize coins",
+        "Count money",
+        "Understand value"
+      ],
+      "duration": 30,
+      "resources": [
+        "Play coins",
+        "Picture cards",
+        "Shopping game materials"
+      ],
+      "assessmentMethod": "Counting and identification activity"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Numeracy Review and Assessment",
+      "objectives": [
+        "Review all numeracy concepts",
+        "Demonstrate learning",
+        "Celebrate progress"
+      ],
+      "duration": 30,
+      "resources": [
+        "Review materials",
+        "Assessment sheets",
+        "Certificates"
+      ],
+      "assessmentMethod": "Comprehensive numeracy assessment"
+    }
+  ]
+}

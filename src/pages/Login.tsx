@@ -214,7 +214,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
         setError('Invalid username or password')
         setIsLoading(false)
       }
-    } catch (err) {
+    } catch {
       setError('A network error occurred. Please try again.')
       setIsLoading(false)
     }

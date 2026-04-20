@@ -1,0 +1,153 @@
+{
+  "subjectName": "Nigerian History",
+  "subjectCode": "HIS-SS3",
+  "level": "Secondary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Islamic Movements in West Africa",
+      "objectives": [
+        "Understand causes of Islamic movements",
+        "Study establishment of Muslim states",
+        "Analyze spread of Islam in West Africa"
+      ],
+      "duration": 40,
+      "resources": ["Historical maps", "Islamic literature", "Regional case studies"],
+      "assessmentMethod": "Class discussion"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "The Jihads of Ahmadu Seku and Alhaji Umar",
+      "objectives": [
+        "Study background of both Jihads",
+        "Analyze causes and course",
+        "Examine effects on West Africa"
+      ],
+      "duration": 40,
+      "resources": ["Historical records", "Biography materials"],
+      "assessmentMethod": "Written analysis"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "The Activities of Samori Toure",
+      "objectives": [
+        "Understand Samori's rise to power",
+        "Study resistance against French",
+        "Analyze lasting legacy"
+      ],
+      "duration": 40,
+      "resources": ["Biography texts", "Resistance documents"],
+      "assessmentMethod": "Research project"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Muslim States and European Colonization",
+      "objectives": [
+        "Analyze impact of European expansion",
+        "Study Muslim state responses",
+        "Examine transformation of societies"
+      ],
+      "duration": 40,
+      "resources": ["Colonial records", "Impact analysis"],
+      "assessmentMethod": "Comparative essay"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Christian Missionary Activities",
+      "objectives": [
+        "Study arrival and spread of missionaries",
+        "Identify missionary societies",
+        "Analyze impact on societies"
+      ],
+      "duration": 40,
+      "resources": ["Missionary records", "Religious texts"],
+      "assessmentMethod": "Case study analysis"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Berlin Conference and Partition of Africa",
+      "objectives": [
+        "Understand causes of conference",
+        "Study major decisions",
+        "Analyze consequences for Africa"
+      ],
+      "duration": 40,
+      "resources": ["Conference documents", "Colonial maps"],
+      "assessmentMethod": "Document analysis"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Midterm Test / Break",
+      "objectives": ["Assessment and consolidation"],
+      "duration": 60,
+      "resources": ["Test papers"],
+      "assessmentMethod": "Midterm exam"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Colonial Subjugation and African Reaction",
+      "objectives": [
+        "Study African resistance movements",
+        "Analyze colonial control methods",
+        "Examine African agency"
+      ],
+      "duration": 40,
+      "resources": ["Resistance records", "Colonial accounts"],
+      "assessmentMethod": "Critical analysis"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Colonial Rule in Africa",
+      "objectives": [
+        "Compare direct and indirect rule",
+        "Study administration systems",
+        "Analyze effectiveness"
+      ],
+      "duration": 40,
+      "resources": ["Administrative documents", "Comparative analysis"],
+      "assessmentMethod": "Comparison essay"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Origins of Nationalism in Africa",
+      "objectives": [
+        "Study early resistance movements",
+        "Analyze educated elites' role",
+        "Examine nationalist organizations"
+      ],
+      "duration": 40,
+      "resources": ["Nationalist documents", "Organization records"],
+      "assessmentMethod": "Timeline project"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Patterns of Nationalist Movements and Independence",
+      "objectives": [
+        "Study independence movements",
+        "Analyze different approaches",
+        "Compare case studies"
+      ],
+      "duration": 40,
+      "resources": ["Independence records", "Case studies"],
+      "assessmentMethod": "Comparative study"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Examination",
+      "objectives": ["Final assessment"],
+      "duration": 180,
+      "resources": ["Examination papers"],
+      "assessmentMethod": "Final exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

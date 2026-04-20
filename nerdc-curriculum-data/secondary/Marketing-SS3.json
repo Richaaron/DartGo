@@ -1,0 +1,148 @@
+{
+  "subjectName": "Marketing",
+  "subjectCode": "MAR-SS3",
+  "level": "Secondary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "International Marketing",
+      "objectives": [
+        "Define international marketing",
+        "Study reasons for international trade",
+        "Understand global market importance"
+      ],
+      "duration": 40,
+      "resources": ["International trade data", "Marketing guides"],
+      "assessmentMethod": "Market research"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "International Trade System",
+      "objectives": [
+        "Understand import and export trade",
+        "Compare trade types",
+        "Study trade decisions"
+      ],
+      "duration": 40,
+      "resources": ["Trade statistics", "Import/export guides"],
+      "assessmentMethod": "Trade analysis"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Market Decision Factors",
+      "objectives": [
+        "Study reasons for wider markets",
+        "Understand competitive escape",
+        "Analyze market seeking"
+      ],
+      "duration": 40,
+      "resources": ["Market analysis tools", "Case studies"],
+      "assessmentMethod": "Decision making exercise"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Features of International Market",
+      "objectives": [
+        "Identify market advantages",
+        "Study market disadvantages",
+        "Understand market dynamics"
+      ],
+      "duration": 40,
+      "resources": ["Market data", "Feature analysis guides"],
+      "assessmentMethod": "Feature identification"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Examination",
+      "objectives": ["Assess learning"],
+      "duration": 60,
+      "resources": ["Test papers"],
+      "assessmentMethod": "Exam"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Legal, Social, Cultural Features of International Market",
+      "objectives": [
+        "Study legal frameworks",
+        "Analyze cultural factors",
+        "Understand demographic influences"
+      ],
+      "duration": 40,
+      "resources": ["Legal documents", "Cultural analysis guides"],
+      "assessmentMethod": "Factor analysis"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Midterm Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Approaches to International Marketing",
+      "objectives": [
+        "Study entry approaches",
+        "Understand market adaptation",
+        "Apply strategies"
+      ],
+      "duration": 40,
+      "resources": ["Strategic guides", "Case examples"],
+      "assessmentMethod": "Strategy development"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Regulations Guiding International Marketing",
+      "objectives": [
+        "Study marketing regulations",
+        "Understand trade rules",
+        "Analyze compliance requirements"
+      ],
+      "duration": 40,
+      "resources": ["Regulatory documents", "Compliance guides"],
+      "assessmentMethod": "Regulatory analysis"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "ICT in International Marketing",
+      "objectives": [
+        "Understand ICT benefits",
+        "Study e-marketing",
+        "Apply technology in marketing"
+      ],
+      "duration": 40,
+      "resources": ["Technology guides", "E-marketing tools"],
+      "assessmentMethod": "Technology application"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Revision",
+      "objectives": [
+        "Review all marketing topics",
+        "Consolidate knowledge"
+      ],
+      "duration": 40,
+      "resources": ["Revision materials"],
+      "assessmentMethod": "Mock exam"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Examination",
+      "objectives": ["Final assessment"],
+      "duration": 180,
+      "resources": ["Examination papers"],
+      "assessmentMethod": "Final exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

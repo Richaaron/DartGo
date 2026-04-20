@@ -263,4 +263,5 @@ export const DEFAULT_SUBJECTS: Subject[] = [
   { id: 'sec-24', name: 'Security Education', code: 'SEC', level: 'Secondary', creditUnits: 1 },
   { id: 'sec-25', name: 'Agricultural Science', code: 'AGS', level: 'Secondary', creditUnits: 2 },
   { id: 'sec-26', name: 'Further Mathematics', code: 'FMA', level: 'Secondary', creditUnits: 3 },
+  { id: 'sec-27', name: 'Dart Programming', code: 'DRT', level: 'Secondary', creditUnits: 3, subjectCategory: 'ELECTIVE' },
 ]
