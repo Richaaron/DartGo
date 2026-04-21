@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
+import path from 'path'
+import { fileURLToPath } from 'url'
 import { connectDB } from '../src/config/db'
 import { User } from '../src/models/User'
 import { Teacher } from '../src/models/Teacher'
@@ -7,7 +9,9 @@ import { Subject } from '../src/models/Subject'
 import { Curriculum } from '../src/models/Curriculum'
 import { SchemeOfWork } from '../src/models/SchemeOfWork'
 
-dotenv.config()
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+dotenv.config({ path: path.resolve(__dirname, '../.env') })
 
 // Comprehensive Nigerian School Curriculum Subjects
 const NIGERIAN_SUBJECTS = [
