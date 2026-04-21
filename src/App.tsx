@@ -18,6 +18,7 @@ import Attendance from './pages/Attendance'
 import Settings from './pages/Settings'
 import TeacherDashboard from './pages/TeacherDashboard'
 import ParentDashboard from './pages/ParentDashboard'
+import AdminSchemeUpload from './pages/AdminSchemeUpload'
 import NotificationsPage from './pages/Notifications'
 import './App.css'
 
@@ -248,6 +249,15 @@ function AppContent() {
                   isDarkMode={isDarkMode}
                 />
               )}
+              {userRole === 'Admin' && (
+                <NavLink
+                  to="/admin-schemes"
+                  icon={<FileText size={isMobile ? 20 : 18} />}
+                  label="Scheme Repository"
+                  isOpen={isMobile || isSidebarOpen}
+                  isDarkMode={isDarkMode}
+                />
+              )}
               <NavLink
                   to="/results"
                   icon={<BookOpen size={isMobile ? 20 : 18} />}
@@ -366,6 +376,7 @@ function AppContent() {
                   <Route path="/" element={<PageTransition><Dashboard /></PageTransition>} />
                   <Route path="/students" element={<PageTransition><StudentManagement /></PageTransition>} />
                   <Route path="/teachers" element={<PageTransition><TeacherManagement /></PageTransition>} />
+                  <Route path="/admin-schemes" element={<PageTransition><AdminSchemeUpload /></PageTransition>} />
                   <Route path="/results" element={<PageTransition><ResultEntry /></PageTransition>} />
                   <Route path="/subject-results" element={<PageTransition><SubjectResultEntry /></PageTransition>} />
                   <Route path="/attendance" element={<PageTransition><Attendance /></PageTransition>} />

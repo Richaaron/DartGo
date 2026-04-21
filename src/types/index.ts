@@ -146,6 +146,9 @@ export interface SchemeOfWork {
   approvedBy?: string
   approvalDate?: string
   notes: string
+  fileUrl?: string
+  fileName?: string
+  fileType?: string
   createdAt: string
   updatedAt: string
 }

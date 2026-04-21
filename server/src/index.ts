@@ -118,6 +118,9 @@ console.log('[STARTUP] Applying body parsing and sanitization...')
 app.use(express.json({ limit: '10mb' }))
 app.use(sanitizeInput)
 
+// Serve uploaded files
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')))
+
 console.log('[STARTUP] Applying rate limiting...')
 app.use(requestLogger)
 app.use(generalLimiter)

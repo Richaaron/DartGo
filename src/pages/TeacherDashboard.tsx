@@ -3,8 +3,6 @@ import { Users, BookOpen, TrendingUp, AlertCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
 import StatCard from '../components/StatCard'
 import Table from '../components/Table'
-import CurriculumManager from '../components/CurriculumManager'
-import SchemeOfWorkManager from '../components/SchemeOfWorkManager'
 import { useAuthContext } from '../context/AuthContext'
 import { Student, SubjectResult, Subject } from '../types'
 import { formatDate } from '../utils/calculations'
@@ -19,7 +17,7 @@ export default function TeacherDashboard() {
   const [results, setResults] = useState<SubjectResult[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'results' | 'curriculum' | 'scheme' | 'messages' | 'insights'>('results')
+  const [activeTab, setActiveTab] = useState<'results' | 'messages' | 'insights'>('results')
 
   useEffect(() => {
     loadData()
@@ -153,7 +151,7 @@ export default function TeacherDashboard() {
 
       {/* Tab Navigation */}
       <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-        {(['results', 'curriculum', 'scheme', 'messages', 'insights'] as const).map((tab) => (
+        {(['results', 'messages', 'insights'] as const).map((tab) => (
           <motion.button
             key={tab}
             whileHover={{ scale: 1.05 }}
@@ -166,8 +164,6 @@ export default function TeacherDashboard() {
             }`}
           >
             {tab === 'results' && 'Class Results'}
-            {tab === 'curriculum' && 'Curriculum'}
-            {tab === 'scheme' && 'Scheme of Work'}
             {tab === 'messages' && 'Admin Chat'}
             {tab === 'insights' && 'AI Insights'}
           </motion.button>
@@ -191,26 +187,6 @@ export default function TeacherDashboard() {
               <p>No results recorded yet for your classes.</p>
             </div>
           )}
-        </motion.div>
-      )}
-
-      {/* Curriculum Tab */}
-      {activeTab === 'curriculum' && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <CurriculumManager level={teacher.level} />
-        </motion.div>
-      )}
-
-      {/* Scheme of Work Tab */}
-      {activeTab === 'scheme' && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <SchemeOfWorkManager teacherId={teacher.email} />
         </motion.div>
       )}
 

@@ -1,8 +1,40 @@
 import { Router } from 'express'
+import multer from 'multer'
+import path from 'path'
+import fs from 'fs'
 import { SchemeOfWork } from '../models/SchemeOfWork.js'
 import { authenticate, authorize, AuthRequest } from '../middleware/auth.js'
 
 const router = Router()
+
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadDir = 'uploads/schemes'
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true })
+    }
+    cb(null, uploadDir)
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname))
+  }
+})
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = ['.pdf', '.doc', '.docx', '.txt']
+    const ext = path.extname(file.originalname).toLowerCase()
+    if (allowedTypes.includes(ext)) {
+      cb(null, true)
+    } else {
+      cb(new Error('Only .pdf, .doc, .docx and .txt files are allowed'))
+    }
+  }
+})
 
 // Get all schemes of work for a teacher
 router.get('/teacher/:teacherId', authenticate, async (req: AuthRequest, res) => {
@@ -204,6 +236,54 @@ router.get('/subject/:subjectId/class/:classId', authenticate, async (req, res) 
   } catch (error) {
     console.error('Error fetching schemes:', error)
     res.status(500).json({ error: 'Failed to fetch schemes' })
+  }
+})
+
+// Upload Scheme of Work file (Admin only)
+router.post('/upload', authenticate, authorize(['Admin']), upload.single('file'), async (req: AuthRequest, res) => {
+  try {
+    const {
+      teacherId,
+      subjectId,
+      classId,
+      academicYear,
+      term,
+      curriculumId,
+      notes,
+    } = req.body
+
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' })
+    }
+
+    if (!teacherId || !subjectId || !classId || !academicYear || !term || !curriculumId) {
+      // Cleanup uploaded file if missing required fields
+      if (req.file) fs.unlinkSync(req.file.path)
+      return res.status(400).json({ error: 'Missing required fields' })
+    }
+
+    const newScheme = new SchemeOfWork({
+      teacherId,
+      subjectId,
+      classId,
+      academicYear,
+      term,
+      curriculumId,
+      topics: [], // File-based schemes might not have structured topics
+      uploadedBy: req.user?.email,
+      notes,
+      status: 'APPROVED', // Admin uploads are auto-approved
+      fileUrl: `/uploads/schemes/${req.file.filename}`,
+      fileName: req.file.originalname,
+      fileType: req.file.mimetype,
+    })
+
+    await newScheme.save()
+    res.status(201).json(newScheme)
+  } catch (error) {
+    console.error('Error uploading scheme file:', error)
+    if (req.file) fs.unlinkSync(req.file.path)
+    res.status(400).json({ error: 'Failed to upload scheme of work file' })
   }
 })
 

@@ -24,6 +24,9 @@ export interface ISchemeOfWork extends Document {
   approvedBy?: string
   approvalDate?: Date
   notes: string
+  fileUrl?: string
+  fileName?: string
+  fileType?: string
   createdAt: Date
   updatedAt: Date
 }
@@ -63,6 +66,9 @@ const SchemeOfWorkSchema = new Schema<ISchemeOfWork>(
     approvedBy: { type: String },
     approvalDate: { type: Date },
     notes: { type: String },
+    fileUrl: { type: String },
+    fileName: { type: String },
+    fileType: { type: String },
   },
   { timestamps: true }
 )

@@ -161,6 +161,15 @@ export async function updateSchemeOfWork(id: string, data: Partial<SchemeOfWork>
   return result as SchemeOfWork
 }
 
+export async function uploadSchemeOfWorkFile(formData: FormData): Promise<SchemeOfWork> {
+  const { data: result } = await apiService.post('/scheme-of-work/upload', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+  return result as SchemeOfWork
+}
+
 export async function fetchAttendance(params: any = {}): Promise<any[]> {
   const query = new URLSearchParams(params).toString()
   const { data } = await apiService.get(`/attendance?${query}`)

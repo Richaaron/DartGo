@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { FileText, Plus, Edit, Trash2, CheckCircle, Send } from 'lucide-react'
+import { FileText, Plus, Edit, Trash2, CheckCircle, Send, Download, File } from 'lucide-react'
 import { SchemeOfWork, Subject, Topic } from '../types'
 import { fetchSchemesOfWork, fetchSubjects, deleteSchemeOfWork, submitSchemeOfWork, updateSchemeOfWork } from '../services/api'
 
@@ -226,6 +226,12 @@ export default function SchemeOfWorkManager({ teacherId }: SchemeOfWorkManagerPr
                   <p className="text-sm text-gray-600">
                     {getSubjectName(scheme.subjectId)} • Term {scheme.term} • {scheme.academicYear}
                   </p>
+                  {scheme.fileUrl && (
+                    <div className="mt-2 flex items-center gap-2 text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded-lg w-fit">
+                      <File className="w-3 h-3" />
+                      <span>Document Attached: {scheme.fileName}</span>
+                    </div>
+                  )}
                   <div className="mt-2 flex items-center gap-2">
                     <div className="flex-1 bg-gray-200 rounded-full h-2 max-w-xs overflow-hidden">
                       <motion.div
@@ -242,6 +248,17 @@ export default function SchemeOfWorkManager({ teacherId }: SchemeOfWorkManagerPr
                 </div>
 
                 <div className="flex gap-2 w-full md:w-auto">
+                  {scheme.fileUrl && (
+                    <a
+                      href={`http://localhost:3001${scheme.fileUrl}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 md:flex-none flex items-center justify-center gap-1 bg-emerald-100 text-emerald-600 px-3 py-2 rounded hover:bg-emerald-200 transition text-sm"
+                    >
+                      <Download className="w-4 h-4" />
+                      <span className="hidden sm:inline">Download</span>
+                    </a>
+                  )}
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     onClick={() => setSelectedScheme(scheme)}
