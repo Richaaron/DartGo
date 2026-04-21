@@ -20,6 +20,7 @@ const envConfig = getEnvConfig()
 router.post('/login', authLimiter, async (req, res) => {
   try {
     const { email, password } = req.body
+    console.log(`[AUTH] Login attempt for: ${email}`)
 
     if (!email || !password) {
       return res.status(400).json({
@@ -85,10 +86,11 @@ router.post('/login', authLimiter, async (req, res) => {
       }
     }
 
-    // Validate Password for User/Teacher
     if (foundUser) {
+      console.log(`[AUTH] User found in ${role ? 'teachers' : 'users'} table. Verifying password...`)
       const isMatch = await bcrypt.compare(password, foundUser.password)
       if (!isMatch) {
+        console.log(`[AUTH] Password mismatch for: ${email}`)
         return res.status(401).json({
           error: 'Invalid credentials',
           code: 'INVALID_CREDENTIALS',
