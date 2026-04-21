@@ -12,7 +12,8 @@
 export interface EnvConfig {
   NODE_ENV: 'development' | 'production' | 'test'
   PORT: number
-  MONGO_URI: string
+  SUPABASE_URL: string
+  SUPABASE_SERVICE_ROLE_KEY: string
   JWT_SECRET: string
   JWT_EXPIRY: string
   CORS_ORIGIN: string
@@ -33,7 +34,7 @@ export interface EnvConfig {
  * Used when variables are not provided in development mode
  */
 const DEVELOPMENT_DEFAULTS: Partial<Record<keyof EnvConfig, string>> = {
-  MONGO_URI: 'mongodb://localhost:27017/folusho',
+  SUPABASE_URL: 'https://mlhoeaojalsiptkkmupi.supabase.co',
   JWT_SECRET: 'FolushoVictorySchools_SecureJWTSecret_2024_Production_Key_#@!$%',
   EMAIL_HOST: 'smtp.gmail.com',
   EMAIL_USER: 'folushovictoryschool@gmail.com',
@@ -56,7 +57,8 @@ const DEVELOPMENT_DEFAULTS: Partial<Record<keyof EnvConfig, string>> = {
  * These have defaults, so they'll always be available
  */
 const CRITICAL_VARS: (keyof EnvConfig)[] = [
-  'MONGO_URI',
+  'SUPABASE_URL',
+  'SUPABASE_SERVICE_ROLE_KEY',
   'JWT_SECRET',
   'EMAIL_USER',
   'EMAIL_PASS',
@@ -133,7 +135,8 @@ export function validateEnv(): EnvConfig {
   const config: EnvConfig = {
     NODE_ENV: (process.env.NODE_ENV || 'development') as 'development' | 'production' | 'test',
     PORT: validatePort(parseInt(process.env.PORT || DEVELOPMENT_DEFAULTS.PORT || '3001', 10)),
-    MONGO_URI: process.env.MONGO_URI || DEVELOPMENT_DEFAULTS.MONGO_URI || '',
+    SUPABASE_URL: process.env.SUPABASE_URL || DEVELOPMENT_DEFAULTS.SUPABASE_URL || '',
+    SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || '',
     JWT_SECRET: process.env.JWT_SECRET || DEVELOPMENT_DEFAULTS.JWT_SECRET || '',
     JWT_EXPIRY: process.env.JWT_EXPIRY || DEVELOPMENT_DEFAULTS.JWT_EXPIRY || '7d',
     CORS_ORIGIN: process.env.CORS_ORIGIN || DEVELOPMENT_DEFAULTS.CORS_ORIGIN || 'http://localhost:5173',

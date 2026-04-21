@@ -45,7 +45,7 @@ router.post('/login', authLimiter, async (req, res) => {
       const { data: teacherData, error: teacherError } = await supabase
         .from('teachers')
         .select('*')
-        .or(`email.eq.${normalizedLoginId},username.eq.${normalizedLoginId}`)
+        .or(`email.eq.${normalizedLoginId},username.eq.${normalizedLoginId},teacher_id.eq.${normalizedLoginId}`)
         .single()
       
       if (teacherData) {

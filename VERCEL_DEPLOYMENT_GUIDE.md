@@ -58,6 +58,32 @@ git push origin main
    - `SUPABASE_URL`: (From Supabase API settings)
    - `SUPABASE_SERVICE_ROLE_KEY`: (From Supabase API settings - use Service Role, not Anon)
 
+---
+
+## Troubleshooting Login Issues
+
+If you cannot log in on the live app:
+
+1. **Verify Database Content**: Run this locally to check if your Supabase has users:
+   ```bash
+   cd server
+   npx tsx scripts/verify-supabase-data.ts
+   ```
+   If it shows 0 records, run the migration:
+   ```bash
+   npx tsx scripts/migrate-mongo-to-supabase.ts
+   ```
+
+2. **Check Environment Variables**: 
+   Ensure `SUPABASE_SERVICE_ROLE_KEY` and `JWT_SECRET` are set in the Vercel Dashboard. 
+   - `JWT_SECRET` must be at least 32 characters long.
+   - `VITE_API_URL` must be set to `/api`.
+
+3. **Login IDs**:
+   - **Admins**: Use your Email.
+   - **Teachers**: Use your Email, Username, or Teacher ID.
+   - **Parents**: Use your Username or Email.
+
    **Security:**
    - `JWT_SECRET`: (A long random string for session security)
    - `NODE_ENV`: `production`
