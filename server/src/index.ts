@@ -5,7 +5,7 @@ import compression from 'compression'
 import path from 'path'
 import mongoose from 'mongoose'
 import { fileURLToPath } from 'url'
-import { connectDB } from './config/db.js'
+import { supabase } from './config/supabase.js'
 import { getEnvConfig, EnvConfig } from './utils/envConfig.js'
 import { loadEnvFile, verifyEnvLoading, printDiagnostics } from './utils/env-loader.js'
 import { performHealthCheck, printHealthCheckResults, isHealthy } from './utils/startup-health-check.js'
@@ -167,17 +167,18 @@ let server: any
 
 async function startServer() {
   try {
-    console.log('[STARTUP] Step 5: Connecting to database...')
-    await connectDB()
-    console.log('[STARTUP] ✓ Database connected')
+    console.log('[STARTUP] Step 5: Connecting to Supabase...')
+    const { data, error } = await supabase.from('users').select('count', { count: 'exact', head: true })
+    if (error) throw error
+    console.log('[STARTUP] ✓ Supabase connected')
 
     // Check if database is empty
-    const userCount = await User.countDocuments()
+    const userCount = data?.length || 0
     if (userCount === 0) {
       console.warn('\n╔════════════════════════════════════════════════════════════╗')
       console.log('║ ⚠️  WARNING: DATABASE IS EMPTY                             ║')
-      console.log('║ No users found in the database. Login will not work!       ║')
-      console.log('║ Please run: npm run seed                                   ║')
+      console.log('║ No users found in Supabase. Login will not work!           ║')
+      console.log('║ Please run: npm run seed:supabase                          ║')
       console.log('╚════════════════════════════════════════════════════════════╝\n')
     }
 
@@ -218,8 +219,7 @@ function gracefulShutdown(signal: string) {
       console.log('[SHUTDOWN] HTTP server closed')
       
       try {
-        await mongoose.connection.close()
-        console.log('[SHUTDOWN] MongoDB connection closed')
+        console.log('[SHUTDOWN] Supabase connections closing...')
         process.exit(0)
       } catch (err) {
         console.error('[SHUTDOWN] Error during MongoDB disconnection:', err)

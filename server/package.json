@@ -8,10 +8,12 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "seed": "tsx scripts/seed.ts",
+    "seed:supabase": "tsx scripts/supabase_seed.ts",
     "parse-txt": "tsx scripts/parse-txt-nerdc.ts",
     "import-nerdc": "tsx scripts/import-nerdc.ts"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.104.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/compression": "^1.7.5",
     "@types/cors": "^2.8.15",
