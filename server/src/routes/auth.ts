@@ -38,6 +38,10 @@ router.post('/login', authLimiter, async (req, res) => {
       .eq('email', normalizedLoginId)
       .single()
 
+    if (userError && !userError.message.includes('JSON object')) {
+      console.log(`[AUTH] User table search error: ${userError.message}`)
+    }
+
     let foundUser = userData
     let role = userData?.role
 
@@ -48,6 +52,10 @@ router.post('/login', authLimiter, async (req, res) => {
         .select('*')
         .or(`email.eq.${normalizedLoginId},username.eq.${normalizedLoginId},teacher_id.eq.${normalizedLoginId}`)
         .single()
+      
+      if (teacherError && !teacherError.message.includes('JSON object')) {
+        console.log(`[AUTH] Teacher table search error: ${teacherError.message}`)
+      }
       
       if (teacherData) {
         foundUser = teacherData

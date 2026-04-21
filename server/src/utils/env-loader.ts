@@ -58,7 +58,8 @@ export function loadEnvFile(): string | null {
  */
 export function verifyEnvLoading(): void {
   const criticalVars = [
-    'MONGO_URI',
+    'SUPABASE_URL',
+    'SUPABASE_SERVICE_ROLE_KEY',
     'JWT_SECRET',
     'EMAIL_HOST',
     'EMAIL_USER',

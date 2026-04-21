@@ -99,6 +99,16 @@ app.use(
   })
 )
 
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    environment: envConfig.NODE_ENV,
+    supabase: !!envConfig.SUPABASE_URL,
+    timestamp: new Date().toISOString()
+  })
+})
+
 console.log('[STARTUP] Applying body parsing and sanitization...')
 app.use(express.json({ limit: '10mb' }))
 app.use(sanitizeInput)
