@@ -21,7 +21,7 @@ export const securityHeaders = (req: Request, res: Response, next: NextFunction)
   // Content Security Policy
   res.setHeader(
     'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:"
+    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data:"
   )
   
   // Referrer Policy
@@ -39,11 +39,11 @@ export const securityHeaders = (req: Request, res: Response, next: NextFunction)
 }
 
 /**
- * General rate limiter: 100 requests per 15 minutes per IP
+ * General rate limiter: 300 requests per 15 minutes per IP
  */
 export const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: 300,
   message: 'Too many requests from this IP, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,

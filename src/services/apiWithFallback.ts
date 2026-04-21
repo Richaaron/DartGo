@@ -61,9 +61,21 @@ async function apiFetch(endpoint: string, options: any = {}) {
   }
 
   let lastError: Error | null = null
-  const urlsToTry = activeAPI === PRIMARY_API_URL 
-    ? [PRIMARY_API_URL, BACKUP_API_URL]
-    : [BACKUP_API_URL, PRIMARY_API_URL]
+  
+  // Decide which URLs to try based on primary failure status
+  const urlsToTry: string[] = []
+  
+  if (primaryFailed) {
+    // If primary failed, try backup first, and only try primary if we've passed retry interval
+    urlsToTry.push(BACKUP_API_URL)
+    if (now - lastFailureTime > RETRY_INTERVAL) {
+      urlsToTry.push(PRIMARY_API_URL)
+    }
+  } else {
+    // Standard order: Primary then Backup
+    urlsToTry.push(PRIMARY_API_URL)
+    urlsToTry.push(BACKUP_API_URL)
+  }
 
   for (const url of urlsToTry) {
     try {

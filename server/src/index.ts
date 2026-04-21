@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
+import compression from 'compression'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { connectDB } from './config/db.js'
@@ -94,6 +95,7 @@ if (envConfig.NODE_ENV === 'production') {
 }
 
 console.log('[STARTUP] Applying security middleware...')
+app.use(compression())
 app.use(helmet())
 app.use(securityHeaders)
 
