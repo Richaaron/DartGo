@@ -1,0 +1,22 @@
+# Ignore backend directories for Vercel deployment
+# This prevents Vercel from trying to deploy them as separate services
+backend/
+server/
+lib/
+web/
+test/
+.claude/
+.codersinflow/
+.github/
+.qodo/
+.sixth/
+.vs/
+.vscode/
+Cdatadb/
+nerdc-curriculum-data/
+node_modules/
+dist/
+dist-ssr/
+*.local
+.env
+.env.*
