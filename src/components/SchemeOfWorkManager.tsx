@@ -78,8 +78,8 @@ export default function SchemeOfWorkManager({ teacherId }: SchemeOfWorkManagerPr
   const handleSubmit = async (id: string) => {
     try {
       const result = await submitSchemeOfWork(id)
-      setSchemes(schemes.map(s => s.id === id ? result.scheme : s))
-      if (selectedScheme?.id === id) setSelectedScheme(result.scheme)
+      setSchemes(schemes.map(s => s.id === id ? result : s))
+      if (selectedScheme?.id === id) setSelectedScheme(result)
     } catch (error) {
       console.error('Failed to submit scheme', error)
     }

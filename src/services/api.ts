@@ -128,13 +128,18 @@ export async function updateConfig(data: any): Promise<any> {
   return result
 }
 
-export async function fetchCurriculums(): Promise<Curriculum[]> {
+export async function fetchCurriculums(params: any = {}): Promise<Curriculum[]> {
   try {
-    const { data } = await apiService.get('/curriculum')
+    const query = new URLSearchParams(params).toString()
+    const { data } = await apiService.get(`/curriculum?${query}`)
     return data as Curriculum[]
   } catch {
     return DEV_CURRICULUMS
   }
+}
+
+export async function deleteCurriculum(id: string): Promise<void> {
+  await apiService.delete(`/curriculum/${id}`)
 }
 
 export async function fetchSchemesOfWork(subjectId: string): Promise<SchemeOfWork[]> {
@@ -146,8 +151,8 @@ export async function deleteSchemeOfWork(id: string): Promise<void> {
   await apiService.delete(`/scheme-of-work/${id}`)
 }
 
-export async function submitSchemeOfWork(data: Partial<SchemeOfWork>): Promise<SchemeOfWork> {
-  const { data: result } = await apiService.post('/scheme-of-work', data)
+export async function submitSchemeOfWork(id: string): Promise<SchemeOfWork> {
+  const { data: result } = await apiService.post(`/scheme-of-work/${id}/submit`, {})
   return result as SchemeOfWork
 }
 
@@ -176,8 +181,9 @@ export async function saveObservation(data: any): Promise<void> {
   await apiService.post('/observations', data)
 }
 
-export async function saveBulkResults(data: any): Promise<void> {
-  await apiService.post('/results/bulk', data)
+export async function saveBulkResults(data: any): Promise<{ message: string }> {
+  const { data: result } = await apiService.post('/results/bulk', data)
+  return result as { message: string }
 }
 
 export default apiService

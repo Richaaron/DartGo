@@ -136,7 +136,7 @@ export default function SubjectResultEntry() {
             academicYear: processedResults[0].academicYear,
             results: processedResults
           })
-          window.alert(res.message)
+          window.alert(res.message || 'Bulk upload successful')
           loadData()
           setShowBulkModal(false)
         } catch {
