@@ -35,7 +35,7 @@ export default function SubjectResultEntry() {
       setStudents(studentsData)
       setResults(resultsData)
       setSubjects(subjectsData)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to load results data', error)
     } finally {
       setIsLoading(false)
@@ -44,28 +44,30 @@ export default function SubjectResultEntry() {
 
   const filteredResults = useMemo(() => {
     const getResultDetailsForFilter = (result: SubjectResult) => {
-      const student = students.find((s) => s.id === result.studentId)
-      const subject = subjects.find((sub) => sub.id === result.subjectId)
+      const student = students.find((s: Student) => s.id === result.studentId)
+      const subject = subjects.find((sub: Subject) => sub.id === result.subjectId)
 
       return {
         ...result,
         studentName: student ? `${student.firstName} ${student.lastName}` : 'Unknown Student',
+        registrationNumber: student?.registrationNumber || '',
         subjectName: subject?.name || 'Unknown Subject',
         class: student?.class || '',
       }
     }
 
     return results
-      .filter((result) => {
+      .filter((result: SubjectResult) => {
         const details = getResultDetailsForFilter(result)
-        const matchesFilter =
+        const matchesSearch = 
           details.studentName.toLowerCase().includes(filterTerm.toLowerCase()) ||
+          details.registrationNumber.toLowerCase().includes(filterTerm.toLowerCase()) ||
           details.subjectName.toLowerCase().includes(filterTerm.toLowerCase())
-
+        
         const matchesTerm = selectedTerm === 'All' || result.term === selectedTerm
         const matchesStudent = selectedStudent === 'All' || result.studentId === selectedStudent
 
-        return matchesFilter && matchesTerm && matchesStudent
+        return matchesSearch && matchesTerm && matchesStudent
       })
       .map(getResultDetailsForFilter)
   }, [results, students, subjects, filterTerm, selectedTerm, selectedStudent])

@@ -58,7 +58,7 @@ export default function Reports() {
         setSubjects(subjectsData)
         setObservations(observationsData)
         setConfig(configData)
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to load report data', error)
       } finally {
         setIsLoading(false)
@@ -68,15 +68,15 @@ export default function Reports() {
   }, [])
 
   const selectedStudent = useMemo(() => 
-    students.find(s => s.id === selectedStudentId), 
+    students.find((s: Student) => s.id === selectedStudentId), 
   [students, selectedStudentId])
 
   const studentResults = useMemo(() => 
-    results.filter(r => r.studentId === selectedStudentId),
+    results.filter((r: SubjectResult) => r.studentId === selectedStudentId),
   [results, selectedStudentId])
 
   const studentObservation = useMemo(() => 
-    observations.find(o => o.studentId === selectedStudentId),
+    observations.find((o: any) => o.studentId === selectedStudentId),
   [observations, selectedStudentId])
 
   useEffect(() => {

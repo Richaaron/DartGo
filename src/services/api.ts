@@ -141,3 +141,43 @@ export async function fetchSchemesOfWork(subjectId: string): Promise<SchemeOfWor
   const { data } = await apiService.get(`/scheme-of-work/${subjectId}`)
   return data as SchemeOfWork[]
 }
+
+export async function deleteSchemeOfWork(id: string): Promise<void> {
+  await apiService.delete(`/scheme-of-work/${id}`)
+}
+
+export async function submitSchemeOfWork(data: Partial<SchemeOfWork>): Promise<SchemeOfWork> {
+  const { data: result } = await apiService.post('/scheme-of-work', data)
+  return result as SchemeOfWork
+}
+
+export async function updateSchemeOfWork(id: string, data: Partial<SchemeOfWork>): Promise<SchemeOfWork> {
+  const { data: result } = await apiService.put(`/scheme-of-work/${id}`, data)
+  return result as SchemeOfWork
+}
+
+export async function fetchAttendance(params: any = {}): Promise<any[]> {
+  const query = new URLSearchParams(params).toString()
+  const { data } = await apiService.get(`/attendance?${query}`)
+  return data as any[]
+}
+
+export async function saveBulkAttendance(date: string, records: any[]): Promise<void> {
+  await apiService.post('/attendance/bulk', { date, records })
+}
+
+export async function fetchObservations(params: any = {}): Promise<any[]> {
+  const query = new URLSearchParams(params).toString()
+  const { data } = await apiService.get(`/observations?${query}`)
+  return data as any[]
+}
+
+export async function saveObservation(data: any): Promise<void> {
+  await apiService.post('/observations', data)
+}
+
+export async function saveBulkResults(data: any): Promise<void> {
+  await apiService.post('/results/bulk', data)
+}
+
+export default apiService

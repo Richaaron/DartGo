@@ -26,14 +26,16 @@ export default function AttendancePage() {
         
         // Initialize attendance records
         const records: Record<string, { status: string, remarks: string }> = {}
-        studentsData.forEach(s => {
-          const existing = existingAttendance.find(a => a.studentId._id === s.id)
+        studentsData.forEach((s: Student) => {
+          const existing = existingAttendance.find((a: any) => 
+            a.studentId?._id === s.id || a.studentId === s.id
+          )
           records[s.id] = existing 
             ? { status: existing.status, remarks: existing.remarks || '' } 
             : { status: 'Present', remarks: '' }
         })
         setAttendanceRecords(records)
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to load attendance data', error)
       } finally {
         setIsLoading(false)
@@ -45,7 +47,7 @@ export default function AttendancePage() {
   const filteredStudents = useMemo(() => {
     return selectedClass === 'All' 
       ? students 
-      : students.filter(s => s.class === selectedClass)
+      : students.filter((s: Student) => s.class === selectedClass)
   }, [students, selectedClass])
 
   const handleStatusChange = (studentId: string, status: string) => {
@@ -66,7 +68,7 @@ export default function AttendancePage() {
     setIsSaving(true)
     setMessage({ type: '', text: '' })
     try {
-      const recordsToSave = filteredStudents.map(s => ({
+      const recordsToSave = filteredStudents.map((s: Student) => ({
         studentId: s.id,
         ...attendanceRecords[s.id]
       }))
