@@ -6,7 +6,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { supabase } from './config/supabase.js'
 import { getEnvConfig, EnvConfig } from './utils/envConfig.js'
-import { loadEnvFile, verifyEnvLoading, printDiagnostics } from './utils/env-loader.js'
+import { loadEnvFile, verifyEnvLoading } from './utils/env-loader.js'
 import {
   securityHeaders,
   generalLimiter,
@@ -61,7 +61,6 @@ try {
 } catch (error) {
   console.error('[STARTUP] ❌ Configuration validation failed!')
   console.error(error instanceof Error ? error.message : String(error))
-  printDiagnostics()
   
   if (process.env.VERCEL) {
     console.error('[STARTUP] ⚠️ Running on Vercel: Continuing with potentially invalid configuration')
@@ -77,8 +76,8 @@ console.log('\n[STARTUP] Step 3: Initializing Express application...')
 const app = express()
 const PORT = envConfig?.PORT || 3001
 
-// HTTPS enforcement in production
-if (envConfig.NODE_ENV === 'production') {
+// HTTPS enforcement in production (Skip on Vercel as it handles it)
+if (envConfig.NODE_ENV === 'production' && !process.env.VERCEL) {
   app.use((req, res, next) => {
     if (!req.secure && req.get('x-forwarded-proto') !== 'https') {
       return res.redirect(`https://${req.get('host')}${req.url}`)
