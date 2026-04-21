@@ -2,12 +2,11 @@
 
 ## Overview
 
-Deploy your Folusho Reporting Sheet frontend to Vercel (where your backend is already set up).
+Deploy your Folusho Reporting Sheet as a full-stack application entirely on Vercel.
 
 **Architecture**:
-- **Frontend**: Vercel (React + Vite)
-- **Backend**: Render (Node.js + MongoDB)
-- **Database**: MongoDB Atlas
+- **Frontend & Backend**: Vercel (React + Vite + Serverless Functions)
+- **Database**: Supabase (PostgreSQL)
 
 ---
 
@@ -16,26 +15,22 @@ Deploy your Folusho Reporting Sheet frontend to Vercel (where your backend is al
 Before starting:
 - [ ] GitHub account with code pushed
 - [ ] Vercel account (free at https://vercel.com)
-- [ ] Backend already deployed on Render
-- [ ] MongoDB Atlas connection string
-- [ ] Gmail app password
+- [ ] Supabase project set up and schema applied
+- [ ] Gmail app password for notifications
 
 ---
 
 ## Step 1: Push Code to GitHub
 
 ```bash
-cd "c:\Users\PASTOR\Desktop\Folusho Reporting Sheet"
 git add .
-git commit -m "Deploy to Vercel"
+git commit -m "feat: move backend to Vercel serverless"
 git push origin main
 ```
 
 ---
 
-## Step 2: Deploy Frontend to Vercel
-
-### Option A: Using Vercel Dashboard (Recommended)
+## Step 2: Deploy to Vercel
 
 1. **Go to Vercel Dashboard**
    - Visit https://vercel.com/dashboard
@@ -54,32 +49,29 @@ git push origin main
 
 4. **Add Environment Variables**
    - Click "Environment Variables"
-   - Add these variables:
+   - Add the following variables:
 
-   ```
-   VITE_API_URL=https://folusho-backend.onrender.com/api
-   ```
+   **Frontend Settings:**
+   - `VITE_API_URL`: `/api`
+
+   **Database (Supabase):**
+   - `SUPABASE_URL`: (From Supabase API settings)
+   - `SUPABASE_SERVICE_ROLE_KEY`: (From Supabase API settings - use Service Role, not Anon)
+
+   **Security:**
+   - `JWT_SECRET`: (A long random string for session security)
+   - `NODE_ENV`: `production`
+
+   **Email (SMTP):**
+   - `SMTP_HOST`: `smtp.gmail.com`
+   - `SMTP_PORT`: `587`
+   - `SMTP_USER`: `folushovictoryschool@gmail.com`
+   - `SMTP_PASS`: (Your Gmail App Password)
+   - `SMTP_FROM`: `folushovictoryschool@gmail.com`
 
 5. **Deploy**
    - Click "Deploy"
-   - Wait for deployment (2-5 minutes)
    - Your site will be live at: `https://your-project.vercel.app`
-
-### Option B: Using Vercel CLI
-
-```bash
-# Install Vercel CLI
-npm install -g vercel
-
-# Deploy
-vercel
-
-# Follow prompts:
-# - Link to existing project or create new
-# - Set build command: npm run build
-# - Set output directory: dist
-# - Add environment variables when prompted
-```
 
 ---
 

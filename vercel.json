@@ -39,7 +39,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://folusho-backend.onrender.com/api/:path*"
+      "destination": "/api"
     }
   ]
 }

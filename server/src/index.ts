@@ -146,7 +146,7 @@ app.use(errorHandler)
 // Step 5: Connect to database and start server
 let server: any
 
-async function startServer() {
+export async function startServer() {
   try {
     console.log('[STARTUP] Step 5: Connecting to Supabase...')
     const { data, error } = await supabase.from('users').select('count', { count: 'exact', head: true })
@@ -163,30 +163,36 @@ async function startServer() {
       console.log('╚════════════════════════════════════════════════════════════╝\n')
     }
 
-    console.log('\n[STARTUP] Step 6: Starting HTTP server...')
-    server = app.listen(PORT, () => {
-      console.log('\n╔════════════════════════════════════════════════════════════╗')
-      console.log('║               ✓ Server Successfully Started                ║')
-      console.log('╠════════════════════════════════════════════════════════════╣')
-      console.log(`║ URL: http://localhost:${PORT}${' '.repeat(35 - String(PORT).length)}║`)
-      console.log(`║ Environment: ${envConfig.NODE_ENV}${' '.repeat(39 - envConfig.NODE_ENV.length)}║`)
-      console.log('║ Features:                                                  ║')
-      console.log('║   ✓ Security headers enabled                               ║')
-      console.log('║   ✓ CORS configured                                        ║')
-      console.log('║   ✓ Rate limiting active                                   ║')
-      console.log('║   ✓ Supabase connected                                     ║')
-      console.log('║   ✓ Authentication ready                                   ║')
-      console.log('║   ✓ Graceful shutdown active                               ║')
-      console.log('╚════════════════════════════════════════════════════════════╝\n')
-    })
+    // Only listen if not running in a serverless environment
+    if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+      console.log('\n[STARTUP] Step 6: Starting HTTP server...')
+      server = app.listen(PORT, () => {
+        console.log('\n╔════════════════════════════════════════════════════════════╗')
+        console.log('║               ✓ Server Successfully Started                ║')
+        console.log('╠════════════════════════════════════════════════════════════╣')
+        console.log(`║ URL: http://localhost:${PORT}${' '.repeat(35 - String(PORT).length)}║`)
+        console.log(`║ Environment: ${envConfig.NODE_ENV}${' '.repeat(39 - envConfig.NODE_ENV.length)}║`)
+        console.log('╚════════════════════════════════════════════════════════════╝\n')
+      })
+    } else {
+      console.log('[STARTUP] Step 6: Serverless environment detected - app exported')
+    }
   } catch (err) {
     console.error('[STARTUP] ❌ Failed to start server:')
     console.error(err)
-    process.exit(1)
+    if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+      process.exit(1)
+    }
+    throw err
   }
 }
 
-startServer()
+// Initial server start for local development
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  startServer()
+}
+
+export default app
 
 // Graceful shutdown
 const gracefulShutdown = () => {
