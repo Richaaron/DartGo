@@ -3,6 +3,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 import compression from 'compression'
 import path from 'path'
+import mongoose from 'mongoose'
 import { fileURLToPath } from 'url'
 import { connectDB } from './config/db.js'
 import { getEnvConfig, EnvConfig } from './utils/envConfig.js'
@@ -142,7 +143,15 @@ app.use('/api/teachers', authenticate, activityLogger, teacherRoutes)
 app.use('/api/subjects', authenticate, activityLogger, subjectRoutes)
 
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok' })
+  const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+  const status = dbStatus === 'connected' ? 'ok' : 'error'
+  
+  res.status(status === 'ok' ? 200 : 503).json({ 
+    status, 
+    database: dbStatus,
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  })
 })
 
 console.log('[STARTUP] Finalizing middleware...')
@@ -150,6 +159,8 @@ app.use(notFoundHandler)
 app.use(errorHandler)
 
 // Step 5: Connect to database and start server
+let server: any
+
 async function startServer() {
   try {
     console.log('[STARTUP] Step 5: Connecting to database...')
@@ -157,7 +168,7 @@ async function startServer() {
     console.log('[STARTUP] ✓ Database connected')
 
     console.log('\n[STARTUP] Step 6: Starting HTTP server...')
-    app.listen(PORT, () => {
+    server = app.listen(PORT, () => {
       console.log('\n╔════════════════════════════════════════════════════════════╗')
       console.log('║               ✓ Server Successfully Started                ║')
       console.log('╠════════════════════════════════════════════════════════════╣')
@@ -169,6 +180,7 @@ async function startServer() {
       console.log('║   ✓ Rate limiting active                                   ║')
       console.log('║   ✓ MongoDB connected                                      ║')
       console.log('║   ✓ Authentication ready                                   ║')
+      console.log('║   ✓ Graceful shutdown active                               ║')
       console.log('╚════════════════════════════════════════════════════════════╝\n')
     })
   } catch (error) {
@@ -179,5 +191,39 @@ async function startServer() {
     process.exit(1)
   }
 }
+
+/**
+ * GRACEFUL SHUTDOWN
+ * This ensures all connections are properly closed before the process exits
+ */
+function gracefulShutdown(signal: string) {
+  console.log(`\n[SHUTDOWN] ${signal} received. Starting graceful shutdown...`)
+  
+  if (server) {
+    server.close(async () => {
+      console.log('[SHUTDOWN] HTTP server closed')
+      
+      try {
+        await mongoose.connection.close()
+        console.log('[SHUTDOWN] MongoDB connection closed')
+        process.exit(0)
+      } catch (err) {
+        console.error('[SHUTDOWN] Error during MongoDB disconnection:', err)
+        process.exit(1)
+      }
+    })
+    
+    // Force shutdown if it takes too long
+    setTimeout(() => {
+      console.error('[SHUTDOWN] Could not close connections in time, forcing shut down')
+      process.exit(1)
+    }, 10000)
+  } else {
+    process.exit(0)
+  }
+}
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'))
+process.on('SIGINT', () => gracefulShutdown('SIGINT'))
 
 startServer()
