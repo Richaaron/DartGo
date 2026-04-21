@@ -18,6 +18,7 @@ import {
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js'
 import studentRoutes from './routes/students.js'
 import teacherRoutes from './routes/teachers.js'
+import { User } from './models/User.js'
 import subjectRoutes from './routes/subjects.js'
 import resultRoutes from './routes/results.js'
 import authRoutes from './routes/auth.js'
@@ -169,6 +170,16 @@ async function startServer() {
     console.log('[STARTUP] Step 5: Connecting to database...')
     await connectDB()
     console.log('[STARTUP] ✓ Database connected')
+
+    // Check if database is empty
+    const userCount = await User.countDocuments()
+    if (userCount === 0) {
+      console.warn('\n╔════════════════════════════════════════════════════════════╗')
+      console.log('║ ⚠️  WARNING: DATABASE IS EMPTY                             ║')
+      console.log('║ No users found in the database. Login will not work!       ║')
+      console.log('║ Please run: npm run seed                                   ║')
+      console.log('╚════════════════════════════════════════════════════════════╝\n')
+    }
 
     console.log('\n[STARTUP] Step 6: Starting HTTP server...')
     server = app.listen(PORT, () => {

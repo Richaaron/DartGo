@@ -28,27 +28,22 @@ router.post('/login', authLimiter, async (req, res) => {
   try {
     const { email, password } = req.body
 
-    // Validate input
-    const emailValidation = validateEmail(email)
-    const passwordValidation = validatePassword(password)
-
-    if (!emailValidation.isValid || !passwordValidation.isValid) {
+    if (!email || !password) {
       return res.status(400).json({
-        error: 'Invalid email or password format',
-        code: 'INVALID_INPUT',
+        error: 'Email/Username and password are required',
+        code: 'MISSING_FIELDS',
       })
     }
 
-    const normalizedEmail = emailValidation.value
+    const normalizedLoginId = email.toLowerCase().trim()
 
     // Try to find user in User collection
-    let user: any = await User.findOne({ email: normalizedEmail })
+    let user: any = await User.findOne({ email: normalizedLoginId })
     let isValidUser = false
 
     if (user) {
       isValidUser = await user.comparePassword(password)
       if (!isValidUser) {
-        // Generic error to prevent user enumeration
         return res.status(401).json({
           error: 'Invalid credentials',
           code: 'INVALID_CREDENTIALS',
@@ -59,7 +54,7 @@ router.post('/login', authLimiter, async (req, res) => {
     // If not found in User, try Teacher
     if (!user) {
       user = await Teacher.findOne({
-        $or: [{ email: normalizedEmail }, { username: normalizedEmail }],
+        $or: [{ email: normalizedLoginId }, { username: normalizedLoginId }],
       })
       if (user) {
         isValidUser = await user.comparePassword(password)
@@ -74,20 +69,22 @@ router.post('/login', authLimiter, async (req, res) => {
 
     // If not found in Teacher, try Student (parent login)
     if (!user) {
-      const student = await Student.findOne({ parentUsername: normalizedEmail })
+      const student = await Student.findOne({ 
+        $or: [
+          { parentUsername: normalizedLoginId },
+          { email: normalizedLoginId }
+        ]
+      })
       if (student) {
         isValidUser = await student.compareParentPassword(password)
         if (isValidUser) {
           const token = generateToken({
             id: student._id.toString(),
             role: 'Parent',
-            email: normalizedEmail,
+            email: normalizedLoginId,
           })
 
-          // Log successful parent login (non-PII)
-          console.log(
-            `[AUTH] Parent login successful: ${hashSensitiveData(normalizedEmail)}`
-          )
+          console.log(`[AUTH] Parent login successful: ${hashSensitiveData(normalizedLoginId)}`)
 
           return res.json({
             token,
@@ -101,6 +98,8 @@ router.post('/login', authLimiter, async (req, res) => {
           })
         }
       }
+      
+      // If still not found or invalid
       return res.status(401).json({
         error: 'Invalid credentials',
         code: 'INVALID_CREDENTIALS',
@@ -115,7 +114,7 @@ router.post('/login', authLimiter, async (req, res) => {
     })
 
     // Log successful login (non-PII)
-    console.log(`[AUTH] Login successful: ${hashSensitiveData(normalizedEmail)} (${user.role || 'Teacher'})`)
+    console.log(`[AUTH] Login successful: ${hashSensitiveData(normalizedLoginId)} (${user.role || 'Teacher'})`)
 
     res.json({
       token,
