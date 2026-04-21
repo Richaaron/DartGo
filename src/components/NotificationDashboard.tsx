@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Bell, CheckCircle, AlertCircle, Trash2, RotateCcw, Filter } from 'lucide-react'
+import { Bell, CheckCircle, AlertCircle, Trash2, RotateCcw } from 'lucide-react'
 import notificationAPI, { Notification } from '../services/notificationAPI'
 
 export const NotificationDashboard: React.FC = () => {
@@ -131,7 +131,7 @@ export const NotificationDashboard: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-600 text-sm">Total</p>
-              <p className="text-2xl font-bold text-blue-600">{stats.total}</p>
+              <p className="text-2xl font-bold text-blue-600">{stats.totalSent + stats.totalFailed + stats.totalPending}</p>
             </div>
             <Bell className="w-8 h-8 text-blue-600 opacity-20" />
           </div>

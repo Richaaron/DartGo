@@ -1,5 +1,5 @@
 @echo off
-REM Folusho Reporting Sheet - Git Push Script
+REM Folusho Reporting Sheet - GitHub Push Script
 REM This script will add, commit, and push all changes to GitHub
 
 echo.
@@ -22,6 +22,7 @@ echo.
 
 REM Show current status
 echo [STEP 1] Checking git status...
+echo.
 git status
 echo.
 
@@ -29,6 +30,7 @@ REM Ask for confirmation
 set /p confirm="Do you want to continue with push? (y/n): "
 if /i not "%confirm%"=="y" (
     echo Cancelled.
+    pause
     exit /b 0
 )
 
@@ -44,16 +46,17 @@ echo ✓ Changes added
 
 echo.
 echo [STEP 3] Committing changes...
-git commit -m "feat: implement critical security and stability fixes
+git commit -m "Deploy to Vercel - Production Ready
 
-- Add input validation system for all forms
-- Add 30-second request timeout protection
-- Add 30-minute session timeout with activity reset
-- Add error boundary component for crash handling
-- Add HTTPS enforcement in production
+- Fix all runtime errors
+- Implement critical security fixes
+- Add input validation system
+- Add request timeout protection
+- Add session timeout (30 minutes)
+- Add error boundary component
+- Add HTTPS enforcement
 - Disable development credentials in production
-- Improve MongoDB + Supabase fallback routing
-- Update email notifications with new app password
+- Create Vercel deployment configuration
 - Add comprehensive documentation"
 
 if errorlevel 1 (
@@ -78,6 +81,7 @@ if errorlevel 1 (
     echo   git config --global user.name "Your Name"
     echo   git config --global user.email "your-email@gmail.com"
     echo   git push origin main
+    echo.
     pause
     exit /b 1
 )
@@ -89,6 +93,9 @@ echo ║               ✓ Push Successful!                          ║
 echo ╠════════════════════════════════════════════════════════════╣
 echo ║ Your changes have been pushed to GitHub                   ║
 echo ║ Check: https://github.com/your-username/your-repo        ║
+echo ║                                                            ║
+echo ║ Next: Deploy to Vercel                                    ║
+echo ║ Visit: https://vercel.com/dashboard                       ║
 echo ╚════════════════════════════════════════════════════════════╝
 echo.
 

@@ -1,4 +1,3 @@
-/* global localStorage, fetch, URLSearchParams */
 import { Student, Teacher, Subject, SubjectResult, Curriculum, SchemeOfWork, DEFAULT_SUBJECTS } from '../types'
 import apiWithFallback from './apiWithFallback'
 
@@ -43,251 +42,143 @@ const DEV_CURRICULUMS: Curriculum[] = [
   },
 ]
 
-const DEV_SCHEMES_OF_WORK: SchemeOfWork[] = DEV_SUBJECTS.filter((subject) =>
-  ['Pre-Nursery', 'Nursery', 'Primary', 'Secondary'].includes(subject.level)
-).slice(0, 12).map((subject, index) => {
-  const classMap: Record<string, string> = {
-    'Pre-Nursery': 'Pre-Nursery A',
-    Nursery: 'Nursery 1',
-    Primary: `Primary ${Math.min(index + 1, 5)}`,
-    Secondary: index % 2 === 0 ? 'Jss 1' : 'Ss1',
-  }
-
-  return {
-    id: `dev-scheme-${subject.id}`,
-    teacherId: 'teacher1@folusho.com',
-    subjectId: subject.id,
-    classId: classMap[subject.level] || 'Primary 1',
-    academicYear: '2025/2026',
-    term: 3,
-    curriculumId: subject.level === 'Secondary' ? 'dev-curriculum-secondary' : 'dev-curriculum-primary',
-    topics: [
-      {
-        weekNumber: 1,
-        topic: `Introduction to ${subject.name}`,
-        duration: 1,
-        objectives: [`Understand the basics of ${subject.name}`],
-        resources: ['Teacher guide', 'Class notes'],
-        assessmentMethod: 'Class exercise',
-        status: 'PLANNED',
-      },
-      {
-        weekNumber: 2,
-        topic: `${subject.name} fundamentals`,
-        duration: 1,
-        objectives: [`Explain key ideas in ${subject.name}`],
-        resources: ['Textbook', 'Board work'],
-        assessmentMethod: 'Oral assessment',
-        status: 'PLANNED',
-      },
-    ],
-    uploadedBy: 'teacher1@folusho.com',
-    uploadedDate: new Date().toISOString(),
-    lastUpdated: new Date().toISOString(),
-    version: 1,
-    status: 'APPROVED',
-    approvedBy: 'admin@folusho.com',
-    approvalDate: new Date().toISOString(),
-    notes: `Local development fallback scheme for ${subject.name}`,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  }
-})
-
-// Wrapper functions for compatibility
-async function get<T>(url: string, config: any = {}): Promise<{ data: T }> {
-  const data = await apiWithFallback.get(url, config)
-  return data
-}
-
-async function post<T>(url: string, data: any = {}, config: any = {}): Promise<{ data: T }> {
-  const result = await apiWithFallback.post(url, data, config)
-  return result
-}
-
-async function put<T>(url: string, data: any = {}, config: any = {}): Promise<{ data: T }> {
-  const result = await apiWithFallback.put(url, data, config)
-  return result
-}
-
-async function patch<T>(url: string, data: any = {}, config: any = {}): Promise<{ data: T }> {
-  const result = await apiWithFallback.patch(url, data, config)
-  return result
-}
-
-async function del<T>(url: string, config: any = {}): Promise<{ data: T }> {
-  const result = await apiWithFallback.delete(url, config)
-  return result
-}
-
-// Students
 export async function fetchStudents(): Promise<Student[]> {
-  return apiFetch('/students')
+  const { data } = await apiWithFallback.get('/students')
+  return data as Student[]
 }
 
 export async function fetchStudent(id: string): Promise<Student> {
-  return apiFetch(`/students/${id}`)
+  const { data } = await apiWithFallback.get(`/students/${id}`)
+  return data as Student
 }
 
 export async function createStudent(data: Partial<Student>): Promise<Student> {
-  return apiFetch('/students', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  })
+  const { data: result } = await apiWithFallback.post('/students', data)
+  return result as Student
 }
 
 export async function updateStudent(id: string, data: Partial<Student>): Promise<Student> {
-  return apiFetch(`/students/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  })
+  const { data: result } = await apiWithFallback.put(`/students/${id}`, data)
+  return result as Student
 }
 
 export async function deleteStudent(id: string): Promise<void> {
-  return apiFetch(`/students/${id}`, { 
-    method: 'DELETE'
-  })
+  await apiWithFallback.delete(`/students/${id}`)
 }
 
-// Teachers
 export async function fetchTeachers(): Promise<Teacher[]> {
-  return apiFetch('/teachers')
+  const { data } = await apiWithFallback.get('/teachers')
+  return data as Teacher[]
 }
 
 export async function fetchTeacher(id: string): Promise<Teacher> {
-  return apiFetch(`/teachers/${id}`)
+  const { data } = await apiWithFallback.get(`/teachers/${id}`)
+  return data as Teacher
 }
 
 export async function createTeacher(data: Partial<Teacher>): Promise<Teacher> {
-  return apiFetch('/teachers', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  })
+  const { data: result } = await apiWithFallback.post('/teachers', data)
+  return result as Teacher
 }
 
 export async function updateTeacher(id: string, data: Partial<Teacher>): Promise<Teacher> {
-  return apiFetch(`/teachers/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  })
+  const { data: result } = await apiWithFallback.put(`/teachers/${id}`, data)
+  return result as Teacher
 }
 
 export async function deleteTeacher(id: string): Promise<void> {
-  return apiFetch(`/teachers/${id}`, { 
-    method: 'DELETE'
-  })
+  await apiWithFallback.delete(`/teachers/${id}`)
 }
 
-// Subjects
 export async function fetchSubjects(): Promise<Subject[]> {
   try {
-    return await apiFetch('/subjects')
+    const { data } = await apiWithFallback.get('/subjects')
+    return data as Subject[]
   } catch {
     return DEV_SUBJECTS
   }
 }
 
 export async function fetchSubject(id: string): Promise<Subject> {
-  return apiFetch(`/subjects/${id}`)
+  const { data } = await apiWithFallback.get(`/subjects/${id}`)
+  return data as Subject
 }
 
 export async function createSubject(data: Partial<Subject>): Promise<Subject> {
-  return apiFetch('/subjects', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  })
+  const { data: result } = await apiWithFallback.post('/subjects', data)
+  return result as Subject
 }
 
 export async function updateSubject(id: string, data: Partial<Subject>): Promise<Subject> {
-  return apiFetch(`/subjects/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  })
+  const { data: result } = await apiWithFallback.put(`/subjects/${id}`, data)
+  return result as Subject
 }
 
 export async function deleteSubject(id: string): Promise<void> {
-  return apiFetch(`/subjects/${id}`, {
-    method: 'DELETE'
-  })
+  await apiWithFallback.delete(`/subjects/${id}`)
 }
 
-// Results
-export async function fetchResults(params: { studentId?: string, term?: string, academicYear?: string } = {}): Promise<SubjectResult[]> {
+export async function fetchResults(params: { studentId?: string; term?: string; academicYear?: string } = {}): Promise<SubjectResult[]> {
   const query = new URLSearchParams(params as any).toString()
-  return apiFetch(`/results?${query}`)
+  const { data } = await apiWithFallback.get(`/results?${query}`)
+  return data as SubjectResult[]
 }
 
 export async function createResult(data: Partial<SubjectResult>): Promise<SubjectResult> {
-  return apiFetch('/results', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  })
+  const { data: result } = await apiWithFallback.post('/results', data)
+  return result as SubjectResult
 }
 
 export async function updateResult(id: string, data: Partial<SubjectResult>): Promise<SubjectResult> {
-  return apiFetch(`/results/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  })
+  const { data: result } = await apiWithFallback.put(`/results/${id}`, data)
+  return result as SubjectResult
 }
 
 export async function deleteResult(id: string): Promise<void> {
-  return apiFetch(`/results/${id}`, {
-    method: 'DELETE'
-  })
+  await apiWithFallback.delete(`/results/${id}`)
 }
 
-export async function saveBulkResults(data: { term: string, academicYear: string, results: any[] }): Promise<{ message: string }> {
-  return apiFetch('/results/bulk', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  })
+export async function saveBulkResults(data: { term: string; academicYear: string; results: any[] }): Promise<{ message: string }> {
+  const { data: result } = await apiWithFallback.post('/results/bulk', data)
+  return result as { message: string }
 }
 
-// Attendance
-export async function fetchAttendance(params: { studentId?: string, date?: string, startDate?: string, endDate?: string } = {}): Promise<any[]> {
+export async function fetchAttendance(params: { studentId?: string; date?: string; startDate?: string; endDate?: string } = {}): Promise<any[]> {
   const query = new URLSearchParams(params as any).toString()
-  return apiFetch(`/attendance?${query}`)
+  const { data } = await apiWithFallback.get(`/attendance?${query}`)
+  return data as any[]
 }
 
-export async function saveBulkAttendance(date: string, records: { studentId: string, status: string, remarks?: string }[]): Promise<void> {
-  return apiFetch('/attendance/bulk', {
-    method: 'POST',
-    body: JSON.stringify({ date, records }),
-  })
+export async function saveBulkAttendance(date: string, records: { studentId: string; status: string; remarks?: string }[]): Promise<void> {
+  await apiWithFallback.post('/attendance/bulk', { date, records })
 }
 
-// Observations
-export async function fetchObservations(params: { studentId?: string, term?: string, academicYear?: string } = {}): Promise<any[]> {
+export async function fetchObservations(params: { studentId?: string; term?: string; academicYear?: string } = {}): Promise<any[]> {
   const query = new URLSearchParams(params as any).toString()
-  return apiFetch(`/observations?${query}`)
+  const { data } = await apiWithFallback.get(`/observations?${query}`)
+  return data as any[]
 }
 
 export async function saveObservation(data: any): Promise<any> {
-  return apiFetch('/observations', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  })
+  const { data: result } = await apiWithFallback.post('/observations', data)
+  return result
 }
 
-// Config
 export async function fetchConfig(): Promise<any> {
-  return apiFetch('/config')
+  const { data } = await apiWithFallback.get('/config')
+  return data
 }
 
 export async function updateConfig(data: any): Promise<any> {
-  return apiFetch('/config', {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  })
+  const { data: result } = await apiWithFallback.put('/config', data)
+  return result
 }
 
-// Curriculum
-export async function fetchCurriculums(params: { level?: string, status?: string } = {}): Promise<Curriculum[]> {
+export async function fetchCurriculums(params: { level?: string; status?: string } = {}): Promise<Curriculum[]> {
   const query = new URLSearchParams(params as any).toString()
-
   try {
-    return await apiFetch(`/curriculum?${query}`)
+    const { data } = await apiWithFallback.get(`/curriculum?${query}`)
+    return data as Curriculum[]
   } catch {
     return DEV_CURRICULUMS.filter((curriculum) => {
       const matchesLevel = !params.level || curriculum.level === params.level
@@ -298,132 +189,111 @@ export async function fetchCurriculums(params: { level?: string, status?: string
 }
 
 export async function fetchCurriculum(id: string): Promise<Curriculum> {
-  return apiFetch(`/curriculum/${id}`)
+  const { data } = await apiWithFallback.get(`/curriculum/${id}`)
+  return data as Curriculum
 }
 
 export async function createCurriculum(data: Partial<Curriculum>): Promise<Curriculum> {
-  return apiFetch('/curriculum', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  })
+  const { data: result } = await apiWithFallback.post('/curriculum', data)
+  return result as Curriculum
 }
 
 export async function updateCurriculum(id: string, data: Partial<Curriculum>): Promise<Curriculum> {
-  return apiFetch(`/curriculum/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  })
+  const { data: result } = await apiWithFallback.put(`/curriculum/${id}`, data)
+  return result as Curriculum
 }
 
 export async function deleteCurriculum(id: string): Promise<void> {
-  return apiFetch(`/curriculum/${id}`, {
-    method: 'DELETE'
-  })
+  await apiWithFallback.delete(`/curriculum/${id}`)
 }
 
 export async function fetchCurriculumsByLevel(level: string): Promise<Curriculum[]> {
-  return apiFetch(`/curriculum/level/${level}`)
+  const { data } = await apiWithFallback.get(`/curriculum/level/${level}`)
+  return data as Curriculum[]
 }
 
-// Scheme of Work
 export async function fetchSchemesOfWork(teacherId: string): Promise<SchemeOfWork[]> {
   try {
-    return await apiFetch(`/scheme-of-work/teacher/${teacherId}`)
+    const { data } = await apiWithFallback.get(`/scheme-of-work/teacher/${teacherId}`)
+    return data as SchemeOfWork[]
   } catch {
-    return DEV_SCHEMES_OF_WORK.filter((scheme) => scheme.teacherId === teacherId)
+    return []
   }
 }
 
 export async function fetchSchemeOfWork(id: string): Promise<SchemeOfWork> {
-  return apiFetch(`/scheme-of-work/${id}`)
+  const { data } = await apiWithFallback.get(`/scheme-of-work/${id}`)
+  return data as SchemeOfWork
 }
 
 export async function createSchemeOfWork(data: Partial<SchemeOfWork>): Promise<SchemeOfWork> {
-  return apiFetch('/scheme-of-work', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  })
+  const { data: result } = await apiWithFallback.post('/scheme-of-work', data)
+  return result as SchemeOfWork
 }
 
 export async function updateSchemeOfWork(id: string, data: Partial<SchemeOfWork>): Promise<SchemeOfWork> {
-  return apiFetch(`/scheme-of-work/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  })
+  const { data: result } = await apiWithFallback.put(`/scheme-of-work/${id}`, data)
+  return result as SchemeOfWork
 }
 
-export async function submitSchemeOfWork(id: string): Promise<{ message: string, scheme: SchemeOfWork }> {
-  return apiFetch(`/scheme-of-work/${id}/submit`, {
-    method: 'PUT',
-  })
+export async function submitSchemeOfWork(id: string): Promise<{ message: string; scheme: SchemeOfWork }> {
+  const { data } = await apiWithFallback.put(`/scheme-of-work/${id}/submit`, {})
+  return data as { message: string; scheme: SchemeOfWork }
 }
 
-export async function approveSchemeOfWork(id: string): Promise<{ message: string, scheme: SchemeOfWork }> {
-  return apiFetch(`/scheme-of-work/${id}/approve`, {
-    method: 'PUT',
-  })
+export async function approveSchemeOfWork(id: string): Promise<{ message: string; scheme: SchemeOfWork }> {
+  const { data } = await apiWithFallback.put(`/scheme-of-work/${id}/approve`, {})
+  return data as { message: string; scheme: SchemeOfWork }
 }
 
 export async function updateTopicStatus(schemeId: string, weekNumber: number, status: string): Promise<SchemeOfWork> {
-  return apiFetch(`/scheme-of-work/${schemeId}/topic/${weekNumber}`, {
-    method: 'PUT',
-    body: JSON.stringify({ status }),
-  })
+  const { data } = await apiWithFallback.put(`/scheme-of-work/${schemeId}/topic/${weekNumber}`, { status })
+  return data as SchemeOfWork
 }
 
 export async function deleteSchemeOfWork(id: string): Promise<void> {
-  return apiFetch(`/scheme-of-work/${id}`, {
-    method: 'DELETE'
-  })
+  await apiWithFallback.delete(`/scheme-of-work/${id}`)
 }
 
-// Additional missing functions and aliases for the api object
 export async function fetchSubjectResult(id: string): Promise<SubjectResult> {
-  return apiFetch(`/results/${id}`)
+  const { data } = await apiWithFallback.get(`/results/${id}`)
+  return data as SubjectResult
 }
 
 export async function updateObservation(id: string, data: any): Promise<any> {
-  return apiFetch(`/observations/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  })
+  const { data: result } = await apiWithFallback.put(`/observations/${id}`, data)
+  return result
 }
 
 export async function deleteObservation(id: string): Promise<void> {
-  return apiFetch(`/observations/${id}`, {
-    method: 'DELETE'
-  })
+  await apiWithFallback.delete(`/observations/${id}`)
 }
 
 export async function fetchNotifications(): Promise<any[]> {
   try {
-    return await apiFetch('/notifications')
+    const { data } = await apiWithFallback.get('/notifications')
+    return data as any[]
   } catch {
     return []
   }
 }
 
 export async function markNotificationAsRead(id: string): Promise<any> {
-  return apiFetch(`/notifications/${id}/read`, {
-    method: 'PATCH'
-  })
+  const { data } = await apiWithFallback.patch(`/notifications/${id}/read`, {})
+  return data
 }
 
 export async function markAllNotificationsAsRead(): Promise<any> {
-  return apiFetch('/notifications/read-all', {
-    method: 'PATCH'
-  })
+  const { data } = await apiWithFallback.patch('/notifications/read-all', {})
+  return data
 }
 
 const api = {
-  // Axios-compatible methods
-  get,
-  post,
-  put,
-  patch,
-  delete: del,
-
-  // Domain methods
+  get: apiWithFallback.get,
+  post: apiWithFallback.post,
+  put: apiWithFallback.put,
+  patch: apiWithFallback.patch,
+  delete: apiWithFallback.delete,
   fetchStudents,
   fetchStudent,
   createStudent,
@@ -472,4 +342,3 @@ const api = {
 }
 
 export default api
-

@@ -57,6 +57,8 @@ const DEVELOPMENT_FALLBACK_USERS = isDevelopment ? [
     },
   },
 ] : []
+
+interface AuthContextType {
   session: AuthSession
   login: (email: string, password: string) => Promise<boolean>
   logout: () => void

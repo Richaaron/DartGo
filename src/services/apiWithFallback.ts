@@ -95,8 +95,8 @@ async function apiFetch(endpoint: string, options: any = {}) {
       }
 
       return res.json()
-    } catch (error) {
-      lastError = error
+    } catch (error: unknown) {
+      lastError = error as Error
       const apiName = url === PRIMARY_API_URL ? 'MongoDB' : 'Supabase'
       const errorMsg = error instanceof Error ? error.message : String(error)
       

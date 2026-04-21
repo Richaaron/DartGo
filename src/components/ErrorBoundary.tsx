@@ -25,12 +25,12 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
     return { hasError: true }
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('[ERROR BOUNDARY] Caught error:', error)
+  componentDidCatch(_error: Error, errorInfo: React.ErrorInfo) {
+    console.error('[ERROR BOUNDARY] Caught error:', _error)
     console.error('[ERROR BOUNDARY] Error info:', errorInfo)
 
     this.setState({
-      error,
+      error: _error,
       errorInfo,
     })
 

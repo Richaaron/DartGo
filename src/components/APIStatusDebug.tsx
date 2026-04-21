@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { getAPIStatus } from '../services/apiWithFallback'
 import { AlertCircle, CheckCircle, Database } from 'lucide-react'
 
