@@ -1,9 +1,6 @@
-# Ignore backend directories for Vercel deployment
-# This prevents Vercel from trying to deploy them as separate services
+# Ignore unnecessary directories for Vercel deployment
 backend/
 server/
-lib/
-web/
 test/
 .claude/
 .codersinflow/
