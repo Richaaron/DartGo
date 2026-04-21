@@ -113,8 +113,8 @@ export function validateEnv(): EnvConfig {
     }
   }
 
-  // In production, reject missing variables
-  if (missingVars.length > 0 && isProduction) {
+  // In production, reject missing variables (unless on Vercel where we trust process.env)
+  if (missingVars.length > 0 && isProduction && !process.env.VERCEL) {
     console.error('[CONFIG] ❌ PRODUCTION MODE: Missing required environment variables!')
     console.error('[CONFIG] Missing:', missingVars.join(', '))
     throw new Error(

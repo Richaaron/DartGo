@@ -28,6 +28,12 @@ function getEnvFilePaths(): string[] {
  * Returns the path of the loaded file or null if none found
  */
 export function loadEnvFile(): string | null {
+  // In serverless environments like Vercel, env vars are provided directly via process.env
+  if (process.env.VERCEL) {
+    console.log('[ENV-LOADER] Running on Vercel - using system environment variables')
+    return 'process.env'
+  }
+
   const envFiles = getEnvFilePaths()
   
   console.log('[ENV-LOADER] Searching for .env files...')
