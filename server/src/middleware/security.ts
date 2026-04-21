@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import rateLimit from 'express-rate-limit'
-import { getEnvConfig } from '../utils/envConfig.js'
+import { getEnvConfig } from '../utils/envConfig'
 
 const envConfig = getEnvConfig()
 

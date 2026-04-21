@@ -1,4 +1,4 @@
-import { loadEnvFile, verifyEnvLoading } from './utils/env-loader.js'
+import { loadEnvFile, verifyEnvLoading } from './utils/env-loader'
 // Initialize environment before other imports
 if (!process.env.VERCEL) {
   loadEnvFile()
@@ -10,31 +10,31 @@ import helmet from 'helmet'
 import compression from 'compression'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { supabase } from './config/supabase.js'
-import { getEnvConfig, EnvConfig } from './utils/envConfig.js'
+import { supabase } from './config/supabase'
+import { getEnvConfig, EnvConfig } from './utils/envConfig'
 import {
   securityHeaders,
   generalLimiter,
   requestLogger,
   sanitizeInput,
-} from './middleware/security.js'
-import { errorHandler, notFoundHandler } from './middleware/errorHandler.js'
-import studentRoutes from './routes/students.js'
-import teacherRoutes from './routes/teachers.js'
-import subjectRoutes from './routes/subjects.js'
-import resultRoutes from './routes/results.js'
-import authRoutes from './routes/auth.js'
-import attendanceRoutes from './routes/attendance.js'
-import configRoutes from './routes/config.js'
-import observationRoutes from './routes/observations.js'
-import notificationRoutes from './routes/notifications.js'
-import curriculumRoutes from './routes/curriculum.js'
-import schemeOfWorkRoutes from './routes/schemeOfWork.js'
-import messageRoutes from './routes/messages.js'
-import activityRoutes from './routes/activities.js'
-import analyticsRoutes from './routes/analytics.js'
-import { activityLogger } from './middleware/activityLogger.js'
-import { authenticate } from './middleware/auth.js'
+} from './middleware/security'
+import { errorHandler, notFoundHandler } from './middleware/errorHandler'
+import studentRoutes from './routes/students'
+import teacherRoutes from './routes/teachers'
+import subjectRoutes from './routes/subjects'
+import resultRoutes from './routes/results'
+import authRoutes from './routes/auth'
+import attendanceRoutes from './routes/attendance'
+import configRoutes from './routes/config'
+import observationRoutes from './routes/observations'
+import notificationRoutes from './routes/notifications'
+import curriculumRoutes from './routes/curriculum'
+import schemeOfWorkRoutes from './routes/schemeOfWork'
+import messageRoutes from './routes/messages'
+import activityRoutes from './routes/activities'
+import analyticsRoutes from './routes/analytics'
+import { activityLogger } from './middleware/activityLogger'
+import { authenticate } from './middleware/auth'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 

@@ -1,15 +1,15 @@
 import { Router } from 'express'
 import bcrypt from 'bcryptjs'
-import { supabase } from '../config/supabase.js'
-import { authLimiter } from '../middleware/security.js'
-import { generateToken, hashSensitiveData } from '../middleware/enhanced-auth.js'
+import { supabase } from '../config/supabase'
+import { authLimiter } from '../middleware/security'
+import { generateToken, hashSensitiveData } from '../middleware/enhanced-auth'
 import {
   validateEmail,
   validatePassword,
   validateName,
   validateRequiredFields,
-} from '../utils/validation.js'
-import { getEnvConfig } from '../utils/envConfig.js'
+} from '../utils/validation'
+import { getEnvConfig } from '../utils/envConfig'
 
 const router = Router()
 const envConfig = getEnvConfig()

@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import { getEnvConfig } from '../utils/envConfig.js'
+import { getEnvConfig } from '../utils/envConfig'
 
 const envConfig = getEnvConfig()
 

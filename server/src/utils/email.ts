@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
-import { supabase } from '../config/supabase.js'
-import { getEnvConfig } from './envConfig.js'
+import { supabase } from '../config/supabase'
+import { getEnvConfig } from './envConfig'
 
 const config = getEnvConfig()
 
