@@ -1,5 +1,4 @@
 # Ignore unnecessary directories for Vercel deployment
-backend/
 server/
 test/
 .claude/

@@ -6,7 +6,6 @@ import { useAuthContext } from './context/AuthContext'
 import { useDarkMode } from './hooks/useLocalStorage'
 import PageTransition from './components/PageTransition'
 import NotificationBell from './components/NotificationBell'
-import { APIStatusDebug } from './components/APIStatusDebug'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
@@ -413,7 +412,6 @@ export default function App() {
     <ErrorBoundary>
       <Router>
         <AppContent />
-        <APIStatusDebug />
       </Router>
     </ErrorBoundary>
   )

@@ -28,26 +28,16 @@ mongodb+srv://username:password@cluster.mongodb.net/school_db
 
 #### Install MongoDB Driver
 ```bash
-cd backend
+cd server
 npm install mongoose
 ```
 
 #### Replace Database Connection
-**OLD (PostgreSQL):**
+**Connection logic is in `server/src/config/db.ts`**
 ```javascript
-// backend/src/config/database.ts
-import { Sequelize } from 'sequelize';
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-export const sequelize = new Sequelize({
-  database: process.env.DB_NAME,
-  username: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  host: process.env.DB_HOST,
-  dialect: 'postgres'
-});
+// server/src/config/db.ts
+import mongoose from 'mongoose'
+// ...
 ```
 
 **NEW (MongoDB):**

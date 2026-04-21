@@ -6,9 +6,8 @@ Deploy your Folusho Reporting Sheet frontend to Vercel (where your backend is al
 
 **Architecture**:
 - **Frontend**: Vercel (React + Vite)
-- **Backend**: Render (Node.js + MongoDB) - Already configured
+- **Backend**: Render (Node.js + MongoDB)
 - **Database**: MongoDB Atlas
-- **Backup**: Supabase
 
 ---
 
@@ -59,7 +58,6 @@ git push origin main
 
    ```
    VITE_API_URL=https://folusho-backend.onrender.com/api
-   VITE_BACKUP_API_URL=https://your-supabase-backend.onrender.com/api
    ```
 
 5. **Deploy**
