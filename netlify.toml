@@ -1,12 +1,25 @@
 [build]
-  command = "npm run build"
+  command = "vite build"
   functions = "netlify/functions"
   publish = "dist"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["@supabase/supabase-js"]
 
 [dev]
   command = "npm run dev"
   port = 5173
+  targetPort = 5173
 
+# Redirect all /api/* requests to the Netlify serverless function
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api"
+  status = 200
+  force = true
+
+# SPA fallback — must come AFTER the /api redirect
 [[redirects]]
   from = "/*"
   to = "/index.html"

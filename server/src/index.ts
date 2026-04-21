@@ -1,6 +1,10 @@
 import { loadEnvFile, verifyEnvLoading } from './utils/env-loader'
+
+// Detect serverless environments (Vercel, Netlify, etc.)
+const isServerless = !!(process.env.VERCEL || process.env.NETLIFY)
+
 // Initialize environment before other imports
-if (!process.env.VERCEL) {
+if (!isServerless) {
   loadEnvFile()
 }
 
@@ -49,8 +53,8 @@ console.log('╚═════════════════════�
 
 // Step 1: Verify environment variables
 console.log('[STARTUP] Step 1: Verifying environment configuration...')
-if (process.env.VERCEL) {
-  console.log('[STARTUP] ✓ Running on Vercel (using system env)')
+if (isServerless) {
+  console.log('[STARTUP] ✓ Running in serverless environment (using system env)')
 } else {
   verifyEnvLoading()
 }
@@ -61,26 +65,26 @@ let envConfig: EnvConfig
 try {
   envConfig = getEnvConfig()
   console.log('[STARTUP] ✓ Configuration valid')
-} catch (error) {
-  console.error('[STARTUP] ❌ Configuration validation failed!')
-  console.error(error instanceof Error ? error.message : String(error))
-  
-  if (process.env.VERCEL) {
-    console.error('[STARTUP] ⚠️ Running on Vercel: Continuing with potentially invalid configuration')
-    // Fallback to defaults to prevent crash
-    envConfig = (process as any).env as EnvConfig
-  } else {
-    process.exit(1)
+  } catch (error) {
+    console.error('[STARTUP] ❌ Configuration validation failed!')
+    console.error(error instanceof Error ? error.message : String(error))
+
+    if (isServerless) {
+      console.error('[STARTUP] ⚠️ Running in serverless: Continuing with potentially invalid configuration')
+      // Fallback to defaults to prevent crash
+      envConfig = (process as any).env as EnvConfig
+    } else {
+      process.exit(1)
+    }
   }
-}
 
 // Step 3: Initialize Express app
 console.log('\n[STARTUP] Step 3: Initializing Express application...')
 const app = express()
 const PORT = envConfig?.PORT || 3001
 
-// HTTPS enforcement in production (Skip on Vercel as it handles it)
-if (envConfig.NODE_ENV === 'production' && !process.env.VERCEL) {
+// HTTPS enforcement in production (Skip in serverless environments as they handle it)
+if (envConfig.NODE_ENV === 'production' && !isServerless) {
   app.use((req, res, next) => {
     if (!req.secure && req.get('x-forwarded-proto') !== 'https') {
       return res.redirect(`https://${req.get('host')}${req.url}`)
@@ -107,16 +111,6 @@ app.use(
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
 )
-
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    environment: envConfig.NODE_ENV,
-    supabase: !!envConfig.SUPABASE_URL,
-    timestamp: new Date().toISOString()
-  })
-})
 
 console.log('[STARTUP] Applying body parsing and sanitization...')
 app.use(express.json({ limit: '10mb' }))
@@ -167,9 +161,9 @@ let server: any
 
 export async function startServer() {
   try {
-    // Skip intensive database checks on Vercel to prevent cold start timeouts
-    if (process.env.VERCEL) {
-      console.log('[STARTUP] Step 5: Vercel environment - skipping Supabase connectivity check')
+    // Skip intensive database checks in serverless environments to prevent cold start timeouts
+    if (isServerless) {
+      console.log('[STARTUP] Step 5: Serverless environment - skipping Supabase connectivity check')
       return
     }
 
@@ -189,7 +183,7 @@ export async function startServer() {
     }
 
     // Only listen if not running in a serverless environment
-    if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+    if (process.env.NODE_ENV !== 'production' || !isServerless) {
       console.log('\n[STARTUP] Step 6: Starting HTTP server...')
       server = app.listen(PORT, () => {
         console.log('\n╔════════════════════════════════════════════════════════════╗')
@@ -205,7 +199,7 @@ export async function startServer() {
   } catch (err) {
     console.error('[STARTUP] ❌ Failed to start server:')
     console.error(err)
-    if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+    if (process.env.NODE_ENV !== 'production' || !isServerless) {
       process.exit(1)
     }
     throw err
@@ -213,7 +207,7 @@ export async function startServer() {
 }
 
 // Initial server start for local development
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+if (process.env.NODE_ENV !== 'production' || !isServerless) {
   startServer()
 }
 

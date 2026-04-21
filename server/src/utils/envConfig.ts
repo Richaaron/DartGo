@@ -92,6 +92,9 @@ export function validateEnv(): EnvConfig {
     if (varName.startsWith('EMAIL_')) {
       const smtpAlias = varName.replace('EMAIL_', 'SMTP_')
       envValue = process.env[varName] || process.env[smtpAlias]
+    } else if (varName === 'SUPABASE_SERVICE_ROLE_KEY') {
+      // Support SUPABASE_KEY as an alias during validation
+      envValue = process.env[varName] || process.env.SUPABASE_KEY
     } else {
       envValue = process.env[varName]
     }
@@ -113,8 +116,9 @@ export function validateEnv(): EnvConfig {
     }
   }
 
-  // In production, reject missing variables (unless on Vercel where we trust process.env)
-  if (missingVars.length > 0 && isProduction && !process.env.VERCEL) {
+  // In production, reject missing variables (unless in serverless env where we trust process.env)
+  const isServerless = !!(process.env.VERCEL || process.env.NETLIFY)
+  if (missingVars.length > 0 && isProduction && !isServerless) {
     console.error('[CONFIG] ❌ PRODUCTION MODE: Missing required environment variables!')
     console.error('[CONFIG] Missing:', missingVars.join(', '))
     throw new Error(
@@ -124,11 +128,11 @@ export function validateEnv(): EnvConfig {
 
   // Validate JWT_SECRET strength
   const jwtSecret = process.env.JWT_SECRET || ''
-  if (isProduction && jwtSecret.length < 32 && !process.env.VERCEL) {
+  if (isProduction && jwtSecret.length < 32 && !isServerless) {
     throw new Error('[CONFIGURATION ERROR] JWT_SECRET must be at least 32 characters long for production')
   }
-  if (isProduction && jwtSecret.length < 32 && process.env.VERCEL) {
-    console.warn('[CONFIG] ⚠️ PRODUCTION mode on Vercel: JWT_SECRET is less than 32 characters')
+  if (isProduction && jwtSecret.length < 32 && isServerless) {
+    console.warn('[CONFIG] ⚠️ PRODUCTION mode (serverless): JWT_SECRET is less than 32 characters')
   }
   if (isDevelopment && jwtSecret.length < 32) {
     console.warn('[CONFIG] ⚠️  JWT_SECRET is less than 32 characters (development mode)')
@@ -204,4 +208,3 @@ export function resetEnvConfig(): void {
 
 // Initialize configuration immediately on import
 export default getEnvConfig()
-
