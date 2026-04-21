@@ -1,15 +1,5 @@
-import app, { startServer } from '../server/src/index';
+import app from '../server/src/index';
 
-// Initialize the database connection and configuration
-// This runs once when the serverless function is cold-started
-const init = async () => {
-  try {
-    await startServer();
-  } catch (error) {
-    console.error('Failed to initialize serverless function:', error);
-  }
-};
-
-init();
-
+// Vercel serverless functions handle the request and response directly.
+// The Express app is already configured and ready to be used.
 export default app;

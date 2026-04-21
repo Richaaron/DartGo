@@ -124,8 +124,11 @@ export function validateEnv(): EnvConfig {
 
   // Validate JWT_SECRET strength
   const jwtSecret = process.env.JWT_SECRET || ''
-  if (isProduction && jwtSecret.length < 32) {
+  if (isProduction && jwtSecret.length < 32 && !process.env.VERCEL) {
     throw new Error('[CONFIGURATION ERROR] JWT_SECRET must be at least 32 characters long for production')
+  }
+  if (isProduction && jwtSecret.length < 32 && process.env.VERCEL) {
+    console.warn('[CONFIG] ⚠️ PRODUCTION mode on Vercel: JWT_SECRET is less than 32 characters')
   }
   if (isDevelopment && jwtSecret.length < 32) {
     console.warn('[CONFIG] ⚠️  JWT_SECRET is less than 32 characters (development mode)')

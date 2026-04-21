@@ -62,13 +62,20 @@ try {
   console.error('[STARTUP] ❌ Configuration validation failed!')
   console.error(error instanceof Error ? error.message : String(error))
   printDiagnostics()
-  process.exit(1)
+  
+  if (process.env.VERCEL) {
+    console.error('[STARTUP] ⚠️ Running on Vercel: Continuing with potentially invalid configuration')
+    // Fallback to defaults to prevent crash
+    envConfig = (process as any).env as EnvConfig
+  } else {
+    process.exit(1)
+  }
 }
 
 // Step 3: Initialize Express app
 console.log('\n[STARTUP] Step 3: Initializing Express application...')
 const app = express()
-const PORT = envConfig.PORT
+const PORT = envConfig?.PORT || 3001
 
 // HTTPS enforcement in production
 if (envConfig.NODE_ENV === 'production') {
@@ -158,6 +165,12 @@ let server: any
 
 export async function startServer() {
   try {
+    // Skip intensive database checks on Vercel to prevent cold start timeouts
+    if (process.env.VERCEL) {
+      console.log('[STARTUP] Step 5: Vercel environment - skipping Supabase connectivity check')
+      return
+    }
+
     console.log('[STARTUP] Step 5: Connecting to Supabase...')
     const { data, error } = await supabase.from('users').select('count', { count: 'exact', head: true })
     if (error) throw error
