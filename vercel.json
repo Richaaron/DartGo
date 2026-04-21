@@ -4,6 +4,13 @@
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "devCommand": "npm run dev",
+  "build": {
+    "env": ["SKIP_ENV_VALIDATION"]
+  },
+  "buildCache": {
+    "node_modules": true,
+    "server/dist": true
+  },
   "headers": [
     {
       "source": "/assets/(.*)",

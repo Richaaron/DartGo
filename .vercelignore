@@ -1,5 +1,4 @@
 # Ignore unnecessary directories for Vercel deployment
-server/
 test/
 .claude/
 .codersinflow/
@@ -8,11 +7,12 @@ test/
 .sixth/
 .vs/
 .vscode/
-Cdatadb/
+Cdatadb/
 nerdc-curriculum-data/
-node_modules/
-dist/
 dist-ssr/
 *.local
 .env
 .env.*
+# Keep server/ and server/src for building, but exclude build artifacts
+server/dist/
+server/node_modules/
