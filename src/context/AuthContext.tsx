@@ -1,17 +1,21 @@
 /* global localStorage, fetch */
 
-import React, { createContext, useContext, useState, useCallback } from 'react'
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react'
 import { User, Teacher, Admin, Parent, AuthSession } from '../types'
+
+const SESSION_TIMEOUT = 30 * 60 * 1000 // 30 minutes
 
 const getBaseUrl = () => {
   const envUrl = import.meta.env.VITE_API_URL
-  if (!envUrl) return 'http://localhost:3001/api'
+  if (!envUrl) return 'http://localhost:3002/api'
   return envUrl.endsWith('/api') ? envUrl : `${envUrl}/api`
 }
 
 const API_URL = getBaseUrl()
 
-const DEVELOPMENT_FALLBACK_USERS = [
+// Development fallback users - ONLY in development mode
+const isDevelopment = import.meta.env.DEV
+const DEVELOPMENT_FALLBACK_USERS = isDevelopment ? [
   {
     loginIds: ['admin@folusho.com'],
     password: 'AdminPassword123!@#',
@@ -52,9 +56,7 @@ const DEVELOPMENT_FALLBACK_USERS = [
       assignedClasses: ['SSS2A', 'SSS2B', 'SSS3A'],
     },
   },
-]
-
-interface AuthContextType {
+] : []
   session: AuthSession
   login: (email: string, password: string) => Promise<boolean>
   logout: () => void
@@ -83,6 +85,53 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   })
   const [isHydrated] = useState(true)
+  const [sessionTimer, setSessionTimer] = useState<NodeJS.Timeout | null>(null)
+
+  // Session timeout effect
+  useEffect(() => {
+    if (!session.isAuthenticated) return
+
+    // Clear existing timer
+    if (sessionTimer) clearTimeout(sessionTimer)
+
+    // Set new timer
+    const timer = setTimeout(() => {
+      console.warn('[AUTH] Session timeout - logging out')
+      logout()
+    }, SESSION_TIMEOUT)
+
+    setSessionTimer(timer)
+
+    // Cleanup
+    return () => clearTimeout(timer)
+  }, [session.isAuthenticated])
+
+  // Reset session timer on user activity
+  useEffect(() => {
+    if (!session.isAuthenticated) return
+
+    const resetTimer = () => {
+      if (sessionTimer) clearTimeout(sessionTimer)
+      const newTimer = setTimeout(() => {
+        console.warn('[AUTH] Session timeout - logging out')
+        logout()
+      }, SESSION_TIMEOUT)
+      setSessionTimer(newTimer)
+    }
+
+    // Listen for user activity
+    window.addEventListener('mousedown', resetTimer)
+    window.addEventListener('keydown', resetTimer)
+    window.addEventListener('scroll', resetTimer)
+    window.addEventListener('touchstart', resetTimer)
+
+    return () => {
+      window.removeEventListener('mousedown', resetTimer)
+      window.removeEventListener('keydown', resetTimer)
+      window.removeEventListener('scroll', resetTimer)
+      window.removeEventListener('touchstart', resetTimer)
+    }
+  }, [session.isAuthenticated, sessionTimer])
 
   const login = useCallback(async (email: string, password: string) => {
     const normalizedLoginId = email.trim().toLowerCase()

@@ -1,6 +1,8 @@
 import { Router } from 'express'
 import { Attendance } from '../models/Attendance.js'
+import { Student } from '../models/Student.js'
 import { authenticate, authorize, AuthRequest } from '../middleware/auth.js'
+import { sendAttendanceWarningEmail } from '../utils/email.js'
 
 const router = Router()
 
@@ -38,6 +40,24 @@ router.post('/bulk', authenticate, authorize(['Admin', 'Teacher']), async (req: 
     }))
 
     await Attendance.bulkWrite(ops)
+    
+    // Check for low attendance and send warnings
+    for (const record of records) {
+      if (record.status === 'Absent') {
+        const student = await Student.findById(record.studentId)
+        if (student) {
+          const attendanceRecords = await Attendance.find({ studentId: record.studentId })
+          const presentCount = attendanceRecords.filter(r => r.status === 'Present').length
+          const attendancePercentage = (presentCount / attendanceRecords.length) * 100
+          
+          if (attendancePercentage < 75 && student.email) {
+            sendAttendanceWarningEmail(student.email, `${student.firstName} ${student.lastName}`, attendancePercentage, student._id.toString())
+              .catch(err => console.error('Failed to send attendance warning', err))
+          }
+        }
+      }
+    }
+    
     res.json({ message: 'Attendance updated successfully' })
   } catch (error) {
     res.status(400).json({ error: 'Failed to save attendance' })

@@ -1,15 +1,6 @@
 /* global localStorage, fetch, URLSearchParams */
 import { Student, Teacher, Subject, SubjectResult, Curriculum, SchemeOfWork, DEFAULT_SUBJECTS } from '../types'
-
-const getBaseUrl = () => {
-  const envUrl = import.meta.env.VITE_API_URL
-  if (!envUrl) return 'http://localhost:3001/api'
-  
-  // If the URL doesn't end with /api, append it
-  return envUrl.endsWith('/api') ? envUrl : `${envUrl}/api`
-}
-
-const API_URL = getBaseUrl()
+import apiWithFallback from './apiWithFallback'
 
 const DEV_SUBJECTS: Subject[] = DEFAULT_SUBJECTS.map((subject) => ({
   ...subject,
@@ -103,79 +94,30 @@ const DEV_SCHEMES_OF_WORK: SchemeOfWork[] = DEV_SUBJECTS.filter((subject) =>
   }
 })
 
-function getHeaders() {
-  const session = localStorage.getItem('authSession')
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-  }
-  
-  if (session) {
-    try {
-      const { token } = JSON.parse(session)
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`
-      }
-    } catch (e) {
-      console.error('Error parsing auth session for headers', e)
-    }
-  }
-  
-  return headers
-}
-
-async function apiFetch(endpoint: string, options: any = {}) {
-  const res = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      ...getHeaders(),
-      ...options.headers,
-    },
-  })
-  
-  if (!res.ok) {
-    const errorData = await res.json().catch(() => ({}))
-    throw new Error(errorData.error || `Request failed with status ${res.status}`)
-  }
-  
-  return res.json()
-}
-
-// Generic API methods for compatibility with Axios-like usage
+// Wrapper functions for compatibility
 async function get<T>(url: string, config: any = {}): Promise<{ data: T }> {
-  const data = await apiFetch(url, { method: 'GET', ...config })
-  return { data }
+  const data = await apiWithFallback.get(url, config)
+  return data
 }
 
 async function post<T>(url: string, data: any = {}, config: any = {}): Promise<{ data: T }> {
-  const result = await apiFetch(url, { 
-    method: 'POST', 
-    body: JSON.stringify(data),
-    ...config 
-  })
-  return { data: result }
+  const result = await apiWithFallback.post(url, data, config)
+  return result
 }
 
 async function put<T>(url: string, data: any = {}, config: any = {}): Promise<{ data: T }> {
-  const result = await apiFetch(url, { 
-    method: 'PUT', 
-    body: JSON.stringify(data),
-    ...config 
-  })
-  return { data: result }
+  const result = await apiWithFallback.put(url, data, config)
+  return result
 }
 
 async function patch<T>(url: string, data: any = {}, config: any = {}): Promise<{ data: T }> {
-  const result = await apiFetch(url, { 
-    method: 'PATCH', 
-    body: JSON.stringify(data),
-    ...config 
-  })
-  return { data: result }
+  const result = await apiWithFallback.patch(url, data, config)
+  return result
 }
 
 async function del<T>(url: string, config: any = {}): Promise<{ data: T }> {
-  const result = await apiFetch(url, { method: 'DELETE', ...config })
-  return { data: result }
+  const result = await apiWithFallback.delete(url, config)
+  return result
 }
 
 // Students

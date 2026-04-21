@@ -4,18 +4,49 @@
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Create custom types
-CREATE TYPE user_role AS ENUM ('Admin', 'Teacher', 'Student', 'Parent');
-CREATE TYPE user_status AS ENUM ('Active', 'Inactive', 'Suspended');
-CREATE TYPE school_level AS ENUM ('Pre-Nursery', 'Nursery', 'Primary', 'Secondary');
-CREATE TYPE gender AS ENUM ('Male', 'Female');
-CREATE TYPE assessment_type AS ENUM ('Test', 'Exam', 'Assignment', 'Project');
-CREATE TYPE performance_rating AS ENUM ('Excellent', 'Good', 'Average', 'Poor', 'Very Poor');
-CREATE TYPE subject_category AS ENUM ('CORE', 'ELECTIVE', 'VOCATIONAL');
-CREATE TYPE curriculum_type AS ENUM ('NIGERIAN', 'IGCSE', 'OTHER');
+-- Create custom types (if they don't exist)
+DO $$ BEGIN
+    CREATE TYPE user_role AS ENUM ('Admin', 'Teacher', 'Student', 'Parent');
+EXCEPTION WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE user_status AS ENUM ('Active', 'Inactive', 'Suspended');
+EXCEPTION WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE school_level AS ENUM ('Pre-Nursery', 'Nursery', 'Primary', 'Secondary');
+EXCEPTION WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE gender AS ENUM ('Male', 'Female');
+EXCEPTION WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE assessment_type AS ENUM ('Test', 'Exam', 'Assignment', 'Project');
+EXCEPTION WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE performance_rating AS ENUM ('Excellent', 'Good', 'Average', 'Poor', 'Very Poor');
+EXCEPTION WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE subject_category AS ENUM ('CORE', 'ELECTIVE', 'VOCATIONAL');
+EXCEPTION WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE curriculum_type AS ENUM ('NIGERIAN', 'IGCSE', 'OTHER');
+EXCEPTION WHEN duplicate_object THEN null;
+END $$;
 
 -- Users table
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
@@ -32,7 +63,7 @@ CREATE TABLE users (
 );
 
 -- Students table
-CREATE TABLE students (
+CREATE TABLE IF NOT EXISTS students (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
     registration_number TEXT UNIQUE NOT NULL,
@@ -55,7 +86,7 @@ CREATE TABLE students (
 );
 
 -- Subjects table
-CREATE TABLE subjects (
+CREATE TABLE IF NOT EXISTS subjects (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     name TEXT NOT NULL,
     code TEXT UNIQUE NOT NULL,
@@ -71,7 +102,7 @@ CREATE TABLE subjects (
 );
 
 -- Results table
-CREATE TABLE results (
+CREATE TABLE IF NOT EXISTS results (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     student_id UUID REFERENCES students(id) ON DELETE CASCADE,
     subject_id UUID REFERENCES subjects(id) ON DELETE CASCADE,
@@ -90,22 +121,22 @@ CREATE TABLE results (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Create indexes for better performance
-CREATE INDEX idx_users_email ON users(email);
-CREATE INDEX idx_users_role ON users(role);
-CREATE INDEX idx_users_status ON users(status);
-CREATE INDEX idx_students_user_id ON students(user_id);
-CREATE INDEX idx_students_registration_number ON students(registration_number);
-CREATE INDEX idx_students_class ON students(class_name);
-CREATE INDEX idx_students_level ON students(level);
-CREATE INDEX idx_subjects_code ON subjects(code);
-CREATE INDEX idx_subjects_level ON subjects(level);
-CREATE INDEX idx_subjects_active ON subjects(is_active);
-CREATE INDEX idx_results_student_id ON results(student_id);
-CREATE INDEX idx_results_subject_id ON results(subject_id);
-CREATE INDEX idx_results_term ON results(term);
-CREATE INDEX idx_results_academic_year ON results(academic_year);
-CREATE INDEX idx_results_grade ON results(grade);
+-- Create indexes for better performance (if they don't exist)
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
+CREATE INDEX IF NOT EXISTS idx_users_status ON users(status);
+CREATE INDEX IF NOT EXISTS idx_students_user_id ON students(user_id);
+CREATE INDEX IF NOT EXISTS idx_students_registration_number ON students(registration_number);
+CREATE INDEX IF NOT EXISTS idx_students_class ON students(class_name);
+CREATE INDEX IF NOT EXISTS idx_students_level ON students(level);
+CREATE INDEX IF NOT EXISTS idx_subjects_code ON subjects(code);
+CREATE INDEX IF NOT EXISTS idx_subjects_level ON subjects(level);
+CREATE INDEX IF NOT EXISTS idx_subjects_active ON subjects(is_active);
+CREATE INDEX IF NOT EXISTS idx_results_student_id ON results(student_id);
+CREATE INDEX IF NOT EXISTS idx_results_subject_id ON results(subject_id);
+CREATE INDEX IF NOT EXISTS idx_results_term ON results(term);
+CREATE INDEX IF NOT EXISTS idx_results_academic_year ON results(academic_year);
+CREATE INDEX IF NOT EXISTS idx_results_grade ON results(grade);
 
 -- Create updated_at trigger function
 CREATE OR REPLACE FUNCTION update_updated_at_column()

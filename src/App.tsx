@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom'
-import { BarChart3, GraduationCap, BookOpen, Menu, X, LogOut, Users, CheckCircle, Settings as SettingsIcon, Moon, Sun } from 'lucide-react'
+import { BarChart3, GraduationCap, BookOpen, Menu, X, LogOut, Users, CheckCircle, Settings as SettingsIcon, Moon, Sun, Bell } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuthContext } from './context/AuthContext'
 import { useDarkMode } from './hooks/useLocalStorage'
 import PageTransition from './components/PageTransition'
+import NotificationBell from './components/NotificationBell'
+import { APIStatusDebug } from './components/APIStatusDebug'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import StudentManagement from './pages/StudentManagement'
@@ -16,6 +19,7 @@ import Attendance from './pages/Attendance'
 import Settings from './pages/Settings'
 import TeacherDashboard from './pages/TeacherDashboard'
 import ParentDashboard from './pages/ParentDashboard'
+import NotificationsPage from './pages/Notifications'
 import './App.css'
 
 import { fetchConfig } from './services/api'
@@ -95,7 +99,7 @@ function AppContent() {
               {config?.schoolName?.split(' ')[0] || 'FOLUSHO'}
             </span>
           </div>
-          <div className="w-10" />
+          <NotificationBell />
         </div>
       )}
 
@@ -273,6 +277,13 @@ function AppContent() {
                 isOpen={isMobile || isSidebarOpen}
                 isDarkMode={isDarkMode}
               />
+              <NavLink
+                to="/notifications"
+                icon={<Bell size={isMobile ? 20 : 18} />}
+                label="Email Notifications"
+                isOpen={isMobile || isSidebarOpen}
+                isDarkMode={isDarkMode}
+              />
               {userRole === 'Admin' && (
                 <NavLink
                   to="/settings"
@@ -360,6 +371,7 @@ function AppContent() {
                   <Route path="/subject-results" element={<PageTransition><SubjectResultEntry /></PageTransition>} />
                   <Route path="/attendance" element={<PageTransition><Attendance /></PageTransition>} />
                   <Route path="/reports" element={<PageTransition><Reports /></PageTransition>} />
+                  <Route path="/notifications" element={<PageTransition><NotificationsPage /></PageTransition>} />
                   <Route path="/settings" element={<PageTransition><Settings /></PageTransition>} />
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </>
@@ -398,8 +410,11 @@ function NavLink({ to, icon, label, isOpen, isDarkMode }: NavLinkProps) {
 
 export default function App() {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <AppContent />
+        <APIStatusDebug />
+      </Router>
+    </ErrorBoundary>
   )
 }

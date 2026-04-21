@@ -83,6 +83,16 @@ console.log('[STARTUP] Step 4: Initializing Express application...')
 const app = express()
 const PORT = envConfig.PORT
 
+// HTTPS enforcement in production
+if (envConfig.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    if (!req.secure && req.get('x-forwarded-proto') !== 'https') {
+      return res.redirect(`https://${req.get('host')}${req.url}`)
+    }
+    next()
+  })
+}
+
 console.log('[STARTUP] Applying security middleware...')
 app.use(helmet())
 app.use(securityHeaders)

@@ -1,8 +1,9 @@
 import { Router } from 'express'
 import { SubjectResult } from '../models/SubjectResult.js'
 import { Student } from '../models/Student.js'
+import { Subject } from '../models/Subject.js'
 import { authenticate, authorize, AuthRequest } from '../middleware/auth.js'
-import { sendResultPublishedEmail } from '../utils/email.js'
+import { sendResultPublishedEmail, sendLowGradesEmail } from '../utils/email.js'
 
 const router = Router()
 
@@ -45,6 +46,14 @@ router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req, res)
     if (student && student.email) {
       sendResultPublishedEmail(student.email, `${student.firstName} ${student.lastName}`, result.term, result.academicYear, result.studentId.toString())
         .catch(err => console.error('Failed to send result email', err))
+      
+      // Check for low grades and send alert
+      if (result.percentage < 60) {
+        const subject = await Subject.findById(result.subjectId)
+        const subjectName = subject?.name || 'Unknown Subject'
+        sendLowGradesEmail(student.email, `${student.firstName} ${student.lastName}`, [subjectName], result.studentId.toString())
+          .catch(err => console.error('Failed to send low grades email', err))
+      }
     }
     
     res.status(201).json(result)
@@ -79,6 +88,8 @@ router.post('/bulk', authenticate, authorize(['Admin', 'Teacher']), async (req: 
     const recordedBy = req.user?.id
 
     const ops = []
+    const emailNotifications: Array<{ email: string; name: string; subjects: string[] }> = []
+
     for (const item of results) {
       const student = await Student.findOne({ registrationNumber: item.registrationNumber })
       if (!student) continue
@@ -111,10 +122,32 @@ router.post('/bulk', authenticate, authorize(['Admin', 'Teacher']), async (req: 
           upsert: true
         }
       })
+
+      // Track low grades for email notification
+      if (percentage < 60 && student.email) {
+        const subject = await Subject.findById(item.subjectId)
+        const subjectName = subject?.name || 'Unknown Subject'
+        const existingNotif = emailNotifications.find(n => n.email === student.email)
+        if (existingNotif) {
+          existingNotif.subjects.push(subjectName)
+        } else {
+          emailNotifications.push({
+            email: student.email,
+            name: `${student.firstName} ${student.lastName}`,
+            subjects: [subjectName]
+          })
+        }
+      }
     }
 
     if (ops.length > 0) {
       await SubjectResult.bulkWrite(ops)
+    }
+
+    // Send low grades emails
+    for (const notif of emailNotifications) {
+      sendLowGradesEmail(notif.email, notif.name, notif.subjects)
+        .catch(err => console.error('Failed to send low grades email', err))
     }
     
     res.json({ message: `Successfully processed ${ops.length} results` })

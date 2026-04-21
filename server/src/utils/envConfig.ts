@@ -37,7 +37,7 @@ const DEVELOPMENT_DEFAULTS: Partial<Record<keyof EnvConfig, string>> = {
   JWT_SECRET: 'FolushoVictorySchools_SecureJWTSecret_2024_Production_Key_#@!$%',
   EMAIL_HOST: 'smtp.gmail.com',
   EMAIL_USER: 'folushovictoryschool@gmail.com',
-  EMAIL_PASS: 'kewv hcfl ssxw nauf',
+  EMAIL_PASS: 'fvvv lyzz hdsd aupi',
   NODE_ENV: 'development',
   PORT: '3001',
   FRONTEND_URL: 'http://localhost:5173',
