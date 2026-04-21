@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
-import { getEnvConfig } from '../utils/envConfig.js'
+import { getEnvConfig } from '../utils/envConfig'
 
 const config = getEnvConfig()
 
