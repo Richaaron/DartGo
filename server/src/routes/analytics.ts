@@ -1,42 +1,45 @@
 import express, { Request, Response } from 'express'
-import { authenticate } from '../middleware/auth.js'
-import { Student } from '../models/Student.js'
-import { SubjectResult } from '../models/SubjectResult.js'
-import { Subject } from '../models/Subject.js'
+import { authenticate, authorize } from '../middleware/auth.js'
+import { supabase } from '../config/supabase.js'
 
 const router = express.Router()
 
-interface AuthenticatedRequest extends Request {
-  user?: any
-}
-
-// Get AI-powered insights for all students (Admin)
-router.get('/student-insights', authenticate, async (req: AuthenticatedRequest, res: Response) => {
+// Get AI-powered insights for all students (Admin/Teacher)
+router.get('/student-insights', authenticate, authorize(['Admin', 'Teacher']), async (req: Request, res: Response) => {
   try {
-    if (req.user?.role !== 'Admin' && req.user?.role !== 'Teacher') {
-      return res.status(403).json({ message: 'Forbidden' })
+    const { data: students, error: studentError } = await supabase
+      .from('students')
+      .select('*')
+      .eq('status', 'ACTIVE')
+
+    const { data: results, error: resultError } = await supabase
+      .from('subject_results')
+      .select('*')
+
+    const { data: subjects, error: subjectError } = await supabase
+      .from('subjects')
+      .select('*')
+
+    if (studentError || resultError || subjectError) {
+      throw (studentError || resultError || subjectError)
     }
 
-    const students = await Student.find({ status: 'Active' })
-    const results = await SubjectResult.find()
-    const subjects = await Subject.find()
-
-    const insights = students.map(student => {
-      const studentResults = results.filter(r => r.studentId.toString() === student._id.toString())
+    const insights = students?.map(student => {
+      const studentResults = results?.filter(r => r.student_id === student.student_id) || []
       
       if (studentResults.length === 0) return null
 
-      const avgScore = studentResults.reduce((sum, r) => sum + r.percentage, 0) / studentResults.length
+      const avgScore = studentResults.reduce((sum, r) => sum + Number(r.total_score || 0), 0) / studentResults.length
       
-      // Find weak subjects (below 50% or significantly below student's own average)
+      // Find weak subjects (below 50 or significantly below student's own average)
       const weakSubjects = studentResults
-        .filter(r => r.percentage < 50 || r.percentage < (avgScore - 15))
+        .filter(r => Number(r.total_score || 0) < 50 || Number(r.total_score || 0) < (avgScore - 15))
         .map(r => {
-          const subject = subjects.find(s => s._id.toString() === r.subjectId.toString())
+          const subject = subjects?.find(s => s.id === r.subject_id || s.code === r.subject_id)
           return {
             subjectName: subject?.name || 'Unknown',
-            score: r.percentage,
-            reason: r.percentage < 50 ? 'Failing grade' : 'Significant drop from average'
+            score: Number(r.total_score || 0),
+            reason: Number(r.total_score || 0) < 50 ? 'Failing grade' : 'Significant drop from average'
           }
         })
 
@@ -49,21 +52,22 @@ router.get('/student-insights', authenticate, async (req: AuthenticatedRequest, 
         const lastTerm = terms[terms.length - 1]
         const prevTerm = terms[terms.length - 2]
         
-        const lastAvg = studentResults.filter(r => r.term === lastTerm).reduce((sum, r) => sum + r.percentage, 0) / 
-                       studentResults.filter(r => r.term === lastTerm).length
-        const prevAvg = studentResults.filter(r => r.term === prevTerm).reduce((sum, r) => sum + r.percentage, 0) / 
-                       studentResults.filter(r => r.term === prevTerm).length
+        const lastTermResults = studentResults.filter(r => r.term === lastTerm)
+        const prevTermResults = studentResults.filter(r => r.term === prevTerm)
+
+        const lastAvg = lastTermResults.reduce((sum, r) => sum + Number(r.total_score || 0), 0) / lastTermResults.length
+        const prevAvg = prevTermResults.reduce((sum, r) => sum + Number(r.total_score || 0), 0) / prevTermResults.length
 
         if (lastAvg > prevAvg + 5) {
           trend = 'improving'
-          trendMessage = `Showing improvement! Average rose from ${prevAvg.toFixed(1)}% to ${lastAvg.toFixed(1)}%.`
+          trendMessage = `Showing improvement! Average rose from ${prevAvg.toFixed(1)} to ${lastAvg.toFixed(1)}.`
         } else if (lastAvg < prevAvg - 5) {
           trend = 'declining'
-          trendMessage = `Alert: Performance has dropped from ${prevAvg.toFixed(1)}% to ${lastAvg.toFixed(1)}%.`
+          trendMessage = `Alert: Performance has dropped from ${prevAvg.toFixed(1)} to ${lastAvg.toFixed(1)}.`
         }
       }
 
-      // Generate AI Recommendation
+      // Generate Recommendation
       let recommendation = 'Maintain current study habits.'
       if (trend === 'declining') {
         recommendation = 'Schedule a parent-teacher conference to discuss recent performance drops.'
@@ -74,10 +78,10 @@ router.get('/student-insights', authenticate, async (req: AuthenticatedRequest, 
       }
 
       return {
-        studentId: student._id,
-        studentName: `${student.firstName} ${student.lastName}`,
-        registrationNumber: student.registrationNumber,
-        class: student.class,
+        studentId: student.id,
+        studentName: `${student.first_name} ${student.last_name}`,
+        registrationNumber: student.student_id,
+        class: student.class_id,
         averageScore: avgScore,
         trend,
         trendMessage,
@@ -85,7 +89,7 @@ router.get('/student-insights', authenticate, async (req: AuthenticatedRequest, 
         recommendation,
         isAtRisk: trend === 'declining' || avgScore < 45 || weakSubjects.length >= 3
       }
-    }).filter(i => i !== null)
+    }).filter(i => i !== null) || []
 
     res.json(insights)
   } catch (error) {

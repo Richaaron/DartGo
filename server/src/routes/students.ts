@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { Student } from '../models/Student.js'
+import { supabase } from '../config/supabase.js'
 import { authenticate, authorize } from '../middleware/auth.js'
 import { sendStudentRegistrationEmail } from '../utils/email.js'
 
@@ -7,8 +7,12 @@ const router = Router()
 
 router.get('/', authenticate, async (req, res) => {
   try {
-    const students = await Student.find()
-    res.json(students)
+    const { data, error } = await supabase
+      .from('students')
+      .select('*')
+    
+    if (error) throw error
+    res.json(data)
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch students' })
   }
@@ -16,9 +20,15 @@ router.get('/', authenticate, async (req, res) => {
 
 router.get('/:id', authenticate, async (req, res) => {
   try {
-    const student = await Student.findById(req.params.id)
-    if (!student) return res.status(404).json({ error: 'Student not found' })
-    res.json(student)
+    const { data, error } = await supabase
+      .from('students')
+      .select('*')
+      .eq('id', req.params.id)
+      .single()
+    
+    if (error) throw error
+    if (!data) return res.status(404).json({ error: 'Student not found' })
+    res.json(data)
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch student' })
   }
@@ -26,16 +36,21 @@ router.get('/:id', authenticate, async (req, res) => {
 
 router.post('/', authenticate, authorize(['Admin']), async (req, res) => {
   try {
-    const student = new Student(req.body)
-    await student.save()
+    const { data, error } = await supabase
+      .from('students')
+      .insert([req.body])
+      .select()
+      .single()
+    
+    if (error) throw error
     
     // Send email notification
-    if (student.email) {
-      sendStudentRegistrationEmail(student.email, `${student.firstName} ${student.lastName}`, student.registrationNumber, student._id.toString())
+    if (data.parent_email) {
+      sendStudentRegistrationEmail(data.parent_email, `${data.first_name} ${data.last_name}`, data.student_id, data.id)
         .catch(err => console.error('Failed to send registration email', err))
     }
     
-    res.status(201).json(student)
+    res.status(201).json(data)
   } catch (error) {
     res.status(400).json({ error: 'Failed to create student' })
   }
@@ -43,9 +58,16 @@ router.post('/', authenticate, authorize(['Admin']), async (req, res) => {
 
 router.put('/:id', authenticate, authorize(['Admin']), async (req, res) => {
   try {
-    const student = await Student.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    if (!student) return res.status(404).json({ error: 'Student not found' })
-    res.json(student)
+    const { data, error } = await supabase
+      .from('students')
+      .update(req.body)
+      .eq('id', req.params.id)
+      .select()
+      .single()
+    
+    if (error) throw error
+    if (!data) return res.status(404).json({ error: 'Student not found' })
+    res.json(data)
   } catch (error) {
     res.status(400).json({ error: 'Failed to update student' })
   }
@@ -53,8 +75,12 @@ router.put('/:id', authenticate, authorize(['Admin']), async (req, res) => {
 
 router.delete('/:id', authenticate, authorize(['Admin']), async (req, res) => {
   try {
-    const student = await Student.findByIdAndDelete(req.params.id)
-    if (!student) return res.status(404).json({ error: 'Student not found' })
+    const { error } = await supabase
+      .from('students')
+      .delete()
+      .eq('id', req.params.id)
+    
+    if (error) throw error
     res.json({ message: 'Student deleted' })
   } catch (error) {
     res.status(500).json({ error: 'Failed to delete student' })

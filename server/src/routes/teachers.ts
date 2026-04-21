@@ -1,33 +1,32 @@
 import { Router } from 'express'
-import { Teacher } from '../models/Teacher.js'
-import { authenticate, authorize } from '../middleware/auth.js'
+import { supabase } from '../config/supabase.js'
+import { authenticate, authorize, AuthRequest } from '../middleware/auth.js'
 
 const router = Router()
 
-router.get('/', authenticate, authorize(['Admin']), async (req, res) => {
+router.get('/', authenticate, async (req, res) => {
   try {
-    const teachers = await Teacher.find()
-    res.json(teachers)
+    const { data, error } = await supabase
+      .from('teachers')
+      .select('*')
+    
+    if (error) throw error
+    res.json(data)
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch teachers' })
   }
 })
 
-router.get('/:id', authenticate, async (req, res) => {
-  try {
-    const teacher = await Teacher.findById(req.params.id)
-    if (!teacher) return res.status(404).json({ error: 'Teacher not found' })
-    res.json(teacher)
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch teacher' })
-  }
-})
-
 router.post('/', authenticate, authorize(['Admin']), async (req, res) => {
   try {
-    const teacher = new Teacher(req.body)
-    await teacher.save()
-    res.status(201).json(teacher)
+    const { data, error } = await supabase
+      .from('teachers')
+      .insert([req.body])
+      .select()
+      .single()
+    
+    if (error) throw error
+    res.status(201).json(data)
   } catch (error) {
     res.status(400).json({ error: 'Failed to create teacher' })
   }
@@ -35,9 +34,16 @@ router.post('/', authenticate, authorize(['Admin']), async (req, res) => {
 
 router.put('/:id', authenticate, authorize(['Admin']), async (req, res) => {
   try {
-    const teacher = await Teacher.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    if (!teacher) return res.status(404).json({ error: 'Teacher not found' })
-    res.json(teacher)
+    const { data, error } = await supabase
+      .from('teachers')
+      .update(req.body)
+      .eq('id', req.params.id)
+      .select()
+      .single()
+    
+    if (error) throw error
+    if (!data) return res.status(404).json({ error: 'Teacher not found' })
+    res.json(data)
   } catch (error) {
     res.status(400).json({ error: 'Failed to update teacher' })
   }
@@ -45,8 +51,12 @@ router.put('/:id', authenticate, authorize(['Admin']), async (req, res) => {
 
 router.delete('/:id', authenticate, authorize(['Admin']), async (req, res) => {
   try {
-    const teacher = await Teacher.findByIdAndDelete(req.params.id)
-    if (!teacher) return res.status(404).json({ error: 'Teacher not found' })
+    const { error } = await supabase
+      .from('teachers')
+      .delete()
+      .eq('id', req.params.id)
+    
+    if (error) throw error
     res.json({ message: 'Teacher deleted' })
   } catch (error) {
     res.status(500).json({ error: 'Failed to delete teacher' })

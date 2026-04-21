@@ -1,6 +1,5 @@
 import nodemailer from 'nodemailer'
-import { Notification } from '../models/Notification.js'
-import mongoose from 'mongoose'
+import { supabase } from '../config/supabase.js'
 import { getEnvConfig } from './envConfig.js'
 
 const config = getEnvConfig()
@@ -38,17 +37,20 @@ export const sendEmail = async (options: EmailOptions) => {
 
     // Log notification to database
     if (type) {
-      await Notification.create({
-        recipientEmail: to,
-        recipientName: to.split('@')[0],
-        type,
-        subject,
-        body: html || text,
-        status: 'sent',
-        studentId: studentId ? new mongoose.Types.ObjectId(studentId) : undefined,
-        sentAt: new Date(),
-        metadata,
-      }).catch(err => console.error('Failed to log notification:', err))
+      try {
+        await supabase.from('notifications').insert({
+          recipient_email: to,
+          recipient_name: to.split('@')[0],
+          type,
+          title: subject,
+          message: html || text,
+          status: 'SENT',
+          student_id: studentId,
+          metadata: metadata || {},
+        })
+      } catch (err) {
+        console.error('Failed to log notification:', err)
+      }
     }
 
     console.log('Message sent: %s', info.messageId)
@@ -57,17 +59,21 @@ export const sendEmail = async (options: EmailOptions) => {
     console.error('Error sending email:', error)
     // Log failed notification
     if (options.type) {
-      await Notification.create({
-        recipientEmail: options.to,
-        recipientName: options.to.split('@')[0],
-        type: options.type,
-        subject: options.subject,
-        body: options.html || options.text,
-        status: 'failed',
-        studentId: options.studentId ? new mongoose.Types.ObjectId(options.studentId) : undefined,
-        errorMessage: error instanceof Error ? error.message : 'Unknown error',
-        metadata: options.metadata,
-      }).catch(err => console.error('Failed to log notification:', err))
+      try {
+        await supabase.from('notifications').insert({
+          recipient_email: options.to,
+          recipient_name: options.to.split('@')[0],
+          type: options.type,
+          title: options.subject,
+          message: options.html || options.text,
+          status: 'FAILED',
+          student_id: options.studentId,
+          error_message: error instanceof Error ? error.message : 'Unknown error',
+          metadata: options.metadata || {},
+        })
+      } catch (err) {
+        console.error('Failed to log notification:', err)
+      }
     }
     throw error
   }

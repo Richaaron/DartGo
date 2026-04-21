@@ -1,19 +1,32 @@
 import { Router } from 'express'
-import { SchoolConfig } from '../models/SchoolConfig.js'
+import { supabase } from '../config/supabase.js'
 import { authenticate, authorize } from '../middleware/auth.js'
 
 const router = Router()
 
 router.get('/', async (req, res) => {
   try {
-    let config = await SchoolConfig.findOne()
+    const { data, error } = await supabase
+      .from('school_config')
+      .select('*')
+      .single()
+    
+    if (error && error.code !== 'PGRST116') throw error // PGRST116 is 'no rows found'
+
+    let config = data
     if (!config) {
-      config = new SchoolConfig({
-        currentTerm: '1st Term',
-        currentAcademicYear: '2023/2024',
-        availableClasses: ['Pre-Nursery', 'Nursery 1', 'Nursery 2', 'Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Secondary 1', 'Secondary 2', 'Secondary 3']
-      })
-      await config.save()
+      const { data: newConfig, error: insertError } = await supabase
+        .from('school_config')
+        .insert({
+          current_term: '1st Term',
+          current_academic_year: '2023/2024',
+          available_classes: ['Pre-Nursery', 'Nursery 1', 'Nursery 2', 'Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Secondary 1', 'Secondary 2', 'Secondary 3']
+        })
+        .select()
+        .single()
+      
+      if (insertError) throw insertError
+      config = newConfig
     }
     res.json(config)
   } catch (error) {
@@ -23,8 +36,14 @@ router.get('/', async (req, res) => {
 
 router.put('/', authenticate, authorize(['Admin']), async (req, res) => {
   try {
-    const config = await SchoolConfig.findOneAndUpdate({}, req.body, { new: true, upsert: true })
-    res.json(config)
+    const { data, error } = await supabase
+      .from('school_config')
+      .upsert({ ...req.body, id: req.body.id || undefined }) // Use existing ID if provided
+      .select()
+      .single()
+    
+    if (error) throw error
+    res.json(data)
   } catch (error) {
     res.status(400).json({ error: 'Failed to update school config' })
   }

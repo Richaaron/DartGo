@@ -139,11 +139,16 @@ CREATE TABLE IF NOT EXISTS public.attendance (
 -- Notifications table
 CREATE TABLE IF NOT EXISTS public.notifications (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    recipient_id TEXT NOT NULL,
+    recipient_email TEXT NOT NULL,
+    recipient_name TEXT,
+    recipient_id TEXT, -- Optional, for linked users
+    student_id TEXT,   -- Optional, for linked students
     title TEXT NOT NULL,
     message TEXT NOT NULL,
     type TEXT NOT NULL,
-    status TEXT DEFAULT 'UNREAD',
+    status TEXT DEFAULT 'SENT', -- SENT, FAILED, READ, UNREAD
+    error_message TEXT,
+    metadata JSONB DEFAULT '{}',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -151,11 +156,65 @@ CREATE TABLE IF NOT EXISTS public.notifications (
 CREATE TABLE IF NOT EXISTS public.activities (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id TEXT NOT NULL,
+    user_name TEXT,
+    role TEXT,
     action TEXT NOT NULL,
-    entity_type TEXT NOT NULL,
-    entity_id TEXT NOT NULL,
+    entity_type TEXT, -- Optional, for filtering
+    entity_id TEXT,   -- Optional, for filtering
     details TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Messages table
+CREATE TABLE IF NOT EXISTS public.messages (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    sender_id TEXT NOT NULL,
+    recipient_id TEXT NOT NULL,
+    content TEXT NOT NULL,
+    type TEXT DEFAULT 'general',
+    is_read BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- School Config table
+CREATE TABLE IF NOT EXISTS public.school_config (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    current_term TEXT DEFAULT '1st Term',
+    current_academic_year TEXT DEFAULT '2023/2024',
+    available_classes TEXT[] DEFAULT '{}',
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Observations table
+CREATE TABLE IF NOT EXISTS public.observations (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    student_id TEXT NOT NULL,
+    term INTEGER NOT NULL,
+    academic_year TEXT NOT NULL,
+    recorded_by TEXT,
+    punctuality TEXT,
+    neatness TEXT,
+    politeness TEXT,
+    honesty TEXT,
+    relationship_with_others TEXT,
+    leadership TEXT,
+    emotional_stability TEXT,
+    health TEXT,
+    self_control TEXT,
+    attendance TEXT,
+    cooperation TEXT,
+    reliability TEXT,
+    social_habits TEXT,
+    manual_skills TEXT,
+    dexterity TEXT,
+    fluency TEXT,
+    handwriting TEXT,
+    sports TEXT,
+    crafts TEXT,
+    hobbies TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE(student_id, term, academic_year)
 );
 
 -- Enable Row Level Security (RLS) - for now, we'll keep it simple
@@ -170,6 +229,9 @@ ALTER TABLE public.subject_results ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.attendance ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.notifications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.activities ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.observations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.school_config ENABLE ROW LEVEL SECURITY;
 
 -- Simple policies to allow authenticated service role access (backend)
 -- These are usually default for service_role key

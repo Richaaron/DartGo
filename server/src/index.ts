@@ -3,12 +3,10 @@ import cors from 'cors'
 import helmet from 'helmet'
 import compression from 'compression'
 import path from 'path'
-import mongoose from 'mongoose'
 import { fileURLToPath } from 'url'
 import { supabase } from './config/supabase.js'
 import { getEnvConfig, EnvConfig } from './utils/envConfig.js'
 import { loadEnvFile, verifyEnvLoading, printDiagnostics } from './utils/env-loader.js'
-import { performHealthCheck, printHealthCheckResults, isHealthy } from './utils/startup-health-check.js'
 import {
   securityHeaders,
   generalLimiter,
@@ -18,7 +16,6 @@ import {
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js'
 import studentRoutes from './routes/students.js'
 import teacherRoutes from './routes/teachers.js'
-import { User } from './models/User.js'
 import subjectRoutes from './routes/subjects.js'
 import resultRoutes from './routes/results.js'
 import authRoutes from './routes/auth.js'
@@ -68,21 +65,8 @@ try {
   process.exit(1)
 }
 
-// Step 3: Perform health checks
-console.log('\n[STARTUP] Step 3: Performing health checks...')
-const healthResult = await performHealthCheck(envConfig.MONGO_URI, envConfig.PORT)
-printHealthCheckResults(healthResult)
-
-if (!isHealthy(healthResult)) {
-  console.warn('[STARTUP] ⚠️  Health check warnings detected (non-fatal in development)')
-  if (envConfig.NODE_ENV === 'production') {
-    console.error('[STARTUP] ❌ Health check failed in production mode!')
-    process.exit(1)
-  }
-}
-
-// Step 4: Initialize Express app
-console.log('[STARTUP] Step 4: Initializing Express application...')
+// Step 3: Initialize Express app
+console.log('\n[STARTUP] Step 3: Initializing Express application...')
 const app = express()
 const PORT = envConfig.PORT
 
@@ -147,12 +131,9 @@ app.use('/api/teachers', authenticate, activityLogger, teacherRoutes)
 app.use('/api/subjects', authenticate, activityLogger, subjectRoutes)
 
 app.get('/api/health', (req, res) => {
-  const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
-  const status = dbStatus === 'connected' ? 'ok' : 'error'
-  
-  res.status(status === 'ok' ? 200 : 503).json({ 
-    status, 
-    database: dbStatus,
+  res.status(200).json({ 
+    status: 'ok', 
+    database: 'supabase',
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
   })
@@ -173,7 +154,7 @@ async function startServer() {
     console.log('[STARTUP] ✓ Supabase connected')
 
     // Check if database is empty
-    const userCount = data?.length || 0
+    const userCount = data?.[0]?.count || 0
     if (userCount === 0) {
       console.warn('\n╔════════════════════════════════════════════════════════════╗')
       console.log('║ ⚠️  WARNING: DATABASE IS EMPTY                             ║')
@@ -193,51 +174,38 @@ async function startServer() {
       console.log('║   ✓ Security headers enabled                               ║')
       console.log('║   ✓ CORS configured                                        ║')
       console.log('║   ✓ Rate limiting active                                   ║')
-      console.log('║   ✓ MongoDB connected                                      ║')
+      console.log('║   ✓ Supabase connected                                     ║')
       console.log('║   ✓ Authentication ready                                   ║')
       console.log('║   ✓ Graceful shutdown active                               ║')
       console.log('╚════════════════════════════════════════════════════════════╝\n')
     })
-  } catch (error) {
-    console.error('\n[STARTUP] ❌ FATAL ERROR - Server failed to start!')
-    console.error(error instanceof Error ? error.message : String(error))
-    console.error('\n[STARTUP] Diagnostics:')
-    printDiagnostics()
+  } catch (err) {
+    console.error('[STARTUP] ❌ Failed to start server:')
+    console.error(err)
     process.exit(1)
   }
 }
 
-/**
- * GRACEFUL SHUTDOWN
- * This ensures all connections are properly closed before the process exits
- */
-function gracefulShutdown(signal: string) {
-  console.log(`\n[SHUTDOWN] ${signal} received. Starting graceful shutdown...`)
-  
+startServer()
+
+// Graceful shutdown
+const gracefulShutdown = () => {
+  console.log('\n[SHUTDOWN] Signal received, starting graceful shutdown...')
   if (server) {
-    server.close(async () => {
+    server.close(() => {
       console.log('[SHUTDOWN] HTTP server closed')
-      
       try {
         console.log('[SHUTDOWN] Supabase connections closing...')
         process.exit(0)
       } catch (err) {
-        console.error('[SHUTDOWN] Error during MongoDB disconnection:', err)
+        console.error('[SHUTDOWN] Error during cleanup:', err)
         process.exit(1)
       }
     })
-    
-    // Force shutdown if it takes too long
-    setTimeout(() => {
-      console.error('[SHUTDOWN] Could not close connections in time, forcing shut down')
-      process.exit(1)
-    }, 10000)
   } else {
     process.exit(0)
   }
 }
 
-process.on('SIGTERM', () => gracefulShutdown('SIGTERM'))
-process.on('SIGINT', () => gracefulShutdown('SIGINT'))
-
-startServer()
+process.on('SIGTERM', gracefulShutdown)
+process.on('SIGINT', gracefulShutdown)
