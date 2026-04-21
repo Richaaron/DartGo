@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Upload, FileText, CheckCircle, AlertCircle, X, Download, File, Trash2, Search, Filter } from 'lucide-react'
+import { Upload, FileText, CheckCircle, AlertCircle, X, Download, File, Trash2 } from 'lucide-react'
 import { Subject, Teacher, Curriculum, SchemeOfWork, SchoolLevel } from '../types'
 import { fetchSubjects, fetchTeachers, fetchCurriculums, uploadSchemeOfWorkFile, fetchSchemesOfWork, deleteSchemeOfWork } from '../services/api'
 

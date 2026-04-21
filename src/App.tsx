@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom'
-import { BarChart3, GraduationCap, BookOpen, Menu, X, LogOut, Users, CheckCircle, Settings as SettingsIcon, Moon, Sun, Bell } from 'lucide-react'
+import { BarChart3, GraduationCap, BookOpen, Menu, X, LogOut, Users, CheckCircle, Settings as SettingsIcon, Moon, Sun, Bell, FileText } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuthContext } from './context/AuthContext'
 import { useDarkMode } from './hooks/useLocalStorage'
