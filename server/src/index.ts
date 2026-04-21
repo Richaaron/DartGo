@@ -1,3 +1,9 @@
+import { loadEnvFile, verifyEnvLoading } from './utils/env-loader.js'
+// Initialize environment before other imports
+if (!process.env.VERCEL) {
+  loadEnvFile()
+}
+
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
@@ -6,7 +12,6 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { supabase } from './config/supabase.js'
 import { getEnvConfig, EnvConfig } from './utils/envConfig.js'
-import { loadEnvFile, verifyEnvLoading } from './utils/env-loader.js'
 import {
   securityHeaders,
   generalLimiter,
@@ -42,15 +47,13 @@ console.log('\n╔════════════════════�
 console.log('║        Folusho Reporting Sheet - Server Startup          ║')
 console.log('╚════════════════════════════════════════════════════════════╝\n')
 
-// Step 1: Load environment variables
-console.log('[STARTUP] Step 1: Loading environment variables...')
-const loadedFile = loadEnvFile()
-if (loadedFile) {
-  console.log(`[STARTUP] ✓ Loaded from: ${loadedFile}`)
+// Step 1: Verify environment variables
+console.log('[STARTUP] Step 1: Verifying environment configuration...')
+if (process.env.VERCEL) {
+  console.log('[STARTUP] ✓ Running on Vercel (using system env)')
 } else {
-  console.log('[STARTUP] ℹ️  Using process.env and defaults')
+  verifyEnvLoading()
 }
-verifyEnvLoading()
 
 // Step 2: Validate configuration
 console.log('\n[STARTUP] Step 2: Validating configuration...')
