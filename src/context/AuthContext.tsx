@@ -7,8 +7,14 @@ const SESSION_TIMEOUT = 30 * 60 * 1000 // 30 minutes
 
 const getBaseUrl = () => {
   const envUrl = import.meta.env.VITE_API_URL
-  if (!envUrl) return 'http://localhost:3002/api'
-  return envUrl.endsWith('/api') ? envUrl : `${envUrl}/api`
+  if (envUrl) {
+    const cleanUrl = envUrl.replace(/\/$/, '')
+    return cleanUrl.endsWith('/api') ? cleanUrl : `${cleanUrl}/api`
+  }
+
+  if (import.meta.env.PROD) return '/api'
+  // Fall back to local dev server
+  return 'http://localhost:3002/api'
 }
 
 const API_URL = getBaseUrl()

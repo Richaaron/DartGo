@@ -31,6 +31,21 @@ router.post('/login', authLimiter, async (req, res) => {
 
     const normalizedLoginId = email.toLowerCase().trim()
 
+    // 0. Auto-seed admin if database is empty (production convenience)
+    if (normalizedLoginId === 'admin@folusho.com') {
+      const { count } = await supabase.from('users').select('*', { count: 'exact', head: true })
+      if (count === 0) {
+        console.log('[AUTH] Database empty, creating initial admin...')
+        const hashedPassword = await bcrypt.hash('AdminPassword123!@#', 10)
+        await supabase.from('users').insert({
+          email: 'admin@folusho.com',
+          name: 'Admin User',
+          password: hashedPassword,
+          role: 'Admin'
+        })
+      }
+    }
+
     // 1. Try to find user in 'users' table (Admin/etc)
     const { data: userData, error: userError } = await supabase
       .from('users')
