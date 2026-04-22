@@ -9,7 +9,7 @@ const router = Router()
 // Helper to map DB to camelCase for frontend
 const mapStudent = (s: any) => ({
   id: s.id,
-  studentId: s.student_id,
+  studentId: s.registration_number || s.student_id,
   firstName: s.first_name,
   lastName: s.last_name,
   class: s.class_id,
@@ -31,7 +31,7 @@ const mapStudent = (s: any) => ({
 // Helper to map frontend camelCase to DB snake_case
 const mapToDB = (s: any) => {
   const mapped: any = {
-    student_id: s.registrationNumber || s.studentId,
+    registration_number: s.registrationNumber || s.studentId,
     first_name: s.firstName,
     last_name: s.lastName,
     class_id: s.class,
@@ -142,7 +142,7 @@ router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req: Auth
     
     // Send email notification
     if (data.parent_email) {
-      sendStudentRegistrationEmail(data.parent_email, `${data.first_name} ${data.last_name}`, data.student_id, data.id)
+      sendStudentRegistrationEmail(data.parent_email, `${data.first_name} ${data.last_name}`, data.registration_number || data.student_id, data.id)
         .catch(err => console.error('Failed to send registration email', err))
     }
 

@@ -9,37 +9,47 @@ const mapResult = (r: any) => ({
   id: r.id,
   studentId: r.student_id,
   subjectId: r.subject_id,
+  classId: r.class_id,
   term: r.term,
   academicYear: r.academic_year,
-  caScore: r.ca_score,
-  examScore: r.exam_score,
-  totalScore: r.total_score,
+  ca1Score: r.ca1_score || 0,
+  ca2Score: r.ca2_score || 0,
+  caScore: r.ca_score || (Number(r.ca1_score || 0) + Number(r.ca2_score || 0)),
+  examScore: r.exam_score || 0,
+  totalScore: r.total_score || 0,
   grade: r.grade,
   remark: r.remark,
   teacherId: r.teacher_id,
-  createdAt: r.created_at
+  status: r.status,
+  createdAt: r.created_at,
+  updatedAt: r.updated_at
 })
 
 // Helper to map frontend camelCase to DB snake_case
 const mapToDB = (r: any) => ({
   student_id: r.studentId,
   subject_id: r.subjectId,
+  class_id: r.classId,
   term: r.term,
   academic_year: r.academicYear,
-  ca_score: r.caScore,
-  exam_score: r.examScore,
-  total_score: r.totalScore,
+  ca1_score: r.ca1Score || 0,
+  ca2_score: r.ca2Score || 0,
+  ca_score: r.caScore || (Number(r.ca1Score || 0) + Number(r.ca2Score || 0)),
+  exam_score: r.examScore || 0,
+  total_score: r.totalScore || (Number(r.caScore || 0) + Number(r.ca1Score || 0) + Number(r.ca2Score || 0) + Number(r.examScore || 0)),
   grade: r.grade,
   remark: r.remark,
-  teacher_id: r.teacherId
+  teacher_id: r.teacherId,
+  status: r.status || 'DRAFT'
 })
 
 router.get('/', authenticate, async (req, res) => {
   try {
-    const { studentId, term, academicYear } = req.query
+    const { studentId, classId, term, academicYear } = req.query
     let query = supabase.from('subject_results').select('*')
     
     if (studentId) query = query.eq('student_id', studentId)
+    if (classId) query = query.eq('class_id', classId)
     if (term) query = query.eq('term', term)
     if (academicYear) query = query.eq('academic_year', academicYear)
 

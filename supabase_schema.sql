@@ -87,7 +87,8 @@ CREATE TABLE IF NOT EXISTS public.students (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
-    student_id TEXT UNIQUE NOT NULL,
+    registration_number TEXT UNIQUE NOT NULL,
+    student_id TEXT UNIQUE, -- Optional fallback for legacy support
     class_id TEXT NOT NULL,
     level TEXT,
     gender TEXT,

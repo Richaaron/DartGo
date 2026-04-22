@@ -25,7 +25,7 @@ router.get('/student-insights', authenticate, authorize(['Admin', 'Teacher']), a
     }
 
     const insights = students?.map(student => {
-      const studentResults = results?.filter(r => r.student_id === student.student_id) || []
+      const studentResults = results?.filter(r => r.student_id === (student.registration_number || student.student_id)) || []
       
       if (studentResults.length === 0) return null
 
@@ -80,7 +80,7 @@ router.get('/student-insights', authenticate, authorize(['Admin', 'Teacher']), a
       return {
         studentId: student.id,
         studentName: `${student.first_name} ${student.last_name}`,
-        registrationNumber: student.student_id,
+        registrationNumber: student.registration_number || student.student_id,
         class: student.class_id,
         averageScore: avgScore,
         trend,

@@ -9,25 +9,28 @@ const router = Router()
 const mapScheme = (s: any) => ({
   id: s.id,
   subjectId: s.subject_id,
-  class: s.class,
+  classId: s.class_id,
   term: s.term,
   academicYear: s.academic_year,
-  weeks: s.weeks || [],
+  curriculumId: s.curriculum_id,
+  topics: s.topics || [],
   status: s.status,
   uploadedBy: s.uploaded_by,
   fileUrl: s.file_url,
   fileName: s.file_name,
   notes: s.notes,
-  createdAt: s.created_at
+  createdAt: s.created_at,
+  updatedAt: s.updated_at
 })
 
 // Helper to map frontend camelCase to DB snake_case
 const mapToDB = (s: any) => ({
   subject_id: s.subjectId,
-  class: s.class,
+  class_id: s.classId || s.class,
   term: s.term,
   academic_year: s.academicYear,
-  weeks: s.weeks,
+  curriculum_id: s.curriculumId,
+  topics: s.topics,
   status: s.status,
   file_url: s.fileUrl,
   file_name: s.fileName,
@@ -36,11 +39,11 @@ const mapToDB = (s: any) => ({
 
 router.get('/', authenticate, async (req, res) => {
   try {
-    const { subjectId, class: className, term, academicYear } = req.query
+    const { subjectId, classId, term, academicYear } = req.query
     let query = supabase.from('schemes_of_work').select('*')
     
     if (subjectId) query = query.eq('subject_id', subjectId)
-    if (className) query = query.eq('class', className)
+    if (classId) query = query.eq('class_id', classId)
     if (term) query = query.eq('term', term)
     if (academicYear) query = query.eq('academic_year', academicYear)
 
