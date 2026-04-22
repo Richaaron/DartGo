@@ -73,7 +73,9 @@ export default function StudentManagement() {
       setShowForm(false)
     } catch (error: any) {
       const errorMsg = error.response?.data?.error || error.message || 'Failed to add student'
-      window.alert(`Error: ${errorMsg}`)
+      const details = error.response?.data?.details ? `\nDetails: ${error.response.data.details}` : ''
+      const hint = error.response?.data?.hint ? `\nHint: ${error.response.data.hint}` : ''
+      window.alert(`Error: ${errorMsg}${details}${hint}`)
     }
   }
 
@@ -85,7 +87,8 @@ export default function StudentManagement() {
       setShowForm(false)
     } catch (error: any) {
       const errorMsg = error.response?.data?.error || error.message || 'Failed to update student'
-      window.alert(`Error: ${errorMsg}`)
+      const details = error.response?.data?.details ? `\nDetails: ${error.response.data.details}` : ''
+      window.alert(`Error: ${errorMsg}${details}`)
     }
   }
 

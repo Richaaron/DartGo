@@ -72,8 +72,12 @@ router.get('/:id', authenticate, async (req, res) => {
     if (error) throw error
     if (!data) return res.status(404).json({ error: 'Student not found' })
     res.json(mapStudent(data))
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch student' })
+  } catch (error: any) {
+    console.error('[STUDENTS] PUT /:id error:', error)
+    res.status(error.status || 500).json({ 
+      error: error.message || 'Failed to update student',
+      details: error.details || undefined
+    })
   }
 })
 
@@ -134,9 +138,13 @@ router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req: Auth
     }
     
     res.status(201).json(mapStudent(data))
-  } catch (error) {
-    console.error('[STUDENTS] Create error:', error)
-    res.status(400).json({ error: 'Failed to create student' })
+  } catch (error: any) {
+    console.error('[STUDENTS] POST / error:', error)
+    res.status(error.status || 500).json({ 
+      error: error.message || 'Failed to create student',
+      details: error.details || undefined,
+      hint: error.hint || undefined
+    })
   }
 })
 
@@ -168,8 +176,12 @@ router.delete('/:id', authenticate, authorize(['Admin']), async (req, res) => {
     
     if (error) throw error
     res.json({ message: 'Student deleted' })
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to delete student' })
+  } catch (error: any) {
+    console.error('[STUDENTS] DELETE /:id error:', error)
+    res.status(error.status || 500).json({ 
+      error: error.message || 'Failed to delete student',
+      details: error.details || undefined
+    })
   }
 })
 
