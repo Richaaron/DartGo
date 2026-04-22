@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { supabase } from '../config/supabase'
 import { authenticate, authorize, AuthRequest } from '../middleware/auth'
 import { sendStudentRegistrationEmail } from '../utils/email'
+import { sendParentCredentialsSMS } from '../utils/sms'
 
 const router = Router()
 
@@ -98,6 +99,17 @@ router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req: Auth
     if (data.parent_email) {
       sendStudentRegistrationEmail(data.parent_email, `${data.first_name} ${data.last_name}`, data.student_id, data.id)
         .catch(err => console.error('Failed to send registration email', err))
+    }
+
+    // Send SMS notification
+    if (data.parent_phone) {
+      sendParentCredentialsSMS(
+        data.parent_phone, 
+        `${data.first_name} ${data.last_name}`, 
+        data.parent_username, 
+        data.parent_password,
+        data.id
+      ).catch(err => console.error('Failed to send registration SMS', err))
     }
     
     res.status(201).json(mapStudent(data))

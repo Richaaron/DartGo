@@ -27,6 +27,8 @@ export interface EnvConfig {
   MAX_LOGIN_ATTEMPTS: number
   LOGIN_ATTEMPT_WINDOW_MS: number
   SESSION_TIMEOUT_MS: number
+  TERMII_API_KEY?: string
+  TERMII_SENDER_ID?: string
 }
 
 /**
