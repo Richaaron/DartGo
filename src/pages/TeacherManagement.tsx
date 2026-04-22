@@ -218,7 +218,7 @@ export default function TeacherManagement() {
             ),
             classes: (
               <div className="flex flex-wrap gap-1">
-                {teacher.assignedClasses.map((c) => (
+                {(teacher.assignedClasses || []).map((c) => (
                   <span key={c} className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-xs">
                     {c}
                   </span>

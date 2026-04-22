@@ -5,6 +5,40 @@ import { sendStudentRegistrationEmail } from '../utils/email'
 
 const router = Router()
 
+// Helper to map DB to camelCase for frontend
+const mapStudent = (s: any) => ({
+  id: s.id,
+  studentId: s.student_id,
+  firstName: s.first_name,
+  lastName: s.last_name,
+  class: s.class,
+  level: s.level,
+  status: s.status,
+  parentName: s.parent_name,
+  parentEmail: s.parent_email,
+  parentPhone: s.parent_phone,
+  parentUsername: s.parent_username,
+  parentPassword: s.parent_password,
+  image: s.image,
+  createdAt: s.created_at
+})
+
+// Helper to map frontend camelCase to DB snake_case
+const mapToDB = (s: any) => ({
+  student_id: s.studentId,
+  first_name: s.firstName,
+  last_name: s.lastName,
+  class: s.class,
+  level: s.level,
+  status: s.status,
+  parent_name: s.parentName,
+  parent_email: s.parentEmail,
+  parent_phone: s.parentPhone,
+  parent_username: s.parentUsername,
+  parent_password: s.parentPassword,
+  image: s.image
+})
+
 router.get('/', authenticate, async (req, res) => {
   try {
     const { data, error } = await supabase
@@ -12,7 +46,7 @@ router.get('/', authenticate, async (req, res) => {
       .select('*')
     
     if (error) throw error
-    res.json(data)
+    res.json(data?.map(mapStudent) || [])
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch students' })
   }
@@ -28,7 +62,7 @@ router.get('/:id', authenticate, async (req, res) => {
     
     if (error) throw error
     if (!data) return res.status(404).json({ error: 'Student not found' })
-    res.json(data)
+    res.json(mapStudent(data))
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch student' })
   }
@@ -36,9 +70,10 @@ router.get('/:id', authenticate, async (req, res) => {
 
 router.post('/', authenticate, authorize(['Admin']), async (req, res) => {
   try {
+    const dbData = mapToDB(req.body)
     const { data, error } = await supabase
       .from('students')
-      .insert([req.body])
+      .insert([dbData])
       .select()
       .single()
     
@@ -50,25 +85,28 @@ router.post('/', authenticate, authorize(['Admin']), async (req, res) => {
         .catch(err => console.error('Failed to send registration email', err))
     }
     
-    res.status(201).json(data)
+    res.status(201).json(mapStudent(data))
   } catch (error) {
+    console.error('[STUDENTS] Create error:', error)
     res.status(400).json({ error: 'Failed to create student' })
   }
 })
 
 router.put('/:id', authenticate, authorize(['Admin']), async (req, res) => {
   try {
+    const dbData = mapToDB(req.body)
     const { data, error } = await supabase
       .from('students')
-      .update(req.body)
+      .update(dbData)
       .eq('id', req.params.id)
       .select()
       .single()
     
     if (error) throw error
     if (!data) return res.status(404).json({ error: 'Student not found' })
-    res.json(data)
+    res.json(mapStudent(data))
   } catch (error) {
+    console.error('[STUDENTS] Update error:', error)
     res.status(400).json({ error: 'Failed to update student' })
   }
 })
