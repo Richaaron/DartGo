@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { supabase } from '../config/supabase'
-import { authenticate, authorize } from '../middleware/auth'
+import { authenticate, authorize, AuthRequest } from '../middleware/auth'
 import { sendStudentRegistrationEmail } from '../utils/email'
 
 const router = Router()
