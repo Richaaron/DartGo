@@ -15,39 +15,18 @@ const router = Router()
 const envConfig = getEnvConfig()
 
 /**
- * Health check endpoint to verify Supabase connectivity and env vars
+ * Health check endpoint to verify Supabase connectivity
  */
 router.get('/health', async (req, res) => {
   try {
-    const config = getEnvConfig()
-    const { count, error } = await supabase.from('users').select('*', { count: 'exact', head: true })
-    
-    // Check if admin exists specifically
-    const { data: adminUser } = await supabase
-      .from('users')
-      .select('email, role')
-      .eq('email', 'admin@folusho.com')
-      .single()
-
+    const { error } = await supabase.from('users').select('id', { count: 'exact', head: true }).limit(1)
     res.json({
       status: 'ok',
-      supabase: error ? 'error' : 'connected',
-      supabaseError: error ? error.message : null,
-      database: {
-        totalUsers: count,
-        adminExists: !!adminUser,
-        adminRole: adminUser?.role || 'none'
-      },
-      env: {
-        SUPABASE_URL: config.SUPABASE_URL ? 'set' : 'missing',
-        SUPABASE_KEY: config.SUPABASE_SERVICE_ROLE_KEY ? 'set' : 'missing',
-        JWT_SECRET: config.JWT_SECRET ? 'set' : 'missing',
-        NODE_ENV: config.NODE_ENV,
-        NETLIFY: !!process.env.NETLIFY
-      }
+      database: error ? 'error' : 'connected',
+      timestamp: new Date().toISOString()
     })
   } catch (error) {
-    res.status(500).json({ status: 'error', message: error instanceof Error ? error.message : String(error) })
+    res.status(500).json({ status: 'error' })
   }
 })
 
@@ -104,10 +83,6 @@ router.post('/login', authLimiter, async (req, res) => {
       .eq('email', normalizedLoginId)
       .single()
 
-    if (userError) {
-      console.log(`[AUTH] User table search result: ${userError.message} (Code: ${userError.code})`)
-    }
-
     let foundUser = userData
     let role = userData?.role
 
@@ -161,8 +136,6 @@ router.post('/login', authLimiter, async (req, res) => {
     }
 
     if (foundUser) {
-      console.log(`[AUTH] User found: ID=${foundUser.id}, Role=${role}, Email=${foundUser.email}`)
-      console.log(`[AUTH] Verifying password for: ${email}`)
       const isMatch = await bcrypt.compare(password, foundUser.password)
       
       if (!isMatch) {
@@ -173,7 +146,6 @@ router.post('/login', authLimiter, async (req, res) => {
         })
       }
 
-      console.log(`[AUTH] Password verified successfully for: ${email}`)
       const token = generateToken({
         id: foundUser.id,
         role: role,

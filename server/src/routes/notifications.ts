@@ -5,42 +5,6 @@ import { sendEmail } from '../utils/email'
 
 const router = Router()
 
-// Test email endpoint
-router.post('/test-email', authenticate, authorize(['Admin']), async (req, res) => {
-  try {
-    const { email } = req.body
-    if (!email) {
-      return res.status(400).json({ error: 'Email address is required' })
-    }
-
-    console.log(`[NOTIF] Sending test email to: ${email}`)
-    
-    await sendEmail({
-      to: email,
-      subject: 'Test Notification - Folusho Victory Schools',
-      text: 'This is a test email notification from your Folusho Victory Schools Result Management System.',
-      html: `
-        <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;">
-          <h1 style="color: #7c3aed;">Notification Test</h1>
-          <p>This is a test email notification from your <strong>Folusho Victory Schools Result Management System</strong>.</p>
-          <p>If you are receiving this, your email configuration (SMTP) is working perfectly!</p>
-          <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0;">
-          <p style="font-size: 12px; color: #64748b;">This email was triggered by the Admin Health Check.</p>
-        </div>
-      `,
-      type: 'teacher_assigned' // Using an existing valid type
-    })
-
-    res.json({ message: 'Test email sent successfully! Please check your inbox.' })
-  } catch (error) {
-    console.error('[NOTIF] Test email failed:', error)
-    res.status(500).json({ 
-      error: 'Failed to send test email', 
-      details: error instanceof Error ? error.message : String(error) 
-    })
-  }
-})
-
 // Helper to map Supabase notification to old MongoDB format for frontend compatibility
 const mapNotification = (n: any) => ({
   _id: n.id,
