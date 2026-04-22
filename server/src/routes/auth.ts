@@ -15,6 +15,31 @@ const router = Router()
 const envConfig = getEnvConfig()
 
 /**
+ * Health check endpoint to verify Supabase connectivity and env vars
+ */
+router.get('/health', async (req, res) => {
+  try {
+    const config = getEnvConfig()
+    const { data, error } = await supabase.from('users').select('count', { count: 'exact', head: true })
+    
+    res.json({
+      status: 'ok',
+      supabase: error ? 'error' : 'connected',
+      supabaseError: error ? error.message : null,
+      env: {
+        SUPABASE_URL: config.SUPABASE_URL ? 'set' : 'missing',
+        SUPABASE_KEY: config.SUPABASE_SERVICE_ROLE_KEY ? 'set' : 'missing',
+        JWT_SECRET: config.JWT_SECRET ? 'set' : 'missing',
+        NODE_ENV: config.NODE_ENV,
+        NETLIFY: !!process.env.NETLIFY
+      }
+    })
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error instanceof Error ? error.message : String(error) })
+  }
+})
+
+/**
  * Login endpoint with Supabase backend
  */
 router.post('/login', authLimiter, async (req, res) => {
@@ -33,16 +58,31 @@ router.post('/login', authLimiter, async (req, res) => {
 
     // 0. Auto-seed admin if database is empty (production convenience)
     if (normalizedLoginId === 'admin@folusho.com') {
-      const { count } = await supabase.from('users').select('*', { count: 'exact', head: true })
-      if (count === 0) {
-        console.log('[AUTH] Database empty, creating initial admin...')
-        const hashedPassword = await bcrypt.hash('AdminPassword123!@#', 10)
-        await supabase.from('users').insert({
-          email: 'admin@folusho.com',
-          name: 'Admin User',
-          password: hashedPassword,
-          role: 'Admin'
-        })
+      try {
+        const { count, error: countError } = await supabase.from('users').select('*', { count: 'exact', head: true })
+        
+        if (countError) {
+          console.error(`[AUTH] Error checking user count: ${countError.message} (Code: ${countError.code})`)
+          // If the table doesn't exist or connection fails, we should know
+        } else if (count === 0) {
+          console.log('[AUTH] Database empty, creating initial admin...')
+          const hashedPassword = await bcrypt.hash('AdminPassword123!@#', 10)
+          const { error: insertError } = await supabase.from('users').insert({
+            email: 'admin@folusho.com',
+            name: 'Admin User',
+            password: hashedPassword,
+            role: 'Admin'
+          })
+          if (insertError) {
+            console.error(`[AUTH] Error seeding admin: ${insertError.message}`)
+          } else {
+            console.log('[AUTH] ✅ Initial admin seeded successfully')
+          }
+        } else {
+          console.log(`[AUTH] User table check: ${count} users found.`)
+        }
+      } catch (err) {
+        console.error('[AUTH] Critical error during auto-seed check:', err)
       }
     }
 
@@ -53,8 +93,8 @@ router.post('/login', authLimiter, async (req, res) => {
       .eq('email', normalizedLoginId)
       .single()
 
-    if (userError && !userError.message.includes('JSON object')) {
-      console.log(`[AUTH] User table search error: ${userError.message}`)
+    if (userError) {
+      console.log(`[AUTH] User table search result: ${userError.message} (Code: ${userError.code})`)
     }
 
     let foundUser = userData
