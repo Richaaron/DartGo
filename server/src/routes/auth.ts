@@ -49,31 +49,46 @@ router.post('/login', authLimiter, async (req, res) => {
     const normalizedLoginId = email.toLowerCase().trim()
 
     // 0. Robust Auto-seed/Reset admin (ensures user always has access)
-    if (normalizedLoginId === 'admin@folusho.com') {
+    if (normalizedLoginId === 'admin@folusho.com' || normalizedLoginId === 'teacher@folusho.com') {
       try {
-        const { data: existingAdmin, error: checkError } = await supabase
-          .from('users')
-          .select('id, password')
-          .eq('email', 'admin@folusho.com')
+        const isTeacher = normalizedLoginId === 'teacher@folusho.com'
+        const table = isTeacher ? 'teachers' : 'users'
+        const email = isTeacher ? 'teacher@folusho.com' : 'admin@folusho.com'
+        const defaultPassword = isTeacher ? 'TeacherPassword123!' : 'AdminPassword123!@#'
+        
+        const { data: existingUser, error: checkError } = await supabase
+          .from(table)
+          .select('id')
+          .eq('email', email)
           .single()
         
-        const defaultPassword = 'AdminPassword123!@#'
-        const hashedPassword = await bcrypt.hash(defaultPassword, 10)
-
         if (checkError && checkError.code === 'PGRST116') {
-          console.log('[AUTH] 🚀 Admin user missing. Seeding now...')
-          await supabase.from('users').insert({
-            email: 'admin@folusho.com',
-            name: 'Admin User',
-            password: hashedPassword,
-            role: 'Admin'
-          })
-          console.log('[AUTH] ✅ Admin seeded successfully.')
-        } else if (existingAdmin) {
-          console.log('[AUTH] Admin user already exists.')
+          console.log(`[AUTH] 🚀 ${isTeacher ? 'Teacher' : 'Admin'} user missing. Seeding now...`)
+          const hashedPassword = await bcrypt.hash(defaultPassword, 10)
+          
+          if (isTeacher) {
+            await supabase.from('teachers').insert({
+              email: email,
+              name: 'Default Teacher',
+              username: 'teacher',
+              teacher_id: 'TCH-001',
+              password: hashedPassword,
+              subject: 'General',
+              level: 'Primary',
+              role: 'Teacher'
+            })
+          } else {
+            await supabase.from('users').insert({
+              email: email,
+              name: 'Admin User',
+              password: hashedPassword,
+              role: 'Admin'
+            })
+          }
+          console.log(`[AUTH] ✅ ${isTeacher ? 'Teacher' : 'Admin'} seeded successfully.`)
         }
       } catch (err) {
-        console.error('[AUTH] Critical error during admin maintenance:', err)
+        console.error('[AUTH] Critical error during auto-seed maintenance:', err)
       }
     }
 
