@@ -116,6 +116,7 @@ export default function TeacherManagement() {
   const columns = [
     { key: 'profile', label: 'Photo' },
     { key: 'name', label: 'Name' },
+    { key: 'email', label: 'Email' },
     { key: 'subject', label: 'Subject' },
     { key: 'level', label: 'Level' },
     { key: 'classes', label: 'Classes' },

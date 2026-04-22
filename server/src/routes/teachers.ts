@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { supabase } from '../config/supabase'
 import { authenticate, authorize, AuthRequest } from '../middleware/auth'
+import { sendTeacherCredentialsEmail } from '../utils/email'
 
 const router = Router()
 
@@ -55,6 +56,22 @@ router.post('/', authenticate, authorize(['Admin']), async (req, res) => {
       .single()
     
     if (error) throw error
+
+    // Send credentials email to teacher
+    if (data.email) {
+      try {
+        await sendTeacherCredentialsEmail(
+          data.email,
+          data.name,
+          data.username,
+          req.body.password // Use the raw password from request body
+        )
+      } catch (emailError) {
+        console.error('[TEACHERS] Failed to send credentials email:', emailError)
+        // We don't fail the whole request if email fails, but we log it
+      }
+    }
+
     res.status(201).json(mapTeacher(data))
   } catch (error) {
     console.error('[TEACHERS] Create error:', error)

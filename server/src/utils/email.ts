@@ -19,7 +19,7 @@ interface EmailOptions {
   text: string
   html?: string
   studentId?: string
-  type?: 'student_registration' | 'result_published' | 'attendance_warning' | 'low_grades' | 'teacher_assigned' | 'fee_reminder'
+  type?: 'student_registration' | 'result_published' | 'attendance_warning' | 'low_grades' | 'teacher_assigned' | 'fee_reminder' | 'teacher_credentials'
   metadata?: Record<string, any>
 }
 
@@ -101,6 +101,37 @@ export const sendStudentRegistrationEmail = async (studentEmail: string, student
     type: 'student_registration',
     studentId,
     metadata: { registrationNumber }
+  })
+}
+
+export const sendTeacherCredentialsEmail = async (teacherEmail: string, teacherName: string, username: string, password: string) => {
+  const subject = 'Your Faculty Account Credentials - Folusho Victory Schools'
+  const text = `Hello ${teacherName}, your faculty account has been created. Username: ${username}, Password: ${password}.`
+  const html = `
+    <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;">
+      <h1 style="color: #7c3aed;">Welcome to the Faculty!</h1>
+      <p>Hello <strong>${teacherName}</strong>,</p>
+      <p>Your faculty profile has been successfully created in the <strong>Folusho Victory Schools Result Management System</strong>.</p>
+      <p>Below are your secure login credentials:</p>
+      <div style="background-color: #f8fafc; padding: 15px; border-radius: 6px; margin: 20px 0;">
+        <p style="margin: 5px 0;"><strong>Username:</strong> <code style="color: #4f46e5;">${username}</code></p>
+        <p style="margin: 5px 0;"><strong>Password:</strong> <code style="color: #4f46e5;">${password}</code></p>
+      </div>
+      <p>For security reasons, we recommend that you change your password immediately after your first login.</p>
+      <p style="margin-top: 30px;">
+        <a href="${config.FRONTEND_URL}/login?type=teacher" style="background-color: #7c3aed; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">Login to Dashboard</a>
+      </p>
+      <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 30px 0;">
+      <p style="font-size: 12px; color: #64748b;">This is an automated message. Please do not reply to this email.</p>
+    </div>
+  `
+  return sendEmail({
+    to: teacherEmail,
+    subject,
+    text,
+    html,
+    type: 'teacher_credentials',
+    metadata: { username }
   })
 }
 
