@@ -90,12 +90,7 @@ router.post('/login', authLimiter, async (req, res) => {
           })
           console.log('[AUTH] ✅ Admin seeded successfully.')
         } else if (existingAdmin) {
-          // If password doesn't match the default, reset it to ensure user can log in
-          const isDefaultMatch = await bcrypt.compare(defaultPassword, existingAdmin.password)
-          if (!isDefaultMatch) {
-            console.log('[AUTH] 🔄 Admin password reset to default to ensure access.')
-            await supabase.from('users').update({ password: hashedPassword }).eq('email', 'admin@folusho.com')
-          }
+          console.log('[AUTH] Admin user already exists.')
         }
       } catch (err) {
         console.error('[AUTH] Critical error during admin maintenance:', err)
