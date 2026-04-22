@@ -38,7 +38,7 @@ export default function Deadlines() {
       setFormData({ title: '', description: '', deadline_date: '', type: 'RESULT_ENTRY' })
       loadDeadlines()
     } catch (error) {
-      alert('Failed to create deadline')
+      window.alert('Failed to create deadline')
     }
   }
 
@@ -48,7 +48,7 @@ export default function Deadlines() {
         await deleteDeadline(id)
         loadDeadlines()
       } catch (error) {
-        alert('Failed to delete deadline')
+        window.alert('Failed to delete deadline')
       }
     }
   }
