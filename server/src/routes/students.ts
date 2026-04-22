@@ -12,7 +12,7 @@ const mapStudent = (s: any) => ({
   studentId: s.student_id,
   firstName: s.first_name,
   lastName: s.last_name,
-  class: s.class,
+  class: s.class_id,
   level: s.level,
   status: s.status,
   parentName: s.parent_name,
@@ -21,6 +21,7 @@ const mapStudent = (s: any) => ({
   parentUsername: s.parent_username,
   parentPassword: s.parent_password,
   image: s.image,
+  enrollmentDate: s.enrollment_date,
   createdAt: s.created_at
 })
 
@@ -29,7 +30,7 @@ const mapToDB = (s: any) => ({
   student_id: s.studentId,
   first_name: s.firstName,
   last_name: s.lastName,
-  class: s.class,
+  class_id: s.class,
   level: s.level,
   status: s.status,
   parent_name: s.parentName,
@@ -37,7 +38,8 @@ const mapToDB = (s: any) => ({
   parent_phone: s.parentPhone,
   parent_username: s.parentUsername,
   parent_password: s.parentPassword,
-  image: s.image
+  image: s.image,
+  enrollment_date: s.enrollmentDate
 })
 
 router.get('/', authenticate, async (req, res) => {
@@ -82,7 +84,7 @@ router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req: Auth
         .eq('id', user.id)
         .single()
       
-      if (!teacher?.assigned_classes?.includes(dbData.class)) {
+      if (!teacher?.assigned_classes?.includes(dbData.class_id)) {
         return res.status(403).json({ error: 'You can only add students to your assigned classes' })
       }
     }

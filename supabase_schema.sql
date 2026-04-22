@@ -89,6 +89,7 @@ CREATE TABLE IF NOT EXISTS public.students (
     last_name TEXT NOT NULL,
     student_id TEXT UNIQUE NOT NULL,
     class_id TEXT NOT NULL,
+    level TEXT,
     gender TEXT,
     date_of_birth TIMESTAMP WITH TIME ZONE,
     parent_name TEXT,
@@ -99,6 +100,7 @@ CREATE TABLE IF NOT EXISTS public.students (
     address TEXT,
     image TEXT,
     status TEXT DEFAULT 'ACTIVE',
+    enrollment_date TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -217,6 +219,19 @@ CREATE TABLE IF NOT EXISTS public.observations (
     UNIQUE(student_id, term, academic_year)
 );
 
+-- Deadlines table
+CREATE TABLE IF NOT EXISTS public.deadlines (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title TEXT NOT NULL,
+    description TEXT,
+    deadline_date TIMESTAMP WITH TIME ZONE NOT NULL,
+    type TEXT NOT NULL CHECK (type IN ('RESULT_ENTRY', 'SCHEME_OF_WORK', 'ATTENDANCE', 'OTHER')),
+    status TEXT DEFAULT 'ACTIVE', -- ACTIVE, COMPLETED, EXPIRED
+    created_by TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- Enable Row Level Security (RLS) - for now, we'll keep it simple
 -- You can add policies later in the Supabase dashboard
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
@@ -232,6 +247,7 @@ ALTER TABLE public.activities ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.observations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.school_config ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.deadlines ENABLE ROW LEVEL SECURITY;
 
 -- Simple policies to allow authenticated service role access (backend)
 -- These are usually default for service_role key

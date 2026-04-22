@@ -195,4 +195,23 @@ export async function saveBulkResults(data: any): Promise<{ message: string }> {
   return result as { message: string }
 }
 
+export async function fetchDeadlines(): Promise<any[]> {
+  const { data } = await apiService.get('/deadlines')
+  return data as any[]
+}
+
+export async function createDeadline(data: any): Promise<any> {
+  const { data: result } = await apiService.post('/deadlines', data)
+  return result
+}
+
+export async function updateDeadline(id: string, data: any): Promise<any> {
+  const { data: result } = await apiService.put(`/deadlines/${id}`, data)
+  return result
+}
+
+export async function deleteDeadline(id: string): Promise<void> {
+  await apiService.delete(`/deadlines/${id}`)
+}
+
 export default apiService

@@ -75,7 +75,8 @@ router.post('/login', authLimiter, async (req, res) => {
               password: hashedPassword,
               subject: 'General',
               level: 'Primary',
-              role: 'Teacher'
+              role: 'Teacher',
+              assigned_classes: ['Primary 1', 'Primary 2', 'Primary 3', 'JSS 1', 'JSS 2', 'JSS 3']
             })
           } else {
             await supabase.from('users').insert({

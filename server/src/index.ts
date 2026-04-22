@@ -34,6 +34,7 @@ import observationRoutes from './routes/observations'
 import notificationRoutes from './routes/notifications'
 import curriculumRoutes from './routes/curriculum'
 import schemeOfWorkRoutes from './routes/schemeOfWork'
+import deadlineRoutes from './routes/deadlines'
 import messageRoutes from './routes/messages'
 import activityRoutes from './routes/activities'
 import analyticsRoutes from './routes/analytics'
@@ -140,6 +141,7 @@ app.use('/api/notifications', notificationRoutes)
 app.use('/api/curriculum', curriculumRoutes)
 app.use('/api/scheme-of-work', schemeOfWorkRoutes)
 app.use('/api/observations', observationRoutes)
+app.use('/api/deadlines', deadlineRoutes)
 
 console.log('[STARTUP] Registering chat and activity routes...')
 app.use('/api/messages', authenticate, messageRoutes)

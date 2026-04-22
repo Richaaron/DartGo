@@ -20,6 +20,8 @@ import TeacherDashboard from './pages/TeacherDashboard'
 import ParentDashboard from './pages/ParentDashboard'
 import AdminSchemeUpload from './pages/AdminSchemeUpload'
 import NotificationsPage from './pages/Notifications'
+import Messages from './pages/Messages'
+import Deadlines from './pages/Deadlines'
 import './App.css'
 
 import { fetchConfig } from './services/api'
