@@ -11,7 +11,7 @@ export interface Student {
   class: string
   parentName: string
   parentPhone: string
-  email: string
+  parentEmail?: string
   enrollmentDate: string
   status: 'Active' | 'Inactive' | 'Suspended'
   image?: string // Base64 or URL

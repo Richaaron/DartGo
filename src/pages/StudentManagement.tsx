@@ -55,7 +55,7 @@ export default function StudentManagement() {
       student.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.registrationNumber.includes(searchTerm) ||
-      student.email.toLowerCase().includes(searchTerm.toLowerCase())
+      (student.parentEmail || '').toLowerCase().includes(searchTerm.toLowerCase())
 
     const matchesLevel = selectedLevel === 'All' || student.level === selectedLevel
 
@@ -64,12 +64,9 @@ export default function StudentManagement() {
 
   const handleAddStudent = async (newStudent: Omit<Student, 'id'>) => {
     try {
-      const parentCreds = generateParentCredentials(newStudent.firstName, newStudent.lastName)
       const studentData = {
         ...newStudent,
         registrationNumber: generateRegistrationNumber(newStudent.level),
-        parentUsername: parentCreds.username,
-        parentPassword: parentCreds.password,
       }
       await createStudent(studentData)
       await loadStudents()
@@ -120,7 +117,7 @@ export default function StudentManagement() {
       Class: student.class,
       'Parent Name': student.parentName,
       'Parent Phone': student.parentPhone,
-      Email: student.email,
+      'Parent Email': student.parentEmail || 'N/A',
       'Enrollment Date': formatDate(student.enrollmentDate),
       Status: student.status,
     }))
@@ -179,7 +176,7 @@ export default function StudentManagement() {
               <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search by name, email or reg. no..."
+                placeholder="Search by name, parent email or reg. no..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="input-field pl-10"

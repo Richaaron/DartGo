@@ -1,20 +1,14 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import { X, Upload, User as UserIcon } from 'lucide-react'
 import { Student } from '../types'
+import { generateParentCredentials } from '../utils/calculations'
 
 interface StudentFormProps {
   onSubmit: (student: Student | Omit<Student, 'id'>) => void
   initialData?: Student
   onCancel: () => void
   isEditing?: boolean
-}
-
-function generateParentCredentials(firstName: string, lastName: string): { parentUsername: string; parentPassword: string } {
-  const timestamp = Date.now().toString().slice(-4)
-  const parentUsername = `${firstName.toLowerCase()}_${lastName.toLowerCase()}${timestamp}`
-  const parentPassword = `FS${timestamp}${Math.random().toString(36).slice(-2).toUpperCase()}`
-  return { parentUsername, parentPassword }
 }
 
 export default function StudentForm({
@@ -26,13 +20,6 @@ export default function StudentForm({
   const fileInputRef = useRef<any>(null)
   
   const [formData, setFormData] = useState<Omit<Student, 'id'> & { id?: string }>(() => {
-    if (initialData && initialData.parentUsername && initialData.parentPassword) {
-      return { ...initialData }
-    }
-    if (initialData?.firstName && initialData?.lastName) {
-      const creds = generateParentCredentials(initialData.firstName, initialData.lastName)
-      return { ...initialData, ...creds }
-    }
     return {
       firstName: '',
       lastName: '',
@@ -43,13 +30,27 @@ export default function StudentForm({
       class: '',
       parentName: '',
       parentPhone: '',
-      email: '',
+      parentEmail: '',
       enrollmentDate: new Date().toISOString().split('T')[0],
       status: 'Active',
       image: '',
+      parentUsername: '',
+      parentPassword: '',
       ...initialData,
     }
   })
+
+  // Auto-generate credentials when names change (only for new students)
+  useEffect(() => {
+    if (!isEditing && formData.firstName && formData.lastName) {
+      const creds = generateParentCredentials(formData.firstName, formData.lastName)
+      setFormData(prev => ({
+        ...prev,
+        parentUsername: creds.username,
+        parentPassword: creds.password
+      }))
+    }
+  }, [formData.firstName, formData.lastName, isEditing])
 
   const [errors, setErrors] = useState<Record<string, string>>({})
 
@@ -58,8 +59,12 @@ export default function StudentForm({
 
     if (!formData.firstName.trim()) newErrors.firstName = 'First name is required'
     if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required'
-    if (!formData.email.includes('@') || !formData.email.includes('.'))
-      newErrors.email = 'Valid email is required'
+    
+    // Email is now optional
+    if (formData.parentEmail && (!formData.parentEmail.includes('@') || !formData.parentEmail.includes('.'))) {
+      newErrors.parentEmail = 'Valid email is required'
+    }
+    
     if (!formData.class.trim()) newErrors.class = 'Class is required'
     if (!formData.parentName.trim()) newErrors.parentName = 'Parent name is required'
     if (!formData.parentPhone.trim()) newErrors.parentPhone = 'Parent phone is required'
@@ -229,17 +234,18 @@ export default function StudentForm({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email *
+              Parent Email (Optional)
             </label>
             <input
               type="email"
-              name="email"
-              value={formData.email}
+              name="parentEmail"
+              value={formData.parentEmail}
               onChange={handleChange}
-              className={`input-field ${errors.email ? 'border-red-500' : ''}`}
+              placeholder="parent@example.com (Optional)"
+              className={`input-field ${errors.parentEmail ? 'border-red-500' : ''}`}
             />
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            {errors.parentEmail && (
+              <p className="text-red-500 text-sm mt-1">{errors.parentEmail}</p>
             )}
           </div>
         </div>
@@ -369,7 +375,7 @@ export default function StudentForm({
             </div>
           </div>
 
-          {isEditing && formData.parentUsername && (
+          {formData.parentUsername && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 bg-blue-50 p-4 rounded-lg border border-blue-100">
               <div>
                 <label className="block text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1">
@@ -388,7 +394,7 @@ export default function StudentForm({
                 </div>
               </div>
               <p className="text-xs text-blue-500 col-span-2 mt-2">
-                Share these credentials with the parent to allow them to view their child's results.
+                Share these auto-generated credentials with the parent to allow them to view their child's results.
               </p>
             </div>
           )}
