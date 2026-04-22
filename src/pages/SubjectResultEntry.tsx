@@ -6,8 +6,14 @@ import { SubjectResult, Student, Subject } from '../types'
 import SubjectResultForm from '../components/SubjectResultForm'
 import Table from '../components/Table'
 import { fetchStudents, fetchResults, fetchSubjects, saveBulkResults, deleteResult, createResult, updateResult } from '../services/api'
+import { useAuthContext } from '../context/AuthContext'
 
 export default function SubjectResultEntry() {
+  const { user } = useAuthContext()
+  const isTeacher = user?.role === 'Teacher'
+  const teacherSubject = (user as any)?.subject
+  const assignedClasses = (user as any)?.assignedClasses || []
+
   const [results, setResults] = useState<SubjectResult[]>([])
   const [students, setStudents] = useState<Student[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
@@ -32,9 +38,27 @@ export default function SubjectResultEntry() {
         fetchResults(),
         fetchSubjects()
       ])
-      setStudents(studentsData)
-      setResults(resultsData)
-      setSubjects(subjectsData)
+      
+      if (isTeacher) {
+        // Teacher: only see students in their classes
+        const myStudents = studentsData.filter((s: Student) => assignedClasses.includes(s.class))
+        setStudents(myStudents)
+        
+        // Teacher: only see results for their subject AND in their classes
+        const myResults = resultsData.filter((r: SubjectResult) => {
+          const student = studentsData.find((s: Student) => s.id === r.studentId)
+          const subject = subjectsData.find((sub: Subject) => sub.id === r.subjectId)
+          return subject?.name === teacherSubject && student && assignedClasses.includes(student.class)
+        })
+        setResults(myResults)
+        
+        // Teacher: only see their assigned subject in the dropdowns
+        setSubjects(subjectsData.filter((s: Subject) => s.name === teacherSubject))
+      } else {
+        setStudents(studentsData)
+        setResults(resultsData)
+        setSubjects(subjectsData)
+      }
     } catch (error: any) {
       console.error('Failed to load results data', error)
     } finally {

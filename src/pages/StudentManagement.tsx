@@ -5,8 +5,13 @@ import StudentForm from '../components/StudentForm'
 import Table from '../components/Table'
 import { exportToCSV, formatDate, generateRegistrationNumber, generateParentCredentials } from '../utils/calculations'
 import { fetchStudents, createStudent, updateStudent, deleteStudent } from '../services/api'
+import { useAuthContext } from '../context/AuthContext'
 
 export default function StudentManagement() {
+  const { user } = useAuthContext()
+  const isTeacher = user?.role === 'Teacher'
+  const assignedClasses = (user as any)?.assignedClasses || []
+  
   const [students, setStudents] = useState<Student[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedLevel, setSelectedLevel] = useState<SchoolLevel | 'All'>('All')
@@ -18,7 +23,14 @@ export default function StudentManagement() {
 
     fetchStudents()
       .then((data) => {
-        if (isMounted) setStudents(data)
+        if (isMounted) {
+          // If teacher, only show students in their assigned classes
+          if (isTeacher) {
+            setStudents(data.filter((s: Student) => assignedClasses.includes(s.class)))
+          } else {
+            setStudents(data)
+          }
+        }
       })
       .catch((error) => {
         console.error('Failed to load students', error)
@@ -27,7 +39,7 @@ export default function StudentManagement() {
     return () => {
       isMounted = false
     }
-  }, [])
+  }, [isTeacher, assignedClasses])
 
   async function loadStudents() {
     try {

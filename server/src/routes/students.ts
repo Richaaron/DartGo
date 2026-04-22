@@ -68,9 +68,24 @@ router.get('/:id', authenticate, async (req, res) => {
   }
 })
 
-router.post('/', authenticate, authorize(['Admin']), async (req, res) => {
+router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req: AuthRequest, res) => {
   try {
     const dbData = mapToDB(req.body)
+    const user = req.user
+
+    // If teacher, verify they are assigned to this class
+    if (user?.role === 'Teacher') {
+      const { data: teacher } = await supabase
+        .from('teachers')
+        .select('assigned_classes')
+        .eq('id', user.id)
+        .single()
+      
+      if (!teacher?.assigned_classes?.includes(dbData.class)) {
+        return res.status(403).json({ error: 'You can only add students to your assigned classes' })
+      }
+    }
+
     const { data, error } = await supabase
       .from('students')
       .insert([dbData])

@@ -51,9 +51,25 @@ router.get('/', authenticate, async (req, res) => {
   }
 })
 
-router.post('/bulk', authenticate, authorize(['Admin', 'Teacher']), async (req, res) => {
+router.post('/bulk', authenticate, authorize(['Admin', 'Teacher']), async (req: AuthRequest, res) => {
   try {
     const results = req.body.map(mapToDB)
+    const user = req.user
+
+    // If teacher, verify they only update their assigned subject
+    if (user?.role === 'Teacher') {
+      const { data: teacher } = await supabase
+        .from('teachers')
+        .select('subject')
+        .eq('id', user.id)
+        .single()
+      
+      const unauthorized = results.some((r: any) => r.subject_id !== teacher?.subject)
+      if (unauthorized) {
+        return res.status(403).json({ error: 'You can only enter results for your assigned subject' })
+      }
+    }
+
     const { data, error } = await supabase
       .from('subject_results')
       .upsert(results, { onConflict: 'student_id,subject_id,term,academic_year' })

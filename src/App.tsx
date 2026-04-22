@@ -200,6 +200,13 @@ function AppContent() {
                 isDarkMode={isDarkMode}
               />
               <NavLink
+                to="/students"
+                icon={<GraduationCap size={isMobile ? 20 : 18} />}
+                label="Scholar Management"
+                isOpen={isMobile || isSidebarOpen}
+                isDarkMode={isDarkMode}
+              />
+              <NavLink
                 to="/subject-results"
                 icon={<BookOpen size={isMobile ? 20 : 18} />}
                 label="Result Entry"
