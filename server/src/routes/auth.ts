@@ -56,16 +56,17 @@ router.post('/login', authLimiter, async (req, res) => {
 
     const normalizedLoginId = email.toLowerCase().trim()
 
-    // 0. Auto-seed admin if database is empty (production convenience)
+    // 0. Auto-seed admin if it doesn't exist (production convenience)
     if (normalizedLoginId === 'admin@folusho.com') {
       try {
-        const { count, error: countError } = await supabase.from('users').select('*', { count: 'exact', head: true })
+        const { data: existingAdmin, error: checkError } = await supabase
+          .from('users')
+          .select('id')
+          .eq('email', 'admin@folusho.com')
+          .single()
         
-        if (countError) {
-          console.error(`[AUTH] Error checking user count: ${countError.message} (Code: ${countError.code})`)
-          // If the table doesn't exist or connection fails, we should know
-        } else if (count === 0) {
-          console.log('[AUTH] Database empty, creating initial admin...')
+        if (checkError && checkError.code === 'PGRST116') { // PGRST116 is "no rows returned"
+          console.log('[AUTH] Admin user not found, creating initial admin...')
           const hashedPassword = await bcrypt.hash('AdminPassword123!@#', 10)
           const { error: insertError } = await supabase.from('users').insert({
             email: 'admin@folusho.com',
@@ -74,12 +75,14 @@ router.post('/login', authLimiter, async (req, res) => {
             role: 'Admin'
           })
           if (insertError) {
-            console.error(`[AUTH] Error seeding admin: ${insertError.message}`)
+            console.error(`[AUTH] Error seeding admin: ${insertError.message} (Code: ${insertError.code})`)
           } else {
             console.log('[AUTH] ✅ Initial admin seeded successfully')
           }
+        } else if (checkError) {
+          console.error(`[AUTH] Error checking for admin: ${checkError.message} (Code: ${checkError.code})`)
         } else {
-          console.log(`[AUTH] User table check: ${count} users found.`)
+          console.log('[AUTH] Admin user already exists.')
         }
       } catch (err) {
         console.error('[AUTH] Critical error during auto-seed check:', err)
@@ -150,8 +153,10 @@ router.post('/login', authLimiter, async (req, res) => {
     }
 
     if (foundUser) {
-      console.log(`[AUTH] User found in ${role ? 'teachers' : 'users'} table. Verifying password...`)
+      console.log(`[AUTH] User found: ID=${foundUser.id}, Role=${role}, Email=${foundUser.email}`)
+      console.log(`[AUTH] Verifying password for: ${email}`)
       const isMatch = await bcrypt.compare(password, foundUser.password)
+      
       if (!isMatch) {
         console.log(`[AUTH] Password mismatch for: ${email}`)
         return res.status(401).json({
@@ -160,6 +165,7 @@ router.post('/login', authLimiter, async (req, res) => {
         })
       }
 
+      console.log(`[AUTH] Password verified successfully for: ${email}`)
       const token = generateToken({
         id: foundUser.id,
         role: role,
