@@ -71,8 +71,9 @@ export default function StudentManagement() {
       await createStudent(studentData)
       await loadStudents()
       setShowForm(false)
-    } catch {
-      window.alert('Failed to add student')
+    } catch (error: any) {
+      const errorMsg = error.response?.data?.error || error.message || 'Failed to add student'
+      window.alert(`Error: ${errorMsg}`)
     }
   }
 
@@ -82,8 +83,9 @@ export default function StudentManagement() {
       await loadStudents()
       setEditingStudent(null)
       setShowForm(false)
-    } catch {
-      window.alert('Failed to update student')
+    } catch (error: any) {
+      const errorMsg = error.response?.data?.error || error.message || 'Failed to update student'
+      window.alert(`Error: ${errorMsg}`)
     }
   }
 
