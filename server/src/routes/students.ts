@@ -29,24 +29,36 @@ const mapStudent = (s: any) => ({
 })
 
 // Helper to map frontend camelCase to DB snake_case
-const mapToDB = (s: any) => ({
-  student_id: s.registrationNumber || s.studentId, // Handle both registrationNumber (frontend) and studentId
-  first_name: s.firstName,
-  last_name: s.lastName,
-  class_id: s.class,
-  level: s.level,
-  gender: s.gender,
-  date_of_birth: s.dateOfBirth,
-  status: s.status,
-  parent_name: s.parentName,
-  parent_email: s.parentEmail,
-  parent_phone: s.parentPhone,
-  parent_username: s.parentUsername,
-  parent_password: s.parentPassword,
-  address: s.address,
-  image: s.image,
-  enrollment_date: s.enrollmentDate
-})
+const mapToDB = (s: any) => {
+  const mapped: any = {
+    student_id: s.registrationNumber || s.studentId,
+    first_name: s.firstName,
+    last_name: s.lastName,
+    class_id: s.class,
+    level: s.level,
+    gender: s.gender,
+    status: s.status,
+    parent_name: s.parentName,
+    parent_email: s.parentEmail,
+    parent_phone: s.parentPhone,
+    parent_username: s.parentUsername,
+    parent_password: s.parentPassword,
+    address: s.address,
+    image: s.image,
+    enrollment_date: s.enrollmentDate
+  }
+
+  // Handle dateOfBirth conversion carefully
+  if (s.dateOfBirth) {
+    try {
+      mapped.date_of_birth = new Date(s.dateOfBirth).toISOString()
+    } catch (e) {
+      console.warn('[STUDENTS] Invalid date of birth provided:', s.dateOfBirth)
+    }
+  }
+
+  return mapped
+}
 
 router.get('/', authenticate, async (req, res) => {
   try {
@@ -111,11 +123,19 @@ router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req: Auth
       .from('students')
       .insert([dbData])
       .select()
-      .single()
+      .maybeSingle() // Use maybeSingle to prevent PGRST116 error if something unexpected happens
     
     if (error) {
       console.error('[STUDENTS] Database insert error:', JSON.stringify(error, null, 2))
-      throw error
+      return res.status(400).json({ 
+        error: error.message || 'Database error',
+        details: error.details,
+        hint: error.hint
+      })
+    }
+
+    if (!data) {
+      throw new Error('No data returned from database after insert')
     }
     
     console.log('[STUDENTS] Student created successfully:', data.id)
