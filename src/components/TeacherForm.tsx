@@ -41,7 +41,6 @@ export default function TeacherForm({
     if (!formData.email.includes('@')) newErrors.email = 'Valid email is required'
     // Username/password are auto-generated for new teachers; validate only when editing.
     if (isEditing && !formData.username.trim()) newErrors.username = 'Username is required'
-    if (!formData.subject.trim()) newErrors.subject = 'Subject is required'
     if (formData.assignedClasses.length === 0) newErrors.assignedClasses = 'At least one class is required'
 
     setErrors(newErrors)
@@ -243,13 +242,14 @@ export default function TeacherForm({
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Primary Subject *
+                Primary Subject (Optional)
               </label>
               <input
                 type="text"
                 name="subject"
                 value={formData.subject}
                 onChange={handleChange}
+                placeholder="e.g. Mathematics, English (Leave blank for Form Teacher)"
                 className={`input-field ${errors.subject ? 'border-red-500' : ''}`}
               />
               {errors.subject && (

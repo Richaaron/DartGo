@@ -115,7 +115,7 @@ export default function TeacherDashboard() {
           Welcome, {teacher.name}
         </h1>
         <p className="text-gray-600 mt-2">
-          {teacher.subject} Teacher | School Level: {teacher.level}
+          {teacher.subject || 'Form Teacher'} | School Level: {teacher.level}
         </p>
         <div className="mt-3 text-sm text-gray-600">
           <p>Assigned Classes: {teacher.assignedClasses.join(', ')}</p>

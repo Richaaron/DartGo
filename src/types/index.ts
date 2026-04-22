@@ -183,7 +183,7 @@ export interface Teacher extends User {
   teacherId: string
   username: string
   password?: string
-  subject: string
+  subject?: string
   level: SchoolLevel
   assignedClasses: string[] // Class names like "JSS1A", "JSS2B"
   image?: string // Base64 or URL

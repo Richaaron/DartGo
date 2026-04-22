@@ -13,7 +13,7 @@ const mapTeacher = (t: any) => ({
   username: t.username,
   email: t.email,
   password: t.password,
-  subject: t.subject,
+  subject: t.subject || 'Form Teacher',
   level: t.level,
   assignedClasses: t.assigned_classes || [],
   image: t.image,
@@ -27,7 +27,7 @@ const mapToDB = (t: any) => ({
   username: t.username,
   email: t.email,
   password: t.password,
-  subject: t.subject,
+  subject: t.subject || '',
   level: t.level,
   assigned_classes: t.assignedClasses,
   image: t.image

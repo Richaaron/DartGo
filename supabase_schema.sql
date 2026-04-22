@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS public.teachers (
     teacher_id TEXT UNIQUE NOT NULL,
     username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    subject TEXT NOT NULL,
+    subject TEXT,
     level TEXT NOT NULL CHECK (level IN ('Pre-Nursery', 'Nursery', 'Primary', 'Secondary')),
     assigned_classes TEXT[] DEFAULT '{}',
     image TEXT,
