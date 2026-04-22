@@ -14,6 +14,8 @@ const mapScheme = (s: any) => ({
   weeks: s.weeks || [],
   status: s.status,
   uploadedBy: s.uploaded_by,
+  fileUrl: s.file_url,
+  notes: s.notes,
   createdAt: s.created_at
 })
 
@@ -24,7 +26,9 @@ const mapToDB = (s: any) => ({
   term: s.term,
   academic_year: s.academicYear,
   weeks: s.weeks,
-  status: s.status
+  status: s.status,
+  file_url: s.fileUrl,
+  notes: s.notes
 })
 
 router.get('/', authenticate, async (req, res) => {
@@ -42,6 +46,30 @@ router.get('/', authenticate, async (req, res) => {
     res.json(data?.map(mapScheme) || [])
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch schemes of work' })
+  }
+})
+
+router.get('/:subjectId', authenticate, async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('schemes_of_work')
+      .select('*')
+      .eq('subject_id', req.params.subjectId)
+    
+    if (error) throw error
+    res.json(data?.map(mapScheme) || [])
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch schemes of work' })
+  }
+})
+
+router.post('/upload', authenticate, authorize(['Admin', 'Teacher']), async (req: AuthRequest, res) => {
+  try {
+    // In a serverless environment, file upload needs to be handled differently (e.g. S3 or Supabase Storage)
+    // For now, we'll just log and return a placeholder if no storage is configured.
+    return res.status(501).json({ error: 'File uploads are currently being migrated to Supabase Storage.' })
+  } catch (error) {
+    res.status(500).json({ error: 'Upload failed' })
   }
 })
 

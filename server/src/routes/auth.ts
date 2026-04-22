@@ -2,6 +2,7 @@ import { Router } from 'express'
 import bcrypt from 'bcryptjs'
 import { supabase } from '../config/supabase'
 import { authLimiter } from '../middleware/security'
+import { authenticate, AuthRequest } from '../middleware/auth'
 import { generateToken, hashSensitiveData } from '../middleware/enhanced-auth'
 import {
   validateEmail,
@@ -223,6 +224,55 @@ router.post('/register', authLimiter, async (req, res) => {
   } catch (error) {
     console.error('[AUTH] Register error:', error)
     res.status(500).json({ error: 'Registration failed' })
+  }
+})
+
+/**
+ * Change Password endpoint
+ */
+router.post('/change-password', authenticate, authLimiter, async (req: AuthRequest, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body
+    const user = req.user
+
+    if (!user) return res.status(401).json({ error: 'Unauthorized' })
+
+    // 1. Find user in the appropriate table
+    let table = 'users'
+    if (user.role === 'Teacher') table = 'teachers'
+    else if (user.role === 'Parent') table = 'students'
+
+    const { data: dbUser, error: fetchError } = await supabase
+      .from(table)
+      .select('*')
+      .eq('id', user.id)
+      .single()
+
+    if (fetchError || !dbUser) {
+      return res.status(404).json({ error: 'User not found' })
+    }
+
+    // 2. Verify current password
+    const passwordField = user.role === 'Parent' ? 'parent_password' : 'password'
+    const isMatch = await bcrypt.compare(currentPassword, dbUser[passwordField])
+    
+    if (!isMatch) {
+      return res.status(400).json({ error: 'Incorrect current password' })
+    }
+
+    // 3. Hash and update new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10)
+    const { error: updateError } = await supabase
+      .from(table)
+      .update({ [passwordField]: hashedPassword })
+      .eq('id', user.id)
+
+    if (updateError) throw updateError
+
+    res.json({ message: 'Password changed successfully' })
+  } catch (error) {
+    console.error('[AUTH] Change password error:', error)
+    res.status(500).json({ error: 'Failed to change password' })
   }
 })
 

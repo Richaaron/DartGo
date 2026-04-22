@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import StatCard from '../components/StatCard'
 import { Student, SubjectResult } from '../types'
 import { fetchStudents, fetchResults } from '../services/api'
+import apiService from '../services/apiService'
 import ChatSystem from '../components/ChatSystem'
 import TeacherActivityLog from '../components/TeacherActivityLog'
 import PerformanceInsights from '../components/PerformanceInsights'
@@ -166,24 +167,10 @@ export default function Dashboard() {
 
     setIsChangingPassword(true)
     try {
-      const token = window.localStorage.getItem('token')
-      const response = await window.fetch('http://localhost:3001/api/auth/change-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          currentPassword: passwordForm.currentPassword,
-          newPassword: passwordForm.newPassword
-        })
+      const response = await apiService.post('/auth/change-password', {
+        currentPassword: passwordForm.currentPassword,
+        newPassword: passwordForm.newPassword
       })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to change password')
-      }
 
       setPasswordSuccess('Password changed successfully!')
       setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' })
@@ -192,7 +179,8 @@ export default function Dashboard() {
         setPasswordSuccess('')
       }, 2000)
     } catch (error: any) {
-      setPasswordError(error.message || 'Failed to change password')
+      const errorMsg = error.response?.data?.error || error.message || 'Failed to change password'
+      setPasswordError(errorMsg)
     } finally {
       setIsChangingPassword(false)
     }

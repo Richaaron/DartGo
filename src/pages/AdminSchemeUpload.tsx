@@ -246,7 +246,7 @@ export default function AdminSchemeUpload() {
                 <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   {scheme.fileUrl && (
                     <a
-                      href={`http://localhost:3001${scheme.fileUrl}`}
+                      href={scheme.fileUrl.startsWith('http') ? scheme.fileUrl : `${import.meta.env.VITE_API_URL || ''}${scheme.fileUrl}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100"
