@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import Busboy from 'busboy'
 import { supabase } from '../config/supabase'
 import { authenticate, authorize, AuthRequest } from '../middleware/auth'
 
@@ -15,6 +16,7 @@ const mapScheme = (s: any) => ({
   status: s.status,
   uploadedBy: s.uploaded_by,
   fileUrl: s.file_url,
+  fileName: s.file_name,
   notes: s.notes,
   createdAt: s.created_at
 })
@@ -28,6 +30,7 @@ const mapToDB = (s: any) => ({
   weeks: s.weeks,
   status: s.status,
   file_url: s.fileUrl,
+  file_name: s.fileName,
   notes: s.notes
 })
 
@@ -65,10 +68,78 @@ router.get('/:subjectId', authenticate, async (req, res) => {
 
 router.post('/upload', authenticate, authorize(['Admin', 'Teacher']), async (req: AuthRequest, res) => {
   try {
-    // In a serverless environment, file upload needs to be handled differently (e.g. S3 or Supabase Storage)
-    // For now, we'll just log and return a placeholder if no storage is configured.
-    return res.status(501).json({ error: 'File uploads are currently being migrated to Supabase Storage.' })
+    const busboy = Busboy({ headers: req.headers })
+    const fields: any = {}
+    let fileBuffer: Buffer | null = null
+    let fileName = ''
+    let contentType = ''
+
+    busboy.on('field', (name, val) => {
+      fields[name] = val
+    })
+
+    busboy.on('file', (name, file, info) => {
+      const chunks: any[] = []
+      fileName = info.filename
+      contentType = info.mimeType
+      file.on('data', (data) => chunks.push(data))
+      file.on('end', () => {
+        fileBuffer = Buffer.concat(chunks)
+      })
+    })
+
+    busboy.on('finish', async () => {
+      try {
+        if (!fileBuffer) return res.status(400).json({ error: 'No file uploaded' })
+
+        // 1. Upload to Supabase Storage
+        const fileExt = fileName.split('.').pop()
+        const filePath = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
+        
+        const { error: storageError } = await supabase.storage
+          .from('schemes')
+          .upload(filePath, fileBuffer, { contentType })
+
+        if (storageError) throw storageError
+
+        // 2. Get Public URL
+        const { data: urlData } = supabase.storage
+          .from('schemes')
+          .getPublicUrl(filePath)
+
+        const fileUrl = urlData.publicUrl
+
+        // 3. Save to Database
+        const dbData = {
+          subject_id: fields.subjectId,
+          class_id: fields.classId,
+          academic_year: fields.academicYear,
+          term: parseInt(fields.term),
+          curriculum_id: fields.curriculumId,
+          notes: fields.notes,
+          file_url: fileUrl,
+          file_name: fileName,
+          uploaded_by: req.user?.id,
+          status: 'PENDING'
+        }
+
+        const { data, error: dbError } = await supabase
+          .from('schemes_of_work')
+          .insert([dbData])
+          .select()
+          .single()
+
+        if (dbError) throw dbError
+        res.status(201).json(mapScheme(data))
+      } catch (err) {
+        console.error('[UPLOAD] Processing error:', err)
+        res.status(500).json({ error: 'Failed to process upload' })
+      }
+    })
+
+    req.pipe(busboy)
   } catch (error) {
+    console.error('[UPLOAD] Server error:', error)
     res.status(500).json({ error: 'Upload failed' })
   }
 })
