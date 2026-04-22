@@ -4,18 +4,42 @@ import { authenticate, authorize, AuthRequest } from '../middleware/auth'
 
 const router = Router()
 
+// Helper to map DB to camelCase for frontend
+const mapScheme = (s: any) => ({
+  id: s.id,
+  subjectId: s.subject_id,
+  class: s.class,
+  term: s.term,
+  academicYear: s.academic_year,
+  weeks: s.weeks || [],
+  status: s.status,
+  uploadedBy: s.uploaded_by,
+  createdAt: s.created_at
+})
+
+// Helper to map frontend camelCase to DB snake_case
+const mapToDB = (s: any) => ({
+  subject_id: s.subjectId,
+  class: s.class,
+  term: s.term,
+  academic_year: s.academicYear,
+  weeks: s.weeks,
+  status: s.status
+})
+
 router.get('/', authenticate, async (req, res) => {
   try {
-    const { studentId, term, academicYear } = req.query
+    const { subjectId, class: className, term, academicYear } = req.query
     let query = supabase.from('schemes_of_work').select('*')
     
-    if (studentId) query = query.eq('student_id', studentId)
+    if (subjectId) query = query.eq('subject_id', subjectId)
+    if (className) query = query.eq('class', className)
     if (term) query = query.eq('term', term)
     if (academicYear) query = query.eq('academic_year', academicYear)
 
     const { data, error } = await query
     if (error) throw error
-    res.json(data)
+    res.json(data?.map(mapScheme) || [])
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch schemes of work' })
   }
@@ -24,32 +48,36 @@ router.get('/', authenticate, async (req, res) => {
 router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req: AuthRequest, res) => {
   try {
     const uploadedBy = req.user?.id
+    const dbData = mapToDB(req.body)
     const { data, error } = await supabase
       .from('schemes_of_work')
-      .insert([{ ...req.body, uploaded_by: uploadedBy }])
+      .insert([{ ...dbData, uploaded_by: uploadedBy }])
       .select()
       .single()
     
     if (error) throw error
-    res.status(201).json(data)
+    res.status(201).json(mapScheme(data))
   } catch (error) {
+    console.error('[SCHEME] Create error:', error)
     res.status(400).json({ error: 'Failed to create scheme of work' })
   }
 })
 
 router.put('/:id', authenticate, authorize(['Admin', 'Teacher']), async (req, res) => {
   try {
+    const dbData = mapToDB(req.body)
     const { data, error } = await supabase
       .from('schemes_of_work')
-      .update(req.body)
+      .update(dbData)
       .eq('id', req.params.id)
       .select()
       .single()
     
     if (error) throw error
     if (!data) return res.status(404).json({ error: 'Scheme of work not found' })
-    res.json(data)
+    res.json(mapScheme(data))
   } catch (error) {
+    console.error('[SCHEME] Update error:', error)
     res.status(400).json({ error: 'Failed to update scheme of work' })
   }
 })
