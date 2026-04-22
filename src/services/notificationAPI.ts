@@ -37,11 +37,14 @@ interface NotificationStatsResponse {
 export const notificationAPI = {
   // Get all notifications (admin only)
   getAll: async (status?: string, type?: string, limit = 50, page = 1): Promise<NotificationListResponse> => {
-    const params: any = { limit, page }
-    if (status) params.status = status
-    if (type) params.type = type
+    const params = new URLSearchParams({
+      limit: String(limit),
+      page: String(page),
+    })
+    if (status) params.set('status', status)
+    if (type) params.set('type', type)
 
-    const response = await api.get<NotificationListResponse>('/notifications', { params })
+    const response = await api.get<NotificationListResponse>(`/notifications?${params.toString()}`)
     return response.data
   },
 

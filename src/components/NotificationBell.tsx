@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Bell, X } from 'lucide-react'
 import notificationAPI, { Notification } from '../services/notificationAPI'
 
@@ -7,13 +7,7 @@ export const NotificationBell: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [unreadCount, setUnreadCount] = useState(0)
 
-  useEffect(() => {
-    loadNotifications()
-    const interval = setInterval(loadNotifications, 30000) // Refresh every 30 seconds
-    return () => clearInterval(interval)
-  }, [])
-
-  const loadNotifications = async () => {
+  const loadNotifications = useCallback(async () => {
     try {
       const data = await notificationAPI.getRecent(5)
       setNotifications(data.notifications)
@@ -22,7 +16,18 @@ export const NotificationBell: React.FC = () => {
     } catch (error) {
       console.error('Failed to load notifications:', error)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    const kickOff = setTimeout(() => {
+      void loadNotifications()
+    }, 0)
+    const interval = setInterval(loadNotifications, 30000) // Refresh every 30 seconds
+    return () => {
+      clearTimeout(kickOff)
+      clearInterval(interval)
+    }
+  }, [loadNotifications])
 
   const getTypeColor = (type: string) => {
     switch (type) {

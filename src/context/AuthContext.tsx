@@ -1,6 +1,6 @@
 /* global localStorage, fetch */
 
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react'
+import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react'
 import { User, Teacher, Admin, Parent, AuthSession } from '../types'
 
 const SESSION_TIMEOUT = 30 * 60 * 1000 // 30 minutes
@@ -87,38 +87,49 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   })
   const [isHydrated] = useState(true)
-  const [sessionTimer, setSessionTimer] = useState<NodeJS.Timeout | null>(null)
+  const sessionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const logout = useCallback(() => {
+    setSession({
+      user: null,
+      token: undefined,
+      isAuthenticated: false,
+    })
+    localStorage.removeItem('authSession')
+  }, [])
 
   // Session timeout effect
   useEffect(() => {
     if (!session.isAuthenticated) return
 
     // Clear existing timer
-    if (sessionTimer) clearTimeout(sessionTimer)
+    if (sessionTimerRef.current) clearTimeout(sessionTimerRef.current)
 
     // Set new timer
-    const timer = setTimeout(() => {
+    sessionTimerRef.current = setTimeout(() => {
       console.warn('[AUTH] Session timeout - logging out')
       logout()
     }, SESSION_TIMEOUT)
 
-    setSessionTimer(timer)
-
     // Cleanup
-    return () => clearTimeout(timer)
-  }, [session.isAuthenticated])
+    return () => {
+      if (sessionTimerRef.current) {
+        clearTimeout(sessionTimerRef.current)
+        sessionTimerRef.current = null
+      }
+    }
+  }, [session.isAuthenticated, logout])
 
   // Reset session timer on user activity
   useEffect(() => {
     if (!session.isAuthenticated) return
 
     const resetTimer = () => {
-      if (sessionTimer) clearTimeout(sessionTimer)
-      const newTimer = setTimeout(() => {
+      if (sessionTimerRef.current) clearTimeout(sessionTimerRef.current)
+      sessionTimerRef.current = setTimeout(() => {
         console.warn('[AUTH] Session timeout - logging out')
         logout()
       }, SESSION_TIMEOUT)
-      setSessionTimer(newTimer)
     }
 
     // Listen for user activity
@@ -133,7 +144,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       window.removeEventListener('scroll', resetTimer)
       window.removeEventListener('touchstart', resetTimer)
     }
-  }, [session.isAuthenticated, sessionTimer])
+  }, [session.isAuthenticated, logout])
 
   const login = useCallback(async (email: string, password: string) => {
     const normalizedLoginId = email.trim().toLowerCase()
@@ -180,15 +191,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     return createSession(fallbackUser.user, 'dev-local-token')
-  }, [])
-
-  const logout = useCallback(() => {
-    setSession({
-      user: null,
-      token: undefined,
-      isAuthenticated: false,
-    })
-    localStorage.removeItem('authSession')
   }, [])
 
   return (

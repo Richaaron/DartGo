@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Bell, CheckCircle, AlertCircle, Trash2, RotateCcw } from 'lucide-react'
 import notificationAPI, { Notification } from '../services/notificationAPI'
 
@@ -9,12 +9,7 @@ export const NotificationDashboard: React.FC = () => {
   const [filter, setFilter] = useState<'all' | 'sent' | 'failed' | 'pending'>('all')
   const [page, setPage] = useState(1)
 
-  useEffect(() => {
-    loadNotifications()
-    loadStats()
-  }, [filter, page])
-
-  const loadNotifications = async () => {
+  const loadNotifications = useCallback(async () => {
     try {
       setLoading(true)
       const data = await notificationAPI.getAll(filter === 'all' ? undefined : filter, undefined, 20, page)
@@ -24,16 +19,21 @@ export const NotificationDashboard: React.FC = () => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [filter, page])
 
-  const loadStats = async () => {
+  const loadStats = useCallback(async () => {
     try {
       const data = await notificationAPI.getStats()
       setStats(data.summary)
     } catch (error) {
       console.error('Failed to load stats:', error)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    loadNotifications()
+    loadStats()
+  }, [loadNotifications, loadStats])
 
   const handleResend = async (id: string) => {
     try {

@@ -1,5 +1,3 @@
-/* global localStorage, fetch, window */
-
 /**
  * Simplified API Service for MongoDB Primary
  */

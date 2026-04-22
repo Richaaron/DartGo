@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "npm run build:server && vite build",
-    "build:server": "npm install --prefix server && cd server && npm run build && cd ..",
+    "build:server": "npm install --prefix server --include=dev && cd server && npm run build && cd ..",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
