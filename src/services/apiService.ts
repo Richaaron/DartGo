@@ -239,24 +239,4 @@ export const apiService = {
   delete: del
 }
 
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    // Check if it's a JSON response error from the server
-    if (error.response?.data) {
-      return Promise.reject(error)
-    }
-    
-    // If server returned a non-JSON error (like a 502/504 HTML page)
-    if (error.response?.status >= 500) {
-      return Promise.reject({
-        message: `Server Error (${error.response.status}). The backend might be restarting or experiencing an issue.`,
-        response: error.response
-      })
-    }
-
-    return Promise.reject(error)
-  }
-)
-
 export default apiService
