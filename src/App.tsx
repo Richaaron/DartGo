@@ -369,6 +369,7 @@ function AppContent() {
               {userRole === 'Teacher' ? (
                 <>
                   <Route path="/teacher-dashboard" element={<PageTransition><TeacherDashboard /></PageTransition>} />
+                  <Route path="/students" element={<PageTransition><StudentManagement /></PageTransition>} />
                   <Route path="/subject-results" element={<PageTransition><SubjectResultEntry /></PageTransition>} />
                   <Route path="/attendance" element={<PageTransition><Attendance /></PageTransition>} />
                   <Route path="*" element={<Navigate to="/teacher-dashboard" replace />} />
