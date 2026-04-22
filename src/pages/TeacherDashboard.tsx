@@ -1,12 +1,12 @@
 import { useMemo, useEffect, useState } from 'react'
-import { Users, BookOpen, TrendingUp, AlertCircle } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { Users, BookOpen, TrendingUp, AlertCircle, Timer, Clock, Calendar } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import StatCard from '../components/StatCard'
 import Table from '../components/Table'
 import { useAuthContext } from '../context/AuthContext'
 import { Student, SubjectResult, Subject } from '../types'
 import { formatDate } from '../utils/calculations'
-import { fetchStudents, fetchResults, fetchSubjects } from '../services/api'
+import { fetchStudents, fetchResults, fetchSubjects, fetchDeadlines } from '../services/api'
 import ChatSystem from '../components/ChatSystem'
 import PerformanceInsights from '../components/PerformanceInsights'
 
@@ -16,6 +16,7 @@ export default function TeacherDashboard() {
   const [students, setStudents] = useState<Student[]>([])
   const [results, setResults] = useState<SubjectResult[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
+  const [deadlines, setDeadlines] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<'results' | 'messages' | 'insights'>('results')
 
@@ -26,14 +27,16 @@ export default function TeacherDashboard() {
   const loadData = async () => {
     setIsLoading(true)
     try {
-      const [studentsData, resultsData, subjectsData] = await Promise.all([
+      const [studentsData, resultsData, subjectsData, deadlinesData] = await Promise.all([
         fetchStudents(),
         fetchResults(),
-        fetchSubjects()
+        fetchSubjects(),
+        fetchDeadlines()
       ])
       setStudents(studentsData)
       setResults(resultsData)
       setSubjects(subjectsData)
+      setDeadlines(deadlinesData.filter(d => d.status === 'ACTIVE' && new Date(d.deadline_date) > new Date()))
     } catch (error) {
       console.error('Failed to load dashboard data', error)
     } finally {
@@ -121,6 +124,43 @@ export default function TeacherDashboard() {
           <p>Assigned Classes: {teacher.assignedClasses.join(', ')}</p>
         </div>
       </div>
+
+      {/* Deadlines Section */}
+      {deadlines.length > 0 && (
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="mb-8 space-y-4"
+        >
+          <div className="flex items-center gap-2 mb-3">
+            <Timer className="w-5 h-5 text-amber-500" />
+            <h2 className="text-sm font-black text-gray-400 uppercase tracking-[0.2em]">Institutional Deadlines</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {deadlines.map((deadline) => (
+              <div key={deadline.id} className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 rounded-2xl p-5 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-3">
+                  <Clock className="w-12 h-12 text-amber-200/50 -rotate-12 group-hover:scale-110 transition-transform" />
+                </div>
+                <div className="relative z-10">
+                  <div className="px-2 py-0.5 bg-amber-200 text-amber-700 text-[10px] font-black rounded-full w-fit mb-3 uppercase tracking-widest">
+                    {deadline.type.replace('_', ' ')}
+                  </div>
+                  <h3 className="text-base font-black text-gray-900 mb-1">{deadline.title}</h3>
+                  <p className="text-xs text-gray-600 mb-4 line-clamp-1">{deadline.description}</p>
+                  <div className="flex items-center gap-2 text-orange-600 font-bold text-sm">
+                    <Calendar size={14} />
+                    <span>Due: {new Date(deadline.deadline_date).toLocaleDateString()}</span>
+                    <span className="text-[10px] bg-orange-100 px-2 py-0.5 rounded-md">
+                      {Math.ceil((new Date(deadline.deadline_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} days left
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <StatCard

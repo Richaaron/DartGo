@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom'
-import { BarChart3, GraduationCap, BookOpen, Menu, X, LogOut, Users, CheckCircle, Settings as SettingsIcon, Moon, Sun, Bell, FileText } from 'lucide-react'
+import { BarChart3, GraduationCap, BookOpen, Menu, X, LogOut, Users, CheckCircle, Settings as SettingsIcon, Moon, Sun, Bell, FileText, MessageSquare, Timer } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuthContext } from './context/AuthContext'
 import { useDarkMode } from './hooks/useLocalStorage'
@@ -304,6 +304,24 @@ function AppContent() {
               />
               {userRole === 'Admin' && (
                 <NavLink
+                  to="/messages"
+                  icon={<MessageSquare size={isMobile ? 20 : 18} />}
+                  label="Teacher Communications"
+                  isOpen={isMobile || isSidebarOpen}
+                  isDarkMode={isDarkMode}
+                />
+              )}
+              {userRole === 'Admin' && (
+                <NavLink
+                  to="/deadlines"
+                  icon={<Timer size={isMobile ? 20 : 18} />}
+                  label="Timeline Control"
+                  isOpen={isMobile || isSidebarOpen}
+                  isDarkMode={isDarkMode}
+                />
+              )}
+              {userRole === 'Admin' && (
+                <NavLink
                   to="/settings"
                   icon={<SettingsIcon size={isMobile ? 20 : 18} />}
                   label="System Parameters"
@@ -392,6 +410,8 @@ function AppContent() {
                   <Route path="/attendance" element={<PageTransition><Attendance /></PageTransition>} />
                   <Route path="/reports" element={<PageTransition><Reports /></PageTransition>} />
                   <Route path="/notifications" element={<PageTransition><NotificationsPage /></PageTransition>} />
+                  <Route path="/messages" element={<PageTransition><Messages /></PageTransition>} />
+                  <Route path="/deadlines" element={<PageTransition><Deadlines /></PageTransition>} />
                   <Route path="/settings" element={<PageTransition><Settings /></PageTransition>} />
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </>
