@@ -9,6 +9,7 @@ export default function Settings() {
     currentTerm: '',
     currentAcademicYear: '',
     themeColor: '#2563eb',
+    schoolLogo: '',
     availableClasses: []
   })
   const [isLoading, setIsLoading] = useState(true)

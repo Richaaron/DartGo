@@ -181,8 +181,11 @@ CREATE TABLE IF NOT EXISTS public.messages (
 -- School Config table
 CREATE TABLE IF NOT EXISTS public.school_config (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    school_name TEXT,
     current_term TEXT DEFAULT '1st Term',
     current_academic_year TEXT DEFAULT '2023/2024',
+    theme_color TEXT DEFAULT '#2563eb',
+    school_logo TEXT,
     available_classes TEXT[] DEFAULT '{}',
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
