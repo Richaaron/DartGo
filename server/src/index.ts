@@ -40,7 +40,15 @@ import analyticsRoutes from './routes/analytics'
 import { activityLogger } from './middleware/activityLogger'
 import { authenticate } from './middleware/auth'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+// Define __dirname safely for both local and serverless environments
+let __dirname = ''
+if (!isServerless) {
+  try {
+    __dirname = path.dirname(fileURLToPath(import.meta.url))
+  } catch (err) {
+    console.warn('[STARTUP] ⚠️  Could not determine __dirname using import.meta.url')
+  }
+}
 
 /**
  * STARTUP SEQUENCE
@@ -116,8 +124,10 @@ console.log('[STARTUP] Applying body parsing and sanitization...')
 app.use(express.json({ limit: '10mb' }))
 app.use(sanitizeInput)
 
-// Serve uploaded files
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')))
+// Serve uploaded files - only in local environments
+if (!isServerless && __dirname) {
+  app.use('/uploads', express.static(path.join(__dirname, '../uploads')))
+}
 
 console.log('[STARTUP] Applying rate limiting...')
 app.use(requestLogger)

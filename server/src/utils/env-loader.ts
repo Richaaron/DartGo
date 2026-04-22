@@ -9,8 +9,20 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import fs from 'fs'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const SERVER_ROOT = path.resolve(__dirname, '..', '..')
+// Detect serverless environment
+const isServerless = !!(process.env.VERCEL || process.env.NETLIFY)
+
+let __dirname = ''
+let SERVER_ROOT = ''
+
+if (!isServerless) {
+  try {
+    __dirname = path.dirname(fileURLToPath(import.meta.url))
+    SERVER_ROOT = path.resolve(__dirname, '..', '..')
+  } catch (err) {
+    console.warn('[ENV-LOADER] ⚠️  Could not determine __dirname/SERVER_ROOT using import.meta.url')
+  }
+}
 
 /**
  * Possible .env file locations (in order of priority)
