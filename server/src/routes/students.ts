@@ -27,7 +27,7 @@ const mapStudent = (s: any) => ({
 
 // Helper to map frontend camelCase to DB snake_case
 const mapToDB = (s: any) => ({
-  student_id: s.studentId,
+  student_id: s.registrationNumber || s.studentId, // Handle both registrationNumber (frontend) and studentId
   first_name: s.firstName,
   last_name: s.lastName,
   class_id: s.class,
@@ -76,15 +76,23 @@ router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req: Auth
     const dbData = mapToDB(req.body)
     const user = req.user
 
+    console.log('[STUDENTS] Creating student with data:', JSON.stringify(dbData, null, 2))
+
     // If teacher, verify they are assigned to this class
     if (user?.role === 'Teacher') {
-      const { data: teacher } = await supabase
+      const { data: teacher, error: teacherError } = await supabase
         .from('teachers')
         .select('assigned_classes')
         .eq('id', user.id)
         .single()
       
+      if (teacherError) {
+        console.error('[STUDENTS] Failed to fetch teacher assigned classes:', teacherError)
+        return res.status(500).json({ error: 'Failed to verify teacher permissions' })
+      }
+
       if (!teacher?.assigned_classes?.includes(dbData.class_id)) {
+        console.warn(`[STUDENTS] Teacher ${user.id} tried to add student to unassigned class: ${dbData.class_id}. Assigned:`, teacher?.assigned_classes)
         return res.status(403).json({ error: 'You can only add students to your assigned classes' })
       }
     }
@@ -95,7 +103,12 @@ router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req: Auth
       .select()
       .single()
     
-    if (error) throw error
+    if (error) {
+      console.error('[STUDENTS] Database insert error:', JSON.stringify(error, null, 2))
+      throw error
+    }
+    
+    console.log('[STUDENTS] Student created successfully:', data.id)
     
     // Send email notification
     if (data.parent_email) {
