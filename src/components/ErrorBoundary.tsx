@@ -1,5 +1,4 @@
 import { Component, ReactNode } from 'react'
-import { Button } from './Button'
 
 interface Props {
   children: ReactNode
@@ -63,7 +62,7 @@ export class ErrorBoundary extends Component<Props, State> {
             <p className="text-gray-600 mb-6">
               We encountered an unexpected error. The development team has been notified.
             </p>
-            {process.env.NODE_ENV === 'development' && this.state.error && (
+            {import.meta.env.DEV && this.state.error && (
               <div className="mb-6 p-4 bg-gray-100 rounded-lg text-left">
                 <p className="font-mono text-sm text-red-600 break-all">
                   {this.state.error.message}
@@ -71,12 +70,18 @@ export class ErrorBoundary extends Component<Props, State> {
               </div>
             )}
             <div className="flex gap-3 justify-center">
-              <Button onClick={this.handleReload}>
+              <button
+                onClick={this.handleReload}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
                 Try Again
-              </Button>
-              <Button onClick={this.handleGoHome} variant="outline">
+              </button>
+              <button
+                onClick={this.handleGoHome}
+                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+              >
                 Go to Home
-              </Button>
+              </button>
             </div>
           </div>
         </div>
