@@ -152,6 +152,51 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [session.isAuthenticated, logout])
 
+  // Session refresh mechanism - refreshes token before expiration
+  const refreshSession = useCallback(async () => {
+    if (!session.isAuthenticated || !session.token) return false
+
+    try {
+      const res = await fetch(`${API_URL}/auth/refresh`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.token}`
+        },
+      })
+
+      if (res.ok) {
+        const { token, user } = await res.json()
+        const newSession: AuthSession = {
+          user,
+          token,
+          isAuthenticated: true,
+          lastLogin: session.lastLogin,
+        }
+        setSession(newSession)
+        localStorage.setItem('authSession', JSON.stringify(newSession))
+        console.log('[AUTH] Session refreshed successfully')
+        return true
+      }
+    } catch (error) {
+      console.error('[AUTH] Session refresh failed:', error)
+    }
+    return false
+  }, [session.isAuthenticated, session.token, session.lastLogin])
+
+  // Auto-refresh session every 25 minutes (before 30-min timeout)
+  useEffect(() => {
+    if (!session.isAuthenticated) return
+
+    const refreshInterval = 25 * 60 * 1000 // 25 minutes
+    const intervalId = setInterval(() => {
+      console.log('[AUTH] Attempting proactive session refresh')
+      refreshSession()
+    }, refreshInterval)
+
+    return () => clearInterval(intervalId)
+  }, [session.isAuthenticated, refreshSession])
+
   const login = useCallback(async (email: string, password: string) => {
     const normalizedLoginId = email.trim().toLowerCase()
 

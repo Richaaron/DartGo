@@ -1,131 +1,83 @@
-import React from 'react'
-import { AlertTriangle, RefreshCw, Home } from 'lucide-react'
+import { Component, ReactNode } from 'react'
+import { Button } from './Button'
 
-interface ErrorBoundaryProps {
-  children: React.ReactNode
+interface Props {
+  children: ReactNode
+  fallback?: ReactNode
 }
 
-interface ErrorBoundaryState {
+interface State {
   hasError: boolean
   error: Error | null
   errorInfo: React.ErrorInfo | null
 }
 
-export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
+export class ErrorBoundary extends Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {
       hasError: false,
       error: null,
-      errorInfo: null,
+      errorInfo: null
     }
   }
 
-  static getDerivedStateFromError(_error: Error): Partial<ErrorBoundaryState> {
-    return { hasError: true }
+  static getDerivedStateFromError(error: Error): Partial<State> {
+    return { hasError: true, error }
   }
 
-  componentDidCatch(_error: Error, errorInfo: React.ErrorInfo) {
-    console.error('[ERROR BOUNDARY] Caught error:', _error)
-    console.error('[ERROR BOUNDARY] Error info:', errorInfo)
-
-    this.setState({
-      error: _error,
-      errorInfo,
-    })
-
-    // Log to external service in production
-    if (import.meta.env.PROD) {
-      // Example: send to error tracking service
-      // logErrorToService(error, errorInfo)
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('ErrorBoundary caught an error:', error, errorInfo)
+    this.setState({ errorInfo })
+    
+    if (typeof window !== 'undefined' && (window as any).Sentry) {
+      (window as any).Sentry.captureException(error, { extra: errorInfo })
     }
-  }
-
-  handleReset = () => {
-    this.setState({
-      hasError: false,
-      error: null,
-      errorInfo: null,
-    })
   }
 
   handleReload = () => {
+    this.setState({ hasError: false, error: null, errorInfo: null })
     window.location.reload()
   }
 
-  handleHome = () => {
+  handleGoHome = () => {
+    this.setState({ hasError: false, error: null, errorInfo: null })
     window.location.href = '/'
   }
 
   render() {
     if (this.state.hasError) {
+      if (this.props.fallback) {
+        return this.props.fallback
+      }
+
       return (
-        <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full">
-            {/* Error Icon */}
-            <div className="flex justify-center mb-6">
-              <div className="bg-red-100 rounded-full p-4">
-                <AlertTriangle className="w-8 h-8 text-red-600" />
-              </div>
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+          <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8 text-center">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 flex items-center justify-center">
+              <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
             </div>
-
-            {/* Error Title */}
-            <h1 className="text-2xl font-bold text-gray-900 text-center mb-2">
-              Oops! Something went wrong
-            </h1>
-
-            {/* Error Message */}
-            <p className="text-gray-600 text-center mb-6">
-              We encountered an unexpected error. Please try again or contact support if the problem persists.
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Something went wrong</h2>
+            <p className="text-gray-600 mb-6">
+              We encountered an unexpected error. The development team has been notified.
             </p>
-
-            {/* Error Details (Development Only) */}
-            {import.meta.env.DEV && this.state.error && (
-              <div className="bg-gray-100 rounded-lg p-4 mb-6 max-h-40 overflow-y-auto">
-                <p className="text-xs font-mono text-gray-700 break-words">
-                  <strong>Error:</strong> {this.state.error.toString()}
+            {process.env.NODE_ENV === 'development' && this.state.error && (
+              <div className="mb-6 p-4 bg-gray-100 rounded-lg text-left">
+                <p className="font-mono text-sm text-red-600 break-all">
+                  {this.state.error.message}
                 </p>
-                {this.state.errorInfo && (
-                  <p className="text-xs font-mono text-gray-600 mt-2 break-words">
-                    <strong>Stack:</strong> {this.state.errorInfo.componentStack}
-                  </p>
-                )}
               </div>
             )}
-
-            {/* Action Buttons */}
-            <div className="space-y-3">
-              <button
-                onClick={this.handleReset}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
-              >
-                <RefreshCw size={18} />
+            <div className="flex gap-3 justify-center">
+              <Button onClick={this.handleReload}>
                 Try Again
-              </button>
-
-              <button
-                onClick={this.handleHome}
-                className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
-              >
-                <Home size={18} />
-                Go Home
-              </button>
-
-              <button
-                onClick={this.handleReload}
-                className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 rounded-lg transition-colors"
-              >
-                Reload Page
-              </button>
+              </Button>
+              <Button onClick={this.handleGoHome} variant="outline">
+                Go to Home
+              </Button>
             </div>
-
-            {/* Support Info */}
-            <p className="text-xs text-gray-500 text-center mt-6">
-              If this problem persists, please contact{' '}
-              <a href="mailto:support@folusho.com" className="text-blue-600 hover:underline">
-                support@folusho.com
-              </a>
-            </p>
           </div>
         </div>
       )
@@ -134,3 +86,5 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
     return this.props.children
   }
 }
+
+export default ErrorBoundary

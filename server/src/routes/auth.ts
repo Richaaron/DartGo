@@ -212,6 +212,51 @@ router.post('/login', authLimiter, async (req, res) => {
 })
 
 /**
+ * Token refresh endpoint
+ * Allows clients to proactively refresh their session before expiration
+ */
+router.post('/refresh', authenticate, async (req: AuthRequest, res) => {
+  try {
+    const user = req.user
+
+    if (!user) {
+      return res.status(401).json({
+        error: 'Not authenticated',
+        code: 'NOT_AUTHENTICATED',
+      })
+    }
+
+    // Generate a new token
+    const newToken = generateToken({
+      id: user.id,
+      role: user.role,
+      email: user.email || '',
+    })
+
+    console.log(`[AUTH] Token refreshed for user: ${user.id}`)
+
+    return res.json({
+      token: newToken,
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        name: user.name,
+        subject: (user as any).subject,
+        level: (user as any).level,
+        assignedClasses: (user as any).assignedClasses,
+      },
+    })
+  } catch (error) {
+    console.error('[AUTH] Token refresh error:', error)
+    res.status(500).json({
+      error: 'Token refresh failed',
+      code: 'REFRESH_ERROR',
+    })
+  }
+})
+
+/**
  * Register endpoint with Supabase
  */
 router.post('/register', authLimiter, async (req, res) => {
