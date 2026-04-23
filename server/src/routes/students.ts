@@ -145,7 +145,7 @@ router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req: Auth
     if (data.parent_email) {
       try {
         console.log(`[STUDENTS] Sending registration email to: ${data.parent_email}`)
-        await sendStudentRegistrationEmail(data.parent_email, `${data.first_name} ${data.last_name}`, data.registration_number || data.student_id, data.id)
+        await sendStudentRegistrationEmail(data.parent_email, `${data.first_name} ${data.last_name}`, data.registration_number || data.student_id, data.parent_username, data.parent_password, data.id)
       } catch (err) {
         console.error('[STUDENTS] Failed to send registration email:', err)
       }

@@ -79,15 +79,17 @@ export const sendEmail = async (options: EmailOptions) => {
   }
 }
 
-export const sendStudentRegistrationEmail = async (studentEmail: string, studentName: string, registrationNumber: string, studentId?: string) => {
+export const sendStudentRegistrationEmail = async (studentEmail: string, studentName: string, registrationNumber: string, username: string, password: string, studentId?: string) => {
   const subject = 'Welcome to Folusho Victory Schools - Student Registration'
-  const text = `Hello ${studentName}, your registration was successful. Your registration number is ${registrationNumber}.`
+  const text = `Hello ${studentName}, your registration was successful. Your registration number is ${registrationNumber}. Your parent portal username is ${username} and password is ${password}.`
   const html = `
     <h1>Welcome to Folusho Victory Schools</h1>
     <p>Hello <strong>${studentName}</strong>,</p>
     <p>Your registration was successful. Below are your details:</p>
     <ul>
       <li><strong>Registration Number:</strong> ${registrationNumber}</li>
+      <li><strong>Parent Portal Username:</strong> ${username}</li>
+      <li><strong>Parent Portal Password:</strong> ${password}</li>
     </ul>
     <p>You can now log in to the parent portal using your credentials.</p>
     <p><a href="${config.FRONTEND_URL}">Access Parent Portal</a></p>

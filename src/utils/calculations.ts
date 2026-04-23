@@ -70,10 +70,8 @@ export const calculateStudentAge = (dateOfBirth: string): number => {
 }
 
 export const generateRegistrationNumber = (level: string): string => {
-  const timestamp = Date.now()
-  const random = Math.floor(Math.random() * 1000)
-  const levelCode = level.charAt(0).toUpperCase()
-  return `${levelCode}${timestamp}${random}`
+  const randomDigits = Math.floor(10000 + Math.random() * 90000) // 5 random digits
+  return `FVS${randomDigits}`
 }
 
 export const generateParentCredentials = (firstName: string, lastName?: string) => {
