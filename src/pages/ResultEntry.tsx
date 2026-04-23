@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Plus, Trash2, Search, Download, Send, Mail, AlertCircle, Grid3x3, List } from 'lucide-react'
+import { Plus, Trash2, Search, Download, Send, Mail, AlertCircle, LayoutGrid, List } from 'lucide-react'
 import { SubjectResult, Student, Subject } from '../types'
 import { useAuthContext } from '../context/AuthContext'
 import SubjectResultForm from '../components/SubjectResultForm'
@@ -411,7 +411,7 @@ export default function ResultEntry() {
                 }`}
                 title="View results organized by class"
               >
-                <Grid3x3 size={18} />
+                <LayoutGrid size={18} />
                 By Class
               </button>
               <button
@@ -442,6 +442,7 @@ export default function ResultEntry() {
                 setShowForm(true)
               }}
               className="btn-primary flex items-center gap-2"
+            >
             <Plus size={20} />
             Add Result
           </button>
