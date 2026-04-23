@@ -186,6 +186,7 @@ export interface Teacher extends User {
   teacherId: string
   username: string
   password?: string
+  teacherType?: 'Form Teacher' | 'Subject Teacher' | 'Form + Subject Teacher'
   subject?: string
   assignedSubjects?: string[]
   level: SchoolLevel
