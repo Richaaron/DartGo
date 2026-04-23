@@ -4,6 +4,30 @@ import { X, Upload, User as UserIcon } from 'lucide-react'
 import { Teacher, Subject, Student } from '../types'
 import { fetchSubjects, fetchStudents } from '../services/api'
 
+const STANDARD_CLASSES = [
+  'Pre-Nursery',
+  'Nursery 1',
+  'Nursery 2',
+  'Primary 1',
+  'Primary 2',
+  'Primary 3',
+  'Primary 4',
+  'Primary 5',
+  'JSS 1',
+  'JSS 2',
+  'JSS 3',
+  'SSS 1',
+  'SSS 2',
+  'SSS 3',
+]
+
+const LEVEL_CLASS_MAP: Record<Teacher['level'], string[]> = {
+  'Pre-Nursery': ['Pre-Nursery'],
+  'Nursery': ['Nursery 1', 'Nursery 2'],
+  'Primary': ['Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5'],
+  'Secondary': ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'],
+}
+
 interface TeacherFormProps {
   onSubmit: (teacher: Teacher | Omit<Teacher, 'id'>) => void
   initialData?: Teacher
@@ -59,9 +83,8 @@ export default function TeacherForm({
 
         setAvailableSubjects(subjectsData)
 
-        const classOptions = [...new Set(studentsData.map((student: Student) => student.class))]
-          .filter(Boolean)
-          .sort()
+        const studentClasses = studentsData.map((student: Student) => student.class).filter(Boolean)
+        const classOptions = [...new Set([...STANDARD_CLASSES, ...studentClasses])]
         setAvailableClasses(classOptions)
       } catch (error) {
         console.error('Failed to load teacher form options', error)
@@ -77,17 +100,9 @@ export default function TeacherForm({
   )
 
   const levelClasses = useMemo(() => {
-    const matchedClasses = availableClasses.filter((className) =>
-      formData.level === 'Pre-Nursery'
-        ? className.toLowerCase().includes('pre')
-        : formData.level === 'Nursery'
-          ? className.toLowerCase().includes('nur')
-          : formData.level === 'Primary'
-            ? className.toLowerCase().includes('primary') || className.toLowerCase().includes('pri')
-            : className.toLowerCase().includes('jss') || className.toLowerCase().includes('sss') || className.toLowerCase().includes('sec')
-    )
-
-    return (matchedClasses.length > 0 ? matchedClasses : availableClasses).sort()
+    const preferredClasses = LEVEL_CLASS_MAP[formData.level] || []
+    const extraClasses = availableClasses.filter((className) => !preferredClasses.includes(className))
+    return [...preferredClasses, ...extraClasses]
   }, [availableClasses, formData.level])
 
   const validateForm = () => {
