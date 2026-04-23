@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import bcrypt from 'bcryptjs'
 import { supabase } from '../config/supabase'
 import { authenticate, authorize, AuthRequest } from '../middleware/auth'
 import { sendStudentRegistrationEmail } from '../utils/email'
@@ -98,8 +99,14 @@ router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req: Auth
   try {
     const dbData = mapToDB(req.body)
     const user = req.user
+    const originalPassword = req.body.parentPassword // Keep plain text password for notifications
 
-    console.log('[STUDENTS] Creating student with data:', JSON.stringify(dbData, null, 2))
+    console.log('[STUDENTS] Creating student with data:', JSON.stringify({ ...dbData, parent_password: '[HIDDEN]' }, null, 2))
+
+    // Hash the parent password before storing
+    if (dbData.parent_password) {
+      dbData.parent_password = await bcrypt.hash(dbData.parent_password, 10)
+    }
 
     // If teacher, verify they are assigned to this class
     if (user?.role === 'Teacher') {
@@ -145,7 +152,8 @@ router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req: Auth
     if (data.parent_email) {
       try {
         console.log(`[STUDENTS] Sending registration email to: ${data.parent_email}`)
-        await sendStudentRegistrationEmail(data.parent_email, `${data.first_name} ${data.last_name}`, data.registration_number || data.student_id, data.parent_username, data.parent_password, data.id)
+        // Use originalPassword instead of data.parent_password (which is hashed)
+        await sendStudentRegistrationEmail(data.parent_email, `${data.first_name} ${data.last_name}`, data.registration_number || data.student_id, data.parent_username, originalPassword, data.id)
       } catch (err) {
         console.error('[STUDENTS] Failed to send registration email:', err)
       }
@@ -155,11 +163,12 @@ router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req: Auth
     if (data.parent_phone) {
       try {
         console.log(`[STUDENTS] Sending registration SMS to: ${data.parent_phone}`)
+        // Use originalPassword instead of data.parent_password (which is hashed)
         await sendParentCredentialsSMS(
           data.parent_phone, 
           `${data.first_name} ${data.last_name}`, 
           data.parent_username, 
-          data.parent_password,
+          originalPassword,
           data.id
         )
       } catch (err) {
@@ -181,6 +190,20 @@ router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req: Auth
 router.put('/:id', authenticate, authorize(['Admin']), async (req, res) => {
   try {
     const dbData = mapToDB(req.body)
+    
+    // Check if password needs to be hashed (if it's different from current DB value and not already hashed)
+    if (dbData.parent_password) {
+      const { data: currentStudent } = await supabase
+        .from('students')
+        .select('parent_password')
+        .eq('id', req.params.id)
+        .single()
+      
+      if (currentStudent && dbData.parent_password !== currentStudent.parent_password) {
+        dbData.parent_password = await bcrypt.hash(dbData.parent_password, 10)
+      }
+    }
+
     const { data, error } = await supabase
       .from('students')
       .update(dbData)

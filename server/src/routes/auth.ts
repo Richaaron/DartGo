@@ -130,7 +130,19 @@ router.post('/login', authLimiter, async (req, res) => {
         .single()
 
       if (studentData) {
-        const isParentValid = await bcrypt.compare(password, studentData.parent_password)
+        let isParentValid = false
+        try {
+          isParentValid = await bcrypt.compare(password, studentData.parent_password)
+        } catch (e) {
+          // Fallback for legacy plain-text passwords
+          isParentValid = password === studentData.parent_password
+        }
+
+        // Second fallback: if bcrypt returns false but password is not a hash format
+        if (!isParentValid && studentData.parent_password && !studentData.parent_password.startsWith('$2')) {
+          isParentValid = password === studentData.parent_password
+        }
+
         if (isParentValid) {
           const token = generateToken({
             id: studentData.id,
