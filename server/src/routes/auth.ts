@@ -241,7 +241,7 @@ router.post('/refresh', authenticate, async (req: AuthRequest, res) => {
         id: user.id,
         email: user.email,
         role: user.role,
-        name: user.name,
+        name: (user as any).name || user.email?.split('@')[0] || 'User',
         subject: (user as any).subject,
         level: (user as any).level,
         assignedClasses: (user as any).assignedClasses,

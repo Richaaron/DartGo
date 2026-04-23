@@ -63,7 +63,7 @@ export function createUserRateLimiter(options: {
 }) {
   return (req: Request, res: Response, next: NextFunction) => {
     // Use user ID if authenticated, otherwise use IP
-    const userId = req.user?.id || req.ip || 'unknown'
+    const userId = (req as any).user?.id || req.ip || 'unknown'
     const key = `user_${userId}`
     const now = Date.now()
     
