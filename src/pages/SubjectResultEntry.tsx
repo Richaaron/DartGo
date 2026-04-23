@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback, memo } from 'react'
 import type { ChangeEvent } from 'react'
 import { Plus, Trash2, Search, Upload, FileText, CheckCircle, AlertCircle } from 'lucide-react'
 import Papa from 'papaparse'
@@ -11,7 +11,7 @@ import { calculatePositions } from '../utils/calculations'
 
 const SECONDARY_CLASSES = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']
 
-export default function SubjectResultEntry() {
+const SubjectResultEntry = memo(function SubjectResultEntry() {
   const { user } = useAuthContext()
   const isTeacher = user?.role === 'Teacher'
   const teacherType = isTeacher ? (user as any)?.teacherType : undefined
@@ -59,9 +59,9 @@ export default function SubjectResultEntry() {
 
   useEffect(() => {
     loadData()
-  }, [])
+  }, [loadData])
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setIsLoading(true)
     try {
       const [studentsData, resultsData, subjectsData] = await Promise.all([
@@ -105,7 +105,7 @@ export default function SubjectResultEntry() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [isTeacher, isSubjectCapableTeacher, assignedClasses, teacherSubjects])
 
   const filteredResults = useMemo(() => {
     const getResultDetailsForFilter = (result: SubjectResult) => {
@@ -175,7 +175,7 @@ export default function SubjectResultEntry() {
     return students.filter((student) => student.class === selectedClass)
   }, [students, selectedClass])
 
-  const handleSubmitResult = async (resultData: SubjectResult | Omit<SubjectResult, 'id'>) => {
+  const handleSubmitResult = useCallback(async (resultData: SubjectResult | Omit<SubjectResult, 'id'>) => {
     try {
       if ('id' in resultData) {
         const updated = await updateResult(resultData.id, resultData)
@@ -190,9 +190,9 @@ export default function SubjectResultEntry() {
     } catch {
       window.alert('Failed to save result')
     }
-  }
+  }, [])
 
-  const handleDeleteResult = async (id: string) => {
+  const handleDeleteResult = useCallback(async (id: string) => {
     if (window.confirm('Are you sure you want to delete this result?')) {
       try {
         await deleteResult(id)
@@ -201,9 +201,9 @@ export default function SubjectResultEntry() {
         window.alert('Failed to delete result')
       }
     }
-  }
+  }, [])
 
-  const handleBulkUpload = (event: ChangeEvent<any>) => {
+  const handleBulkUpload = useCallback((event: ChangeEvent<any>) => {
     const file = event.target.files?.[0]
     if (!file) return
 
@@ -247,7 +247,7 @@ export default function SubjectResultEntry() {
         }
       }
     })
-  }
+  }, [subjects])
 
   const columns = [
     { key: 'studentName', label: 'Student Name' },
@@ -487,4 +487,6 @@ export default function SubjectResultEntry() {
       </div>
     </div>
   )
-}
+})
+
+export default SubjectResultEntry
