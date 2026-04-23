@@ -1,5 +1,5 @@
 /**
- * Accessibility utilities and helpers - Fixed version
+ * Accessibility utilities and helpers
  */
 
 // ARIA label generators
@@ -107,10 +107,28 @@ export const handleKeyboardNavigation = (
   }
 }
 
-// Color contrast checker - Simplified version
+// Color contrast checker
 export const getContrastRatio = (color1: string, color2: string): number => {
-  // Simplified implementation - return a reasonable default
-  return 4.5 // WCAG AA compliant contrast ratio
+  const getLuminance = (color: string): number => {
+    const rgb = color.match(/\d+/g)
+    if (!rgb || rgb.length < 3) return 0
+
+    const [r, g, b] = rgb.map(Number)
+    const [rs, gs, bs] = [r, g, b].map(c => {
+      const normalizedC = c / 255
+      return normalizedC <= 0.03928 ? normalizedC / 12.92 : Math.pow((normalizedC + 0.055) / 1.055, 2.4)
+    })
+
+    return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs
+  }
+
+  const lum1 = getLuminance(color1)
+  const lum2 = getLuminance(color2)
+
+  const brightest = Math.max(lum1, lum2)
+  const darkest = Math.min(lum1, lum2)
+
+  return (brightest + 0.05) / (darkest + 0.05)
 }
 
 export const meetsWCAGStandard = (contrastRatio: number, level: 'AA' | 'AAA' = 'AA'): boolean => {

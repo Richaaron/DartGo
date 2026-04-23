@@ -91,10 +91,7 @@ export function useForm<T extends Record<string, any>>(
     isValid,
     handleChange,
     handleSubmit,
-    resetForm,
-    setFieldValue,
-    setFieldError,
-    handleBlur
+    resetForm
   }
 }
 
