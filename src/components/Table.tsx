@@ -13,7 +13,7 @@ export default function Table({ columns, data }: TableProps) {
     <div className="overflow-x-auto">
       <table className="w-full">
         <thead>
-          <tr className="border-b border-gray-200 bg-gray-50">
+          <tr className="border-b border-gray-200 dark:border-purple-700/50 bg-gray-50 dark:bg-gradient-to-r dark:from-slate-700/80 dark:to-slate-800/80">
             {columns.map((column) => (
               <th
                 key={column.key}
@@ -27,7 +27,7 @@ export default function Table({ columns, data }: TableProps) {
         </thead>
         <tbody>
           {data.map((row, index) => (
-            <tr key={index} className="hover:bg-gray-50 transition-colors">
+            <tr key={index} className="hover:bg-gray-50 dark:hover:bg-purple-900/20 transition-colors">
               {columns.map((column) => (
                 <td key={column.key} className="table-cell">
                   {row[column.key]}

@@ -192,7 +192,7 @@ export default function AdminSchemeUpload() {
             <select
               value={filterLevel}
               onChange={(e) => setFilterLevel(e.target.value as SchoolLevel | 'All')}
-              className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-bold"
+              className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-700/60 border border-gray-100 dark:border-purple-600/50 rounded-xl focus:ring-2 focus:ring-indigo-500 dark:focus:ring-gold-400 outline-none text-sm font-bold text-gray-900 dark:text-gray-50"
             >
               <option value="All">All Levels</option>
               <option value="Pre-Nursery">Pre-Nursery</option>
@@ -206,7 +206,7 @@ export default function AdminSchemeUpload() {
             <select
               value={filterSubject}
               onChange={(e) => setFilterSubject(e.target.value)}
-              className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-bold"
+              className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-700/60 border border-gray-100 dark:border-purple-600/50 rounded-xl focus:ring-2 focus:ring-indigo-500 dark:focus:ring-gold-400 outline-none text-sm font-bold text-gray-900 dark:text-gray-50"
             >
               <option value="All">All Subjects</option>
               {subjects.filter(s => filterLevel === 'All' || s.level === filterLevel).map(s => (
@@ -240,7 +240,7 @@ export default function AdminSchemeUpload() {
               className="card-lg group"
             >
               <div className="flex justify-between items-start mb-4">
-                <div className="p-3 bg-indigo-50 dark:bg-indigo-500/10 rounded-2xl text-indigo-600">
+                <div className="p-3 bg-indigo-50 dark:bg-indigo-600/25 rounded-2xl text-indigo-600 dark:text-indigo-300">
                   <File className="w-6 h-6" />
                 </div>
                 <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -270,13 +270,13 @@ export default function AdminSchemeUpload() {
                   {subjects.find(s => s.id === scheme.subjectId)?.name || 'Unknown Subject'}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-[10px] font-black text-gray-500 uppercase tracking-widest">
+                  <span className="px-2 py-1 bg-gray-100 dark:bg-slate-700/60 rounded text-[10px] font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
                     {scheme.classId}
                   </span>
-                  <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-[10px] font-black text-gray-500 uppercase tracking-widest">
+                  <span className="px-2 py-1 bg-gray-100 dark:bg-slate-700/60 rounded text-[10px] font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
                     Term {scheme.term}
                   </span>
-                  <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-[10px] font-black text-gray-500 uppercase tracking-widest">
+                  <span className="px-2 py-1 bg-gray-100 dark:bg-slate-700/60 rounded text-[10px] font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
                     {scheme.academicYear}
                   </span>
                 </div>
@@ -303,7 +303,7 @@ export default function AdminSchemeUpload() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white dark:bg-gray-900 rounded-[2.5rem] shadow-2xl max-w-2xl w-full p-10 border border-gray-100 dark:border-gray-800 overflow-y-auto max-h-[90vh]"
+              className="bg-white dark:bg-gradient-to-br dark:from-slate-800/95 dark:to-slate-900/95 rounded-[2.5rem] shadow-2xl max-w-2xl w-full p-10 border border-gray-100 dark:border-purple-600/50 overflow-y-auto max-h-[90vh]"
               onClick={e => e.stopPropagation()}
             >
               <div className="flex justify-between items-center mb-8">
@@ -404,7 +404,7 @@ export default function AdminSchemeUpload() {
                   />
                 </div>
 
-                <div className="relative border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-[2rem] p-8 text-center hover:border-indigo-500 transition-colors group">
+                <div className="relative border-2 border-dashed border-gray-200 dark:border-purple-600/40 rounded-[2rem] p-8 text-center hover:border-indigo-500 dark:hover:border-gold-400 transition-colors group">
                   <input
                     type="file"
                     onChange={handleFileChange}
@@ -412,7 +412,7 @@ export default function AdminSchemeUpload() {
                     accept=".pdf,.doc,.docx,.txt"
                   />
                   <div className="flex flex-col items-center">
-                    <div className="p-4 bg-indigo-50 dark:bg-indigo-500/10 rounded-2xl text-indigo-600 mb-4 group-hover:scale-110 transition-transform">
+                    <div className="p-4 bg-indigo-50 dark:bg-indigo-600/25 rounded-2xl text-indigo-600 dark:text-indigo-300 mb-4 group-hover:scale-110 transition-transform">
                       <Upload className="w-8 h-8" />
                     </div>
                     {selectedFile ? (

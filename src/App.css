@@ -4,8 +4,11 @@
   --primary-light: #a78bfa; /* Purple 400 */
   --accent: #fbbf24; /* Gold 400 */
   --accent-hover: #f59e0b; /* Gold 500 */
-  --dark: #1a1a1a; /* Pure Black */
-  --dark-secondary: #2d1b69; /* Dark Purple */
+  --dark: #0f0f0f; /* Deep Black */
+  --dark-secondary: #1a1a2e; /* Dark Blue-Black */
+  --dark-tertiary: #16213e; /* Darker Blue */
+  --text-dark: #e5e7eb; /* Light Gray for dark mode */
+  --text-dark-secondary: #d1d5db; /* Medium Gray for dark mode */
 }
 
 /* Custom Scrollbar for a more professional feel */
@@ -24,11 +27,11 @@
 }
 
 .card {
-  @apply bg-white dark:bg-black/50 dark:backdrop-blur-md rounded-2xl shadow-sm p-4 border border-purple-200/30 dark:border-purple-700/30 transition-all duration-300 hover:border-gold-400/50;
+  @apply bg-white dark:bg-gradient-to-br dark:from-slate-800/90 dark:to-slate-900/90 dark:backdrop-blur-md rounded-2xl shadow-sm p-4 border border-purple-200/30 dark:border-purple-600/50 transition-all duration-300 hover:border-gold-400/50 dark:hover:border-gold-400/40;
 }
 
 .card-lg {
-  @apply bg-white dark:bg-black/60 dark:backdrop-blur-md rounded-2xl shadow-lg p-6 border border-purple-200/40 dark:border-purple-600/40 transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px] hover:border-gold-400/60;
+  @apply bg-white dark:bg-gradient-to-br dark:from-slate-800/95 dark:to-slate-900/95 dark:backdrop-blur-md rounded-2xl shadow-lg p-6 border border-purple-200/40 dark:border-purple-600/60 transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px] dark:hover:shadow-purple-900/50 hover:border-gold-400/60 dark:hover:border-gold-400/50;
 }
 
 .btn-primary {
@@ -48,7 +51,7 @@
 }
 
 .input-field {
-  @apply w-full px-4 py-3 bg-gray-50 dark:bg-black/40 border-2 border-purple-200 dark:border-purple-700/50 text-gray-900 dark:text-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-gold-400 focus:bg-white dark:focus:bg-black/60 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-600;
+  @apply w-full px-4 py-3 bg-gray-50 dark:bg-slate-700/60 border-2 border-purple-200 dark:border-purple-600/60 text-gray-900 dark:text-gray-50 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-gold-400 focus:bg-white dark:focus:bg-slate-700/80 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-400;
 }
 
 .table-header {
@@ -56,7 +59,7 @@
 }
 
 .table-cell {
-  @apply px-6 py-5 text-sm text-gray-700 dark:text-gray-300 border-b border-purple-200/20 dark:border-purple-800/30 hover:bg-purple-50/20 dark:hover:bg-purple-900/20 transition-colors;
+  @apply px-6 py-5 text-sm text-gray-700 dark:text-gray-100 border-b border-purple-200/20 dark:border-purple-700/40 hover:bg-purple-50/20 dark:hover:bg-purple-900/30 transition-colors;
 }
 
 .badge {
@@ -64,15 +67,15 @@
 }
 
 .badge-success {
-  @apply bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-100 dark:border-emerald-500/20;
+  @apply bg-emerald-50 dark:bg-emerald-600/20 text-emerald-700 dark:text-emerald-300 border-emerald-100 dark:border-emerald-600/40;
 }
 
 .badge-warning {
-  @apply bg-gold-50 dark:bg-gold-500/10 text-gold-700 dark:text-gold-400 border-gold-100 dark:border-gold-500/20;
+  @apply bg-gold-50 dark:bg-gold-600/25 text-gold-700 dark:text-gold-300 border-gold-100 dark:border-gold-600/40;
 }
 
 .badge-danger {
-  @apply bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-100 dark:border-rose-500/20;
+  @apply bg-rose-50 dark:bg-rose-600/20 text-rose-700 dark:text-rose-300 border-rose-100 dark:border-rose-600/40;
 }
 
 .fade-enter {

@@ -39,9 +39,10 @@ export default {
         },
       },
       backgroundImage: {
-        'gradient-luxury': 'linear-gradient(135deg, #1a1a1a 0%, #2d1b69 50%, #1a1a1a 100%)',
+        'gradient-luxury': 'linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #0f0f0f 100%)',
         'gradient-purple-gold': 'linear-gradient(135deg, #7c3aed 0%, #fbbf24 100%)',
-        'gradient-dark-purple': 'linear-gradient(135deg, #1a1a1a 0%, #3f2172 100%)',
+        'gradient-dark-purple': 'linear-gradient(135deg, #0f0f0f 0%, #2a2447 100%)',
+        'gradient-dark-enhanced': 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%)',
       },
     },
   },

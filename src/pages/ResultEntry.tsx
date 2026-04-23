@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Plus, Trash2, Search, Download, Send, Mail, AlertCircle } from 'lucide-react'
+import { Plus, Trash2, Search, Download, Send, Mail, AlertCircle, Grid3x3, List } from 'lucide-react'
 import { SubjectResult, Student, Subject } from '../types'
+import { useAuthContext } from '../context/AuthContext'
 import SubjectResultForm from '../components/SubjectResultForm'
 import Table from '../components/Table'
 import { formatDate, exportToCSV, calculatePositions, getStudentClassPosition, getPositionSuffix } from '../utils/calculations'
@@ -8,6 +9,9 @@ import { fetchStudents, fetchResults, fetchSubjects, deleteResult, createResult,
 import apiService from '../services/apiService'
 
 export default function ResultEntry() {
+  const { user } = useAuthContext()
+  const teacher = user && 'teacherType' in user ? user : null
+  
   const [results, setResults] = useState<SubjectResult[]>([])
   const [students, setStudents] = useState<Student[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
@@ -17,6 +21,15 @@ export default function ResultEntry() {
   const [selectedTerm, setSelectedTerm] = useState<string>('All')
   const [sending, setSending] = useState<string | null>(null)
   const [sendMessage, setSendMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+  
+  // New state for dual-mode viewing
+  const [viewMode, setViewMode] = useState<'class' | 'subject'>('class')
+  const [selectedClass, setSelectedClass] = useState<string>('All')
+  const [selectedSubject, setSelectedSubject] = useState<string>('All')
+
+  // Determine if current user is form teacher or subject teacher
+  const isFormTeacher = teacher?.teacherType === 'Form Teacher' || teacher?.teacherType === 'Form + Subject Teacher'
+  const isSubjectTeacher = teacher?.teacherType === 'Subject Teacher' || teacher?.teacherType === 'Form + Subject Teacher'
 
   async function loadData() {
     try {
@@ -61,24 +74,49 @@ export default function ResultEntry() {
         ...result,
         studentName: student ? `${student.firstName} ${student.lastName}` : 'Unknown Student',
         subjectName: subject?.name || 'Unknown Subject',
+        studentClass: student?.class || 'Unknown Class',
       }
     }
 
     let filtered = results
       .filter((result) => {
         const details = getResultDetailsForFilter(result)
-        const matchesFilter =
+        const matchesSearchTerm =
           details.studentName.toLowerCase().includes(filterTerm.toLowerCase()) ||
           details.subjectName.toLowerCase().includes(filterTerm.toLowerCase())
 
         const matchesTerm = selectedTerm === 'All' || result.term === selectedTerm
 
-        return matchesFilter && matchesTerm
+        // Role-based filtering
+        let matchesRoleRestriction = true
+        
+        if (teacher) {
+          if (viewMode === 'class') {
+            // Form Teacher: Filter by assigned classes
+            if (isFormTeacher && teacher.assignedClasses) {
+              matchesRoleRestriction = teacher.assignedClasses.includes(details.studentClass)
+            }
+            // Subject Teacher: Filter by selected class
+            if (isSubjectTeacher && selectedClass !== 'All') {
+              matchesRoleRestriction = details.studentClass === selectedClass
+            }
+          } else {
+            // Subject mode
+            if (isSubjectTeacher && teacher.assignedSubjects) {
+              matchesRoleRestriction = teacher.assignedSubjects.includes(result.subjectId)
+            }
+            // Form Teacher: Filter by selected subject
+            if (isFormTeacher && selectedSubject !== 'All') {
+              matchesRoleRestriction = result.subjectId === selectedSubject
+            }
+          }
+        }
+
+        return matchesSearchTerm && matchesTerm && matchesRoleRestriction
       })
       .map(getResultDetailsForFilter)
 
     // Add positions for results
-    // Group by term and academic year to calculate positions
     const grouped = new Map<string, SubjectResult[]>()
     filtered.forEach(result => {
       const key = `${result.term}-${result.academicYear}`
@@ -88,7 +126,6 @@ export default function ResultEntry() {
       grouped.get(key)!.push(result)
     })
 
-    // Calculate positions for each group
     const withPositions: SubjectResult[] = []
     grouped.forEach((groupResults) => {
       const positioned = calculatePositions(groupResults)
@@ -96,7 +133,47 @@ export default function ResultEntry() {
     })
 
     return withPositions
-  }, [results, students, subjects, filterTerm, selectedTerm])
+  }, [results, students, subjects, filterTerm, selectedTerm, viewMode, selectedClass, selectedSubject, teacher, isFormTeacher, isSubjectTeacher])
+
+  // Get available classes and subjects based on teacher's role
+  const availableClasses = useMemo(() => {
+    if (!teacher) return []
+    return teacher.assignedClasses || []
+  }, [teacher])
+
+  const availableSubjects = useMemo(() => {
+    if (!teacher) return []
+    if (isSubjectTeacher) {
+      return teacher.assignedSubjects || []
+    }
+    // For form teachers, show all subjects for their class
+    if (isFormTeacher && selectedClass !== 'All') {
+      return subjects.filter(s => s.level === teacher.level)
+    }
+    return subjects.filter(s => s.level === teacher.level)
+  }, [teacher, isSubjectTeacher, isFormTeacher, selectedClass, subjects])
+
+  const pageTitle = useMemo(() => {
+    if (isFormTeacher && !isSubjectTeacher) {
+      return 'Form Teacher - Result Entry'
+    }
+    if (isSubjectTeacher && !isFormTeacher) {
+      return 'Subject Teacher - Result Entry'
+    }
+    return 'Result Entry'
+  }, [isFormTeacher, isSubjectTeacher])
+
+  const pageDescription = useMemo(() => {
+    if (viewMode === 'class') {
+      return isFormTeacher 
+        ? 'Enter and manage results for all subjects in your class' 
+        : 'Enter and manage results for your classes'
+    } else {
+      return isSubjectTeacher
+        ? 'Enter and manage results for your assigned subjects across classes'
+        : 'Enter and manage results by subject'
+    }
+  }, [viewMode, isFormTeacher, isSubjectTeacher])
 
   const handleAddResult = async (newResult: Omit<SubjectResult, 'id'>) => {
     try {
@@ -319,34 +396,63 @@ export default function ResultEntry() {
       )}
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Result Entry</h1>
-          <p className="text-gray-600 mt-2">Record and manage student results with position-based ranking</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{pageTitle}</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">{pageDescription}</p>
         </div>
-        <div className="flex gap-4">
-          <button
-            onClick={handleExport}
-            className="btn-secondary flex items-center gap-2"
-          >
-            <Download size={20} />
-            Export
-          </button>
-          <button
-            onClick={() => {
-              setEditingResult(null)
-              setShowForm(true)
-            }}
-            className="btn-primary flex items-center gap-2"
-          >
+        <div className="flex flex-col gap-3">
+          {(isFormTeacher || isSubjectTeacher) && (
+            <div className="flex gap-2 bg-gray-100 dark:bg-slate-700/60 p-1 rounded-lg">
+              <button
+                onClick={() => setViewMode('class')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors ${
+                  viewMode === 'class'
+                    ? 'bg-white dark:bg-slate-600 text-purple-600 dark:text-gold-300 shadow-sm'
+                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+                }`}
+                title="View results organized by class"
+              >
+                <Grid3x3 size={18} />
+                By Class
+              </button>
+              <button
+                onClick={() => setViewMode('subject')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors ${
+                  viewMode === 'subject'
+                    ? 'bg-white dark:bg-slate-600 text-purple-600 dark:text-gold-300 shadow-sm'
+                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+                }`}
+                title="View results organized by subject"
+              >
+                <List size={18} />
+                By Subject
+              </button>
+            </div>
+          )}
+          <div className="flex gap-4">
+            <button
+              onClick={handleExport}
+              className="btn-secondary flex items-center gap-2"
+            >
+              <Download size={20} />
+              Export
+            </button>
+            <button
+              onClick={() => {
+                setEditingResult(null)
+                setShowForm(true)
+              }}
+              className="btn-primary flex items-center gap-2"
             <Plus size={20} />
             Add Result
           </button>
+          </div>
         </div>
       </div>
 
       <div className="card-lg mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Search
             </label>
             <div className="relative">

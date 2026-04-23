@@ -286,7 +286,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
 
         {/* Login Card */}
         <motion.div
-          className="w-full max-w-md bg-white dark:bg-black/60 dark:backdrop-blur-md rounded-lg shadow-2xl p-8 border border-gold-200/30 dark:border-gold-500/20"
+          className="w-full max-w-md bg-white dark:bg-gradient-to-br dark:from-slate-800/95 dark:to-slate-900/95 dark:backdrop-blur-md rounded-lg shadow-2xl p-8 border border-gold-200/30 dark:border-gold-500/40"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.1 }}
@@ -303,7 +303,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
               <div className="space-y-4">
                 <motion.button
                   onClick={() => setLoginType('admin')}
-                  className="w-full flex items-center gap-4 p-4 bg-purple-50 dark:bg-purple-900/30 hover:bg-purple-100 dark:hover:bg-purple-800/40 border-2 border-purple-200 dark:border-purple-700 rounded-lg transition-colors"
+                  className="w-full flex items-center gap-4 p-4 bg-purple-50 dark:bg-purple-600/20 hover:bg-purple-100 dark:hover:bg-purple-600/30 border-2 border-purple-200 dark:border-purple-600/40 rounded-lg transition-colors"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
@@ -321,7 +321,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
 
                 <motion.button
                   onClick={() => setLoginType('teacher')}
-                  className="w-full flex items-center gap-4 p-4 bg-gold-50 dark:bg-gold-900/20 hover:bg-gold-100 dark:hover:bg-gold-800/30 border-2 border-gold-200 dark:border-gold-600 rounded-lg transition-colors"
+                  className="w-full flex items-center gap-4 p-4 bg-gold-50 dark:bg-gold-600/20 hover:bg-gold-100 dark:hover:bg-gold-600/30 border-2 border-gold-200 dark:border-gold-600/40 rounded-lg transition-colors"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
@@ -339,7 +339,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
 
                 <motion.button
                   onClick={() => setLoginType('parent')}
-                  className="w-full flex items-center gap-4 p-4 bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100 dark:hover:bg-emerald-800/30 border-2 border-emerald-200 dark:border-emerald-600 rounded-lg transition-colors"
+                  className="w-full flex items-center gap-4 p-4 bg-emerald-50 dark:bg-emerald-600/20 hover:bg-emerald-100 dark:hover:bg-emerald-600/30 border-2 border-emerald-200 dark:border-emerald-600/40 rounded-lg transition-colors"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
@@ -360,7 +360,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
             <>
               <button
                 onClick={handleBack}
-                className="text-purple-600 dark:text-gold-400 hover:text-purple-800 dark:hover:text-gold-300 text-sm mb-4 font-semibold"
+                className="text-purple-600 dark:text-gold-300 hover:text-purple-800 dark:hover:text-gold-200 text-sm mb-4 font-semibold"
               >
                 ← Back to login type selection
               </button>
@@ -378,8 +378,8 @@ export default function Login({ onLoginSuccess }: LoginProps) {
               </p>
 
               {error && (
-                <div className="mb-4 p-3 bg-rose-50 dark:bg-rose-900/20 border-2 border-rose-200 dark:border-rose-600 rounded-lg">
-                  <p className="text-rose-700 dark:text-rose-400 text-sm font-semibold">{error}</p>
+                <div className="mb-4 p-3 bg-rose-50 dark:bg-rose-600/20 border-2 border-rose-200 dark:border-rose-600/40 rounded-lg">
+                  <p className="text-rose-700 dark:text-rose-300 text-sm font-semibold">{error}</p>
                 </div>
               )}
 
