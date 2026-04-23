@@ -12,6 +12,19 @@ import { calculatePositions } from '../utils/calculations'
 export default function SubjectResultEntry() {
   const { user } = useAuthContext()
   const isTeacher = user?.role === 'Teacher'
+  const normalizedAssignedClasses = useMemo(() => {
+    const rawClasses = (user as any)?.assignedClasses
+    if (Array.isArray(rawClasses)) {
+      return rawClasses.map((item) => String(item || '').trim()).filter(Boolean)
+    }
+    if (typeof rawClasses === 'string') {
+      return rawClasses
+        .split(',')
+        .map((item: string) => item.trim())
+        .filter(Boolean)
+    }
+    return []
+  }, [user])
   const teacherSubjects =
     ((user as any)?.assignedSubjects && (user as any).assignedSubjects.length > 0
       ? (user as any).assignedSubjects
@@ -19,7 +32,7 @@ export default function SubjectResultEntry() {
           .split(',')
           .map((subject: string) => subject.trim())
           .filter(Boolean)) as string[]
-  const assignedClasses = (user as any)?.assignedClasses || []
+  const assignedClasses = normalizedAssignedClasses
 
   const [results, setResults] = useState<SubjectResult[]>([])
   const [students, setStudents] = useState<Student[]>([])
@@ -128,8 +141,10 @@ export default function SubjectResultEntry() {
   }, [results, students, subjects, filterTerm, selectedTerm, selectedClass, selectedStudent])
 
   const availableClasses = useMemo(() => {
-    if (isTeacher) return assignedClasses
-    return Array.from(new Set(students.map((student) => student.class))).filter(Boolean)
+    const classPool = isTeacher && assignedClasses.length > 0
+      ? assignedClasses
+      : students.map((student) => student.class)
+    return Array.from(new Set(classPool.map((className) => String(className || '').trim()).filter(Boolean)))
   }, [isTeacher, assignedClasses, students])
 
   const classFilteredStudents = useMemo(() => {
