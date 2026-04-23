@@ -11,6 +11,7 @@ export default function StudentManagement() {
   const { user } = useAuthContext()
   const isTeacher = user?.role === 'Teacher'
   const teacherType = isTeacher ? (user as any)?.teacherType : undefined
+  const isSubjectOnlyTeacher = isTeacher && teacherType === 'Subject Teacher'
   const isFormCapableTeacher =
     isTeacher &&
     (!teacherType || teacherType === 'Form Teacher' || teacherType === 'Form + Subject Teacher')
@@ -29,8 +30,10 @@ export default function StudentManagement() {
     fetchStudents()
       .then((data) => {
         if (isMounted) {
-          // If teacher, only show students in their assigned classes
-          if (isTeacher) {
+          if (isSubjectOnlyTeacher) {
+            setStudents(data.filter((s: Student) => s.level === 'Secondary'))
+          } else if (isTeacher) {
+            // Form-capable teachers: only students in assigned classes
             setStudents(data.filter((s: Student) => assignedClasses.includes(s.class)))
           } else {
             setStudents(data)
@@ -44,7 +47,7 @@ export default function StudentManagement() {
     return () => {
       isMounted = false
     }
-  }, [isTeacher, assignedClasses])
+  }, [isTeacher, isSubjectOnlyTeacher, assignedClasses])
 
   useEffect(() => {
     if (isTeacher && assignedClasses.length > 0 && selectedClass === 'All') {
@@ -55,7 +58,9 @@ export default function StudentManagement() {
   async function loadStudents() {
     try {
       const data = await fetchStudents()
-      if (isTeacher) {
+      if (isSubjectOnlyTeacher) {
+        setStudents(data.filter((s: Student) => s.level === 'Secondary'))
+      } else if (isTeacher) {
         setStudents(data.filter((s: Student) => assignedClasses.includes(s.class)))
       } else {
         setStudents(data)
@@ -73,7 +78,7 @@ export default function StudentManagement() {
       (student.parentEmail || '').toLowerCase().includes(searchTerm.toLowerCase())
 
     const matchesLevel = selectedLevel === 'All' || student.level === selectedLevel
-    const matchesClass = selectedClass === 'All' || student.class === selectedClass
+    const matchesClass = !isFormCapableTeacher || selectedClass === 'All' || student.class === selectedClass
 
     return matchesSearch && matchesLevel && matchesClass
   })
@@ -229,7 +234,7 @@ export default function StudentManagement() {
               <option value="Secondary">Secondary</option>
             </select>
           </div>
-          {isTeacher && (
+          {isTeacher && isFormCapableTeacher && (
             <div>
               <label htmlFor="class-filter" className="block text-sm font-medium text-gray-700 mb-2">
                 Assigned Class
@@ -261,9 +266,9 @@ export default function StudentManagement() {
               initialData={editingStudent || undefined}
               onCancel={() => setShowForm(false)}
               isEditing={!!editingStudent}
-              allowedClasses={isTeacher ? assignedClasses : undefined}
-              defaultClass={isTeacher && selectedClass !== 'All' ? selectedClass : ''}
-              lockClass={isTeacher && selectedClass !== 'All' && !editingStudent}
+              allowedClasses={isTeacher && isFormCapableTeacher ? assignedClasses : undefined}
+              defaultClass={isTeacher && isFormCapableTeacher && selectedClass !== 'All' ? selectedClass : ''}
+              lockClass={isTeacher && isFormCapableTeacher && selectedClass !== 'All' && !editingStudent}
             />
           </div>
         </div>
