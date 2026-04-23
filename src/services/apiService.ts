@@ -31,7 +31,7 @@ const getPrimaryUrl = () => {
 
   if (import.meta.env.PROD) return '/api'
   // Fall back to local dev server
-  return 'http://localhost:3002/api'
+  return 'http://localhost:3001/api'
 }
 
 const PRIMARY_API_URL = getPrimaryUrl()

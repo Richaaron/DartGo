@@ -103,6 +103,7 @@ export const generalLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   skip: (req) => req.path === '/api/health',
+  validate: false
 })
 
 /**
@@ -116,7 +117,10 @@ export const authLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   skipSuccessfulRequests: true,
-  keyGenerator: (req) => req.body?.email || req.ip || 'unknown',
+  keyGenerator: (req) => {
+    return req.body?.email || req.ip || 'unknown'
+  },
+  validate: false
 })
 
 /**

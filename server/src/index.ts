@@ -155,6 +155,45 @@ app.use('/api/students', authenticate, activityLogger, studentRoutes)
 app.use('/api/teachers', authenticate, activityLogger, teacherRoutes)
 app.use('/api/subjects', authenticate, activityLogger, subjectRoutes)
 
+// Email notification endpoint
+app.post('/api/send-results-email', authenticate, async (req, res) => {
+  try {
+    const { parentEmail, studentName, term, academicYear, results, classPosition, studentId } = req.body
+
+    if (!parentEmail || !studentName || !results || results.length === 0) {
+      return res.status(400).json({ error: 'Missing required fields' })
+    }
+
+    const { sendStudentResultsEmail } = await import('./utils/email')
+
+    // Format results for email
+    const formattedResults = results.map((r: any) => ({
+      subject: r.subject,
+      grade: r.grade,
+      percentage: r.percentage,
+      position: r.position,
+    }))
+
+    // Send email
+    await sendStudentResultsEmail(
+      parentEmail,
+      studentName,
+      term,
+      academicYear,
+      formattedResults,
+      classPosition,
+      studentId
+    )
+
+    res.json({ success: true, message: 'Results email sent successfully' })
+  } catch (error) {
+    console.error('Error sending results email:', error)
+    res.status(500).json({
+      error: error instanceof Error ? error.message : 'Failed to send results email',
+    })
+  }
+})
+
 app.get('/api/health', (req, res) => {
   res.status(200).json({ 
     status: 'ok', 

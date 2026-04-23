@@ -19,6 +19,8 @@ if (!isServerless) {
   try {
     __dirname = path.dirname(fileURLToPath(import.meta.url))
     SERVER_ROOT = path.resolve(__dirname, '..', '..')
+    // Auto-load environment on import
+    loadEnvFile()
   } catch (err) {
     console.warn('[ENV-LOADER] ⚠️  Could not determine __dirname/SERVER_ROOT using import.meta.url')
   }

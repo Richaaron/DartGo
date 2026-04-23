@@ -58,11 +58,14 @@ router.post('/bulk', authenticate, authorize(['Admin', 'Teacher']), async (req: 
       )
       .select()
     
-    if (error) throw error
+    if (error) {
+      console.error('[ATTENDANCE] Supabase Upsert Error:', error)
+      return res.status(400).json({ error: `DATABASE_ERROR: ${error.message}` })
+    }
     res.json(data)
-  } catch (error) {
-    console.error('[ATTENDANCE] POST /bulk error:', error)
-    res.status(400).json({ error: 'Failed to save attendance' })
+  } catch (error: any) {
+    console.error('[ATTENDANCE] Route Exception:', error)
+    return res.status(500).json({ error: `SERVER_EXCEPTION: ${error.message}` })
   }
 })
 

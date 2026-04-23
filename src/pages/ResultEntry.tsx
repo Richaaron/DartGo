@@ -1,10 +1,23 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Plus, Trash2, Search, Download } from 'lucide-react'
+import { Plus, Trash2, Search, Download, Send, Mail, AlertCircle } from 'lucide-react'
 import { SubjectResult, Student, Subject } from '../types'
 import SubjectResultForm from '../components/SubjectResultForm'
 import Table from '../components/Table'
-import { formatDate, exportToCSV } from '../utils/calculations'
+import { formatDate, exportToCSV, calculatePositions, getStudentClassPosition, getPositionSuffix } from '../utils/calculations'
 import { fetchStudents, fetchResults, fetchSubjects, deleteResult, createResult, updateResult } from '../services/api'
+import apiService from '../services/apiService'
+
+export default function ResultEntry() {
+  const [results, setResults] = useState<SubjectResult[]>([])
+  const [students, setStudents] = useState<Student[]>([])
+  const [subjects, setSubjects] = useState<Subject[]>([])
+  const [showForm, setShowForm] = useState(false)
+  const [editingResult, setEditingResult] = useState<SubjectResult | null>(null)
+  const [filterTerm, setFilterTerm] = useState('')
+  const [selectedTerm, setSelectedTerm] = useState<string>('All')
+  const [sending, setSending] = useState<string | null>(null)
+  const [sendMessage, setSendMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+  const [selectedResults, setSelectedResults] = useState<Set<string>>(new Set())
 
 export default function ResultEntry() {
   const [results, setResults] = useState<SubjectResult[]>([])
@@ -61,7 +74,7 @@ export default function ResultEntry() {
       }
     }
 
-    return results
+    let filtered = results
       .filter((result) => {
         const details = getResultDetailsForFilter(result)
         const matchesFilter =
@@ -73,6 +86,26 @@ export default function ResultEntry() {
         return matchesFilter && matchesTerm
       })
       .map(getResultDetailsForFilter)
+
+    // Add positions for results
+    // Group by term and academic year to calculate positions
+    const grouped = new Map<string, SubjectResult[]>()
+    filtered.forEach(result => {
+      const key = `${result.term}-${result.academicYear}`
+      if (!grouped.has(key)) {
+        grouped.set(key, [])
+      }
+      grouped.get(key)!.push(result)
+    })
+
+    // Calculate positions for each group
+    const withPositions: SubjectResult[] = []
+    grouped.forEach((groupResults) => {
+      const positioned = calculatePositions(groupResults)
+      withPositions.push(...positioned)
+    })
+
+    return withPositions
   }, [results, students, subjects, filterTerm, selectedTerm])
 
   const handleAddResult = async (newResult: Omit<SubjectResult, 'id'>) => {
@@ -139,17 +172,165 @@ export default function ResultEntry() {
     { key: 'secondCA', label: '2nd CA' },
     { key: 'exam', label: 'Exam' },
     { key: 'totalScore', label: 'Total' },
-    { key: 'grade', label: 'Grade' },
     { key: 'percentage', label: '%' },
+    { key: 'grade', label: 'Grade' },
+    { key: 'positionText', label: 'Position' },
     { key: 'term', label: 'Term' },
   ]
 
+  const handleSendToParent = async (resultId: string) => {
+    try {
+      setSending(resultId)
+      const result = results.find(r => r.id === resultId)
+      if (!result) {
+        setSendMessage({ type: 'error', text: 'Result not found' })
+        return
+      }
+
+      const student = students.find(s => s.id === result.studentId)
+      if (!student || !student.parentEmail) {
+        setSendMessage({ type: 'error', text: 'Parent email not found' })
+        return
+      }
+
+      // Get all results for the student in the same term to send complete report
+      const studentTermResults = results.filter(
+        r => r.studentId === result.studentId && r.term === result.term && r.academicYear === result.academicYear
+      )
+
+      // Calculate positions for each result
+      const resultsWithPositions = calculatePositions(studentTermResults, result.studentId)
+
+      // Get class position
+      const classPosition = getStudentClassPosition(
+        results,
+        result.studentId,
+        result.term,
+        result.academicYear
+      )
+
+      // Format results for email
+      const formattedResults = resultsWithPositions.map(r => {
+        const subject = subjects.find(s => s.id === r.subjectId)
+        return {
+          subject: subject?.name || 'Unknown Subject',
+          grade: r.grade,
+          percentage: r.percentage,
+          position: r.positionText || getPositionSuffix(r.position || 0),
+        }
+      })
+
+      // Send email via backend
+      await apiService.post('/send-results-email', {
+        parentEmail: student.parentEmail,
+        studentName: `${student.firstName} ${student.lastName}`,
+        term: result.term,
+        academicYear: result.academicYear,
+        results: formattedResults,
+        classPosition,
+        studentId: result.studentId,
+      })
+
+      setSendMessage({
+        type: 'success',
+        text: `Results sent to ${student.parentName} (${student.parentEmail})`,
+      })
+    } catch (error) {
+      console.error('Failed to send results:', error)
+      setSendMessage({
+        type: 'error',
+        text: error instanceof Error ? error.message : 'Failed to send results',
+      })
+    } finally {
+      setSending(null)
+    }
+  }
+
+  const handleBulkSend = async (studentId: string) => {
+    try {
+      setSending(`bulk-${studentId}`)
+      const student = students.find(s => s.id === studentId)
+      if (!student || !student.parentEmail) {
+        setSendMessage({ type: 'error', text: 'Parent email not found' })
+        return
+      }
+
+      // Get results for this student in current filtered term
+      const studentResults = results.filter(
+        r => r.studentId === studentId && (selectedTerm === 'All' || r.term === selectedTerm)
+      )
+
+      if (studentResults.length === 0) {
+        setSendMessage({ type: 'error', text: 'No results to send for this student' })
+        return
+      }
+
+      const term = studentResults[0].term
+      const academicYear = studentResults[0].academicYear
+
+      // Calculate positions
+      const resultsWithPositions = calculatePositions(studentResults, studentId)
+      const classPosition = getStudentClassPosition(results, studentId, term, academicYear)
+
+      const formattedResults = resultsWithPositions.map(r => {
+        const subject = subjects.find(s => s.id === r.subjectId)
+        return {
+          subject: subject?.name || 'Unknown Subject',
+          grade: r.grade,
+          percentage: r.percentage,
+          position: r.positionText || getPositionSuffix(r.position || 0),
+        }
+      })
+
+      await apiService.post('/send-results-email', {
+        parentEmail: student.parentEmail,
+        studentName: `${student.firstName} ${student.lastName}`,
+        term,
+        academicYear,
+        results: formattedResults,
+        classPosition,
+        studentId: student.id,
+      })
+
+      setSendMessage({
+        type: 'success',
+        text: `Results sent successfully to ${student.parentName}`,
+      })
+    } catch (error) {
+      console.error('Failed to send results:', error)
+      setSendMessage({
+        type: 'error',
+        text: error instanceof Error ? error.message : 'Failed to send results',
+      })
+    } finally {
+      setSending(null)
+    }
+  }
+
   return (
     <div className="p-8">
+      {sendMessage && (
+        <div
+          className={`mb-6 p-4 rounded-lg flex items-center gap-3 ${
+            sendMessage.type === 'success'
+              ? 'bg-green-50 text-green-800 border border-green-200'
+              : 'bg-red-50 text-red-800 border border-red-200'
+          }`}
+        >
+          <AlertCircle size={20} />
+          <span>{sendMessage.text}</span>
+          <button
+            onClick={() => setSendMessage(null)}
+            className="ml-auto text-lg font-semibold"
+          >
+            ×
+          </button>
+        </div>
+      )}
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Result Entry</h1>
-          <p className="text-gray-600 mt-2">Record and manage student results</p>
+          <p className="text-gray-600 mt-2">Record and manage student results with position-based ranking</p>
         </div>
         <div className="flex gap-4">
           <button
@@ -228,7 +409,19 @@ export default function ResultEntry() {
           data={filteredResults.map((result) => ({
             ...result,
             actions: (
-              <div className="flex gap-2">
+              <div className="flex gap-1 items-center">
+                <button
+                  onClick={() => handleSendToParent(result.id)}
+                  disabled={sending === result.id}
+                  className="p-1 text-green-600 hover:bg-green-50 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  title="Send to Parent"
+                >
+                  {sending === result.id ? (
+                    <Mail size={18} className="animate-pulse" />
+                  ) : (
+                    <Send size={18} />
+                  )}
+                </button>
                 <button
                   onClick={() => {
                     setEditingResult(result)
@@ -257,17 +450,25 @@ export default function ResultEntry() {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
         <div className="card-lg text-center">
           <p className="text-gray-600 text-sm">Total Results</p>
           <p className="text-3xl font-bold text-gray-900">{filteredResults.length}</p>
         </div>
         <div className="card-lg text-center">
+          <p className="text-gray-600 text-sm">Average Percentage</p>
+          <p className="text-3xl font-bold text-blue-600">
+            {filteredResults.length > 0
+              ? (filteredResults.reduce((sum, r) => sum + r.percentage, 0) / filteredResults.length).toFixed(1)
+              : 0}%
+          </p>
+        </div>
+        <div className="card-lg text-center">
           <p className="text-gray-600 text-sm">Average Score</p>
           <p className="text-3xl font-bold text-gray-900">
             {filteredResults.length > 0
-              ? Math.round(filteredResults.reduce((sum, r) => sum + r.percentage, 0) / filteredResults.length)
-              : 0}%
+              ? Math.round(filteredResults.reduce((sum, r) => sum + r.totalScore, 0) / filteredResults.length)
+              : 0}
           </p>
         </div>
         <div className="card-lg text-center">

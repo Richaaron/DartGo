@@ -233,3 +233,101 @@ export const sendFeeReminderEmail = async (parentEmail: string, studentName: str
     metadata: { amountDue, dueDate }
   })
 }
+
+export const sendStudentResultsEmail = async (
+  parentEmail: string,
+  studentName: string,
+  term: string,
+  academicYear: string,
+  results: Array<{ subject: string; grade: string; percentage: number; position: string }>,
+  classPosition?: { position: number; positionText: string; totalStudents: number },
+  studentId?: string
+) => {
+  const subject = `📊 ${studentName}'s Results - ${term} ${academicYear} | Position: ${classPosition?.positionText || 'N/A'}`
+  
+  const resultsTable = results
+    .map(
+      (r) =>
+        `<tr style="border-bottom: 1px solid #e2e8f0;">
+          <td style="padding: 12px; text-align: left;">${r.subject}</td>
+          <td style="padding: 12px; text-align: center;"><strong>${r.percentage.toFixed(1)}%</strong></td>
+          <td style="padding: 12px; text-align: center;"><span style="background-color: #7c3aed; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold;">${r.grade}</span></td>
+          <td style="padding: 12px; text-align: center;">${r.position}</td>
+        </tr>`
+    )
+    .join('')
+
+  const overallText =
+    classPosition && classPosition.position > 0
+      ? `Overall Class Position: <strong style="color: #7c3aed; font-size: 18px;">${classPosition.positionText} out of ${classPosition.totalStudents}</strong>`
+      : ''
+
+  const text = `Hello, here are ${studentName}'s results for ${term} ${academicYear}. ${classPosition && classPosition.position > 0 ? `Position: ${classPosition.positionText} out of ${classPosition.totalStudents}` : ''}`
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <div style="background-color: #7c3aed; color: white; padding: 20px; border-radius: 8px 8px 0 0; text-align: center;">
+        <h1 style="margin: 0; font-size: 24px;">📊 Academic Results</h1>
+        <p style="margin: 10px 0 0 0; font-size: 14px;">Term: <strong>${term} ${academicYear}</strong></p>
+      </div>
+
+      <div style="background-color: #f8fafc; padding: 20px;">
+        <p style="font-size: 16px; margin: 0 0 20px 0;">
+          Dear Parent/Guardian,
+        </p>
+
+        <p style="margin: 0 0 20px 0;">
+          We are pleased to present the academic results for <strong>${studentName}</strong> for the <strong>${term}</strong> of <strong>${academicYear}</strong>.
+        </p>
+
+        <div style="background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 2px solid #7c3aed;">
+          <h3 style="color: #7c3aed; margin-top: 0;">Academic Summary</h3>
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="background-color: #7c3aed; color: white;">
+                <th style="padding: 12px; text-align: left;">Subject</th>
+                <th style="padding: 12px; text-align: center;">Percentage</th>
+                <th style="padding: 12px; text-align: center;">Grade</th>
+                <th style="padding: 12px; text-align: center;">Position</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${resultsTable}
+            </tbody>
+          </table>
+        </div>
+
+        ${overallText ? `<div style="background-color: #e0e7ff; padding: 15px; border-left: 4px solid #7c3aed; margin-bottom: 20px; border-radius: 4px;">
+          <p style="margin: 0; font-size: 14px;">
+            ${overallText}
+          </p>
+        </div>` : ''}
+
+        <p style="margin: 20px 0; font-size: 14px; color: #64748b;">
+          For a detailed breakdown and performance analysis, please log in to the parent portal.
+        </p>
+
+        <div style="text-align: center; margin-top: 20px;">
+          <a href="${config.FRONTEND_URL || 'http://localhost:5173'}/login?type=parent" style="background-color: #7c3aed; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">View Full Report</a>
+        </div>
+      </div>
+
+      <div style="background-color: #1e293b; color: white; padding: 15px; text-align: center; border-radius: 0 0 8px 8px; font-size: 12px;">
+        <p style="margin: 0;">
+          <strong>Folusho Victory Schools</strong><br/>
+          Excellence in Education
+        </p>
+      </div>
+    </div>
+  `
+
+  return sendEmail({
+    to: parentEmail,
+    subject,
+    text,
+    html,
+    type: 'result_published',
+    studentId,
+    metadata: { term, academicYear, classPosition }
+  })
+}

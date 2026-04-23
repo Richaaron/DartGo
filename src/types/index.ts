@@ -61,6 +61,8 @@ export interface SubjectResult {
   remarks: string
   dateRecorded: string
   recordedBy: string
+  position?: number
+  positionText?: string
 }
 
 export interface StudentResult extends Result {

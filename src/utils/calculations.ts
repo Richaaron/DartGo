@@ -1,9 +1,91 @@
-import { DEFAULT_GRADE_SCALE, StudentResult } from '../types'
+import { DEFAULT_GRADE_SCALE, StudentResult, SubjectResult } from '../types'
 
 const getGradeScale = (score: number) => {
   return DEFAULT_GRADE_SCALE.find(
     (scale) => score >= scale.minScore && score <= scale.maxScore
   )
+}
+
+/**
+ * Get position suffix (1st, 2nd, 3rd, 4th, etc.)
+ */
+export const getPositionSuffix = (position: number): string => {
+  if (position === 1) return '1st'
+  if (position === 2) return '2nd'
+  if (position === 3) return '3rd'
+  return `${position}th`
+}
+
+/**
+ * Calculate positions for results within a class/term
+ * Results are ranked by percentage (highest first)
+ */
+export const calculatePositions = (results: SubjectResult[], studentId?: string): SubjectResult[] => {
+  if (results.length === 0) return results
+
+  // Sort by percentage (descending)
+  const sorted = [...results].sort((a, b) => b.percentage - a.percentage)
+
+  // Assign positions accounting for ties
+  let position = 1
+  let previousPercentage = sorted[0].percentage
+  const withPositions = sorted.map((result, index) => {
+    if (index > 0 && result.percentage < previousPercentage) {
+      position = index + 1
+    }
+    previousPercentage = result.percentage
+
+    return {
+      ...result,
+      position,
+      positionText: getPositionSuffix(position),
+    }
+  })
+
+  // If filtering for specific student, return that student's result with position
+  if (studentId) {
+    return withPositions.filter(r => r.studentId === studentId)
+  }
+
+  return withPositions
+}
+
+/**
+ * Get class/term positions for a specific student
+ */
+export const getStudentClassPosition = (
+  allResults: SubjectResult[],
+  studentId: string,
+  term: string,
+  academicYear: string,
+  classLevel?: string
+): { position: number; positionText: string; totalStudents: number } => {
+  // Filter results for same term and year
+  const termResults = allResults.filter(r => r.term === term && r.academicYear === academicYear)
+
+  if (termResults.length === 0) {
+    return { position: 0, positionText: 'N/A', totalStudents: 0 }
+  }
+
+  // Get unique students by average score
+  const studentAverages = new Map<string, number>()
+  termResults.forEach(result => {
+    const current = studentAverages.get(result.studentId) || 0
+    const avg = (current + result.percentage) / (result.studentId === Array.from(studentAverages.keys()).find(k => k === result.studentId) ? 2 : 1)
+    studentAverages.set(result.studentId, avg)
+  })
+
+  // Sort students by average
+  const sortedStudents = Array.from(studentAverages.entries())
+    .sort((a, b) => b[1] - a[1])
+    .map(entry => entry[0])
+
+  const position = sortedStudents.indexOf(studentId) + 1
+  return {
+    position,
+    positionText: position > 0 ? getPositionSuffix(position) : 'N/A',
+    totalStudents: sortedStudents.length,
+  }
 }
 
 export const calculateGrade = (score: number): string => {
