@@ -13,25 +13,21 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({ child, resul
     : 0
 
   const getGradeFromScore = (percentage: number): string => {
-    if (percentage >= 90) return 'A1'
-    if (percentage >= 80) return 'B2'
-    if (percentage >= 70) return 'B3'
-    if (percentage >= 65) return 'C4'
-    if (percentage >= 60) return 'C5'
-    if (percentage >= 55) return 'C6'
-    if (percentage >= 50) return 'D7'
-    if (percentage >= 45) return 'E8'
-    return 'F9'
+    if (percentage >= 70) return 'A'
+    if (percentage >= 65) return 'B'
+    if (percentage >= 55) return 'C'
+    if (percentage >= 50) return 'D'
+    if (percentage >= 45) return 'E'
+    return 'F'
   }
 
   const getRemark = (percentage: number): string => {
-    if (percentage >= 90) return 'Excellent'
-    if (percentage >= 80) return 'Very Good'
-    if (percentage >= 70) return 'Good'
-    if (percentage >= 60) return 'Pass'
+    if (percentage >= 70) return 'Excellent'
+    if (percentage >= 65) return 'Very Good'
+    if (percentage >= 55) return 'Credit'
     if (percentage >= 50) return 'Fair'
-    if (percentage >= 45) return 'Poor'
-    return 'Very Poor'
+    if (percentage >= 45) return 'Weak Pass'
+    return 'Fail'
   }
 
   return (
@@ -97,15 +93,12 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({ child, resul
       <div className="mb-6 text-sm">
         <h3 className="font-semibold mb-2">Grading Scale:</h3>
         <div className="flex flex-wrap gap-4">
-          <span>A1 (90-100%)</span>
-          <span>B2 (80-89%)</span>
-          <span>B3 (70-79%)</span>
-          <span>C4 (65-69%)</span>
-          <span>C5 (60-64%)</span>
-          <span>C6 (55-59%)</span>
-          <span>D7 (50-54%)</span>
-          <span>E8 (45-49%)</span>
-          <span>F9 (0-44%)</span>
+          <span>A (70-100%) Excellent</span>
+          <span>B (65-69%) Very Good</span>
+          <span>C (55-64%) Credit</span>
+          <span>D (50-54%) Fair</span>
+          <span>E (45-49%) Weak Pass</span>
+          <span>F (0-44%) Fail</span>
         </div>
       </div>
 

@@ -53,9 +53,11 @@ export default function SubjectResultForm({
     } else if (grade === 'B') {
       remarks = 'Very good performance. Shows strong understanding of the subject.'
     } else if (grade === 'C') {
-      remarks = 'Good performance. Meeting expectations with room for improvement.'
+      remarks = 'Credit performance. Meeting expectations with room for improvement.'
     } else if (grade === 'D') {
-      remarks = 'Below average performance. Needs more dedication and practice.'
+      remarks = 'Fair performance. Needs more dedication and practice.'
+    } else if (grade === 'E') {
+      remarks = 'Weak pass. Significant improvement required.'
     } else {
       remarks = 'Failed. Required to retake the subject and seek extra help.'
     }

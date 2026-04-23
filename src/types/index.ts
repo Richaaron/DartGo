@@ -154,11 +154,12 @@ export interface SchemeOfWork {
 }
 
 export const DEFAULT_GRADE_SCALE: GradeScale[] = [
-  { minScore: 90, maxScore: 100, grade: 'A', gradePoint: 4.0, description: 'Excellent' },
-  { minScore: 80, maxScore: 89, grade: 'B', gradePoint: 3.0, description: 'Good' },
-  { minScore: 70, maxScore: 79, grade: 'C', gradePoint: 2.0, description: 'Average' },
-  { minScore: 60, maxScore: 69, grade: 'D', gradePoint: 1.0, description: 'Below Average' },
-  { minScore: 0, maxScore: 59, grade: 'F', gradePoint: 0.0, description: 'Fail' },
+  { minScore: 70, maxScore: 100, grade: 'A', gradePoint: 4.0, description: 'Excellent' },
+  { minScore: 65, maxScore: 69, grade: 'B', gradePoint: 3.5, description: 'Very Good' },
+  { minScore: 55, maxScore: 64, grade: 'C', gradePoint: 3.0, description: 'Credit' },
+  { minScore: 50, maxScore: 54, grade: 'D', gradePoint: 2.5, description: 'Fair' },
+  { minScore: 45, maxScore: 49, grade: 'E', gradePoint: 2.0, description: 'Weak Pass' },
+  { minScore: 0, maxScore: 44, grade: 'F', gradePoint: 0.0, description: 'Fail' },
 ]
 
 // Authentication and User Types
