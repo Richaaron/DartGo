@@ -71,27 +71,27 @@ router.get('/:subjectId', authenticate, async (req, res) => {
 
 router.post('/upload', authenticate, authorize(['Admin', 'Teacher']), async (req: AuthRequest, res) => {
   try {
-    const busboy = Busboy({ headers: req.headers })
+    const bb = Busboy({ headers: req.headers })
     const fields: any = {}
     let fileBuffer: Buffer | null = null
     let fileName = ''
     let contentType = ''
 
-    busboy.on('field', (name, val) => {
+    bb.on('field', (name: string, val: string) => {
       fields[name] = val
     })
 
-    busboy.on('file', (name, file, info) => {
+    bb.on('file', (name: string, file: any, info: any) => {
       const chunks: any[] = []
       fileName = info.filename
       contentType = info.mimeType
-      file.on('data', (data) => chunks.push(data))
+      file.on('data', (data: any) => chunks.push(data))
       file.on('end', () => {
         fileBuffer = Buffer.concat(chunks)
       })
     })
 
-    busboy.on('finish', async () => {
+    bb.on('finish', async () => {
       try {
         if (!fileBuffer) return res.status(400).json({ error: 'No file uploaded' })
 

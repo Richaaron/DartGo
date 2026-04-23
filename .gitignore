@@ -67,3 +67,6 @@ __pycache__
 *.pyc
 .next
 .github
+
+# Local Netlify folder
+.netlify

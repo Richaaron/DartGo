@@ -35,6 +35,7 @@ const mapToDB = (s: any) => {
     first_name: s.firstName,
     last_name: s.lastName,
     class_id: s.class,
+    class_name: s.class, // Add class_name to satisfy DB constraint
     level: s.level,
     gender: s.gender,
     status: s.status,
