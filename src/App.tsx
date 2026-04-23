@@ -73,6 +73,10 @@ function AppContent() {
 
   const userRole = user?.role || 'Student'
   const userName = user?.name || 'User'
+  const teacherType = userRole === 'Teacher' ? (user as any)?.teacherType : undefined
+  const isFormTeacher = userRole === 'Teacher' && (teacherType === 'Form Teacher' || teacherType === 'Form + Subject Teacher')
+  const isSubjectTeacher = userRole === 'Teacher' && (teacherType === 'Subject Teacher' || teacherType === 'Form + Subject Teacher')
+  const teacherDefaultRoute = isFormTeacher ? '/results' : isSubjectTeacher ? '/subject-results' : '/teacher-dashboard'
 
   const handleLogout = () => {
     logout()
@@ -171,6 +175,11 @@ function AppContent() {
               <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${isDarkMode ? 'bg-gold-400' : 'bg-gold-300'}`}></div>
               <p className={`text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'text-gold-300/80' : 'text-gold-200'}`}>{userRole}</p>
             </div>
+            {userRole === 'Teacher' && teacherType && (
+              <p className={`text-[9px] mt-1 uppercase tracking-[0.2em] ${isDarkMode ? 'text-gold-400/70' : 'text-gold-200/80'}`}>
+                {teacherType}
+              </p>
+            )}
           </motion.div>
         )}
 
@@ -187,6 +196,11 @@ function AppContent() {
               <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${isDarkMode ? 'bg-gold-400' : 'bg-gold-300'}`}></div>
               <p className={`text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'text-gold-300/80' : 'text-gold-200'}`}>{userRole}</p>
             </div>
+            {userRole === 'Teacher' && teacherType && (
+              <p className={`text-[9px] mt-1 uppercase tracking-[0.2em] ${isDarkMode ? 'text-gold-400/70' : 'text-gold-200/80'}`}>
+                {teacherType}
+              </p>
+            )}
           </motion.div>
         )}
 
@@ -197,7 +211,7 @@ function AppContent() {
               <NavLink
                 to="/teacher-dashboard"
                 icon={<BarChart3 size={isMobile ? 20 : 18} />}
-                label="Academic Dashboard"
+                label="Teacher Dashboard"
                 isOpen={isMobile || isSidebarOpen}
                 isDarkMode={isDarkMode}
               />
@@ -208,13 +222,24 @@ function AppContent() {
                 isOpen={isMobile || isSidebarOpen}
                 isDarkMode={isDarkMode}
               />
-              <NavLink
-                to="/subject-results"
-                icon={<BookOpen size={isMobile ? 20 : 18} />}
-                label="Result Entry"
-                isOpen={isMobile || isSidebarOpen}
-                isDarkMode={isDarkMode}
-              />
+              {isFormTeacher && (
+                <NavLink
+                  to="/results"
+                  icon={<BookOpen size={isMobile ? 20 : 18} />}
+                  label="Class Result Entry"
+                  isOpen={isMobile || isSidebarOpen}
+                  isDarkMode={isDarkMode}
+                />
+              )}
+              {isSubjectTeacher && (
+                <NavLink
+                  to="/subject-results"
+                  icon={<BookOpen size={isMobile ? 20 : 18} />}
+                  label="Subject Result Entry"
+                  isOpen={isMobile || isSidebarOpen}
+                  isDarkMode={isDarkMode}
+                />
+              )}
               <NavLink
                 to="/attendance"
                 icon={<CheckCircle size={isMobile ? 20 : 18} />}
@@ -390,9 +415,16 @@ function AppContent() {
                 <>
                   <Route path="/teacher-dashboard" element={<PageTransition><TeacherDashboard /></PageTransition>} />
                   <Route path="/students" element={<PageTransition><StudentManagement /></PageTransition>} />
-                  <Route path="/subject-results" element={<PageTransition><SubjectResultEntry /></PageTransition>} />
+                  <Route
+                    path="/results"
+                    element={isFormTeacher ? <PageTransition><ResultEntry /></PageTransition> : <Navigate to={teacherDefaultRoute} replace />}
+                  />
+                  <Route
+                    path="/subject-results"
+                    element={isSubjectTeacher ? <PageTransition><SubjectResultEntry /></PageTransition> : <Navigate to={teacherDefaultRoute} replace />}
+                  />
                   <Route path="/attendance" element={<PageTransition><Attendance /></PageTransition>} />
-                  <Route path="*" element={<Navigate to="/teacher-dashboard" replace />} />
+                  <Route path="*" element={<Navigate to={teacherDefaultRoute} replace />} />
                 </>
               ) : userRole === 'Parent' ? (
                 <>
