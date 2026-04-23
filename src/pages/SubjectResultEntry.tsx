@@ -15,7 +15,6 @@ export default function SubjectResultEntry() {
   const { user } = useAuthContext()
   const isTeacher = user?.role === 'Teacher'
   const teacherType = isTeacher ? (user as any)?.teacherType : undefined
-  const isSubjectOnlyTeacher = isTeacher && teacherType === 'Subject Teacher'
   const normalizedAssignedClasses = useMemo(() => {
     const rawClasses = (user as any)?.assignedClasses
     if (Array.isArray(rawClasses)) {
@@ -36,6 +35,13 @@ export default function SubjectResultEntry() {
           .split(',')
           .map((subject: string) => subject.trim())
           .filter(Boolean)) as string[]
+  const isSubjectCapableTeacher =
+    isTeacher &&
+    (
+      teacherType === 'Subject Teacher' ||
+      teacherType === 'Form + Subject Teacher' ||
+      (!teacherType && teacherSubjects.length > 0)
+    )
   const assignedClasses = normalizedAssignedClasses
 
   const [results, setResults] = useState<SubjectResult[]>([])
@@ -65,9 +71,9 @@ export default function SubjectResultEntry() {
       ])
       
       if (isTeacher) {
-        // Subject-only teachers can work across all secondary classes.
-        // Form-capable teachers remain scoped to assigned classes.
-        const myStudents = isSubjectOnlyTeacher
+        // Any teacher with subject-teaching capability can work across secondary classes here.
+        // Form-only teachers remain scoped to assigned classes.
+        const myStudents = isSubjectCapableTeacher
           ? studentsData.filter((s: Student) => s.level === 'Secondary')
           : studentsData.filter((s: Student) => assignedClasses.includes(s.class))
         setStudents(myStudents)
@@ -78,7 +84,7 @@ export default function SubjectResultEntry() {
           const subject = subjectsData.find((sub: Subject) => sub.id === r.subjectId)
           const matchesSubject = teacherSubjects.length === 0 || teacherSubjects.includes(subject?.name || '')
           if (!student || !matchesSubject) return false
-          if (isSubjectOnlyTeacher) return student.level === 'Secondary'
+          if (isSubjectCapableTeacher) return student.level === 'Secondary'
           return assignedClasses.includes(student.class)
         })
         setResults(myResults)
@@ -150,13 +156,13 @@ export default function SubjectResultEntry() {
   }, [results, students, subjects, filterTerm, selectedTerm, selectedClass, selectedStudent])
 
   const availableClasses = useMemo(() => {
-    const classPool = isSubjectOnlyTeacher
+    const classPool = isSubjectCapableTeacher
       ? SECONDARY_CLASSES
       : isTeacher && assignedClasses.length > 0
         ? assignedClasses
         : students.map((student) => student.class)
     return Array.from(new Set(classPool.map((className) => String(className || '').trim()).filter(Boolean)))
-  }, [isSubjectOnlyTeacher, isTeacher, assignedClasses, students])
+  }, [isSubjectCapableTeacher, isTeacher, assignedClasses, students])
 
   useEffect(() => {
     if (selectedClass !== 'All' && !availableClasses.includes(selectedClass)) {
