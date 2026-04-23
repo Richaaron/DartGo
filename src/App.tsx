@@ -73,9 +73,19 @@ function AppContent() {
 
   const userRole = user?.role || 'Student'
   const userName = user?.name || 'User'
-  const teacherType = userRole === 'Teacher' ? (user as any)?.teacherType : undefined
-  const isFormTeacher = userRole === 'Teacher' && (teacherType === 'Form Teacher' || teacherType === 'Form + Subject Teacher')
-  const isSubjectTeacher = userRole === 'Teacher' && (teacherType === 'Subject Teacher' || teacherType === 'Form + Subject Teacher')
+  const teacher = userRole === 'Teacher' ? (user as any) : null
+  const teacherType = teacher?.teacherType
+  const hasAssignedClasses = Array.isArray(teacher?.assignedClasses) && teacher.assignedClasses.length > 0
+  const hasAssignedSubjects =
+    (Array.isArray(teacher?.assignedSubjects) && teacher.assignedSubjects.length > 0) ||
+    (typeof teacher?.subject === 'string' && teacher.subject.trim().length > 0)
+  const isFormTeacher =
+    userRole === 'Teacher' &&
+    (teacherType === 'Form Teacher' || teacherType === 'Form + Subject Teacher' || (!teacherType && hasAssignedClasses))
+  const isSubjectTeacher =
+    userRole === 'Teacher' &&
+    (teacherType === 'Subject Teacher' || teacherType === 'Form + Subject Teacher' || (!teacherType && hasAssignedSubjects))
+  const teacherRoleLabel = teacherType || (isFormTeacher && isSubjectTeacher ? 'Form + Subject Teacher' : isFormTeacher ? 'Form Teacher' : isSubjectTeacher ? 'Subject Teacher' : 'Teacher')
   const teacherDefaultRoute = isFormTeacher ? '/results' : isSubjectTeacher ? '/subject-results' : '/teacher-dashboard'
 
   const handleLogout = () => {
@@ -175,9 +185,9 @@ function AppContent() {
               <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${isDarkMode ? 'bg-gold-400' : 'bg-gold-300'}`}></div>
               <p className={`text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'text-gold-300/80' : 'text-gold-200'}`}>{userRole}</p>
             </div>
-            {userRole === 'Teacher' && teacherType && (
+            {userRole === 'Teacher' && (
               <p className={`text-[9px] mt-1 uppercase tracking-[0.2em] ${isDarkMode ? 'text-gold-400/70' : 'text-gold-200/80'}`}>
-                {teacherType}
+                {teacherRoleLabel}
               </p>
             )}
           </motion.div>
@@ -196,9 +206,9 @@ function AppContent() {
               <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${isDarkMode ? 'bg-gold-400' : 'bg-gold-300'}`}></div>
               <p className={`text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'text-gold-300/80' : 'text-gold-200'}`}>{userRole}</p>
             </div>
-            {userRole === 'Teacher' && teacherType && (
+            {userRole === 'Teacher' && (
               <p className={`text-[9px] mt-1 uppercase tracking-[0.2em] ${isDarkMode ? 'text-gold-400/70' : 'text-gold-200/80'}`}>
-                {teacherType}
+                {teacherRoleLabel}
               </p>
             )}
           </motion.div>
