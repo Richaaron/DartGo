@@ -17,16 +17,6 @@ export default function ResultEntry() {
   const [selectedTerm, setSelectedTerm] = useState<string>('All')
   const [sending, setSending] = useState<string | null>(null)
   const [sendMessage, setSendMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
-  const [selectedResults, setSelectedResults] = useState<Set<string>>(new Set())
-
-export default function ResultEntry() {
-  const [results, setResults] = useState<SubjectResult[]>([])
-  const [students, setStudents] = useState<Student[]>([])
-  const [subjects, setSubjects] = useState<Subject[]>([])
-  const [showForm, setShowForm] = useState(false)
-  const [editingResult, setEditingResult] = useState<SubjectResult | null>(null)
-  const [filterTerm, setFilterTerm] = useState('')
-  const [selectedTerm, setSelectedTerm] = useState<string>('All')
 
   async function loadData() {
     try {
