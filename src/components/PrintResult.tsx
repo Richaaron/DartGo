@@ -1,0 +1,122 @@
+import { forwardRef } from 'react'
+import { Student, SubjectResult, Subject } from '../types'
+
+interface PrintResultProps {
+  child: Student
+  results: SubjectResult[]
+  subjects: Subject[]
+}
+
+const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({ child, results, subjects }, ref) => {
+  const overallAverage = results.length > 0
+    ? Math.round((results.reduce((sum, r) => sum + r.percentage, 0) / results.length) * 100) / 100
+    : 0
+
+  const getGradeFromScore = (percentage: number): string => {
+    if (percentage >= 90) return 'A1'
+    if (percentage >= 80) return 'B2'
+    if (percentage >= 70) return 'B3'
+    if (percentage >= 65) return 'C4'
+    if (percentage >= 60) return 'C5'
+    if (percentage >= 55) return 'C6'
+    if (percentage >= 50) return 'D7'
+    if (percentage >= 45) return 'E8'
+    return 'F9'
+  }
+
+  const getRemark = (percentage: number): string => {
+    if (percentage >= 90) return 'Excellent'
+    if (percentage >= 80) return 'Very Good'
+    if (percentage >= 70) return 'Good'
+    if (percentage >= 60) return 'Pass'
+    if (percentage >= 50) return 'Fair'
+    if (percentage >= 45) return 'Poor'
+    return 'Very Poor'
+  }
+
+  return (
+    <div ref={ref} className="bg-white p-6" style={{ fontFamily: 'Arial, sans-serif', color: '#000' }}>
+      {/* School Header */}
+      <div className="text-center mb-6 border-b-2 border-black pb-4">
+        <h1 className="text-2xl font-bold uppercase tracking-wider">Folusho Victory Schools</h1>
+        <p className="text-sm mt-1">Academic Report Card</p>
+      </div>
+
+      {/* Student Info */}
+      <div className="mb-6">
+        <div className="grid grid-cols-2 gap-4 text-sm">
+          <div>
+            <p><span className="font-semibold">Name:</span> {child.firstName} {child.lastName}</p>
+            <p><span className="font-semibold">Reg. No:</span> {child.registrationNumber}</p>
+            <p><span className="font-semibold">Class:</span> {child.class}</p>
+          </div>
+          <div>
+            <p><span className="font-semibold">Term:</span> 1st Term</p>
+            <p><span className="font-semibold">Academic Year:</span> 2024/2025</p>
+            <p><span className="font-semibold">Average Score:</span> {overallAverage.toFixed(1)}%</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Results Table */}
+      <div className="mb-6">
+        <table className="w-full border-collapse border border-black text-sm">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="border border-black p-2 text-left">Subject</th>
+              <th className="border border-black p-2 text-center">1st CA</th>
+              <th className="border border-black p-2 text-center">2nd CA</th>
+              <th className="border border-black p-2 text-center">Exam</th>
+              <th className="border border-black p-2 text-center">Total</th>
+              <th className="border border-black p-2 text-center">%</th>
+              <th className="border border-black p-2 text-center">Grade</th>
+              <th className="border border-black p-2 text-center">Remark</th>
+            </tr>
+          </thead>
+          <tbody>
+            {results.map((result) => {
+              const subject = subjects.find((s) => s.id === result.subjectId)
+              return (
+                <tr key={result.id}>
+                  <td className="border border-black p-2">{subject?.name || 'N/A'}</td>
+                  <td className="border border-black p-2 text-center">{result.firstCA}</td>
+                  <td className="border border-black p-2 text-center">{result.secondCA}</td>
+                  <td className="border border-black p-2 text-center">{result.exam}</td>
+                  <td className="border border-black p-2 text-center">{result.totalScore}</td>
+                  <td className="border border-black p-2 text-center">{result.percentage.toFixed(1)}%</td>
+                  <td className="border border-black p-2 text-center">{getGradeFromScore(result.percentage)}</td>
+                  <td className="border border-black p-2 text-center">{getRemark(result.percentage)}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Grading Scale */}
+      <div className="mb-6 text-sm">
+        <h3 className="font-semibold mb-2">Grading Scale:</h3>
+        <div className="flex flex-wrap gap-4">
+          <span>A1 (90-100%)</span>
+          <span>B2 (80-89%)</span>
+          <span>B3 (70-79%)</span>
+          <span>C4 (65-69%)</span>
+          <span>C5 (60-64%)</span>
+          <span>C6 (55-59%)</span>
+          <span>D7 (50-54%)</span>
+          <span>E8 (45-49%)</span>
+          <span>F9 (0-44%)</span>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="text-center text-xs text-gray-600 border-t-2 border-black pt-4">
+        <p>Generated by Folusho Reporting System</p>
+      </div>
+    </div>
+  )
+})
+
+PrintResult.displayName = 'PrintResult'
+
+export default PrintResult
