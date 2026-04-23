@@ -50,19 +50,60 @@ router.post('/bulk', authenticate, authorize(['Admin', 'Teacher']), async (req: 
       recorded_by: recordedBy
     }))
 
-    const { data, error } = await supabase
+    const studentIds = [...new Set(mappedRecords.map((record: any) => record.student_id).filter(Boolean))]
+    const { data: existingRows, error: existingError } = await supabase
       .from('attendance')
-      .upsert(
-        mappedRecords,
-        { onConflict: 'student_id,date' }
-      )
-      .select()
-    
-    if (error) {
-      console.error('[ATTENDANCE] Supabase Upsert Error:', error)
-      return res.status(400).json({ error: `DATABASE_ERROR: ${error.message}` })
+      .select('id, student_id, date')
+      .eq('date', date)
+      .in('student_id', studentIds)
+
+    if (existingError) {
+      console.error('[ATTENDANCE] Failed to check existing records:', existingError)
+      return res.status(400).json({ error: `DATABASE_ERROR: ${existingError.message}` })
     }
-    res.json(data)
+
+    const existingByStudentId = new Map(
+      (existingRows || []).map((row: any) => [row.student_id, row.id])
+    )
+
+    const recordsToUpdate = mappedRecords.filter((record: any) => existingByStudentId.has(record.student_id))
+    const recordsToInsert = mappedRecords.filter((record: any) => !existingByStudentId.has(record.student_id))
+
+    const updateResults = await Promise.all(
+      recordsToUpdate.map(async (record: any) => {
+        const { data, error } = await supabase
+          .from('attendance')
+          .update({
+            class_id: record.class_id,
+            status: record.status,
+            remarks: record.remarks,
+            recorded_by: record.recorded_by
+          })
+          .eq('id', existingByStudentId.get(record.student_id))
+          .select()
+          .single()
+
+        if (error) throw error
+        return data
+      })
+    )
+
+    let insertedRows: any[] = []
+    if (recordsToInsert.length > 0) {
+      const { data, error } = await supabase
+        .from('attendance')
+        .insert(recordsToInsert)
+        .select()
+
+      if (error) {
+        console.error('[ATTENDANCE] Supabase Insert Error:', error)
+        return res.status(400).json({ error: `DATABASE_ERROR: ${error.message}` })
+      }
+
+      insertedRows = data || []
+    }
+
+    res.json([...updateResults, ...insertedRows].map(mapAttendance))
   } catch (error: any) {
     console.error('[ATTENDANCE] Route Exception:', error)
     return res.status(500).json({ error: `SERVER_EXCEPTION: ${error.message}` })
