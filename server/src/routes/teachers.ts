@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import bcrypt from 'bcryptjs'
 import { supabase } from '../config/supabase'
 import { authenticate, authorize, AuthRequest } from '../middleware/auth'
 import { sendTeacherCredentialsEmail } from '../utils/email'
@@ -12,7 +13,6 @@ const mapTeacher = (t: any) => ({
   name: t.name,
   username: t.username,
   email: t.email,
-  password: t.password,
   subject: t.subject || 'Form Teacher',
   level: t.level,
   assignedClasses: t.assigned_classes || [],
@@ -21,17 +21,24 @@ const mapTeacher = (t: any) => ({
 })
 
 // Helper to map frontend camelCase to DB snake_case
-const mapToDB = (t: any) => ({
-  teacher_id: t.teacherId,
-  name: t.name,
-  username: t.username,
-  email: t.email,
-  password: t.password,
-  subject: t.subject || '',
-  level: t.level,
-  assigned_classes: t.assignedClasses,
-  image: t.image
-})
+const mapToDB = (t: any) => {
+  const mapped: any = {
+    teacher_id: t.teacherId,
+    name: t.name,
+    username: t.username,
+    email: t.email,
+    subject: t.subject || '',
+    level: t.level,
+    assigned_classes: t.assignedClasses,
+    image: t.image
+  }
+
+  if (typeof t.password === 'string' && t.password.trim()) {
+    mapped.password = t.password
+  }
+
+  return mapped
+}
 
 router.get('/', authenticate, async (req, res) => {
   try {
@@ -49,6 +56,12 @@ router.get('/', authenticate, async (req, res) => {
 router.post('/', authenticate, authorize(['Admin']), async (req, res) => {
   try {
     const dbData = mapToDB(req.body)
+    const originalPassword = req.body.password
+
+    if (dbData.password) {
+      dbData.password = await bcrypt.hash(dbData.password, 10)
+    }
+
     const { data, error } = await supabase
       .from('teachers')
       .insert([dbData])
@@ -64,7 +77,7 @@ router.post('/', authenticate, authorize(['Admin']), async (req, res) => {
           data.email,
           data.name,
           data.username,
-          req.body.password // Use the raw password from request body
+          originalPassword
         )
       } catch (emailError) {
         console.error('[TEACHERS] Failed to send credentials email:', emailError)
@@ -82,6 +95,19 @@ router.post('/', authenticate, authorize(['Admin']), async (req, res) => {
 router.put('/:id', authenticate, authorize(['Admin']), async (req, res) => {
   try {
     const dbData = mapToDB(req.body)
+
+    if (dbData.password) {
+      const { data: currentTeacher } = await supabase
+        .from('teachers')
+        .select('password')
+        .eq('id', req.params.id)
+        .single()
+
+      if (currentTeacher && dbData.password !== currentTeacher.password) {
+        dbData.password = await bcrypt.hash(dbData.password, 10)
+      }
+    }
+
     const { data, error } = await supabase
       .from('teachers')
       .update(dbData)

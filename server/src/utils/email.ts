@@ -13,6 +13,25 @@ const transporter = nodemailer.createTransport({
   },
 })
 
+const resolveFrontendUrl = () => {
+  const candidates = [
+    config.FRONTEND_URL,
+    config.CORS_ORIGIN,
+    process.env.URL,
+    process.env.DEPLOY_URL ? `https://${process.env.DEPLOY_URL}` : undefined,
+    'https://folushovictoryschools.netlify.app',
+  ]
+
+  const selected = candidates.find((value) => {
+    if (!value) return false
+    return !value.includes('localhost')
+  })
+
+  return selected || config.FRONTEND_URL || 'http://localhost:5173'
+}
+
+const frontendUrl = resolveFrontendUrl()
+
 interface EmailOptions {
   to: string
   subject: string
@@ -92,7 +111,7 @@ export const sendStudentRegistrationEmail = async (studentEmail: string, student
       <li><strong>Parent Portal Password:</strong> ${password}</li>
     </ul>
     <p>You can now log in to the parent portal using your credentials.</p>
-    <p><a href="${config.FRONTEND_URL}">Access Parent Portal</a></p>
+      <p><a href="${frontendUrl}">Access Parent Portal</a></p>
     <p>Best regards,<br/>Folusho Victory Schools Administration</p>
   `
   return sendEmail({
@@ -121,7 +140,7 @@ export const sendTeacherCredentialsEmail = async (teacherEmail: string, teacherN
       </div>
       <p>For security reasons, we recommend that you change your password immediately after your first login.</p>
       <p style="margin-top: 30px;">
-        <a href="${config.FRONTEND_URL}/login?type=teacher" style="background-color: #7c3aed; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">Login to Dashboard</a>
+        <a href="${frontendUrl}/login?type=teacher" style="background-color: #7c3aed; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">Login to Dashboard</a>
       </p>
       <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 30px 0;">
       <p style="font-size: 12px; color: #64748b;">This is an automated message. Please do not reply to this email.</p>
@@ -145,7 +164,7 @@ export const sendResultPublishedEmail = async (parentEmail: string, studentName:
     <p>Hello,</p>
     <p>The results for <strong>${studentName}</strong> for <strong>${term} ${academicYear}</strong> have been published.</p>
     <p>Please log in to the parent portal to view the detailed report sheet and performance analysis.</p>
-    <p><a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/login?type=parent">View Results</a></p>
+    <p><a href="${frontendUrl}/login?type=parent">View Results</a></p>
     <p>Best regards,<br/>Folusho Victory Schools Administration</p>
   `
   return sendEmail({
@@ -168,7 +187,7 @@ export const sendAttendanceWarningEmail = async (parentEmail: string, studentNam
     <p><strong>${studentName}</strong>'s attendance is currently at <strong>${attendancePercentage}%</strong>, which is below the required threshold.</p>
     <p>Regular attendance is crucial for academic success. Please encourage your child to attend school regularly.</p>
     <p>For more details, log in to the parent portal.</p>
-    <p><a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/login?type=parent">Check Attendance</a></p>
+    <p><a href="${frontendUrl}/login?type=parent">Check Attendance</a></p>
     <p>Best regards,<br/>Folusho Victory Schools Administration</p>
   `
   return sendEmail({
@@ -194,7 +213,7 @@ export const sendLowGradesEmail = async (parentEmail: string, studentName: strin
       ${lowGradeSubjects.map(subject => `<li>${subject}</li>`).join('')}
     </ul>
     <p>We recommend organizing additional tutoring or support sessions. Please contact the school to discuss available resources.</p>
-    <p><a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/login?type=parent">View Full Report</a></p>
+    <p><a href="${frontendUrl}/login?type=parent">View Full Report</a></p>
     <p>Best regards,<br/>Folusho Victory Schools Administration</p>
   `
   return sendEmail({
@@ -308,7 +327,7 @@ export const sendStudentResultsEmail = async (
         </p>
 
         <div style="text-align: center; margin-top: 20px;">
-          <a href="${config.FRONTEND_URL || 'http://localhost:5173'}/login?type=parent" style="background-color: #7c3aed; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">View Full Report</a>
+          <a href="${frontendUrl}/login?type=parent" style="background-color: #7c3aed; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">View Full Report</a>
         </div>
       </div>
 

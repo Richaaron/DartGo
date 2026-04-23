@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Check, User, GraduationCap, Users, BookOpen, Zap, Trophy } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useAuthContext } from '../context/AuthContext'
@@ -179,6 +180,7 @@ const AcademicBackground = () => (
 )
 
 export default function Login({ onLoginSuccess }: LoginProps) {
+  const location = useLocation()
   const [loginType, setLoginType] = useState<LoginType | null>(null)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -191,6 +193,15 @@ export default function Login({ onLoginSuccess }: LoginProps) {
       onLoginSuccess()
     }
   }, [isAuthenticated, onLoginSuccess])
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const type = params.get('type')
+
+    if (type === 'admin' || type === 'teacher' || type === 'parent') {
+      setLoginType(type)
+    }
+  }, [location.search])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

@@ -165,7 +165,17 @@ router.post('/login', authLimiter, async (req, res) => {
     }
 
     if (foundUser) {
-      const isMatch = await bcrypt.compare(password, foundUser.password)
+      let isMatch = false
+
+      try {
+        isMatch = await bcrypt.compare(password, foundUser.password)
+      } catch {
+        isMatch = password === foundUser.password
+      }
+
+      if (!isMatch && foundUser.password && !String(foundUser.password).startsWith('$2')) {
+        isMatch = password === foundUser.password
+      }
       
       if (!isMatch) {
         console.log(`[AUTH] Password mismatch for: ${email}`)
