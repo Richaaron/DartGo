@@ -7,6 +7,7 @@ import SubjectResultForm from '../components/SubjectResultForm'
 import Table from '../components/Table'
 import { fetchStudents, fetchResults, fetchSubjects, saveBulkResults, deleteResult, createResult, updateResult } from '../services/api'
 import { useAuthContext } from '../context/AuthContext'
+import { calculatePositions } from '../utils/calculations'
 
 export default function SubjectResultEntry() {
   const { user } = useAuthContext()
@@ -80,7 +81,7 @@ export default function SubjectResultEntry() {
       }
     }
 
-    return results
+    const filtered = results
       .filter((result: SubjectResult) => {
         const details = getResultDetailsForFilter(result)
         const matchesSearch = 
@@ -94,6 +95,23 @@ export default function SubjectResultEntry() {
         return matchesSearch && matchesTerm && matchesStudent
       })
       .map(getResultDetailsForFilter)
+
+    const groupedResults = new Map<string, SubjectResult[]>()
+
+    filtered.forEach((result) => {
+      const key = `${result.term}-${result.academicYear}-${result.subjectId}-${result.class}`
+      if (!groupedResults.has(key)) {
+        groupedResults.set(key, [])
+      }
+      groupedResults.get(key)!.push(result)
+    })
+
+    const positionedResults: SubjectResult[] = []
+    groupedResults.forEach((group) => {
+      positionedResults.push(...calculatePositions(group))
+    })
+
+    return positionedResults
   }, [results, students, subjects, filterTerm, selectedTerm, selectedStudent])
 
   const handleSubmitResult = async (resultData: SubjectResult | Omit<SubjectResult, 'id'>) => {
@@ -179,6 +197,7 @@ export default function SubjectResultEntry() {
     { key: 'exam', label: 'Exam' },
     { key: 'totalScore', label: 'Total' },
     { key: 'percentage', label: '%' },
+    { key: 'positionText', label: 'Position' },
     { key: 'grade', label: 'Grade' },
   ]
 
