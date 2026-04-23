@@ -12,7 +12,13 @@ import { calculatePositions } from '../utils/calculations'
 export default function SubjectResultEntry() {
   const { user } = useAuthContext()
   const isTeacher = user?.role === 'Teacher'
-  const teacherSubject = (user as any)?.subject
+  const teacherSubjects =
+    ((user as any)?.assignedSubjects && (user as any).assignedSubjects.length > 0
+      ? (user as any).assignedSubjects
+      : ((user as any)?.subject || '')
+          .split(',')
+          .map((subject: string) => subject.trim())
+          .filter(Boolean)) as string[]
   const assignedClasses = (user as any)?.assignedClasses || []
 
   const [results, setResults] = useState<SubjectResult[]>([])
@@ -49,12 +55,17 @@ export default function SubjectResultEntry() {
         const myResults = resultsData.filter((r: SubjectResult) => {
           const student = studentsData.find((s: Student) => s.id === r.studentId)
           const subject = subjectsData.find((sub: Subject) => sub.id === r.subjectId)
-          return subject?.name === teacherSubject && student && assignedClasses.includes(student.class)
+          const matchesSubject = teacherSubjects.length === 0 || teacherSubjects.includes(subject?.name || '')
+          return matchesSubject && student && assignedClasses.includes(student.class)
         })
         setResults(myResults)
         
-        // Teacher: only see their assigned subject in the dropdowns
-        setSubjects(subjectsData.filter((s: Subject) => s.name === teacherSubject))
+        // Teacher: only see their assigned subjects in the dropdowns
+        setSubjects(
+          teacherSubjects.length > 0
+            ? subjectsData.filter((s: Subject) => teacherSubjects.includes(s.name))
+            : subjectsData
+        )
       } else {
         setStudents(studentsData)
         setResults(resultsData)

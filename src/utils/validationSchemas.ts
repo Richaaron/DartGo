@@ -31,6 +31,7 @@ export const teacherSchema = z.object({
   password: z.string().min(8, 'Password must be at least 8 characters')
     .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 'Password must contain uppercase, lowercase and number'),
   subject: z.string().optional(),
+  assignedSubjects: z.array(z.string()).optional(),
   level: z.enum(['Pre-Nursery', 'Nursery', 'Primary', 'Secondary']),
   assignedClasses: z.array(z.string()).optional(),
 })

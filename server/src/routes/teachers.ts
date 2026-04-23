@@ -6,6 +6,12 @@ import { sendTeacherCredentialsEmail } from '../utils/email'
 
 const router = Router()
 
+const parseAssignedSubjects = (subjectValue: string | null | undefined) =>
+  (subjectValue || '')
+    .split(',')
+    .map((subject) => subject.trim())
+    .filter(Boolean)
+
 // Helper to map DB to camelCase for frontend
 const mapTeacher = (t: any) => ({
   id: t.id,
@@ -14,6 +20,7 @@ const mapTeacher = (t: any) => ({
   username: t.username,
   email: t.email,
   subject: t.subject || 'Form Teacher',
+  assignedSubjects: parseAssignedSubjects(t.subject),
   level: t.level,
   assignedClasses: t.assigned_classes || [],
   image: t.image,
@@ -27,7 +34,9 @@ const mapToDB = (t: any) => {
     name: t.name,
     username: t.username,
     email: t.email,
-    subject: t.subject || '',
+    subject: Array.isArray(t.assignedSubjects) && t.assignedSubjects.length > 0
+      ? t.assignedSubjects.join(', ')
+      : (t.subject || ''),
     level: t.level,
     assigned_classes: t.assignedClasses,
     image: t.image

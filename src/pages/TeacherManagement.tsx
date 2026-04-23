@@ -38,12 +38,21 @@ export default function TeacherManagement() {
     }
   }
 
+  const getTeacherSubjects = (teacher: Teacher) =>
+    teacher.assignedSubjects && teacher.assignedSubjects.length > 0
+      ? teacher.assignedSubjects
+      : (teacher.subject || '')
+          .split(',')
+          .map((subject) => subject.trim())
+          .filter(Boolean)
+
   const filteredTeachers = teachers.filter((teacher) => {
+    const teacherSubjects = getTeacherSubjects(teacher)
     const matchesSearch =
       teacher.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (teacher.username?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
       teacher.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      teacher.subject.toLowerCase().includes(searchTerm.toLowerCase())
+      teacherSubjects.some((subject) => subject.toLowerCase().includes(searchTerm.toLowerCase()))
 
     const matchesLevel = selectedLevel === 'All' || teacher.level === selectedLevel
 
@@ -106,7 +115,7 @@ export default function TeacherManagement() {
       Name: teacher.name,
       Username: teacher.username,
       Email: teacher.email,
-      Subject: teacher.subject,
+      Subjects: getTeacherSubjects(teacher).join(', '),
       Level: teacher.level,
       Classes: teacher.assignedClasses.join(', '),
     }))
@@ -117,7 +126,7 @@ export default function TeacherManagement() {
     { key: 'profile', label: 'Photo' },
     { key: 'name', label: 'Name' },
     { key: 'email', label: 'Email' },
-    { key: 'subject', label: 'Subject' },
+    { key: 'subjects', label: 'Subjects' },
     { key: 'level', label: 'Level' },
     { key: 'classes', label: 'Classes' },
   ]
@@ -208,6 +217,19 @@ export default function TeacherManagement() {
           columns={columns}
           data={filteredTeachers.map((teacher) => ({
             ...teacher,
+            subjects: (
+              <div className="flex flex-wrap gap-1">
+                {getTeacherSubjects(teacher).length > 0 ? getTeacherSubjects(teacher).map((subject) => (
+                  <span key={subject} className="px-2 py-0.5 bg-amber-50 text-amber-700 rounded text-xs">
+                    {subject}
+                  </span>
+                )) : (
+                  <span className="px-2 py-0.5 bg-gray-100 text-gray-500 rounded text-xs">
+                    Form Teacher
+                  </span>
+                )}
+              </div>
+            ),
             profile: (
               <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200">
                 {teacher.image ? (

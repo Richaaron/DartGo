@@ -1,7 +1,8 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import { X, Upload, User as UserIcon } from 'lucide-react'
-import { Teacher } from '../types'
+import { Teacher, Subject, Student } from '../types'
+import { fetchSubjects, fetchStudents } from '../services/api'
 
 interface TeacherFormProps {
   onSubmit: (teacher: Teacher | Omit<Teacher, 'id'>) => void
@@ -16,6 +17,16 @@ export default function TeacherForm({
   onCancel,
   isEditing = false,
 }: TeacherFormProps) {
+  const initialAssignedSubjects = useMemo(
+    () =>
+      initialData?.assignedSubjects && initialData.assignedSubjects.length > 0
+        ? initialData.assignedSubjects
+        : (initialData?.subject || '')
+            .split(',')
+            .map((subject) => subject.trim())
+            .filter(Boolean),
+    [initialData]
+  )
   const fileInputRef = useRef<any>(null)
   const [formData, setFormData] = useState<Omit<Teacher, 'id'> & { id?: string }>({
     name: '',
@@ -24,7 +35,8 @@ export default function TeacherForm({
     password: '',
     role: 'Teacher',
     teacherId: '',
-    subject: '',
+    subject: initialAssignedSubjects.join(', '),
+    assignedSubjects: initialAssignedSubjects,
     level: 'Primary',
     assignedClasses: [],
     image: '',
@@ -32,7 +44,51 @@ export default function TeacherForm({
   })
 
   const [errors, setErrors] = useState<Record<string, string>>({})
-  const [newClass, setNewClass] = useState('')
+  const [availableSubjects, setAvailableSubjects] = useState<Subject[]>([])
+  const [availableClasses, setAvailableClasses] = useState<string[]>([])
+  const [selectedSubject, setSelectedSubject] = useState('')
+  const [selectedClass, setSelectedClass] = useState('')
+
+  useEffect(() => {
+    const loadOptions = async () => {
+      try {
+        const [subjectsData, studentsData] = await Promise.all([
+          fetchSubjects(),
+          fetchStudents(),
+        ])
+
+        setAvailableSubjects(subjectsData)
+
+        const classOptions = [...new Set(studentsData.map((student: Student) => student.class))]
+          .filter(Boolean)
+          .sort()
+        setAvailableClasses(classOptions)
+      } catch (error) {
+        console.error('Failed to load teacher form options', error)
+      }
+    }
+
+    loadOptions()
+  }, [])
+
+  const levelSubjects = useMemo(
+    () => availableSubjects.filter((subject) => subject.level === formData.level),
+    [availableSubjects, formData.level]
+  )
+
+  const levelClasses = useMemo(() => {
+    const matchedClasses = availableClasses.filter((className) =>
+      formData.level === 'Pre-Nursery'
+        ? className.toLowerCase().includes('pre')
+        : formData.level === 'Nursery'
+          ? className.toLowerCase().includes('nur')
+          : formData.level === 'Primary'
+            ? className.toLowerCase().includes('primary') || className.toLowerCase().includes('pri')
+            : className.toLowerCase().includes('jss') || className.toLowerCase().includes('sss') || className.toLowerCase().includes('sec')
+    )
+
+    return (matchedClasses.length > 0 ? matchedClasses : availableClasses).sort()
+  }, [availableClasses, formData.level])
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
@@ -75,13 +131,35 @@ export default function TeacherForm({
     }
   }
 
-  const addClass = () => {
-    if (newClass.trim() && !formData.assignedClasses.includes(newClass.trim())) {
+  const addSubject = () => {
+    if (selectedSubject && !formData.assignedSubjects?.includes(selectedSubject)) {
       setFormData(prev => ({
         ...prev,
-        assignedClasses: [...prev.assignedClasses, newClass.trim()]
+        assignedSubjects: [...(prev.assignedSubjects || []), selectedSubject],
+        subject: [...(prev.assignedSubjects || []), selectedSubject].join(', ')
       }))
-      setNewClass('')
+      setSelectedSubject('')
+    }
+  }
+
+  const removeSubject = (subjectName: string) => {
+    setFormData(prev => {
+      const assignedSubjects = (prev.assignedSubjects || []).filter(subject => subject !== subjectName)
+      return {
+        ...prev,
+        assignedSubjects,
+        subject: assignedSubjects.join(', ')
+      }
+    })
+  }
+
+  const addClass = () => {
+    if (selectedClass && !formData.assignedClasses.includes(selectedClass)) {
+      setFormData(prev => ({
+        ...prev,
+        assignedClasses: [...prev.assignedClasses, selectedClass]
+      }))
+      setSelectedClass('')
     }
   }
 
@@ -95,7 +173,10 @@ export default function TeacherForm({
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (validateForm()) {
-      onSubmit(formData as any)
+      onSubmit({
+        ...formData,
+        subject: (formData.assignedSubjects || []).join(', ')
+      } as any)
     }
   }
 
@@ -242,19 +323,47 @@ export default function TeacherForm({
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Primary Subject (Optional)
+                Assigned Subjects
               </label>
-              <input
-                type="text"
-                name="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                placeholder="e.g. Mathematics, English (Leave blank for Form Teacher)"
-                className={`input-field ${errors.subject ? 'border-red-500' : ''}`}
-              />
-              {errors.subject && (
-                <p className="text-red-500 text-sm mt-1">{errors.subject}</p>
-              )}
+              <div className="flex gap-2">
+                <select
+                  value={selectedSubject}
+                  onChange={(e) => setSelectedSubject(e.target.value)}
+                  className="input-field"
+                >
+                  <option value="">Select subject...</option>
+                  {levelSubjects.map((subject) => (
+                    <option key={subject.id} value={subject.name}>
+                      {subject.name}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  onClick={addSubject}
+                  className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  Add
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {(formData.assignedSubjects || []).map((subjectName) => (
+                  <span
+                    key={subjectName}
+                    className="inline-flex items-center gap-1 px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-sm font-medium"
+                  >
+                    {subjectName}
+                    <button
+                      type="button"
+                      onClick={() => removeSubject(subjectName)}
+                      className="hover:text-amber-900"
+                    >
+                      <X size={14} />
+                    </button>
+                  </span>
+                ))}
+              </div>
+              <p className="text-xs text-gray-500 mt-2">Leave empty for form teachers with no subject restriction.</p>
             </div>
           </div>
 
@@ -281,13 +390,18 @@ export default function TeacherForm({
                 Assign Classes *
               </label>
               <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={newClass}
-                  onChange={(e) => setNewClass(e.target.value)}
-                  placeholder="e.g., SSS1A"
+                <select
+                  value={selectedClass}
+                  onChange={(e) => setSelectedClass(e.target.value)}
                   className="input-field"
-                />
+                >
+                  <option value="">Select class...</option>
+                  {levelClasses.map((className) => (
+                    <option key={className} value={className}>
+                      {className}
+                    </option>
+                  ))}
+                </select>
                 <button
                   type="button"
                   onClick={addClass}

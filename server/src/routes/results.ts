@@ -4,6 +4,12 @@ import { authenticate, authorize, AuthRequest } from '../middleware/auth'
 
 const router = Router()
 
+const parseAssignedSubjects = (subjectValue: string | null | undefined) =>
+  (subjectValue || '')
+    .split(',')
+    .map((subject) => subject.trim())
+    .filter(Boolean)
+
 // Helper to map DB to camelCase for frontend
 const mapResult = (r: any) => ({
   id: r.id,
@@ -76,10 +82,19 @@ router.post('/bulk', authenticate, authorize(['Admin', 'Teacher']), async (req: 
         .select('subject')
         .eq('id', user.id)
         .single()
-      
-      const unauthorized = results.some((r: any) => r.subject_id !== teacher?.subject)
+
+      const allowedSubjectNames = parseAssignedSubjects(teacher?.subject)
+      const { data: teacherSubjects, error: teacherSubjectsError } = await supabase
+        .from('subjects')
+        .select('id, name')
+        .in('name', allowedSubjectNames.length > 0 ? allowedSubjectNames : [''])
+
+      if (teacherSubjectsError) throw teacherSubjectsError
+
+      const allowedSubjectIds = new Set((teacherSubjects || []).map((subject: any) => subject.id))
+      const unauthorized = results.some((r: any) => !allowedSubjectIds.has(r.subject_id))
       if (unauthorized) {
-        return res.status(403).json({ error: 'You can only enter results for your assigned subject' })
+        return res.status(403).json({ error: 'You can only enter results for your assigned subjects' })
       }
     }
 

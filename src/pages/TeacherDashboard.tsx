@@ -13,6 +13,16 @@ import PerformanceInsights from '../components/PerformanceInsights'
 export default function TeacherDashboard() {
   const { user } = useAuthContext()
   const teacher = user as any
+  const assignedSubjects = useMemo(
+    () =>
+      teacher?.assignedSubjects && teacher.assignedSubjects.length > 0
+        ? teacher.assignedSubjects
+        : (teacher?.subject || '')
+            .split(',')
+            .map((subject: string) => subject.trim())
+            .filter(Boolean),
+    [teacher]
+  )
   const [students, setStudents] = useState<Student[]>([])
   const [results, setResults] = useState<SubjectResult[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
@@ -47,9 +57,12 @@ export default function TeacherDashboard() {
   const teacherResults = useMemo(() => {
     return results.filter((r) => {
       const student = students.find((s) => s.id === r.studentId)
-      return student && teacher?.assignedClasses?.includes(student.class)
+      const subject = subjects.find((sub) => sub.id === r.subjectId)
+      const matchesClass = student && teacher?.assignedClasses?.includes(student.class)
+      const matchesSubject = assignedSubjects.length === 0 || assignedSubjects.includes(subject?.name)
+      return matchesClass && matchesSubject
     })
-  }, [results, students, teacher?.assignedClasses])
+  }, [results, students, subjects, teacher?.assignedClasses, assignedSubjects])
 
   const stats = useMemo(() => {
     const teacherStudents = students.filter((s) =>
@@ -118,7 +131,7 @@ export default function TeacherDashboard() {
           Welcome, {teacher.name}
         </h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">
-          {teacher.subject || 'Form Teacher'} | School Level: {teacher.level}
+          {(assignedSubjects.length > 0 ? assignedSubjects.join(', ') : 'Form Teacher') || 'Form Teacher'} | School Level: {teacher.level}
         </p>
         <div className="mt-3 text-sm text-gray-600 dark:text-gray-400">
           <p>Assigned Classes: {teacher.assignedClasses.join(', ')}</p>

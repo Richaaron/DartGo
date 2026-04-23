@@ -15,6 +15,12 @@ import { getEnvConfig } from '../utils/envConfig'
 const router = Router()
 const envConfig = getEnvConfig()
 
+const parseAssignedSubjects = (subjectValue: string | null | undefined) =>
+  (subjectValue || '')
+    .split(',')
+    .map((subject) => subject.trim())
+    .filter(Boolean)
+
 /**
  * Health check endpoint to verify Supabase connectivity
  */
@@ -201,6 +207,7 @@ router.post('/login', authLimiter, async (req, res) => {
           name: foundUser.name,
           role: role,
           subject: foundUser.subject,
+          assignedSubjects: parseAssignedSubjects(foundUser.subject),
           level: foundUser.level,
           assignedClasses: foundUser.assigned_classes,
         },
@@ -253,6 +260,7 @@ router.post('/refresh', authenticate, async (req: AuthRequest, res) => {
         role: user.role,
         name: (user as any).name || user.email?.split('@')[0] || 'User',
         subject: (user as any).subject,
+        assignedSubjects: parseAssignedSubjects((user as any).subject),
         level: (user as any).level,
         assignedClasses: (user as any).assignedClasses,
       },
