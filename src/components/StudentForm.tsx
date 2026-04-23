@@ -9,6 +9,9 @@ interface StudentFormProps {
   initialData?: Student
   onCancel: () => void
   isEditing?: boolean
+  allowedClasses?: string[]
+  defaultClass?: string
+  lockClass?: boolean
 }
 
 export default function StudentForm({
@@ -16,6 +19,9 @@ export default function StudentForm({
   initialData,
   onCancel,
   isEditing = false,
+  allowedClasses = [],
+  defaultClass = '',
+  lockClass = false,
 }: StudentFormProps) {
   const fileInputRef = useRef<any>(null)
   
@@ -27,7 +33,7 @@ export default function StudentForm({
       dateOfBirth: '',
       gender: 'Male',
       level: 'Primary',
-      class: '',
+      class: defaultClass || '',
       parentName: '',
       parentPhone: '',
       parentEmail: '',
@@ -39,6 +45,12 @@ export default function StudentForm({
       ...initialData,
     }
   })
+
+  useEffect(() => {
+    if (!isEditing && defaultClass) {
+      setFormData((prev) => ({ ...prev, class: defaultClass }))
+    }
+  }, [defaultClass, isEditing])
 
   // Auto-generate credentials when names change (only for new students)
   useEffect(() => {
@@ -291,14 +303,31 @@ export default function StudentForm({
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Class *
               </label>
-              <input
-                type="text"
-                name="class"
-                value={formData.class}
-                onChange={handleChange}
-                placeholder="e.g., Primary 1"
-                className={`input-field ${errors.class ? 'border-red-500' : ''}`}
-              />
+              {allowedClasses.length > 0 ? (
+                <select
+                  name="class"
+                  value={formData.class}
+                  onChange={handleChange}
+                  className={`input-field ${errors.class ? 'border-red-500' : ''}`}
+                  disabled={lockClass}
+                >
+                  <option value="">Select class</option>
+                  {allowedClasses.map((className) => (
+                    <option key={className} value={className}>
+                      {className}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type="text"
+                  name="class"
+                  value={formData.class}
+                  onChange={handleChange}
+                  placeholder="e.g., Primary 1"
+                  className={`input-field ${errors.class ? 'border-red-500' : ''}`}
+                />
+              )}
               {errors.class && (
                 <p className="text-red-500 text-sm mt-1">{errors.class}</p>
               )}

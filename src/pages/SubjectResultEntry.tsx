@@ -29,6 +29,7 @@ export default function SubjectResultEntry() {
   const [editingResult, setEditingResult] = useState<SubjectResult | null>(null)
   const [filterTerm, setFilterTerm] = useState('')
   const [selectedTerm, setSelectedTerm] = useState<string>('All')
+  const [selectedClass, setSelectedClass] = useState<string>('All')
   const [selectedStudent, setSelectedStudent] = useState<string>('All')
   const [isLoading, setIsLoading] = useState(true)
   const [message, setMessage] = useState({ type: '', text: '' })
@@ -101,9 +102,10 @@ export default function SubjectResultEntry() {
           details.subjectName.toLowerCase().includes(filterTerm.toLowerCase())
         
         const matchesTerm = selectedTerm === 'All' || result.term === selectedTerm
+        const matchesClass = selectedClass === 'All' || details.class === selectedClass
         const matchesStudent = selectedStudent === 'All' || result.studentId === selectedStudent
 
-        return matchesSearch && matchesTerm && matchesStudent
+        return matchesSearch && matchesTerm && matchesClass && matchesStudent
       })
       .map(getResultDetailsForFilter)
 
@@ -123,7 +125,17 @@ export default function SubjectResultEntry() {
     })
 
     return positionedResults
-  }, [results, students, subjects, filterTerm, selectedTerm, selectedStudent])
+  }, [results, students, subjects, filterTerm, selectedTerm, selectedClass, selectedStudent])
+
+  const availableClasses = useMemo(() => {
+    if (isTeacher) return assignedClasses
+    return Array.from(new Set(students.map((student) => student.class))).filter(Boolean)
+  }, [isTeacher, assignedClasses, students])
+
+  const classFilteredStudents = useMemo(() => {
+    if (selectedClass === 'All') return students
+    return students.filter((student) => student.class === selectedClass)
+  }, [students, selectedClass])
 
   const handleSubmitResult = async (resultData: SubjectResult | Omit<SubjectResult, 'id'>) => {
     try {
@@ -252,7 +264,7 @@ export default function SubjectResultEntry() {
       )}
 
       <div className="card-lg mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
             <div className="relative">
@@ -267,6 +279,24 @@ export default function SubjectResultEntry() {
             </div>
           </div>
           <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Class</label>
+            <select
+              value={selectedClass}
+              onChange={(e) => {
+                setSelectedClass(e.target.value)
+                setSelectedStudent('All')
+              }}
+              className="input-field"
+            >
+              <option value="All">All Classes</option>
+              {availableClasses.map((className) => (
+                <option key={className} value={className}>
+                  {className}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Student</label>
             <select
               value={selectedStudent}
@@ -274,7 +304,7 @@ export default function SubjectResultEntry() {
               className="input-field"
             >
               <option value="All">All Students</option>
-              {students.map((student) => (
+              {classFilteredStudents.map((student) => (
                 <option key={student.id} value={student.id}>
                   {student.firstName} {student.lastName}
                 </option>

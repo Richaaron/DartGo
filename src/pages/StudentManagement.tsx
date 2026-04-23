@@ -10,11 +10,16 @@ import { useAuthContext } from '../context/AuthContext'
 export default function StudentManagement() {
   const { user } = useAuthContext()
   const isTeacher = user?.role === 'Teacher'
+  const teacherType = isTeacher ? (user as any)?.teacherType : undefined
+  const isFormCapableTeacher =
+    isTeacher &&
+    (!teacherType || teacherType === 'Form Teacher' || teacherType === 'Form + Subject Teacher')
   const assignedClasses = (user as any)?.assignedClasses || []
   
   const [students, setStudents] = useState<Student[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedLevel, setSelectedLevel] = useState<SchoolLevel | 'All'>('All')
+  const [selectedClass, setSelectedClass] = useState<string>('All')
   const [showForm, setShowForm] = useState(false)
   const [editingStudent, setEditingStudent] = useState<Student | null>(null)
 
@@ -41,10 +46,20 @@ export default function StudentManagement() {
     }
   }, [isTeacher, assignedClasses])
 
+  useEffect(() => {
+    if (isTeacher && assignedClasses.length > 0 && selectedClass === 'All') {
+      setSelectedClass(assignedClasses[0])
+    }
+  }, [isTeacher, assignedClasses, selectedClass])
+
   async function loadStudents() {
     try {
       const data = await fetchStudents()
-      setStudents(data)
+      if (isTeacher) {
+        setStudents(data.filter((s: Student) => assignedClasses.includes(s.class)))
+      } else {
+        setStudents(data)
+      }
     } catch (error) {
       console.error('Failed to load students', error)
     }
@@ -58,8 +73,9 @@ export default function StudentManagement() {
       (student.parentEmail || '').toLowerCase().includes(searchTerm.toLowerCase())
 
     const matchesLevel = selectedLevel === 'All' || student.level === selectedLevel
+    const matchesClass = selectedClass === 'All' || student.class === selectedClass
 
-    return matchesSearch && matchesLevel
+    return matchesSearch && matchesLevel && matchesClass
   })
 
   const handleAddStudent = async (newStudent: Omit<Student, 'id'>) => {
@@ -146,7 +162,13 @@ export default function StudentManagement() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 md:mb-8">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Student Management</h1>
-          <p className="text-sm sm:text-base text-gray-600 mt-2">Manage all students in the school</p>
+          <p className="text-sm sm:text-base text-gray-600 mt-2">
+            {isTeacher
+              ? isFormCapableTeacher
+                ? 'Manage students in your assigned class'
+                : 'View students in your assigned classes'
+              : 'Manage all students in the school'}
+          </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
           <button
@@ -161,7 +183,9 @@ export default function StudentManagement() {
               setEditingStudent(null)
               setShowForm(true)
             }}
-            className="btn-primary flex items-center justify-center gap-2 flex-1 sm:flex-initial text-sm sm:text-base"
+            className="btn-primary flex items-center justify-center gap-2 flex-1 sm:flex-initial text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isTeacher && !isFormCapableTeacher}
+            title={isTeacher && !isFormCapableTeacher ? 'Only form teachers can add students' : 'Add student'}
           >
             <Plus size={20} />
             <span className="hidden sm:inline">Add Student</span>
@@ -172,7 +196,7 @@ export default function StudentManagement() {
 
       {/* Search and Filter */}
       <div className="card-lg mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Search
@@ -205,6 +229,26 @@ export default function StudentManagement() {
               <option value="Secondary">Secondary</option>
             </select>
           </div>
+          {isTeacher && (
+            <div>
+              <label htmlFor="class-filter" className="block text-sm font-medium text-gray-700 mb-2">
+                Assigned Class
+              </label>
+              <select
+                id="class-filter"
+                value={selectedClass}
+                onChange={(e) => setSelectedClass(e.target.value)}
+                className="input-field"
+              >
+                {isFormCapableTeacher && <option value="All">All Assigned Classes</option>}
+                {assignedClasses.map((className: string) => (
+                  <option key={className} value={className}>
+                    {className}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
       </div>
 
@@ -217,6 +261,9 @@ export default function StudentManagement() {
               initialData={editingStudent || undefined}
               onCancel={() => setShowForm(false)}
               isEditing={!!editingStudent}
+              allowedClasses={isTeacher ? assignedClasses : undefined}
+              defaultClass={isTeacher && selectedClass !== 'All' ? selectedClass : ''}
+              lockClass={isTeacher && selectedClass !== 'All' && !editingStudent}
             />
           </div>
         </div>
@@ -235,15 +282,17 @@ export default function StudentManagement() {
                     setEditingStudent(student)
                     setShowForm(true)
                   }}
-                  className="p-1 text-blue-500 hover:bg-blue-50 rounded transition-colors"
+                  className="p-1 text-blue-500 hover:bg-blue-50 rounded transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                   title="Edit"
+                  disabled={isTeacher && !isFormCapableTeacher}
                 >
                   <Edit2 size={18} />
                 </button>
                 <button
                   onClick={() => handleDeleteStudent(student.id)}
-                  className="p-1 text-red-500 hover:bg-red-50 rounded transition-colors"
+                  className="p-1 text-red-500 hover:bg-red-50 rounded transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                   title="Delete"
+                  disabled={isTeacher && !isFormCapableTeacher}
                 >
                   <Trash2 size={18} />
                 </button>

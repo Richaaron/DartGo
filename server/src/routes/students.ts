@@ -7,6 +7,27 @@ import { sendParentCredentialsSMS } from '../utils/sms'
 
 const router = Router()
 
+const normalizeClassName = (value: unknown) =>
+  String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '')
+
+const toClassList = (value: unknown): string[] => {
+  if (Array.isArray(value)) {
+    return value.map((entry) => String(entry || '').trim()).filter(Boolean)
+  }
+
+  if (typeof value === 'string') {
+    return value
+      .split(',')
+      .map((entry) => entry.trim())
+      .filter(Boolean)
+  }
+
+  return []
+}
+
 // Helper to map DB to camelCase for frontend
 const mapStudent = (s: any) => ({
   id: s.id,
@@ -109,11 +130,11 @@ router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req: Auth
       dbData.parent_password = await bcrypt.hash(dbData.parent_password, 10)
     }
 
-    // If teacher, verify they are assigned to this class
+    // If teacher, verify role type and assigned-class access
     if (user?.role === 'Teacher') {
       const { data: teacher, error: teacherError } = await supabase
         .from('teachers')
-        .select('assigned_classes')
+        .select('assigned_classes, teacher_type')
         .eq('id', user.id)
         .single()
       
@@ -122,8 +143,29 @@ router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req: Auth
         return res.status(500).json({ error: 'Failed to verify teacher permissions' })
       }
 
-      if (!teacher?.assigned_classes?.includes(dbData.class_id)) {
-        console.warn(`[STUDENTS] Teacher ${user.id} tried to add student to unassigned class: ${dbData.class_id}. Assigned:`, teacher?.assigned_classes)
+      const teacherType = teacher?.teacher_type as string | undefined
+      const isFormCapableTeacher =
+        !teacherType || teacherType === 'Form Teacher' || teacherType === 'Form + Subject Teacher'
+
+      if (!isFormCapableTeacher) {
+        console.warn(`[STUDENTS] Teacher ${user.id} is not allowed to add students. Type: ${teacherType}`)
+        return res.status(403).json({
+          error: 'Only form teachers can add students',
+          details: `Your account is configured as ${teacherType || 'Subject Teacher'}`,
+        })
+      }
+
+      const classId = String(dbData.class_id || '').trim()
+      const assignedClassesFromDb = toClassList(teacher?.assigned_classes)
+      const assignedClassesFromSession = toClassList((user as any)?.assignedClasses)
+      const mergedAssignedClasses = [...new Set([...assignedClassesFromDb, ...assignedClassesFromSession])]
+
+      const canAccessClass = mergedAssignedClasses.some(
+        (assignedClass) => normalizeClassName(assignedClass) === normalizeClassName(classId)
+      )
+
+      if (!canAccessClass) {
+        console.warn(`[STUDENTS] Teacher ${user.id} tried to add student to unassigned class: ${classId}. Assigned:`, mergedAssignedClasses)
         return res.status(403).json({ error: 'You can only add students to your assigned classes' })
       }
     }

@@ -29,10 +29,18 @@ export default function TeacherDashboard() {
   const [deadlines, setDeadlines] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<'results' | 'messages' | 'insights'>('results')
+  const [selectedClass, setSelectedClass] = useState<string>('All')
+  const [selectedSubject, setSelectedSubject] = useState<string>('All')
 
   useEffect(() => {
     loadData()
   }, [])
+
+  useEffect(() => {
+    if (teacher?.assignedClasses?.length && selectedClass === 'All') {
+      setSelectedClass('All')
+    }
+  }, [teacher?.assignedClasses, selectedClass])
 
   const loadData = async () => {
     setIsLoading(true)
@@ -60,13 +68,15 @@ export default function TeacherDashboard() {
       const subject = subjects.find((sub) => sub.id === r.subjectId)
       const matchesClass = student && teacher?.assignedClasses?.includes(student.class)
       const matchesSubject = assignedSubjects.length === 0 || assignedSubjects.includes(subject?.name)
-      return matchesClass && matchesSubject
+      const matchesSelectedClass = selectedClass === 'All' || student?.class === selectedClass
+      const matchesSelectedSubject = selectedSubject === 'All' || subject?.name === selectedSubject
+      return matchesClass && matchesSubject && matchesSelectedClass && matchesSelectedSubject
     })
-  }, [results, students, subjects, teacher?.assignedClasses, assignedSubjects])
+  }, [results, students, subjects, teacher?.assignedClasses, assignedSubjects, selectedClass, selectedSubject])
 
   const stats = useMemo(() => {
     const teacherStudents = students.filter((s) =>
-      teacher?.assignedClasses?.includes(s.class)
+      teacher?.assignedClasses?.includes(s.class) && (selectedClass === 'All' || s.class === selectedClass)
     )
 
     const avgScore =
@@ -85,7 +95,7 @@ export default function TeacherDashboard() {
       resultsRecorded: teacherResults.length,
       averageClassScore: avgScore,
     }
-  }, [students, teacherResults, teacher?.assignedClasses])
+  }, [students, teacherResults, teacher?.assignedClasses, selectedClass])
 
   const tableData = useMemo(() => {
     return teacherResults.map((result) => {
@@ -135,6 +145,47 @@ export default function TeacherDashboard() {
         </p>
         <div className="mt-3 text-sm text-gray-600 dark:text-gray-400">
           <p>Assigned Classes: {teacher.assignedClasses.join(', ')}</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4">
+          <p className="text-xs font-black text-gray-500 uppercase tracking-[0.2em] mb-2">Assigned Class Control</p>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Class</label>
+          <select
+            value={selectedClass}
+            onChange={(e) => setSelectedClass(e.target.value)}
+            className="input-field"
+          >
+            <option value="All">All Assigned Classes</option>
+            {(teacher?.assignedClasses || []).map((className: string) => (
+              <option key={className} value={className}>
+                {className}
+              </option>
+            ))}
+          </select>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+            Use this to control class-focused student and result management.
+          </p>
+        </div>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4">
+          <p className="text-xs font-black text-gray-500 uppercase tracking-[0.2em] mb-2">Subject Teacher Features</p>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Subject</label>
+          <select
+            value={selectedSubject}
+            onChange={(e) => setSelectedSubject(e.target.value)}
+            className="input-field"
+          >
+            <option value="All">All Assigned Subjects</option>
+            {assignedSubjects.map((subject: string) => (
+              <option key={subject} value={subject}>
+                {subject}
+              </option>
+            ))}
+          </select>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+            Subject teachers only see their assigned subjects across selected classes.
+          </p>
         </div>
       </div>
 
