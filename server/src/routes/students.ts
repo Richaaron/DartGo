@@ -10,7 +10,8 @@ const router = Router()
 // Helper to map DB to camelCase for frontend
 const mapStudent = (s: any) => ({
   id: s.id,
-  studentId: s.registration_number || s.student_id,
+  studentId: s.student_id, // Keep studentId for legacy or other uses if needed
+  registrationNumber: s.registration_number, // Explicitly map registration_number
   firstName: s.first_name,
   lastName: s.last_name,
   class: s.class_id,
