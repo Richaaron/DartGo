@@ -63,6 +63,9 @@ router.get('/', authenticate, async (req, res) => {
 
 router.post('/bulk', authenticate, authorize(['Admin', 'Teacher']), async (req: AuthRequest, res) => {
   try {
+    if (!Array.isArray(req.body)) {
+      return res.status(400).json({ error: 'Invalid payload. Expected an array of results.' })
+    }
     const results = req.body.map(mapToDB)
     const user = req.user
 

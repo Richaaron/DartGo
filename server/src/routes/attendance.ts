@@ -34,15 +34,19 @@ router.get('/', authenticate, async (req, res) => {
 
 router.post('/bulk', authenticate, authorize(['Admin', 'Teacher']), async (req: AuthRequest, res) => {
   try {
-    const attendanceRecords = req.body
+    const { date, records } = req.body
     const recordedBy = req.user?.id
 
-    const mappedRecords = attendanceRecords.map((r: any) => ({
+    if (!date || !Array.isArray(records)) {
+      return res.status(400).json({ error: 'Invalid payload. Expected { date, records }' })
+    }
+
+    const mappedRecords = records.map((r: any) => ({
       student_id: r.studentId,
       class_id: r.classId,
-      date: r.date,
-      status: r.status?.toUpperCase(),
-      remarks: r.remarks,
+      date: date,
+      status: r.status?.toUpperCase() || 'PRESENT',
+      remarks: r.remarks || '',
       recorded_by: recordedBy
     }))
 
@@ -57,6 +61,7 @@ router.post('/bulk', authenticate, authorize(['Admin', 'Teacher']), async (req: 
     if (error) throw error
     res.json(data)
   } catch (error) {
+    console.error('[ATTENDANCE] POST /bulk error:', error)
     res.status(400).json({ error: 'Failed to save attendance' })
   }
 })

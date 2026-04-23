@@ -114,13 +114,13 @@ export default function TeacherDashboard() {
   return (
     <div className="p-4 md:p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
           Welcome, {teacher.name}
         </h1>
-        <p className="text-gray-600 mt-2">
+        <p className="text-gray-600 dark:text-gray-400 mt-2">
           {teacher.subject || 'Form Teacher'} | School Level: {teacher.level}
         </p>
-        <div className="mt-3 text-sm text-gray-600">
+        <div className="mt-3 text-sm text-gray-600 dark:text-gray-400">
           <p>Assigned Classes: {teacher.assignedClasses.join(', ')}</p>
         </div>
       </div>
@@ -134,24 +134,24 @@ export default function TeacherDashboard() {
         >
           <div className="flex items-center gap-2 mb-3">
             <Timer className="w-5 h-5 text-amber-500" />
-            <h2 className="text-sm font-black text-gray-400 uppercase tracking-[0.2em]">Institutional Deadlines</h2>
+            <h2 className="text-sm font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">Institutional Deadlines</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {deadlines.map((deadline) => (
-              <div key={deadline.id} className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 rounded-2xl p-5 relative overflow-hidden group">
+              <div key={deadline.id} className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border border-amber-100 dark:border-amber-900/40 rounded-2xl p-5 relative overflow-hidden group">
                 <div className="absolute top-0 right-0 p-3">
-                  <Clock className="w-12 h-12 text-amber-200/50 -rotate-12 group-hover:scale-110 transition-transform" />
+                  <Clock className="w-12 h-12 text-amber-200/50 dark:text-amber-800/30 -rotate-12 group-hover:scale-110 transition-transform" />
                 </div>
                 <div className="relative z-10">
-                  <div className="px-2 py-0.5 bg-amber-200 text-amber-700 text-[10px] font-black rounded-full w-fit mb-3 uppercase tracking-widest">
+                  <div className="px-2 py-0.5 bg-amber-200 dark:bg-amber-800/50 text-amber-700 dark:text-amber-300 text-[10px] font-black rounded-full w-fit mb-3 uppercase tracking-widest">
                     {deadline.type.replace('_', ' ')}
                   </div>
-                  <h3 className="text-base font-black text-gray-900 mb-1">{deadline.title}</h3>
-                  <p className="text-xs text-gray-600 mb-4 line-clamp-1">{deadline.description}</p>
-                  <div className="flex items-center gap-2 text-orange-600 font-bold text-sm">
+                  <h3 className="text-base font-black text-gray-900 dark:text-white mb-1">{deadline.title}</h3>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-4 line-clamp-1">{deadline.description}</p>
+                  <div className="flex items-center gap-2 text-orange-600 dark:text-orange-400 font-bold text-sm">
                     <Calendar size={14} />
                     <span>Due: {new Date(deadline.deadline_date).toLocaleDateString()}</span>
-                    <span className="text-[10px] bg-orange-100 px-2 py-0.5 rounded-md">
+                    <span className="text-[10px] bg-orange-100 dark:bg-orange-900/40 px-2 py-0.5 rounded-md">
                       {Math.ceil((new Date(deadline.deadline_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} days left
                     </span>
                   </div>
@@ -200,7 +200,7 @@ export default function TeacherDashboard() {
             className={`px-4 py-2 rounded-lg font-semibold whitespace-nowrap transition ${
               activeTab === tab
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700'
             }`}
           >
             {tab === 'results' && 'Class Results'}
@@ -215,15 +215,15 @@ export default function TeacherDashboard() {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-lg shadow-lg p-6"
+          className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6"
         >
-          <h2 className="text-xl font-bold text-gray-900 mb-4">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
             Class Results
           </h2>
           {tableData.length > 0 ? (
             <Table columns={columns} data={tableData} />
           ) : (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
               <p>No results recorded yet for your classes.</p>
             </div>
           )}
@@ -235,11 +235,11 @@ export default function TeacherDashboard() {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-lg shadow-lg p-6"
+          className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6"
         >
           <div className="mb-4">
-            <h2 className="text-xl font-bold text-gray-900">Message Admin</h2>
-            <p className="text-sm text-gray-500">Contact the school administration for support or reports</p>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Message Admin</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Contact the school administration for support or reports</p>
           </div>
           <ChatSystem />
         </motion.div>

@@ -136,7 +136,8 @@ CREATE TABLE IF NOT EXISTS public.attendance (
     recorded_by TEXT,
     remarks TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE(student_id, date)
 );
 
 -- Notifications table
