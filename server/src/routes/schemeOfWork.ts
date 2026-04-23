@@ -140,7 +140,7 @@ router.post('/upload', authenticate, authorize(['Admin', 'Teacher']), async (req
       }
     })
 
-    req.pipe(busboy)
+    req.pipe(bb)
   } catch (error) {
     console.error('[UPLOAD] Server error:', error)
     res.status(500).json({ error: 'Upload failed' })
