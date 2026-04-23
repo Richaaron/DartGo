@@ -44,7 +44,7 @@ export const securityHeaders = (req: Request, res: Response, next: NextFunction)
 export const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 300,
-  message: 'Too many requests from this IP, please try again later.',
+  message: { error: 'Too many requests from this IP, please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
   skip: (req) => req.path === '/api/health',
@@ -57,7 +57,7 @@ export const generalLimiter = rateLimit({
 export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 5,
-  message: 'Too many login attempts, please try again later.',
+  message: { error: 'Too many login attempts, please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
   skipSuccessfulRequests: true,
@@ -70,7 +70,7 @@ export const authLimiter = rateLimit({
 export const strictLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 20,
-  message: 'Too many requests, please try again later.',
+  message: { error: 'Too many requests, please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
 })

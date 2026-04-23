@@ -140,27 +140,36 @@ router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req: Auth
     
     console.log('[STUDENTS] Student created successfully:', data.id)
     
-    // Send email notification
+    // Send email notification (Background - but awaited to ensure completion in serverless)
     if (data.parent_email) {
-      sendStudentRegistrationEmail(data.parent_email, `${data.first_name} ${data.last_name}`, data.registration_number || data.student_id, data.id)
-        .catch(err => console.error('Failed to send registration email', err))
+      try {
+        console.log(`[STUDENTS] Sending registration email to: ${data.parent_email}`)
+        await sendStudentRegistrationEmail(data.parent_email, `${data.first_name} ${data.last_name}`, data.registration_number || data.student_id, data.id)
+      } catch (err) {
+        console.error('[STUDENTS] Failed to send registration email:', err)
+      }
     }
 
-    // Send SMS notification
+    // Send SMS notification (Background - but awaited to ensure completion in serverless)
     if (data.parent_phone) {
-      sendParentCredentialsSMS(
-        data.parent_phone, 
-        `${data.first_name} ${data.last_name}`, 
-        data.parent_username, 
-        data.parent_password,
-        data.id
-      ).catch(err => console.error('Failed to send registration SMS', err))
+      try {
+        console.log(`[STUDENTS] Sending registration SMS to: ${data.parent_phone}`)
+        await sendParentCredentialsSMS(
+          data.parent_phone, 
+          `${data.first_name} ${data.last_name}`, 
+          data.parent_username, 
+          data.parent_password,
+          data.id
+        )
+      } catch (err) {
+        console.error('[STUDENTS] Failed to send registration SMS:', err)
+      }
     }
     
-    res.status(201).json(mapStudent(data))
+    return res.status(201).json(mapStudent(data))
   } catch (error: any) {
     console.error('[STUDENTS] POST / error:', error)
-    res.status(error.status || 500).json({ 
+    return res.status(error.status || 500).json({ 
       error: error.message || 'Failed to create student',
       details: error.details || undefined,
       hint: error.hint || undefined

@@ -225,6 +225,20 @@ if (process.env.NODE_ENV !== 'production' || !isServerless) {
 
 export default app
 
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('[FATAL] Unhandled Rejection at:', promise, 'reason:', reason)
+})
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (error) => {
+  console.error('[FATAL] Uncaught Exception:', error)
+  // In a production serverless environment, we might want to let the process exit
+  if (!isServerless) {
+    process.exit(1)
+  }
+})
+
 // Graceful shutdown
 const gracefulShutdown = () => {
   console.log('\n[SHUTDOWN] Signal received, starting graceful shutdown...')

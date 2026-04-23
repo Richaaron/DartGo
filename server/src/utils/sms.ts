@@ -36,6 +36,17 @@ export const sendSMS = async (options: SMSOptions) => {
       return { status: 'mocked', message_id: 'mock_' + Date.now() }
     }
 
+    const hasFetch = typeof fetch !== 'undefined'
+    
+    if (!hasFetch) {
+      console.warn('[SMS] fetch is not defined in this environment. Falling back to mock SMS.')
+      console.log('--- MOCK SMS SEND (NO FETCH) ---')
+      console.log(`To: ${formattedPhone}`)
+      console.log(`Message: ${message}`)
+      console.log('--------------------------------')
+      return { status: 'mocked_no_fetch', message_id: 'mock_nf_' + Date.now() }
+    }
+
     const response = await fetch('https://api.ng.termii.com/api/sms/send', {
       method: 'POST',
       headers: {
