@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Check, User, GraduationCap, Users, BookOpen, Zap, Trophy } from 'lucide-react'
+import { Check, User, GraduationCap, Users, BookOpen, Zap, Trophy, Eye, EyeOff } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useAuthContext } from '../context/AuthContext'
 
@@ -186,6 +186,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const { login, isAuthenticated } = useAuthContext()
 
   useEffect(() => {
@@ -402,14 +403,29 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                   <label className="block text-sm font-bold text-gray-700 dark:text-gray-200 mb-1">
                     {loginType === 'parent' ? 'Parent Password' : 'Password'}
                   </label>
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="input-field"
-                    placeholder={loginType === 'parent' ? 'Enter parent password' : 'Enter your password'}
-                    disabled={isLoading}
-                  />
+                  <div className="relative">
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="input-field pr-12"
+                      placeholder={loginType === 'parent' ? 'Enter parent password' : 'Enter your password'}
+                      disabled={isLoading}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      disabled={isLoading}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-school-blue dark:text-school-yellow hover:text-school-red dark:hover:text-school-orange transition-colors disabled:opacity-50"
+                      title={showPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showPassword ? (
+                        <EyeOff size={20} />
+                      ) : (
+                        <Eye size={20} />
+                      )}
+                    </button>
+                  </div>
                 </div>
 
                 <button
