@@ -8,7 +8,9 @@ import Table from '../components/Table'
 import { useAuthContext } from '../context/AuthContext'
 import { calculatePositions } from '../utils/calculations'
 
+const PRIMARY_CLASSES = ['Nursery 1', 'Nursery 2', 'Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6']
 const SECONDARY_CLASSES = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']
+const ALL_CLASSES = [...PRIMARY_CLASSES, ...SECONDARY_CLASSES]
 
 const SubjectResultEntry = memo(function SubjectResultEntry() {
   const { user } = useAuthContext()
@@ -184,11 +186,22 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
     })
   }, [loadData])
 
-  // Get available classes from students
+  // Get all available classes (show all standard classes, not just classes with students)
   const availableClasses = useMemo(() => {
-    const classes = Array.from(new Set(students.map(s => s.class)))
-    return classes.sort()
-  }, [students])
+    // For admin, show all classes
+    // For teachers, show their assigned classes or all secondary classes if subject teacher
+    if (!isTeacher) {
+      return ALL_CLASSES
+    }
+    
+    if (isSubjectCapableTeacher) {
+      return SECONDARY_CLASSES
+    }
+    
+    // For form teachers, show their assigned classes but also include all standard classes for completeness
+    const assignedClassList = assignedClasses.length > 0 ? assignedClasses : ALL_CLASSES
+    return ALL_CLASSES.filter(cls => assignedClassList.includes(cls))
+  }, [isTeacher, isSubjectCapableTeacher, assignedClasses])
 
   // Filter students based on selected class
   const classFilteredStudents = useMemo(() => {
