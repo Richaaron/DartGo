@@ -231,10 +231,13 @@ export default function ResultEntry() {
   }, [isFormTeacher, isSubjectTeacher])
 
   const pageDescription = useMemo(() => {
-    // Always class-based for teachers
-    return isFormTeacher 
-      ? 'Enter and manage results for all subjects in your class' 
-      : 'Enter and manage results for your classes'
+    if (isFormTeacher) {
+      return 'Enter and manage results for all subjects in your form class'
+    } else if (isSubjectTeacher) {
+      return 'Enter and manage results for your assigned classes'
+    } else {
+      return 'Enter and manage results for all classes and subjects'
+    }
   }, [isFormTeacher, isSubjectTeacher])
 
   const handleAddResult = async (newResult: Omit<SubjectResult, 'id'>) => {
@@ -699,7 +702,7 @@ export default function ResultEntry() {
               />
             </div>
           </div>
-          {(!teacher || availableClasses.length > 1) && (
+          {(!teacher || !isFormTeacher || availableClasses.length > 1) && (
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Class
@@ -716,6 +719,16 @@ export default function ResultEntry() {
                   </option>
                 ))}
               </select>
+            </div>
+          )}
+          {teacher && isFormTeacher && availableClasses.length === 1 && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Form Class
+              </label>
+              <div className="px-3 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white">
+                {availableClasses[0]}
+              </div>
             </div>
           )}
           <div>
