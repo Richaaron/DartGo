@@ -18,39 +18,25 @@ export default function AttendancePage() {
     const loadData = async () => {
       setIsLoading(true)
       try {
-        // Fetch students first
-        const studentsData = await fetchStudents()
+        const [studentsData, existingAttendance] = await Promise.all([
+          fetchStudents(),
+          fetchAttendance({ date: selectedDate })
+        ])
         setStudents(studentsData)
         
-        // Then fetch attendance for the selected date
-        try {
-          const existingAttendance = await fetchAttendance({ date: selectedDate })
-          
-          const records: Record<string, { status: string, remarks: string }> = {}
-          studentsData.forEach((s: Student) => {
-            const existing = existingAttendance.find((a: any) => 
-              a.studentId?._id === s.id || a.studentId === s.id
-            )
-            records[s.id] = existing 
-              ? { status: existing.status, remarks: existing.remarks || '' } 
-              : { status: 'Present', remarks: '' }
-          })
-          setAttendanceRecords(records)
-        } catch (attendanceError) {
-          console.warn('Failed to fetch attendance, setting default:', attendanceError)
-          // Set default attendance records
-          const records: Record<string, { status: string, remarks: string }> = {}
-          studentsData.forEach((s: Student) => {
-            records[s.id] = { status: 'Present', remarks: '' }
-          })
-          setAttendanceRecords(records)
-        }
+        const records: Record<string, { status: string, remarks: string }> = {}
+        studentsData.forEach((s: Student) => {
+          const existing = existingAttendance.find((a: any) => 
+            a.studentId?._id === s.id || a.studentId === s.id
+          )
+          records[s.id] = existing 
+            ? { status: existing.status, remarks: existing.remarks || '' } 
+            : { status: 'Present', remarks: '' }
+        })
+        setAttendanceRecords(records)
       } catch (error: any) {
-        console.error('Failed to load students:', error)
-        setMessage({ type: 'error', text: 'Failed to load student data' })
-        // Set empty arrays to prevent crashes
-        setStudents([])
-        setAttendanceRecords({})
+        console.error('Failed to load attendance data', error)
+        setMessage({ type: 'error', text: 'Failed to load attendance data' })
       } finally {
         setIsLoading(false)
       }
@@ -186,7 +172,7 @@ export default function AttendancePage() {
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleStatusChange(student.id, 'Present')}
-                        className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${
+                        className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
                           attendanceRecords[student.id]?.status === 'Present'
                             ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
                             : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
@@ -197,7 +183,7 @@ export default function AttendancePage() {
                       </button>
                       <button
                         onClick={() => handleStatusChange(student.id, 'Absent')}
-                        className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${
+                        className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
                           attendanceRecords[student.id]?.status === 'Absent'
                             ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'
                             : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
@@ -208,7 +194,7 @@ export default function AttendancePage() {
                       </button>
                       <button
                         onClick={() => handleStatusChange(student.id, 'Late')}
-                        className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${
+                        className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
                           attendanceRecords[student.id]?.status === 'Late'
                             ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300'
                             : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
@@ -232,11 +218,6 @@ export default function AttendancePage() {
               ))}
             </tbody>
           </table>
-          {filteredStudents.length === 0 && (
-            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-              No students found. Try selecting a different class or check if student data is available.
-            </div>
-          )}
         </div>
       </div>
     </div>
