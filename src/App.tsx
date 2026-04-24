@@ -95,10 +95,10 @@ function AppContent() {
   }
 
   return (
-    <div className={`flex flex-col md:flex-row h-screen ${isDarkMode ? 'dark bg-gradient-dark-purple' : 'bg-gray-50'} transition-colors duration-300`}>
+    <div className={`flex flex-col md:flex-row h-screen ${isDarkMode ? 'dark bg-gradient-school-dark' : 'bg-gradient-school'} transition-colors duration-300`}>
       {/* Mobile Header */}
       {isMobile && (
-        <div className={`${isDarkMode ? 'bg-gradient-to-r from-black via-purple-900/40 to-black border-b border-gold-500/20' : 'bg-gradient-to-r from-purple-900 to-black border-b border-gold-500/30'} text-white px-4 py-3 flex items-center justify-between z-40`}>
+        <div className={`${isDarkMode ? 'bg-gradient-to-r from-school-blue via-school-green to-school-blue border-b-4 border-school-yellow' : 'bg-gradient-to-r from-school-red to-school-orange border-b-4 border-school-yellow'} text-white px-4 py-3 flex items-center justify-between z-40 shadow-lg`}>
           <button
             onClick={() => setShowMobileMenu(!showMobileMenu)}
             className="p-2 hover:bg-gold-500/10 rounded-lg transition-all active:scale-90"
@@ -107,13 +107,13 @@ function AppContent() {
           </button>
           <div className="flex items-center gap-2">
             {config?.schoolLogo ? (
-              <img src={config.schoolLogo} alt="Logo" className="w-8 h-8 object-contain rounded-lg" />
+              <img src={config.schoolLogo} alt="Logo" className="w-8 h-8 object-contain rounded-full border-2 border-school-yellow shadow-lg" />
             ) : (
-              <div className="w-8 h-8 bg-gradient-to-br from-gold-400 to-gold-500 rounded-lg flex items-center justify-center text-black">
+              <div className="w-8 h-8 bg-gradient-to-br from-school-yellow to-school-orange rounded-full flex items-center justify-center text-school-red border-2 border-white shadow-lg animate-bounce-slow">
                 <GraduationCap size={18} />
               </div>
             )}
-            <span className="text-xs font-black uppercase bg-gradient-to-r from-gold-300 to-gold-200 bg-clip-text text-transparent">
+            <span className="text-xs font-black uppercase bg-gradient-to-r from-school-yellow to-white bg-clip-text text-transparent animate-pulse-bright">
               {config?.schoolName?.split(' ')[0] || 'FOLUSHO'}
             </span>
           </div>
@@ -141,11 +141,11 @@ function AppContent() {
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         className={`${
           isMobile ? 'fixed left-0 top-[60px] bottom-0 w-72 z-30' : `${isSidebarOpen ? 'w-72' : 'w-24'} relative`
-        } ${isDarkMode ? 'bg-gradient-to-b from-black via-purple-900/40 to-black border-r border-gold-500/20' : 'bg-gradient-to-b from-purple-900 to-black border-r border-gold-500/30'} text-white transition-all duration-500 flex flex-col shadow-2xl overflow-y-auto md:overflow-visible`}
+        } ${isDarkMode ? 'bg-gradient-to-b from-school-blue via-school-green/20 to-school-blue border-r-4 border-school-yellow' : 'bg-gradient-to-b from-school-red to-school-pink border-r-4 border-school-yellow'} text-white transition-all duration-500 flex flex-col shadow-2xl overflow-y-auto md:overflow-visible`}
       >
         {/* Desktop Logo - Hidden on Mobile */}
         {!isMobile && (
-          <div className={`p-6 border-b ${isDarkMode ? 'border-gold-500/20' : 'border-gold-500/30'} flex items-center justify-between flex-shrink-0`}>
+          <div className={`p-6 border-b-4 ${isDarkMode ? 'border-school-yellow' : 'border-school-yellow'} flex items-center justify-between flex-shrink-0`}>
             {isSidebarOpen && (
               <motion.div 
                 initial={{ opacity: 0, x: -10 }}
@@ -153,21 +153,21 @@ function AppContent() {
                 className="flex items-center gap-3"
               >
                 {config?.schoolLogo ? (
-                  <img src={config.schoolLogo} alt="Logo" className="w-10 h-10 object-contain shadow-gold-400/40 shadow-lg rounded-xl bg-gradient-to-br from-gold-400 to-gold-300 p-1" />
+                  <img src={config.schoolLogo} alt="Logo" className="w-10 h-10 object-contain shadow-school-yellow shadow-lg rounded-full border-2 border-school-yellow bg-gradient-to-br from-school-yellow to-school-orange p-1" />
                 ) : (
-                  <div className="w-10 h-10 bg-gradient-to-br from-gold-400 to-gold-500 rounded-xl flex items-center justify-center text-black shadow-lg shadow-gold-400/30">
+                  <div className="w-10 h-10 bg-gradient-to-br from-school-yellow to-school-orange rounded-full flex items-center justify-center text-school-red shadow-lg shadow-school-yellow/50 border-2 border-white animate-bounce-slow">
                     <GraduationCap size={24} />
                   </div>
                 )}
                 <div className="overflow-hidden">
-                  <h1 className="text-sm font-black truncate tracking-tighter uppercase bg-gradient-to-r from-gold-300 to-gold-200 bg-clip-text text-transparent">{config?.schoolName?.split(' ')[0] || 'FOLUSHO'}</h1>
-                  <p className={`text-[9px] ${isDarkMode ? 'text-gold-300/60' : 'text-gold-200/60'} truncate uppercase font-black tracking-widest`}>{config?.schoolName?.split(' ').slice(1).join(' ') || 'Victory Schools'}</p>
+                  <h1 className="text-sm font-black truncate tracking-tighter uppercase bg-gradient-to-r from-school-yellow to-white bg-clip-text text-transparent">{config?.schoolName?.split(' ')[0] || 'FOLUSHO'}</h1>
+                  <p className={`text-[9px] ${isDarkMode ? 'text-school-yellow/80' : 'text-school-yellow'} truncate uppercase font-black tracking-widest`}>{config?.schoolName?.split(' ').slice(1).join(' ') || 'Victory Schools'}</p>
                 </div>
               </motion.div>
             )}
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className={`p-2 hover:bg-gold-500/10 rounded-xl transition-all active:scale-90 text-gold-300`}
+              className={`p-2 hover:bg-school-yellow/20 rounded-full transition-all active:scale-90 text-school-yellow animate-bounce-slow`}
             >
               {isSidebarOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
@@ -179,16 +179,16 @@ function AppContent() {
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className={`px-6 py-4 border-b ${isDarkMode ? 'border-gold-500/20 bg-black/40' : 'border-gold-500/30 bg-purple-900/30'}`}
+            className={`px-6 py-4 border-b-4 ${isDarkMode ? 'border-school-yellow bg-school-blue/20' : 'border-school-yellow bg-school-red/20'}`}
           >
-            <p className={`text-[9px] uppercase font-black tracking-[0.2em] ${isDarkMode ? 'text-gold-400/60' : 'text-gold-300'}`}>Authenticated Session</p>
+            <p className={`text-[9px] uppercase font-black tracking-[0.2em] ${isDarkMode ? 'text-school-yellow/80' : 'text-school-yellow'}`}>Authenticated Session</p>
             <p className="font-black text-white truncate text-sm mt-1">{userName}</p>
             <div className="flex items-center gap-2 mt-1.5">
-              <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${isDarkMode ? 'bg-gold-400' : 'bg-gold-300'}`}></div>
-              <p className={`text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'text-gold-300/80' : 'text-gold-200'}`}>{userRole}</p>
+              <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${isDarkMode ? 'bg-school-yellow' : 'bg-school-yellow'}`}></div>
+              <p className={`text-[10px] font-black uppercase tracking-widest text-white`}>{userRole}</p>
             </div>
             {userRole === 'Teacher' && (
-              <p className={`text-[9px] mt-1 uppercase tracking-[0.2em] ${isDarkMode ? 'text-gold-400/70' : 'text-gold-200/80'}`}>
+              <p className={`text-[9px] mt-1 uppercase tracking-[0.2em] text-school-yellow/90`}>
                 {teacherRoleLabel}
               </p>
             )}
@@ -200,16 +200,16 @@ function AppContent() {
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className={`px-6 py-5 border-b ${isDarkMode ? 'border-gold-500/20 bg-black/40' : 'border-gold-500/30 bg-purple-900/30'} flex-shrink-0`}
+            className={`px-6 py-5 border-b-4 ${isDarkMode ? 'border-school-yellow bg-school-blue/20' : 'border-school-yellow bg-school-red/20'} flex-shrink-0`}
           >
-            <p className={`text-[9px] uppercase font-black tracking-[0.2em] ${isDarkMode ? 'text-gold-400/60' : 'text-gold-300'}`}>Authenticated Session</p>
+            <p className={`text-[9px] uppercase font-black tracking-[0.2em] ${isDarkMode ? 'text-school-yellow/80' : 'text-school-yellow'}`}>Authenticated Session</p>
             <p className="font-black text-white truncate text-sm mt-1">{userName}</p>
             <div className="flex items-center gap-2 mt-1.5">
-              <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${isDarkMode ? 'bg-gold-400' : 'bg-gold-300'}`}></div>
-              <p className={`text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'text-gold-300/80' : 'text-gold-200'}`}>{userRole}</p>
+              <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${isDarkMode ? 'bg-school-yellow' : 'bg-school-yellow'}`}></div>
+              <p className={`text-[10px] font-black uppercase tracking-widest text-white`}>{userRole}</p>
             </div>
             {userRole === 'Teacher' && (
-              <p className={`text-[9px] mt-1 uppercase tracking-[0.2em] ${isDarkMode ? 'text-gold-400/70' : 'text-gold-200/80'}`}>
+              <p className={`text-[9px] mt-1 uppercase tracking-[0.2em] text-school-yellow/90`}>
                 {teacherRoleLabel}
               </p>
             )}
@@ -402,11 +402,11 @@ function AppContent() {
                   initial={{ opacity: 0, scale: 0.95, y: 10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                  className="absolute bottom-full mb-3 left-0 right-0 bg-rose-600 rounded-2xl p-2 shadow-2xl z-50 border border-rose-500"
+                  className="absolute bottom-full mb-3 left-0 right-0 bg-gradient-to-r from-school-red to-school-pink rounded-full p-2 shadow-2xl z-50 border-2 border-school-yellow"
                 >
                   <button
                     onClick={handleLogout}
-                    className="w-full text-white text-[10px] font-black hover:bg-rose-700 px-3 py-3 rounded-xl transition-all uppercase tracking-[0.2em]"
+                    className="w-full text-white text-[10px] font-black hover:bg-school-yellow/20 px-3 py-3 rounded-full transition-all uppercase tracking-[0.2em]"
                   >
                     Confirm Termination
                   </button>
@@ -414,12 +414,12 @@ function AppContent() {
               )}
             </AnimatePresence>
           </div>
-          {(isMobile || isSidebarOpen) && <p className={`text-[8px] font-black ${isDarkMode ? 'text-gold-800/40' : 'text-purple-900/30'} mt-6 text-center uppercase tracking-[0.3em] opacity-50`}>Folusho © 2024</p>}
+          {(isMobile || isSidebarOpen) && <p className={`text-[8px] font-black ${isDarkMode ? 'text-school-yellow/40' : 'text-school-yellow/30'} mt-6 text-center uppercase tracking-[0.3em] opacity-50`}>Folusho © 2024</p>}
         </div>
       </motion.aside>
 
       {/* Main Content */}
-      <main className={`flex-1 overflow-auto ${isDarkMode ? 'bg-gradient-dark-purple text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
+      <main className={`flex-1 overflow-auto ${isDarkMode ? 'bg-gradient-school-dark text-white' : 'bg-gradient-school text-gray-900'}`}>
         <div className={`max-w-7xl mx-auto ${isMobile ? 'px-4 py-4' : 'px-6 py-6 md:px-8 md:py-8'}`}>
           <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
@@ -480,14 +480,14 @@ function NavLink({ to, icon, label, isOpen, isDarkMode }: NavLinkProps) {
   return (
     <Link
       to={to}
-      className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group text-sm md:text-sm ${
+      className={`flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-200 group text-sm md:text-sm font-black hover:scale-105 active:scale-95 ${
         isDarkMode 
-          ? 'text-gold-300/70 hover:bg-gold-500/10 hover:text-gold-200 active:bg-gold-500/20' 
-          : 'text-gold-200 hover:bg-purple-700/30 hover:text-gold-100 active:bg-purple-700/50'
+          ? 'text-white hover:bg-school-yellow/20 hover:text-school-yellow active:bg-school-yellow/30 border-2 border-transparent hover:border-school-yellow' 
+          : 'text-white hover:bg-school-yellow/30 hover:text-school-yellow active:bg-school-yellow/40 border-2 border-transparent hover:border-school-yellow'
       }`}
     >
-      <span className={`flex-shrink-0 ${isDarkMode ? 'text-gold-400' : 'text-gold-300'} group-hover:text-gold-200`}>{icon}</span>
-      {isOpen && <span className="font-medium">{label}</span>}
+      <span className={`flex-shrink-0 ${isDarkMode ? 'text-school-yellow' : 'text-school-yellow'} group-hover:scale-110 transition-transform`}>{icon}</span>
+      {isOpen && <span className="font-black">{label}</span>}
     </Link>
   )
 }

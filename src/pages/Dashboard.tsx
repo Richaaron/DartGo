@@ -11,7 +11,8 @@ import ChatSystem from '../components/ChatSystem'
 import TeacherActivityLog from '../components/TeacherActivityLog'
 import PerformanceInsights from '../components/PerformanceInsights'
 
-const COLORS = ['#7c3aed', '#fbbf24', '#9333ea', '#d97706', '#6b21a8']
+// School-inspired colors for charts
+const COLORS = ['#FF6B6B', '#FFE66D', '#4ECDC4', '#95E1D3', '#C7A2FF', '#FF9FF3', '#FFA502', '#87CEEB']
 
 const containerVariants = {
   hidden: { opacity: 0 },

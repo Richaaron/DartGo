@@ -1,242 +1,210 @@
 :root {
-  --primary: #7c3aed; /* Purple 600 */
-  --primary-hover: #6d28d9; /* Purple 700 */
-  --primary-light: #a78bfa; /* Purple 400 */
-  --accent: #fbbf24; /* Gold 400 */
-  --accent-hover: #f59e0b; /* Gold 500 */
-  --dark: #0f0f0f; /* Deep Black */
-  --dark-secondary: #1a1a2e; /* Dark Blue-Black */
-  --dark-tertiary: #16213e; /* Darker Blue */
-  --text-dark: #e5e7eb; /* Light Gray for dark mode */
-  --text-dark-secondary: #d1d5db; /* Medium Gray for dark mode */
+  --primary: #FF6B6B; /* School Red */
+  --primary-hover: #FF5252; /* Darker Red */
+  --primary-light: #FFB5B5; /* Light Red */
+  --accent: #FFE66D; /* School Yellow */
+  --accent-hover: #FFD93D; /* Gold Yellow */
+  --secondary: #4ECDC4; /* School Blue/Teal */
+  --tertiary: #95E1D3; /* School Green */
+  --dark: #2C3E50; /* School Dark Blue */
+  --dark-secondary: #34495E; /* Slate Blue */
+  --dark-tertiary: #2C5F6F; /* Dark Teal */
+  --text-dark: #ECF0F1; /* Light Gray */
+  --text-dark-secondary: #BDC3C7; /* Medium Gray */
 }
 
-/* Custom Scrollbar for a more professional feel */
+/* Custom Scrollbar - Playful School Style */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
+  width: 10px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
+  background: linear-gradient(90deg, #FFE66D, #4ECDC4);
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(156, 163, 175, 0.3);
+  background: linear-gradient(180deg, #FF6B6B, #FFE66D);
   border-radius: 10px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(156, 163, 175, 0.5);
+  background: linear-gradient(180deg, #FF5252, #FFD93D);
 }
 
+/* School-Inspired Cards - Rounded Corners with Gradient Borders */
 .card {
-  @apply bg-white dark:bg-gradient-to-br dark:from-slate-800/90 dark:to-slate-900/90 dark:backdrop-blur-md rounded-2xl shadow-sm p-4 border border-purple-200/30 dark:border-purple-600/50 transition-all duration-300 hover:border-gold-400/50 dark:hover:border-gold-400/40;
+  @apply bg-white dark:bg-gradient-to-br dark:from-blue-900/30 dark:to-purple-900/30 dark:backdrop-blur-md rounded-3xl shadow-lg p-4 border-4 border-dashed border-school-blue/50 dark:border-school-pink/40 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-school-yellow;
 }
 
 .card-lg {
-  @apply bg-white dark:bg-gradient-to-br dark:from-slate-800/95 dark:to-slate-900/95 dark:backdrop-blur-md rounded-2xl shadow-lg p-6 border border-purple-200/40 dark:border-purple-600/60 transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px] dark:hover:shadow-purple-900/50 hover:border-gold-400/60 dark:hover:border-gold-400/50;
+  @apply bg-gradient-to-br from-white to-blue-50 dark:from-blue-900/40 dark:to-purple-900/40 dark:backdrop-blur-md rounded-3xl shadow-xl p-6 border-4 border-dashed border-school-blue/50 dark:border-school-pink/40 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-school-yellow dark:hover:shadow-school-pink/50;
 }
 
+/* School-Inspired Buttons */
 .btn-primary {
-  @apply px-5 py-2.5 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl hover:from-purple-700 hover:to-purple-800 transition-all font-bold shadow-lg hover:shadow-purple-500/40 active:scale-95 flex items-center justify-center gap-2;
+  @apply px-6 py-3 bg-gradient-to-r from-school-red to-school-pink text-white rounded-full hover:from-school-pink hover:to-school-red transition-all font-black shadow-lg hover:shadow-2xl hover:scale-110 active:scale-95 flex items-center justify-center gap-2 animate-pulse-bright hover:animate-none;
 }
 
 .btn-secondary {
-  @apply px-5 py-2.5 bg-white dark:bg-purple-900/30 text-purple-700 dark:text-gold-300 rounded-xl hover:bg-purple-50 dark:hover:bg-purple-800/40 transition-all font-bold border-2 border-purple-300 dark:border-purple-600 shadow-sm flex items-center justify-center gap-2;
+  @apply px-6 py-3 bg-gradient-to-r from-school-blue to-school-green text-white rounded-full hover:from-school-green hover:to-school-blue transition-all font-black border-4 border-school-yellow shadow-lg hover:shadow-2xl hover:scale-110 active:scale-95 flex items-center justify-center gap-2;
 }
 
 .btn-danger {
-  @apply px-5 py-2.5 bg-rose-600 dark:bg-rose-500 text-white rounded-xl hover:bg-rose-700 dark:hover:bg-rose-600 transition-all font-bold shadow-md active:scale-95 flex items-center justify-center gap-2;
+  @apply px-6 py-3 bg-gradient-to-r from-school-red to-school-orange text-white rounded-full hover:from-school-orange hover:to-school-red transition-all font-black shadow-lg hover:shadow-2xl hover:scale-110 active:scale-95 flex items-center justify-center gap-2 animate-bounce-slow hover:animate-none;
 }
 
 .btn-accent {
-  @apply px-5 py-2.5 bg-gradient-to-r from-gold-400 to-gold-500 text-black rounded-xl hover:from-gold-500 hover:to-gold-600 transition-all font-bold shadow-lg hover:shadow-gold-500/40 active:scale-95 flex items-center justify-center gap-2;
+  @apply px-6 py-3 bg-gradient-to-r from-school-yellow to-school-orange text-gray-900 rounded-full hover:from-school-orange hover:to-school-yellow transition-all font-black shadow-lg hover:shadow-2xl hover:scale-110 active:scale-95 flex items-center justify-center gap-2;
 }
 
 .input-field {
-  @apply w-full px-4 py-3 bg-gray-50 dark:bg-slate-700/60 border-2 border-purple-200 dark:border-purple-600/60 text-gray-900 dark:text-gray-50 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-gold-400 focus:bg-white dark:focus:bg-slate-700/80 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-400;
+  @apply w-full px-4 py-3 bg-blue-50 dark:bg-slate-700/60 border-4 border-dashed border-school-blue/70 dark:border-school-green/60 text-gray-900 dark:text-white rounded-2xl focus:outline-none focus:ring-4 focus:ring-school-yellow dark:focus:ring-school-pink focus:border-school-yellow transition-all placeholder:text-gray-400 dark:placeholder:text-gray-300 font-medium;
 }
 
 .table-header {
-  @apply bg-gradient-to-r from-purple-600 to-purple-700 backdrop-blur-sm px-6 py-4 text-left text-[10px] font-black text-gold-200 uppercase tracking-[0.2em] border-b-2 border-gold-400/30;
+  @apply bg-gradient-to-r from-school-blue to-school-green backdrop-blur-sm px-6 py-4 text-left text-xs font-black text-white uppercase tracking-widest border-b-4 border-school-yellow;
 }
 
 .table-cell {
-  @apply px-6 py-5 text-sm text-gray-700 dark:text-gray-100 border-b border-purple-200/20 dark:border-purple-700/40 hover:bg-purple-50/20 dark:hover:bg-purple-900/30 transition-colors;
+  @apply px-6 py-4 text-sm text-gray-800 dark:text-gray-100 border-b-2 border-dashed border-school-blue/30 dark:border-school-green/30 hover:bg-school-blue/10 dark:hover:bg-school-green/10 transition-all font-medium;
 }
 
 .badge {
-  @apply inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-black tracking-widest uppercase border;
+  @apply inline-flex items-center px-3 py-1.5 rounded-full text-xs font-black tracking-wider uppercase border-2 border-dashed;
 }
 
 .badge-success {
-  @apply bg-emerald-50 dark:bg-emerald-600/20 text-emerald-700 dark:text-emerald-300 border-emerald-100 dark:border-emerald-600/40;
+  @apply bg-school-green/20 dark:bg-school-green/30 text-green-800 dark:text-green-200 border-school-green;
 }
 
 .badge-warning {
-  @apply bg-gold-50 dark:bg-gold-600/25 text-gold-700 dark:text-gold-300 border-gold-100 dark:border-gold-600/40;
+  @apply bg-school-yellow/20 dark:bg-school-yellow/30 text-yellow-800 dark:text-yellow-200 border-school-yellow;
 }
 
 .badge-danger {
-  @apply bg-rose-50 dark:bg-rose-600/20 text-rose-700 dark:text-rose-300 border-rose-100 dark:border-rose-600/40;
+  @apply bg-school-red/20 dark:bg-school-red/30 text-red-800 dark:text-red-200 border-school-red;
 }
 
-.fade-enter {
-  opacity: 0;
-  animation: fadeIn 0.3s ease-in forwards;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Luxury animations */
-@keyframes glowPulse {
+/* Playful School Animations */
+@keyframes schoolBounce {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(251, 191, 36, 0.3), 0 0 40px rgba(124, 58, 237, 0.2);
+    transform: translateY(0) rotate(0deg);
   }
   50% {
-    box-shadow: 0 0 30px rgba(251, 191, 36, 0.5), 0 0 60px rgba(124, 58, 237, 0.3);
+    transform: translateY(-15px) rotate(5deg);
   }
 }
 
-.btn-primary:hover {
-  animation: glowPulse 2s ease-in-out;
+@keyframes colorShift {
+  0% { color: #FF6B6B; }
+  25% { color: #FFE66D; }
+  50% { color: #4ECDC4; }
+  75% { color: #C7A2FF; }
+  100% { color: #FF6B6B; }
 }
 
-/* Smooth gradient backgrounds */
+@keyframes danceLeft {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@keyframes starPulse {
+  0%, 100% { 
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.2) rotate(10deg);
+    opacity: 0.8;
+  }
+}
+
+@keyframes rainbowGlow {
+  0% { text-shadow: 0 0 10px #FF6B6B; }
+  25% { text-shadow: 0 0 10px #FFE66D; }
+  50% { text-shadow: 0 0 10px #4ECDC4; }
+  75% { text-shadow: 0 0 10px #C7A2FF; }
+  100% { text-shadow: 0 0 10px #FF6B6B; }
+}
+
+@keyframes bobbing {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes jumpIn {
+  0% { 
+    transform: scale(0) rotate(-45deg);
+    opacity: 0;
+  }
+  50% { 
+    transform: scale(1.1);
+  }
+  100% { 
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* School Sidebar Gradient */
 .sidebar-gradient {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d1b69 50%, #1a1a1a 100%);
-  background-size: 200% 200%;
+  background: linear-gradient(135deg, #2C3E50 0%, #FF6B6B 50%, #4ECDC4 100%);
+  background-size: 300% 300%;
   animation: gradientShift 15s ease infinite;
 }
 
 @keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-/* Card hover effects */
+/* Playful Card Hover */
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.15);
+  transform: translateY(-8px) rotate(-1deg);
+  animation: starPulse 0.5s ease-out;
 }
 
 .card-lg:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 40px rgba(124, 58, 237, 0.2), 0 0 30px rgba(251, 191, 36, 0.1);
+  transform: translateY(-10px) rotate(1deg);
+  animation: starPulse 0.5s ease-out;
 }
 
-/* Gold accent glow on focus */
+/* School-Themed Input Focus Glow */
 .input-field:focus {
-  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1), 0 0 20px rgba(124, 58, 237, 0.2);
+  box-shadow: 0 0 0 4px rgba(255, 230, 109, 0.3), 0 0 20px rgba(255, 107, 107, 0.4);
 }
 
-/* Enhanced animations for premium feel */
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
+/* Cartoon Text Effect */
+@keyframes cartoonBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.animate-cartoon-bounce {
+  animation: cartoonBounce 0.6s ease-in-out infinite;
 }
 
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.animate-school-bounce {
+  animation: schoolBounce 1s ease-in-out infinite;
 }
 
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.animate-color-shift {
+  animation: colorShift 4s ease-in-out infinite;
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+.animate-dance {
+  animation: danceLeft 1.5s ease-in-out infinite;
 }
 
-@keyframes glow {
-  0%, 100% {
-    text-shadow: 0 0 5px rgba(251, 191, 36, 0.5), 0 0 10px rgba(124, 58, 237, 0.3);
-  }
-  50% {
-    text-shadow: 0 0 10px rgba(251, 191, 36, 0.8), 0 0 20px rgba(124, 58, 237, 0.6);
-  }
+.animate-rainbow-glow {
+  animation: rainbowGlow 3s ease-in-out infinite;
 }
 
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.animate-bobbing {
+  animation: bobbing 2s ease-in-out infinite;
 }
 
-/* Animation utility classes */
-.animate-shimmer {
-  animation: shimmer 2s infinite;
-  background-size: 1000px 100%;
-}
-
-.animate-slideUp {
-  animation: slideUp 0.5s ease-out;
-}
-
-.animate-slideInLeft {
-  animation: slideInLeft 0.5s ease-out;
-}
-
-.animate-slideInRight {
-  animation: slideInRight 0.5s ease-out;
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.animate-glow {
-  animation: glow 2s ease-in-out infinite;
+.animate-jump-in {
+  animation: jumpIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 /* Enhanced button hover states */
@@ -253,7 +221,7 @@
   width: 0;
   height: 0;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.4);
   transform: translate(-50%, -50%);
   transition: width 0.6s, height 0.6s;
 }
@@ -265,13 +233,40 @@
 
 /* Loading skeleton */
 .skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg, #FFE66D 25%, #4ECDC4 50%, #FF6B6B 75%);
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
 
 .dark .skeleton {
-  background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+  background: linear-gradient(90deg, #FF6B6B 25%, #4ECDC4 50%, #C7A2FF 75%);
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
+
+/* School Icons Floating */
+.icon-floating {
+  animation: bobbing 3s ease-in-out infinite;
+}
+
+/* Rainbow Gradient Text */
+.text-rainbow {
+  background: linear-gradient(90deg, #FF6B6B, #FFE66D, #4ECDC4, #C7A2FF, #FF9FF3);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Dashed Border Style */
+.border-dashed-school {
+  border: 3px dashed #4ECDC4;
+  border-radius: 20px;
+}
+
+.border-dashed-school:hover {
+  border-color: #FF6B6B;
+  animation: spin 2s linear infinite;
+}
+
