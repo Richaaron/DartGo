@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Calendar, Save, CheckCircle, XCircle, Clock, AlertCircle, Check } from 'lucide-react'
-import { fetchStudents, saveBulkAttendance, fetchAttendance } from '../services/api'
 import { Student } from '../types'
 
 export default function AttendancePage() {
@@ -11,17 +10,36 @@ export default function AttendancePage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [message, setMessage] = useState({ type: '', text: '' })
+  const [apiError, setApiError] = useState<string | null>(null)
 
   const classes = useMemo(() => [...new Set(students.map(s => s.class))], [students])
 
   useEffect(() => {
     const loadData = async () => {
       setIsLoading(true)
+      setApiError(null)
+      
+      // Add timeout to prevent infinite loading
+      const timeoutId = setTimeout(() => {
+        setApiError('Loading timeout. Please check your connection and try again.')
+        setIsLoading(false)
+      }, 10000) // 10 second timeout
+
       try {
+        // Try to import and use API functions
+        const { fetchStudents, fetchAttendance } = await import('../services/api')
+        
         const [studentsData, existingAttendance] = await Promise.all([
-          fetchStudents(),
-          fetchAttendance({ date: selectedDate })
+          fetchStudents().catch(err => {
+            console.warn('Failed to fetch students, using fallback:', err)
+            return [] // Return empty array as fallback
+          }),
+          fetchAttendance({ date: selectedDate }).catch(err => {
+            console.warn('Failed to fetch attendance, using fallback:', err)
+            return [] // Return empty array as fallback
+          })
         ])
+        
         setStudents(studentsData)
         
         const records: Record<string, { status: string, remarks: string }> = {}
@@ -36,8 +54,12 @@ export default function AttendancePage() {
         setAttendanceRecords(records)
       } catch (error: any) {
         console.error('Failed to load attendance data', error)
-        setMessage({ type: 'error', text: 'Failed to load attendance data' })
+        setApiError('Failed to load data. Please try again.')
+        // Set empty data to prevent crashes
+        setStudents([])
+        setAttendanceRecords({})
       } finally {
+        clearTimeout(timeoutId)
         setIsLoading(false)
       }
     }
@@ -67,6 +89,7 @@ export default function AttendancePage() {
   const handleSave = async () => {
     setIsSaving(true)
     try {
+      const { saveBulkAttendance } = await import('../services/api')
       const attendanceData = Object.entries(attendanceRecords).map(([studentId, record]) => ({
         studentId,
         date: selectedDate,
@@ -83,6 +106,66 @@ export default function AttendancePage() {
     } finally {
       setIsSaving(false)
     }
+  }
+
+  const handleRetry = () => {
+    // Trigger data reload
+    const loadData = async () => {
+      setIsLoading(true)
+      setApiError(null)
+      
+      try {
+        const { fetchStudents, fetchAttendance } = await import('../services/api')
+        
+        const [studentsData, existingAttendance] = await Promise.all([
+          fetchStudents().catch(err => {
+            console.warn('Failed to fetch students, using fallback:', err)
+            return []
+          }),
+          fetchAttendance({ date: selectedDate }).catch(err => {
+            console.warn('Failed to fetch attendance, using fallback:', err)
+            return []
+          })
+        ])
+        
+        setStudents(studentsData)
+        
+        const records: Record<string, { status: string, remarks: string }> = {}
+        studentsData.forEach((s: Student) => {
+          const existing = existingAttendance.find((a: any) => 
+            a.studentId?._id === s.id || a.studentId === s.id
+          )
+          records[s.id] = existing 
+            ? { status: existing.status, remarks: existing.remarks || '' } 
+            : { status: 'Present', remarks: '' }
+        })
+        setAttendanceRecords(records)
+      } catch (error: any) {
+        console.error('Failed to load attendance data', error)
+        setApiError('Failed to load data. Please try again.')
+        setStudents([])
+        setAttendanceRecords({})
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    loadData()
+  }
+
+  if (apiError) {
+    return (
+      <div className="p-8 text-center">
+        <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+        <h2 className="text-xl font-bold text-gray-900 mb-2">Data Loading Error</h2>
+        <p className="text-gray-600 mb-4">{apiError}</p>
+        <button
+          onClick={handleRetry}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          Retry
+        </button>
+      </div>
+    )
   }
 
   if (isLoading) {
