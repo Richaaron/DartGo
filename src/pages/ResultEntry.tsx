@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 const PRIMARY_CLASSES = ['Nursery 1', 'Nursery 2', 'Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6']
 const SECONDARY_CLASSES = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']
 const ALL_CLASSES = [...PRIMARY_CLASSES, ...SECONDARY_CLASSES]
-import { Plus, Trash2, Search, Download, Send, Mail, AlertCircle, CheckCircle2, Clock } from 'lucide-react'
+import { Plus, Trash2, Search, Download, Send, Mail, AlertCircle, CheckCircle2, Clock, BarChart3, X } from 'lucide-react'
 import { SubjectResult, Student, Subject, ResultsSentTracker } from '../types'
 import { useAuthContext } from '../context/AuthContext'
 import SubjectResultForm from '../components/SubjectResultForm'
@@ -38,6 +38,10 @@ export default function ResultEntry() {
   // New state for student selection
   const [selectedStudents, setSelectedStudents] = useState<Set<string>>(new Set())
   const [selectAllMode, setSelectAllMode] = useState<'all' | 'none' | 'custom'>('none')
+  
+  // Subject breakdown state
+  const [showSubjectBreakdown, setShowSubjectBreakdown] = useState(false)
+  const [selectedBreakdownSubject, setSelectedBreakdownSubject] = useState<Subject | null>(null)
 
   // Student selection handlers (declared before use)
   const toggleStudentSelection = (studentId: string) => {
@@ -685,6 +689,126 @@ export default function ResultEntry() {
         </div>
       )}
 
+      {/* Subject Breakdown Modal */}
+      {showSubjectBreakdown && selectedBreakdownSubject && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6 pb-4 border-b">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">{selectedBreakdownSubject.name}</h2>
+                  <p className="text-sm text-gray-600 mt-1">Subject Code: {selectedBreakdownSubject.code}</p>
+                </div>
+                <button
+                  onClick={() => setShowSubjectBreakdown(false)}
+                  className="p-1 hover:bg-gray-100 rounded transition-colors"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                {/* Performance Summary */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div className="card-lg text-center">
+                    <p className="text-gray-600 text-sm">Class Average</p>
+                    <p className="text-3xl font-bold text-blue-600">
+                      {filteredResults
+                        .filter(r => r.subjectId === selectedBreakdownSubject.id)
+                        .length > 0
+                        ? (
+                            filteredResults
+                              .filter(r => r.subjectId === selectedBreakdownSubject.id)
+                              .reduce((sum, r) => sum + r.percentage, 0) /
+                            filteredResults.filter(r => r.subjectId === selectedBreakdownSubject.id).length
+                          ).toFixed(1)
+                        : 0}%
+                    </p>
+                  </div>
+                  <div className="card-lg text-center">
+                    <p className="text-gray-600 text-sm">Highest Score</p>
+                    <p className="text-3xl font-bold text-green-600">
+                      {filteredResults.filter(r => r.subjectId === selectedBreakdownSubject.id).length > 0
+                        ? Math.max(...filteredResults.filter(r => r.subjectId === selectedBreakdownSubject.id).map(r => r.totalScore))
+                        : 0}
+                    </p>
+                  </div>
+                  <div className="card-lg text-center">
+                    <p className="text-gray-600 text-sm">Lowest Score</p>
+                    <p className="text-3xl font-bold text-red-600">
+                      {filteredResults.filter(r => r.subjectId === selectedBreakdownSubject.id).length > 0
+                        ? Math.min(...filteredResults.filter(r => r.subjectId === selectedBreakdownSubject.id).map(r => r.totalScore))
+                        : 0}
+                    </p>
+                  </div>
+                  <div className="card-lg text-center">
+                    <p className="text-gray-600 text-sm">Pass Rate</p>
+                    <p className="text-3xl font-bold text-purple-600">
+                      {filteredResults.filter(r => r.subjectId === selectedBreakdownSubject.id).length > 0
+                        ? Math.round(
+                            (filteredResults
+                              .filter(r => r.subjectId === selectedBreakdownSubject.id && r.percentage >= 50)
+                              .length /
+                              filteredResults.filter(r => r.subjectId === selectedBreakdownSubject.id).length) *
+                            100
+                          )
+                        : 0}%
+                    </p>
+                  </div>
+                </div>
+
+                {/* Grade Distribution */}
+                <div className="card-lg">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Grade Distribution</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
+                    {['A', 'B', 'C', 'D', 'E', 'F'].map((grade) => {
+                      const count = filteredResults.filter(
+                        r => r.subjectId === selectedBreakdownSubject.id && r.grade === grade
+                      ).length
+                      const total = filteredResults.filter(r => r.subjectId === selectedBreakdownSubject.id).length
+                      const percentage = total > 0 ? ((count / total) * 100).toFixed(1) : 0
+                      return (
+                        <div key={grade} className="bg-gray-50 p-3 rounded-lg text-center">
+                          <p className="text-sm font-semibold text-gray-600">Grade {grade}</p>
+                          <p className="text-2xl font-bold text-gray-900">{count}</p>
+                          <p className="text-xs text-gray-500">{percentage}%</p>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* Top Performers */}
+                <div className="card-lg">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Performers</h3>
+                  <div className="space-y-2">
+                    {filteredResults
+                      .filter(r => r.subjectId === selectedBreakdownSubject.id)
+                      .sort((a, b) => b.totalScore - a.totalScore)
+                      .slice(0, 5)
+                      .map((result, index) => {
+                        const student = students.find(s => s.id === result.studentId)
+                        return (
+                          <div key={result.id} className="flex justify-between items-center p-3 bg-gray-50 rounded">
+                            <div className="flex items-center gap-3">
+                              <span className="font-bold text-lg text-gray-600">#{index + 1}</span>
+                              <span className="font-medium text-gray-900">{student?.firstName} {student?.lastName}</span>
+                            </div>
+                            <div className="text-right">
+                              <span className="font-bold text-lg text-green-600">{result.totalScore}%</span>
+                              <span className="ml-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold">{result.grade}</span>
+                            </div>
+                          </div>
+                        )
+                      })}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="card-lg mb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
@@ -753,18 +877,37 @@ export default function ResultEntry() {
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Subject
               </label>
-              <select
-                value={selectedSubject}
-                onChange={(e) => setSelectedSubject(e.target.value)}
-                className="input-field"
-              >
-                <option value="All">All Subjects</option>
-                {subjects.map((subject) => (
-                  <option key={subject.id} value={subject.id}>
-                    {subject.name}
-                  </option>
-                ))}
-              </select>
+              <div className="flex gap-2">
+                <select
+                  value={selectedSubject}
+                  onChange={(e) => setSelectedSubject(e.target.value)}
+                  className="input-field flex-1"
+                >
+                  <option value="All">All Subjects</option>
+                  {subjects.map((subject) => (
+                    <option key={subject.id} value={subject.id}>
+                      {subject.name}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  onClick={() => {
+                    if (selectedSubject !== 'All') {
+                      const subject = subjects.find(s => s.id === selectedSubject)
+                      if (subject) {
+                        setSelectedBreakdownSubject(subject)
+                        setShowSubjectBreakdown(true)
+                      }
+                    }
+                  }}
+                  disabled={selectedSubject === 'All'}
+                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-300 text-white rounded-lg flex items-center gap-2 transition-colors disabled:cursor-not-allowed"
+                  title="View detailed subject breakdown"
+                >
+                  <BarChart3 size={18} />
+                  <span className="hidden sm:inline">Breakdown</span>
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -815,6 +958,10 @@ export default function ResultEntry() {
       )}
 
       <div className="card-lg">
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Results Summary</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400">Manage and track student results</p>
+        </div>
         <Table
           columns={columns}
           data={filteredResults.map((result) => ({
