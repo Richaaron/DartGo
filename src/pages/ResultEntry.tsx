@@ -35,6 +35,52 @@ export default function ResultEntry() {
   const [viewMode, setViewMode] = useState<'class' | 'subject'>('class')
   const [selectedClass, setSelectedClass] = useState<string>('All')
   const [selectedSubject, setSelectedSubject] = useState<string>('All')
+  
+  // New state for student selection
+  const [selectedStudents, setSelectedStudents] = useState<Set<string>>(new Set())
+  const [selectAllMode, setSelectAllMode] = useState<'all' | 'none' | 'custom'>('none')
+
+  // Student selection handlers (declared before use)
+  const toggleStudentSelection = (studentId: string) => {
+    const newSelected = new Set(selectedStudents)
+    if (newSelected.has(studentId)) {
+      newSelected.delete(studentId)
+    } else {
+      newSelected.add(studentId)
+    }
+    setSelectedStudents(newSelected)
+    
+    // Update select all mode
+    const currentViewStudentIds = new Set(
+      filteredResults.map(r => r.studentId)
+    )
+    const allSelected = Array.from(currentViewStudentIds).every(id => newSelected.has(id))
+    const noneSelected = Array.from(currentViewStudentIds).every(id => !newSelected.has(id))
+    
+    if (allSelected) {
+      setSelectAllMode('all')
+    } else if (noneSelected) {
+      setSelectAllMode('none')
+    } else {
+      setSelectAllMode('custom')
+    }
+  }
+
+  const handleSelectAll = () => {
+    const currentViewStudentIds = new Set(
+      filteredResults.map(r => r.studentId)
+    )
+    
+    if (selectAllMode === 'all') {
+      // Deselect all
+      setSelectedStudents(new Set())
+      setSelectAllMode('none')
+    } else {
+      // Select all in current view
+      setSelectedStudents(currentViewStudentIds)
+      setSelectAllMode('all')
+    }
+  }
 
   // Determine if current user is form teacher or subject teacher
   const isFormTeacher = teacher?.teacherType === 'Form Teacher' || teacher?.teacherType === 'Form + Subject Teacher'
@@ -255,6 +301,18 @@ export default function ResultEntry() {
   }
 
   const columns = [
+    { 
+      key: 'checkbox', 
+      label: 'Select',
+      render: (value: any, row: any) => (
+        <input
+          type="checkbox"
+          checked={selectedStudents.has(row.studentId)}
+          onChange={() => toggleStudentSelection(row.studentId)}
+          className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+        />
+      )
+    },
     { key: 'studentName', label: 'Student Name' },
     { key: 'subjectName', label: 'Subject' },
     { key: 'firstCA', label: '1st CA' },
@@ -432,9 +490,9 @@ export default function ResultEntry() {
       .filter((student): student is Student => student !== undefined && student.parentEmail !== undefined) // Only students with parent emails
   }, [results, selectedTerm, selectedClass, selectedSubject, students])
 
-  // Function to send results to all parents in current view
-  const handleSendToAllParents = async () => {
-    if (!user) return
+  // Function to send results to selected students only
+  const handleSendToSelectedParents = async () => {
+    if (!user || selectedStudents.size === 0) return
 
     setIsBulkSending(true)
     setSendMessage(null)
@@ -447,7 +505,12 @@ export default function ResultEntry() {
       let successCount = 0
       let failureCount = 0
 
-      for (const student of studentsInCurrentView) {
+      // Get selected students from current view
+      const selectedStudentsList = Array.from(selectedStudents)
+        .map(studentId => students.find(s => s.id === studentId))
+        .filter(student => student && student.parentEmail) // Only students with parent emails
+
+      for (const student of selectedStudentsList) {
         try {
           if (!student || !student.parentEmail) continue
 
@@ -504,10 +567,10 @@ export default function ResultEntry() {
 
       setSendMessage({
         type: 'success',
-        text: `Results sent to ${successCount} parents${failureCount > 0 ? ` (${failureCount} failed)` : ''}`,
+        text: `Results sent to ${successCount} selected parent${successCount !== 1 ? 's' : ''}${failureCount > 0 ? ` (${failureCount} failed)` : ''}`,
       })
     } catch (error) {
-      console.error('Failed to send bulk results:', error)
+      console.error('Failed to send selected results:', error)
       setSendMessage({
         type: 'error',
         text: 'Failed to send some results. Please try again.',
@@ -542,6 +605,7 @@ export default function ResultEntry() {
     )
   }
 
+  
   // Get outstanding students (those who haven't received emails yet)
   const getOutstandingStudents = useMemo(() => {
     const currentTerm = selectedTerm === 'All' ? 'First' : selectedTerm
@@ -709,10 +773,10 @@ export default function ResultEntry() {
             Add Result
           </button>
             <button
-              onClick={handleSendToAllParents}
-              disabled={isBulkSending}
+              onClick={handleSendToSelectedParents}
+              disabled={isBulkSending || selectedStudents.size === 0}
               className="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white rounded-full font-black shadow-lg hover:shadow-2xl hover:scale-110 active:scale-95 flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-              title="Send results to all parents in current view"
+              title={selectedStudents.size === 0 ? 'Select students to send results' : `Send results to ${selectedStudents.size} selected student${selectedStudents.size > 1 ? 's' : ''}`}
             >
               {isBulkSending ? (
                 <>
@@ -722,7 +786,7 @@ export default function ResultEntry() {
               ) : (
                 <>
                   <Send size={20} />
-                  Send to Parents
+                  Send to Selected ({selectedStudents.size})
                 </>
               )}
             </button>
@@ -826,16 +890,42 @@ export default function ResultEntry() {
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Term
             </label>
-            <select
-              value={selectedTerm}
-              onChange={(e) => setSelectedTerm(e.target.value)}
-              className="input-field"
-            >
-              <option value="All">All Terms</option>
-              <option value="First">First Term</option>
-              <option value="Second">Second Term</option>
-              <option value="Third">Third Term</option>
-            </select>
+            <div className="flex gap-4 mb-6">
+              <select
+                value={selectedTerm}
+                onChange={(e) => setSelectedTerm(e.target.value)}
+                className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white"
+              >
+                <option value="All">All Terms</option>
+                <option value="First">First Term</option>
+                <option value="Second">Second Term</option>
+                <option value="Third">Third Term</option>
+              </select>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setViewMode('class')}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    viewMode === 'class'
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300'
+                  }`}
+                >
+                  <LayoutGrid size={16} className="inline mr-1" />
+                  By Class
+                </button>
+                <button
+                  onClick={() => setViewMode('subject')}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    viewMode === 'subject'
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300'
+                  }`}
+                >
+                  <List size={16} className="inline mr-1" />
+                  By Subject
+                </button>
+              </div>
+            </div>
           </div>
           {!teacher && (
             <div>
@@ -856,6 +946,35 @@ export default function ResultEntry() {
               </select>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Student Selection Controls */}
+      <div className="flex items-center justify-between mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+        <div className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            checked={selectAllMode === 'all'}
+            onChange={handleSelectAll}
+            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+          />
+          <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
+            {selectAllMode === 'all' ? 'All Selected' : selectAllMode === 'none' ? 'None Selected' : `${selectedStudents.size} Selected`}
+          </span>
+          {selectedStudents.size > 0 && (
+            <button
+              onClick={() => {
+                setSelectedStudents(new Set())
+                setSelectAllMode('none')
+              }}
+              className="text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+            >
+              Clear Selection
+            </button>
+          )}
+        </div>
+        <div className="text-xs text-blue-600 dark:text-blue-400">
+          {selectedStudents.size > 0 ? `Ready to send to ${selectedStudents.size} student${selectedStudents.size > 1 ? 's' : ''}` : 'Select students to send results'}
         </div>
       </div>
 
