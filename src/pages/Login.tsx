@@ -71,7 +71,7 @@ const AcademicBackground = () => (
       initial="hidden"
       animate="visible"
     >
-      <BookOpen className="w-12 h-12 text-gold-300/20" strokeWidth={1.5} />
+      <BookOpen className="w-12 h-12 text-school-yellow/30" strokeWidth={1.5} />
     </motion.div>
 
     <motion.div
@@ -80,7 +80,7 @@ const AcademicBackground = () => (
       initial="hidden"
       animate="visible"
     >
-      <BookOpen className="w-16 h-16 text-purple-300/15" strokeWidth={1.5} />
+      <BookOpen className="w-16 h-16 text-school-pink/20" strokeWidth={1.5} />
     </motion.div>
 
     <motion.div
@@ -89,7 +89,7 @@ const AcademicBackground = () => (
       initial="hidden"
       animate="visible"
     >
-      <BookOpen className="w-14 h-14 text-gold-400/10" strokeWidth={1.5} />
+      <BookOpen className="w-14 h-14 text-school-blue/15" strokeWidth={1.5} />
     </motion.div>
 
     {/* Floating Graduation Caps */}
@@ -239,7 +239,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-black to-purple-950 flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-school dark:bg-gradient-school-dark flex items-center justify-center p-4 relative overflow-hidden">
       <AcademicBackground />
       <div className="w-full max-w-5xl relative z-10 flex flex-col items-center">
         {/* Logo */}
@@ -250,22 +250,22 @@ export default function Login({ onLoginSuccess }: LoginProps) {
           transition={{ duration: 0.6 }}
         >
           <motion.div
-            className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-gold-400 to-gold-500 rounded-full mb-4 shadow-lg shadow-gold-400/30"
+            className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-school-yellow to-school-orange rounded-full mb-4 shadow-lg shadow-school-yellow/50 animate-bounce-slow"
             variants={graduationCapVariants}
             initial="hidden"
             animate="visible"
             whileHover="hover"
           >
-            <GraduationCap className="w-8 h-8 text-black" strokeWidth={2} />
+            <GraduationCap className="w-8 h-8 text-school-red" strokeWidth={2} />
           </motion.div>
           <motion.h1
             className="w-full max-w-4xl mx-auto whitespace-nowrap text-[1.05rem] sm:text-[1.35rem] md:text-[1.8rem] lg:text-[2.3rem] font-black uppercase tracking-[0.12em] text-center mb-3"
             animate={{
               scale: [1, 1.03, 1],
               textShadow: [
-                '0 0 12px rgba(251,191,36,0.35), 0 0 24px rgba(245,158,11,0.2)',
-                '0 0 20px rgba(251,191,36,0.75), 0 0 40px rgba(245,158,11,0.45)',
-                '0 0 12px rgba(251,191,36,0.35), 0 0 24px rgba(245,158,11,0.2)',
+                '0 0 12px rgba(255,107,107,0.35), 0 0 24px rgba(255,230,109,0.2)',
+                '0 0 20px rgba(255,107,107,0.75), 0 0 40px rgba(255,230,109,0.45)',
+                '0 0 12px rgba(255,107,107,0.35), 0 0 24px rgba(255,230,109,0.2)',
               ],
             }}
             transition={{
@@ -274,84 +274,84 @@ export default function Login({ onLoginSuccess }: LoginProps) {
               ease: 'easeInOut',
             }}
             style={{
-              color: '#fbbf24',
-              WebkitTextStroke: '1px rgba(120, 53, 15, 0.65)',
+              color: '#FFE66D',
+              WebkitTextStroke: '1px rgba(255, 107, 107, 0.65)',
               letterSpacing: '0.12em',
             }}
           >
-            FOLUSHO VICTORY SCHOOLS
+            🎓 FOLUSHO VICTORY SCHOOLS 🎓
           </motion.h1>
-          <p className="text-gold-200 font-semibold tracking-[0.25em] uppercase">Result Management System</p>
+          <p className="text-school-yellow dark:text-school-yellow font-black tracking-[0.25em] uppercase">✨ Result Management System ✨</p>
         </motion.div>
 
         {/* Login Card */}
         <motion.div
-          className="w-full max-w-md bg-white dark:bg-gradient-to-br dark:from-slate-800/95 dark:to-slate-900/95 dark:backdrop-blur-md rounded-lg shadow-2xl p-8 border border-gold-200/30 dark:border-gold-500/40"
+          className="w-full max-w-md bg-gradient-to-br from-white to-school-blue/10 dark:from-slate-800/95 dark:to-slate-900/95 dark:backdrop-blur-md rounded-3xl shadow-2xl p-8 border-4 border-dashed border-school-blue dark:border-school-yellow"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           {!loginType ? (
             <>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
-                Select Login Type
+              <h2 className="text-2xl font-black text-school-red dark:text-school-yellow mb-6 text-center uppercase tracking-wider">
+                👋 Select Login Type
               </h2>
-              <p className="text-gray-600 dark:text-gray-300 text-center mb-6">
+              <p className="text-school-blue dark:text-school-yellow text-center mb-6 font-black">
                 Choose your role to proceed
               </p>
               
               <div className="space-y-4">
                 <motion.button
                   onClick={() => setLoginType('admin')}
-                  className="w-full flex items-center gap-4 p-4 bg-purple-50 dark:bg-purple-600/20 hover:bg-purple-100 dark:hover:bg-purple-600/30 border-2 border-purple-200 dark:border-purple-600/40 rounded-lg transition-colors"
+                  className="w-full flex items-center gap-4 p-4 bg-gradient-to-r from-school-red/20 to-school-pink/20 dark:from-school-red/30 dark:to-school-pink/30 hover:from-school-red/30 hover:to-school-pink/30 dark:hover:from-school-red/40 dark:hover:to-school-pink/40 border-2 border-dashed border-school-red dark:border-school-red rounded-2xl transition-all"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
-                  whileHover={{ scale: 1.02, y: -4 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-700 rounded-full flex items-center justify-center shadow-lg shadow-purple-500/30">
+                  <div className="w-12 h-12 bg-gradient-to-br from-school-red to-school-pink rounded-full flex items-center justify-center shadow-lg shadow-school-red/30 animate-bounce-slow">
                     <User className="w-6 h-6 text-white" />
                   </div>
                   <div className="text-left">
-                    <p className="font-bold text-gray-900 dark:text-white">Admin Login</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">Manage students, teachers & results</p>
+                    <p className="font-black text-school-red dark:text-school-yellow">👨‍💼 Admin Login</p>
+                    <p className="text-sm text-school-blue dark:text-school-yellow font-bold">Manage students, teachers & results</p>
                   </div>
                 </motion.button>
 
                 <motion.button
                   onClick={() => setLoginType('teacher')}
-                  className="w-full flex items-center gap-4 p-4 bg-gold-50 dark:bg-gold-600/20 hover:bg-gold-100 dark:hover:bg-gold-600/30 border-2 border-gold-200 dark:border-gold-600/40 rounded-lg transition-colors"
+                  className="w-full flex items-center gap-4 p-4 bg-gradient-to-r from-school-yellow/20 to-school-orange/20 dark:from-school-blue/30 dark:to-school-green/30 hover:from-school-yellow/30 hover:to-school-orange/30 dark:hover:from-school-blue/40 dark:hover:to-school-green/40 border-2 border-dashed border-school-yellow dark:border-school-green rounded-2xl transition-all"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
-                  whileHover={{ scale: 1.02, y: -4 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <div className="w-12 h-12 bg-gradient-to-br from-gold-400 to-gold-500 rounded-full flex items-center justify-center shadow-lg shadow-gold-400/30">
-                    <GraduationCap className="w-6 h-6 text-black" />
+                  <div className="w-12 h-12 bg-gradient-to-br from-school-yellow to-school-orange rounded-full flex items-center justify-center shadow-lg shadow-school-yellow/30 animate-bounce-slow">
+                    <GraduationCap className="w-6 h-6 text-school-red" />
                   </div>
                   <div className="text-left">
-                    <p className="font-bold text-gray-900 dark:text-white">Teacher Login</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">Enter & manage subject results</p>
+                    <p className="font-black text-school-orange dark:text-school-yellow">👨‍🏫 Teacher Login</p>
+                    <p className="text-sm text-school-blue dark:text-school-yellow font-bold">Enter & manage subject results</p>
                   </div>
                 </motion.button>
 
                 <motion.button
                   onClick={() => setLoginType('parent')}
-                  className="w-full flex items-center gap-4 p-4 bg-emerald-50 dark:bg-emerald-600/20 hover:bg-emerald-100 dark:hover:bg-emerald-600/30 border-2 border-emerald-200 dark:border-emerald-600/40 rounded-lg transition-colors"
+                  className="w-full flex items-center gap-4 p-4 bg-gradient-to-r from-school-green/20 to-school-blue/20 dark:from-school-purple/30 dark:to-school-pink/30 hover:from-school-green/30 hover:to-school-blue/30 dark:hover:from-school-purple/40 dark:hover:to-school-pink/40 border-2 border-dashed border-school-green dark:border-school-pink rounded-2xl transition-all"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
-                  whileHover={{ scale: 1.02, y: -4 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg shadow-emerald-400/30">
+                  <div className="w-12 h-12 bg-gradient-to-br from-school-green to-school-blue rounded-full flex items-center justify-center shadow-lg shadow-school-green/30 animate-bounce-slow">
                     <Users className="w-6 h-6 text-white" />
                   </div>
                   <div className="text-left">
-                    <p className="font-bold text-gray-900 dark:text-white">Parent Portal</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">View your child's results</p>
+                    <p className="font-black text-school-green dark:text-school-yellow">👨‍👩‍👧 Parent Portal</p>
+                    <p className="text-sm text-school-blue dark:text-school-yellow font-bold">View your child's results</p>
                   </div>
                 </motion.button>
               </div>
@@ -360,18 +360,18 @@ export default function Login({ onLoginSuccess }: LoginProps) {
             <>
               <button
                 onClick={handleBack}
-                className="text-purple-600 dark:text-gold-300 hover:text-purple-800 dark:hover:text-gold-200 text-sm mb-4 font-semibold"
+                className="text-school-red dark:text-school-yellow hover:text-school-pink dark:hover:text-school-orange text-sm mb-4 font-black"
               >
                 ← Back to login type selection
               </button>
 
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 text-center">
-                {loginType === 'admin' && 'Admin Login'}
-                {loginType === 'teacher' && 'Teacher Login'}
-                {loginType === 'parent' && 'Parent Portal'}
+              <h2 className="text-2xl font-black text-school-red dark:text-school-yellow mb-2 text-center uppercase tracking-widest">
+                {loginType === 'admin' && '👨‍💼 Admin Login'}
+                {loginType === 'teacher' && '👨‍🏫 Teacher Login'}
+                {loginType === 'parent' && '👨‍👩‍👧 Parent Portal'}
               </h2>
               
-              <p className="text-gray-600 dark:text-gray-300 text-center mb-6">
+              <p className="text-school-blue dark:text-school-yellow text-center mb-6 font-black">
                 {loginType === 'admin' && 'Enter your admin credentials'}
                 {loginType === 'teacher' && 'Enter your teacher username and password'}
                 {loginType === 'parent' && 'Enter your parent username (from student registration)'}
