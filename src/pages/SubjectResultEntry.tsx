@@ -82,18 +82,29 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
 
   // Filter students offering subjects the teacher teaches
   const offeringStudents = useMemo(() => {
-    // If Admin, show all results. If Teacher, show students offering their subjects.
-    if (!isTeacher) return results.map(r => ({ ...r, status: 'Completed' }))
+    // If Admin, show all results. If Teacher, show based on level and assignments.
+    if (!isTeacher || !teacher) return results.map(r => ({ ...r, status: 'Completed' }))
 
     const teacherSubjectIds = new Set(teacherSubjects.map(s => s.id))
-    
-    // Get all assignments for these subjects
-    const relevantAssignments = allStudentSubjects.filter(as => teacherSubjectIds.has(as.subjectId))
+    const teacherAssignedClasses = new Set(teacher.assignedClasses || [])
+    const isSecondary = teacher.level === 'Secondary'
     
     // Map assignments to display items (existing results or pending ones)
     const items: any[] = []
 
-    relevantAssignments.forEach(assignment => {
+    allStudentSubjects.forEach(assignment => {
+      const student = students.find(s => s.id === assignment.studentId)
+      if (!student) return
+
+      // Logic for filtering assignments:
+      // 1. If Secondary: Filter by assigned subjects
+      // 2. If others: Filter by assigned classes (they handle all subjects for their class)
+      const isRelevant = isSecondary 
+        ? teacherSubjectIds.has(assignment.subjectId)
+        : teacherAssignedClasses.has(student.class)
+
+      if (!isRelevant) return
+
       // Find if a result already exists for this student, subject, term, and academic year
       const existingResult = results.find(r => 
         r.studentId === assignment.studentId && 
@@ -131,7 +142,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
     })
 
     return items
-  }, [allStudentSubjects, results, teacherSubjects, isTeacher])
+  }, [allStudentSubjects, results, teacherSubjects, isTeacher, teacher, students])
 
   // Simple filtering for the combined list
   const filteredDisplayData = useMemo(() => {

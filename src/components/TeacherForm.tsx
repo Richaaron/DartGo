@@ -121,8 +121,25 @@ export default function TeacherForm({
     if (!formData.email.includes('@')) newErrors.email = 'Valid email is required'
     // Username/password are auto-generated for new teachers; validate only when editing.
     if (isEditing && !formData.username.trim()) newErrors.username = 'Username is required'
-    if (!isFormTeacher && !isSubjectTeacher) newErrors.teacherType = 'Select at least one teaching assignment type'
-    if (isFormTeacher && formData.assignedClasses.length === 0) newErrors.assignedClasses = 'At least one class is required for Form Teachers'
+    
+    if (!isFormTeacher && !isSubjectTeacher) {
+      newErrors.teacherType = 'Select at least one teaching assignment type'
+    }
+
+    // Level-based validation
+    if (formData.level === 'Secondary') {
+      if (isSubjectTeacher && (formData.assignedSubjects || []).length === 0) {
+        newErrors.assignedSubjects = 'At least one subject is required for Secondary Subject Teachers'
+      }
+      if (isFormTeacher && formData.assignedClasses.length === 0) {
+        newErrors.assignedClasses = 'At least one class is required for Form Teachers'
+      }
+    } else {
+      // Primary, Nursery, Pre-Nursery
+      if (formData.assignedClasses.length === 0) {
+        newErrors.assignedClasses = `At least one class is required for ${formData.level} teachers`
+      }
+    }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -403,54 +420,64 @@ export default function TeacherForm({
             </div>
 
             <div>
-              {isSubjectTeacher ? (
-                <>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Assigned Subjects
-                  </label>
-                  <div className="flex gap-2">
-                    <select
-                      value={selectedSubject}
-                      onChange={(e) => setSelectedSubject(e.target.value)}
-                      className="input-field"
-                    >
-                      <option value="">Select subject...</option>
-                      {levelSubjects.map((subject) => (
-                        <option key={subject.id} value={subject.name}>
-                          {subject.name}
-                        </option>
-                      ))}
-                    </select>
-                    <button
-                      type="button"
-                      onClick={addSubject}
-                      className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-                    >
-                      Add
-                    </button>
-                  </div>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {(formData.assignedSubjects || []).map((subjectName) => (
-                      <span
-                        key={subjectName}
-                        className="inline-flex items-center gap-1 px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-sm font-medium"
+              {formData.level === 'Secondary' ? (
+                isSubjectTeacher ? (
+                  <>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Assigned Subjects *
+                    </label>
+                    <div className="flex gap-2">
+                      <select
+                        value={selectedSubject}
+                        onChange={(e) => setSelectedSubject(e.target.value)}
+                        className="input-field"
                       >
-                        {subjectName}
-                        <button
-                          type="button"
-                          onClick={() => removeSubject(subjectName)}
-                          className="hover:text-amber-900"
+                        <option value="">Select subject...</option>
+                        {levelSubjects.map((subject) => (
+                          <option key={subject.id} value={subject.name}>
+                            {subject.name}
+                          </option>
+                        ))}
+                      </select>
+                      <button
+                        type="button"
+                        onClick={addSubject}
+                        className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                      >
+                        Add
+                      </button>
+                    </div>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {(formData.assignedSubjects || []).map((subjectName) => (
+                        <span
+                          key={subjectName}
+                          className="inline-flex items-center gap-1 px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-sm font-medium"
                         >
-                          <X size={14} />
-                        </button>
-                      </span>
-                    ))}
+                          {subjectName}
+                          <button
+                            type="button"
+                            onClick={() => removeSubject(subjectName)}
+                            className="hover:text-amber-900"
+                          >
+                            <X size={14} />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                    {errors.assignedSubjects && (
+                      <p className="text-red-500 text-sm mt-1">{errors.assignedSubjects}</p>
+                    )}
+                    <p className="text-xs text-gray-500 mt-2">Select one or more subjects this teacher handles.</p>
+                  </>
+                ) : (
+                  <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 px-4 py-5 text-sm text-gray-600">
+                    This teacher is marked as a form teacher only, so subject assignment is not required.
                   </div>
-                  <p className="text-xs text-gray-500 mt-2">Select one or more subjects this teacher handles.</p>
-                </>
+                )
               ) : (
-                <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 px-4 py-5 text-sm text-gray-600">
-                  This teacher is marked as a form teacher, so subject assignment is not required.
+                <div className="rounded-xl border border-dashed border-indigo-200 bg-indigo-50 px-4 py-5 text-sm text-indigo-700">
+                  <p className="font-black uppercase tracking-widest text-[10px] mb-1">Automatic Assignment</p>
+                  As a <span className="font-bold">{formData.level}</span> teacher, you will automatically handle all subjects for your assigned classes.
                 </div>
               )}
             </div>
