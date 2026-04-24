@@ -150,19 +150,19 @@ export default function StudentForm({
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Profile Image Section */}
-        <div className="flex flex-col items-center mb-8 p-6 bg-gradient-to-br from-purple-50 dark:from-purple-900/20 to-gold-50 dark:to-gold-900/10 rounded-2xl border border-purple-200/50 dark:border-purple-700/30">
+        <div className="flex flex-col items-center mb-8 p-6 bg-gradient-to-br from-school-yellow/20 dark:from-school-blue/20 to-school-pink/10 dark:to-school-green/10 rounded-3xl border-4 border-dashed border-school-blue dark:border-school-yellow shadow-lg">
           <div className="relative w-36 h-36 mb-4 group">
-            <div className="w-full h-full rounded-full bg-gradient-to-br from-gray-100 dark:from-slate-700 to-gray-200 dark:to-slate-800 flex items-center justify-center overflow-hidden border-4 border-purple-300 dark:border-purple-600 group-hover:border-gold-400 transition-all shadow-lg">
+            <div className="w-full h-full rounded-full bg-gradient-to-br from-school-yellow/30 dark:from-school-blue/30 to-school-orange/20 dark:to-school-green/20 flex items-center justify-center overflow-hidden border-4 border-school-yellow dark:border-school-yellow group-hover:border-school-red transition-all shadow-lg animate-bounce-slow">
               {formData.image ? (
                 <img src={formData.image} alt="Profile" className="w-full h-full object-cover" />
               ) : (
-                <UserIcon className="w-20 h-20 text-purple-400 dark:text-purple-300" />
+                <UserIcon className="w-20 h-20 text-school-red dark:text-school-yellow animate-pulse-bright" />
               )}
             </div>
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="absolute bottom-0 right-0 p-3 bg-gradient-to-br from-gold-400 to-gold-500 dark:from-gold-500 dark:to-gold-600 text-white rounded-full hover:scale-110 transition-all shadow-lg hover:shadow-gold-500/50"
+              className="absolute bottom-0 right-0 p-3 bg-gradient-to-br from-school-red to-school-pink text-white rounded-full hover:scale-125 transition-all shadow-lg hover:shadow-school-red/50 animate-bounce-slow hover:animate-none"
               title="Upload Photo"
             >
               <Upload size={18} />
@@ -175,16 +175,16 @@ export default function StudentForm({
               className="hidden"
             />
           </div>
-          <p className="text-xs font-semibold text-purple-700 dark:text-purple-300 uppercase tracking-widest">Click to upload photo</p>
+          <p className="text-xs font-black text-school-blue dark:text-school-yellow uppercase tracking-widest">📸 Click to upload photo</p>
         </div>
 
         {/* Personal Information */}
         <div className="space-y-4">
-          <h3 className="text-xl font-black text-gray-900 dark:text-white uppercase tracking-wider border-l-4 border-purple-600 pl-3">👤 Personal Information</h3>
+          <h3 className="text-xl font-black text-gray-900 dark:text-white uppercase tracking-wider border-l-4 border-school-red pl-3 animate-cartoon-bounce">👤 Personal Information</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
                 First Name *
               </label>
               <input
@@ -192,15 +192,15 @@ export default function StudentForm({
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
-                className={`input-field ${errors.firstName ? 'border-red-500' : ''}`}
+                className={`input-field ${errors.firstName ? 'border-school-red' : ''}`}
               />
               {errors.firstName && (
-                <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>
+                <p className="text-school-red text-sm mt-1 font-black animate-shake">{errors.firstName}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
                 Last Name *
               </label>
               <input
@@ -208,17 +208,17 @@ export default function StudentForm({
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
-                className={`input-field ${errors.lastName ? 'border-red-500' : ''}`}
+                className={`input-field ${errors.lastName ? 'border-school-red' : ''}`}
               />
               {errors.lastName && (
-                <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>
+                <p className="text-school-red text-sm mt-1 font-black animate-shake">{errors.lastName}</p>
               )}
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
                 Date of Birth *
               </label>
               <input
@@ -226,15 +226,15 @@ export default function StudentForm({
                 name="dateOfBirth"
                 value={formData.dateOfBirth}
                 onChange={handleChange}
-                className={`input-field ${errors.dateOfBirth ? 'border-red-500' : ''}`}
+                className={`input-field ${errors.dateOfBirth ? 'border-school-red' : ''}`}
               />
               {errors.dateOfBirth && (
-                <p className="text-red-500 text-sm mt-1">{errors.dateOfBirth}</p>
+                <p className="text-school-red text-sm mt-1 font-black animate-shake">{errors.dateOfBirth}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
                 Gender
               </label>
               <select
@@ -243,8 +243,8 @@ export default function StudentForm({
                 onChange={handleChange}
                 className="input-field"
               >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
+                <option value="Male">👦 Male</option>
+                <option value="Female">👧 Female</option>
               </select>
             </div>
           </div>
@@ -268,13 +268,13 @@ export default function StudentForm({
         </div>
 
         {/* School Information */}
-        <div className="space-y-4 border-t pt-4">
-          <h3 className="text-lg font-semibold text-gray-900">School Information</h3>
+        <div className="space-y-4 border-t-4 border-school-yellow pt-4">
+          <h3 className="text-lg font-black text-gray-900 dark:text-white uppercase tracking-wider border-l-4 border-school-purple pl-3 animate-cartoon-bounce">🏫 School Information</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Registration Number
+              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
+                📝 Registration Number
               </label>
               <input
                 type="text"
@@ -282,14 +282,14 @@ export default function StudentForm({
                 value={formData.registrationNumber}
                 onChange={handleChange}
                 placeholder="Auto-generated"
-                className="input-field bg-gray-50"
+                className="input-field bg-school-yellow/10 dark:bg-school-blue/10"
                 disabled
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Level
+              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
+                📚 Level
               </label>
               <select
                 name="level"
@@ -297,23 +297,23 @@ export default function StudentForm({
                 onChange={handleChange}
                 className="input-field"
               >
-                <option value="Pre-Nursery">Pre-Nursery</option>
-                <option value="Nursery">Nursery</option>
-                <option value="Primary">Primary</option>
-                <option value="Secondary">Secondary</option>
+                <option value="Pre-Nursery">👶 Pre-Nursery</option>
+                <option value="Nursery">🍼 Nursery</option>
+                <option value="Primary">✏️ Primary</option>
+                <option value="Secondary">📖 Secondary</option>
               </select>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Class *
+              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
+                🎓 Class *
               </label>
               {allowedClasses.length > 0 ? (
                 <select
                   name="class"
                   value={formData.class}
                   onChange={handleChange}
-                  className={`input-field ${errors.class ? 'border-red-500' : ''}`}
+                  className={`input-field ${errors.class ? 'border-school-red' : ''}`}
                   disabled={lockClass}
                 >
                   <option value="">Select class</option>
@@ -330,19 +330,19 @@ export default function StudentForm({
                   value={formData.class}
                   onChange={handleChange}
                   placeholder="e.g., Primary 1"
-                  className={`input-field ${errors.class ? 'border-red-500' : ''}`}
+                  className={`input-field ${errors.class ? 'border-school-red' : ''}`}
                 />
               )}
               {errors.class && (
-                <p className="text-red-500 text-sm mt-1">{errors.class}</p>
+                <p className="text-school-red text-sm mt-1 font-black animate-shake">{errors.class}</p>
               )}
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Enrollment Date
+              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
+                📅 Enrollment Date
               </label>
               <input
                 type="date"
@@ -354,8 +354,8 @@ export default function StudentForm({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Status
+              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
+                ✨ Status
               </label>
               <select
                 name="status"
@@ -363,21 +363,21 @@ export default function StudentForm({
                 onChange={handleChange}
                 className="input-field"
               >
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-                <option value="Suspended">Suspended</option>
+                <option value="Active">✅ Active</option>
+                <option value="Inactive">⏸️ Inactive</option>
+                <option value="Suspended">🚫 Suspended</option>
               </select>
             </div>
           </div>
         </div>
 
         {/* Parent Information */}
-        <div className="space-y-4 border-t pt-4">
-          <h3 className="text-lg font-semibold text-gray-900">Parent/Guardian Information</h3>
+        <div className="space-y-4 border-t-4 border-school-yellow pt-4">
+          <h3 className="text-lg font-black text-gray-900 dark:text-white uppercase tracking-wider border-l-4 border-school-green pl-3 animate-cartoon-bounce">👨‍👩‍👧 Parent/Guardian Information</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
                 Parent/Guardian Name *
               </label>
               <input
@@ -385,15 +385,15 @@ export default function StudentForm({
                 name="parentName"
                 value={formData.parentName}
                 onChange={handleChange}
-                className={`input-field ${errors.parentName ? 'border-red-500' : ''}`}
+                className={`input-field ${errors.parentName ? 'border-school-red' : ''}`}
               />
               {errors.parentName && (
-                <p className="text-red-500 text-sm mt-1">{errors.parentName}</p>
+                <p className="text-school-red text-sm mt-1 font-black animate-shake">{errors.parentName}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
                 Parent/Guardian Phone *
               </label>
               <input
@@ -401,50 +401,50 @@ export default function StudentForm({
                 name="parentPhone"
                 value={formData.parentPhone}
                 onChange={handleChange}
-                className={`input-field ${errors.parentPhone ? 'border-red-500' : ''}`}
+                className={`input-field ${errors.parentPhone ? 'border-school-red' : ''}`}
               />
               {errors.parentPhone && (
-                <p className="text-red-500 text-sm mt-1">{errors.parentPhone}</p>
+                <p className="text-school-red text-sm mt-1 font-black animate-shake">{errors.parentPhone}</p>
               )}
             </div>
           </div>
 
           {formData.parentUsername && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 bg-blue-50 p-4 rounded-lg border border-blue-100">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 bg-gradient-to-br from-school-yellow/20 to-school-orange/10 p-4 rounded-2xl border-2 border-dashed border-school-yellow">
               <div>
-                <label className="block text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1">
-                  Parent Portal Username
+                <label className="block text-xs font-black text-school-red uppercase tracking-wider mb-1">
+                  📱 Parent Portal Username
                 </label>
-                <div className="font-mono text-sm bg-white p-2 rounded border border-blue-200">
+                <div className="font-mono text-sm bg-white dark:bg-slate-800 p-2 rounded-lg border-2 border-school-blue">
                   {formData.parentUsername}
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1">
-                  Parent Portal Password
+                <label className="block text-xs font-black text-school-red uppercase tracking-wider mb-1">
+                  🔐 Parent Portal Password
                 </label>
-                <div className="font-mono text-sm bg-white p-2 rounded border border-blue-200">
+                <div className="font-mono text-sm bg-white dark:bg-slate-800 p-2 rounded-lg border-2 border-school-blue">
                   {formData.parentPassword}
                 </div>
               </div>
-              <p className="text-xs text-blue-500 col-span-2 mt-2">
-                Share these auto-generated credentials with the parent to allow them to view their child's results.
+              <p className="text-xs text-school-blue dark:text-school-yellow col-span-2 mt-2 font-black">
+                ✨ Share these auto-generated credentials with the parent to allow them to view their child's results.
               </p>
             </div>
           )}
         </div>
 
         {/* Form Actions */}
-        <div className="flex gap-4 pt-4 border-t">
-          <button type="submit" className="btn-primary">
-            {isEditing ? 'Update Student' : 'Add Student'}
+        <div className="flex gap-4 pt-4 border-t-4 border-school-yellow">
+          <button type="submit" className="btn-primary animate-pulse-bright hover:animate-none">
+            {isEditing ? '✏️ Update Student' : '➕ Add Student'}
           </button>
           <button
             type="button"
             onClick={onCancel}
-            className="btn-secondary"
+            className="btn-secondary hover:scale-105"
           >
-            Cancel
+            ❌ Cancel
           </button>
         </div>
       </form>
