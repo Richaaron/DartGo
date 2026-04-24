@@ -11,25 +11,19 @@ export default function AttendancePage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [message, setMessage] = useState({ type: '', text: '' })
-  const [debugInfo, setDebugInfo] = useState('')
 
   const classes = useMemo(() => [...new Set(students.map(s => s.class))], [students])
 
   useEffect(() => {
     const loadData = async () => {
       setIsLoading(true)
-      setDebugInfo('Starting to load data...')
-      
       try {
         // Fetch students first
-        setDebugInfo('Fetching students...')
         const studentsData = await fetchStudents()
         setStudents(studentsData)
-        setDebugInfo(`Loaded ${studentsData.length} students`)
         
         // Then fetch attendance for the selected date
         try {
-          setDebugInfo('Fetching attendance data...')
           const existingAttendance = await fetchAttendance({ date: selectedDate })
           
           const records: Record<string, { status: string, remarks: string }> = {}
@@ -42,10 +36,8 @@ export default function AttendancePage() {
               : { status: 'Present', remarks: '' }
           })
           setAttendanceRecords(records)
-          setDebugInfo(`Attendance records created for ${Object.keys(records).length} students`)
         } catch (attendanceError) {
           console.warn('Failed to fetch attendance, setting default:', attendanceError)
-          setDebugInfo('Attendance fetch failed, setting default records')
           // Set default attendance records
           const records: Record<string, { status: string, remarks: string }> = {}
           studentsData.forEach((s: Student) => {
@@ -56,7 +48,6 @@ export default function AttendancePage() {
       } catch (error: any) {
         console.error('Failed to load students:', error)
         setMessage({ type: 'error', text: 'Failed to load student data' })
-        setDebugInfo(`Error loading students: ${error.message}`)
         // Set empty arrays to prevent crashes
         setStudents([])
         setAttendanceRecords({})
@@ -113,7 +104,6 @@ export default function AttendancePage() {
       <div className="p-8 text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
         <p className="mt-4 text-gray-600">Loading attendance data...</p>
-        <p className="mt-2 text-sm text-gray-500">{debugInfo}</p>
       </div>
     )
   }
@@ -124,7 +114,6 @@ export default function AttendancePage() {
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Attendance</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">Mark and manage student attendance</p>
-          <p className="text-sm text-blue-600 mt-1">Debug: {debugInfo} | Total Students: {students.length} | Filtered: {filteredStudents.length}</p>
         </div>
         <div className="flex gap-4 items-center">
           <input
@@ -245,10 +234,7 @@ export default function AttendancePage() {
           </table>
           {filteredStudents.length === 0 && (
             <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-              <p className="mb-2">No students found.</p>
-              <p className="text-sm">Debug info: {debugInfo}</p>
-              <p className="text-sm">Total students in system: {students.length}</p>
-              <p className="text-sm">Classes available: {classes.join(', ')}</p>
+              No students found. Try selecting a different class or check if student data is available.
             </div>
           )}
         </div>
