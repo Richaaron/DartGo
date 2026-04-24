@@ -129,6 +129,16 @@ export default function ResultEntry() {
     }
   }, [])
 
+  // Auto-select teacher's assigned class if they only have one
+  useEffect(() => {
+    if (teacher && teacher.assignedClasses && teacher.assignedClasses.length === 1) {
+      const assignedClass = teacher.assignedClasses[0]
+      if (assignedClass) {
+        setSelectedClass(assignedClass)
+      }
+    }
+  }, [teacher])
+
   const filteredResults = useMemo(() => {
     const getResultDetailsForFilter = (result: SubjectResult) => {
       const student = students.find((s) => s.id === result.studentId)
@@ -156,13 +166,13 @@ export default function ResultEntry() {
         
         if (teacher) {
           // Always use class-based view for teachers
-          // Form Teacher: Filter by assigned classes
+          // Form Teacher: Filter by assigned classes ONLY
           if (isFormTeacher && teacher.assignedClasses) {
             matchesRoleRestriction = teacher.assignedClasses.includes(details.studentClass)
           }
-          // Subject Teacher: Filter by selected class
-          if (isSubjectTeacher && selectedClass !== 'All') {
-            matchesRoleRestriction = details.studentClass === selectedClass
+          // Subject Teacher: Filter by assigned classes ONLY
+          if (isSubjectTeacher && teacher.assignedClasses) {
+            matchesRoleRestriction = teacher.assignedClasses.includes(details.studentClass)
           }
         }
 
@@ -689,23 +699,25 @@ export default function ResultEntry() {
               />
             </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Class
-            </label>
-            <select
-              value={selectedClass}
-              onChange={(e) => setSelectedClass(e.target.value)}
-              className="input-field"
-            >
-              <option value="All">All Classes</option>
-              {availableClasses.map((className) => (
-                <option key={className} value={className}>
-                  {className}
-                </option>
-              ))}
-            </select>
-          </div>
+          {(!teacher || availableClasses.length > 1) && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Class
+              </label>
+              <select
+                value={selectedClass}
+                onChange={(e) => setSelectedClass(e.target.value)}
+                className="input-field"
+              >
+                <option value="All">All Classes</option>
+                {availableClasses.map((className) => (
+                  <option key={className} value={className}>
+                    {className}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Term
