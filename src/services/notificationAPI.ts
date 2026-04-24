@@ -4,7 +4,7 @@ export interface Notification {
   _id: string
   recipientEmail: string
   recipientName: string
-  type: 'student_registration' | 'result_published' | 'attendance_warning' | 'low_grades' | 'teacher_assigned' | 'fee_reminder'
+  type: 'student_registration' | 'result_published' | 'attendance_warning' | 'low_grades' | 'teacher_assigned'
   subject: string
   body: string
   status: 'sent' | 'failed' | 'pending'

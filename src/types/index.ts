@@ -17,9 +17,6 @@ export interface Student {
   image?: string // Base64 or URL
   parentUsername?: string
   parentPassword?: string
-  feePaid?: boolean // Track if school fees have been paid
-  feeLastPaymentDate?: string // Date of last payment
-  feeNotificationSent?: boolean // Track if fee reminder email sent
 }
 
 export interface Subject {
@@ -78,32 +75,6 @@ export interface ResultsSentTracker {
   parentEmail: string
   status: 'sent' | 'failed'
   attemptCount: number
-}
-
-export interface FeePayment {
-  id: string
-  studentId: string
-  amount: number
-  paymentDate: string
-  paymentMethod: 'Cash' | 'Bank Transfer' | 'Card' | 'Cheque'
-  term: string
-  academicYear: string
-  recordedBy: string
-  notes?: string
-}
-
-export interface FeePaymentTracker {
-  id: string
-  studentId: string
-  term: string
-  academicYear: string
-  amountDue: number
-  amountPaid: number
-  feePaid: boolean
-  notificationSentDate?: string
-  notificationSentBy?: string
-  parentEmail: string
-  status: 'paid' | 'partial' | 'outstanding'
 }
 
 export interface StudentResult extends Result {

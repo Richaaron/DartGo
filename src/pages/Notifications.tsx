@@ -54,13 +54,7 @@ export const NotificationsPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-            <h3 className="font-semibold text-purple-900 mb-2">Fee Reminder</h3>
-            <p className="text-sm text-purple-800">
-              Sent as a reminder for upcoming fee payment deadlines
-            </p>
-          </div>
-
+          
           <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
             <h3 className="font-semibold text-indigo-900 mb-2">Teacher Assigned</h3>
             <p className="text-sm text-indigo-800">

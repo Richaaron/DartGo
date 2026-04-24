@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom'
-import { BarChart3, GraduationCap, BookOpen, Menu, X, LogOut, Users, CheckCircle, Settings as SettingsIcon, Moon, Sun, Bell, FileText, MessageSquare, Timer, DollarSign } from 'lucide-react'
+import { BarChart3, GraduationCap, BookOpen, Menu, X, LogOut, Users, CheckCircle, Settings as SettingsIcon, Moon, Sun, Bell, FileText, MessageSquare, Timer } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuthContext } from './context/AuthContext'
 import { useDarkMode } from './hooks/useLocalStorage'
@@ -24,7 +24,6 @@ import AdminSchemeUpload from './pages/AdminSchemeUpload'
 import NotificationsPage from './pages/Notifications'
 import Messages from './pages/Messages'
 import Deadlines from './pages/Deadlines'
-import FeesManagement from './pages/FeesManagement'
 import './App.css'
 
 import { fetchConfig } from './services/api'
@@ -326,14 +325,7 @@ function AppContent() {
                   isOpen={isMobile || isSidebarOpen}
                   isDarkMode={isDarkMode}
                 />
-              <NavLink
-                to="/fees"
-                icon={<DollarSign size={isMobile ? 20 : 18} />}
-                label="School Fees"
-                isOpen={isMobile || isSidebarOpen}
-                isDarkMode={isDarkMode}
-              />
-              <NavLink
+                            <NavLink
                 to="/reports"
                 icon={<BarChart3 size={isMobile ? 20 : 18} />}
                 label="Performance Reports"
@@ -460,8 +452,7 @@ function AppContent() {
                   <Route path="/results" element={<PageTransition><ResultEntry /></PageTransition>} />
                   <Route path="/subject-results" element={<PageTransition><SubjectResultEntry /></PageTransition>} />
                   <Route path="/attendance" element={<PageTransition><Attendance /></PageTransition>} />
-                  <Route path="/fees" element={<PageTransition><FeesManagement /></PageTransition>} />
-                  <Route path="/reports" element={<PageTransition><Reports /></PageTransition>} />
+                                    <Route path="/reports" element={<PageTransition><Reports /></PageTransition>} />
                   <Route path="/notifications" element={<PageTransition><NotificationsPage /></PageTransition>} />
                   <Route path="/messages" element={<PageTransition><Messages /></PageTransition>} />
                   <Route path="/deadlines" element={<PageTransition><Deadlines /></PageTransition>} />
