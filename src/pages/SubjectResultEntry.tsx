@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo, useCallback, memo } from 'react'
 import { Plus, Search, Upload, AlertCircle } from 'lucide-react'
 import { SubjectResult, Student, Subject } from '../types'
+import SubjectResultForm from '../components/SubjectResultForm'
+import { createResult, updateResult } from '../services/api'
 
 const PRIMARY_CLASSES = ['Nursery 1', 'Nursery 2', 'Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6']
 const SECONDARY_CLASSES = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']
@@ -127,6 +129,31 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
       }
     }
   }, [])
+
+  const handleSubmitResult = async (result: SubjectResult | Omit<SubjectResult, 'id'>) => {
+    try {
+      if ('id' in result) {
+        // Update existing result
+        await updateResult(result.id, result)
+      } else {
+        // Create new result
+        await createResult(result)
+      }
+      await loadData()
+      setShowForm(false)
+      setEditingResult(null)
+      setMessage({ type: 'success', text: 'Result saved successfully!' })
+      setTimeout(() => setMessage({ type: '', text: '' }), 3000)
+    } catch (error) {
+      console.error('Failed to save result:', error)
+      setMessage({ type: 'error', text: 'Failed to save result. Please try again.' })
+    }
+  }
+
+  const handleCancel = () => {
+    setShowForm(false)
+    setEditingResult(null)
+  }
 
   const handleRetry = () => {
     loadData()
@@ -320,6 +347,22 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
           )}
         </div>
       </div>
+
+      {/* Form Modal */}
+      {showForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <SubjectResultForm
+              onSubmit={handleSubmitResult}
+              initialData={editingResult || undefined}
+              onCancel={handleCancel}
+              isEditing={!!editingResult}
+              students={students}
+              subjects={subjects}
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 })
