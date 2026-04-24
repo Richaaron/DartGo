@@ -85,6 +85,18 @@ export interface StudentResult extends Result {
   percentage: number
 }
 
+export interface StudentSubject {
+  id: string
+  studentId: string
+  subjectId: string
+  enrollmentDate: string
+  status: 'Active' | 'Dropped' | 'Completed'
+  academicYear: string
+  term: string
+  assignedBy: string
+  notes?: string
+}
+
 export interface ClassResult {
   class: string
   level: SchoolLevel

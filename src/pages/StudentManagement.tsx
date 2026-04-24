@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
-import { Plus, Edit2, Trash2, Search, Download } from 'lucide-react'
+import { Plus, Edit2, Trash2, Search, Download, BookOpen } from 'lucide-react'
 import { Student, SchoolLevel } from '../types'
 import StudentForm from '../components/StudentForm'
+import StudentSubjectForm from '../components/StudentSubjectForm'
 import Table from '../components/Table'
 import { exportToCSV, formatDate, generateRegistrationNumber, generateParentCredentials } from '../utils/calculations'
-import { fetchStudents, createStudent, updateStudent, deleteStudent } from '../services/api'
+import { fetchStudents, createStudent, updateStudent, deleteStudent, fetchSubjects, fetchStudentSubjects, createStudentSubject, deleteStudentSubject } from '../services/api'
 import { useAuthContext } from '../context/AuthContext'
 
 export default function StudentManagement() {
@@ -23,25 +24,30 @@ export default function StudentManagement() {
   const [selectedClass, setSelectedClass] = useState<string>('All')
   const [showForm, setShowForm] = useState(false)
   const [editingStudent, setEditingStudent] = useState<Student | null>(null)
+  const [subjects, setSubjects] = useState<any[]>([])
+  const [showSubjectForm, setShowSubjectForm] = useState(false)
+  const [selectedStudentForSubjects, setSelectedStudentForSubjects] = useState<Student | null>(null)
+  const [studentSubjects, setStudentSubjects] = useState<any[]>([])
 
   useEffect(() => {
     let isMounted = true
 
-    fetchStudents()
-      .then((data) => {
+    Promise.all([fetchStudents(), fetchSubjects()])
+      .then(([studentData, subjectData]) => {
         if (isMounted) {
           if (isSubjectOnlyTeacher) {
-            setStudents(data.filter((s: Student) => s.level === 'Secondary'))
+            setStudents(studentData.filter((s: Student) => s.level === 'Secondary'))
           } else if (isTeacher) {
             // Form-capable teachers: only students in assigned classes
-            setStudents(data.filter((s: Student) => assignedClasses.includes(s.class)))
+            setStudents(studentData.filter((s: Student) => assignedClasses.includes(s.class)))
           } else {
-            setStudents(data)
+            setStudents(studentData)
           }
+          setSubjects(subjectData)
         }
       })
       .catch((error) => {
-        console.error('Failed to load students', error)
+        console.error('Failed to load students or subjects', error)
       })
 
     return () => {
@@ -67,6 +73,48 @@ export default function StudentManagement() {
       }
     } catch (error) {
       console.error('Failed to load students', error)
+    }
+  }
+
+  const handleOpenSubjectAssignment = async (student: Student) => {
+    setSelectedStudentForSubjects(student)
+    try {
+      const subjects = await fetchStudentSubjects(student.id)
+      setStudentSubjects(subjects)
+    } catch (error) {
+      console.error('Failed to load student subjects', error)
+      setStudentSubjects([])
+    }
+    setShowSubjectForm(true)
+  }
+
+  const handleAssignSubjects = async (assignments: any[]) => {
+    try {
+      // Delete old assignments and create new ones
+      for (const oldSubject of studentSubjects) {
+        try {
+          await deleteStudentSubject(oldSubject.id)
+        } catch (error) {
+          console.error('Failed to delete old subject assignment', error)
+        }
+      }
+
+      // Create new assignments
+      for (const assignment of assignments) {
+        try {
+          await createStudentSubject(assignment)
+        } catch (error) {
+          console.error('Failed to create subject assignment', error)
+        }
+      }
+
+      setShowSubjectForm(false)
+      setSelectedStudentForSubjects(null)
+      setStudentSubjects([])
+      window.alert('Subjects assigned successfully!')
+    } catch (error) {
+      window.alert('Failed to assign subjects')
+      console.error('Error assigning subjects:', error)
     }
   }
 
@@ -274,6 +322,25 @@ export default function StudentManagement() {
         </div>
       )}
 
+      {/* Subject Assignment Modal */}
+      {showSubjectForm && selectedStudentForSubjects && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <StudentSubjectForm
+              student={selectedStudentForSubjects}
+              subjects={subjects}
+              currentSubjects={studentSubjects}
+              onSubmit={handleAssignSubjects}
+              onCancel={() => {
+                setShowSubjectForm(false)
+                setSelectedStudentForSubjects(null)
+                setStudentSubjects([])
+              }}
+            />
+          </div>
+        </div>
+      )}
+
       {/* Table */}
       <div className="card-lg">
         <Table
@@ -282,6 +349,13 @@ export default function StudentManagement() {
             ...student,
             actions: (
               <div className="flex gap-2">
+                <button
+                  onClick={() => handleOpenSubjectAssignment(student)}
+                  className="p-1 text-purple-600 hover:bg-purple-50 rounded transition-colors"
+                  title="Assign subjects"
+                >
+                  <BookOpen size={18} />
+                </button>
                 <button
                   onClick={() => {
                     setEditingStudent(student)

@@ -1,4 +1,4 @@
-import { Student, Teacher, Subject, SubjectResult, Curriculum, SchemeOfWork, DEFAULT_SUBJECTS } from '../types'
+import { Student, Teacher, Subject, SubjectResult, Curriculum, SchemeOfWork, StudentSubject, DEFAULT_SUBJECTS } from '../types'
 import apiService from './apiService'
 
 const DEV_SUBJECTS: Subject[] = DEFAULT_SUBJECTS.map((subject) => ({
@@ -116,6 +116,25 @@ export async function updateResult(id: string, data: Partial<SubjectResult>): Pr
 
 export async function deleteResult(id: string): Promise<void> {
   await apiService.delete(`/results/${id}`)
+}
+
+export async function fetchStudentSubjects(studentId: string): Promise<StudentSubject[]> {
+  const { data } = await apiService.get(`/student-subjects/${studentId}`)
+  return data as StudentSubject[]
+}
+
+export async function createStudentSubject(data: Partial<StudentSubject>): Promise<StudentSubject> {
+  const { data: result } = await apiService.post('/student-subjects', data)
+  return result as StudentSubject
+}
+
+export async function deleteStudentSubject(id: string): Promise<void> {
+  await apiService.delete(`/student-subjects/${id}`)
+}
+
+export async function updateStudentSubject(id: string, data: Partial<StudentSubject>): Promise<StudentSubject> {
+  const { data: result } = await apiService.put(`/student-subjects/${id}`, data)
+  return result as StudentSubject
 }
 
 export async function fetchConfig(): Promise<any> {
