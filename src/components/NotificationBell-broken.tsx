@@ -1,51 +1,27 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Bell, X } from 'lucide-react'
-
-// Simplified notification interface for safe fallback
-interface SafeNotification {
-  _id: string
-  recipientEmail: string
-  recipientName: string
-  type: 'student_registration' | 'result_published' | 'attendance_warning' | 'low_grades' | 'teacher_assigned' | 'fee_reminder'
-  subject: string
-  body: string
-  status: 'sent' | 'failed' | 'pending'
-  studentId?: string
-  sentAt?: string
-  errorMessage?: string
-  metadata?: Record<string, any>
-  createdAt: string
-}
+import notificationAPI, { Notification } from '../services/notificationAPI'
 
 export const NotificationBell: React.FC = () => {
-  const [notifications, setNotifications] = useState<SafeNotification[]>([])
+  const [notifications, setNotifications] = useState<Notification[]>([])
   const [isOpen, setIsOpen] = useState(false)
   const [unreadCount, setUnreadCount] = useState(0)
-  const [isLoading, setIsLoading] = useState(false)
 
   const loadNotifications = useCallback(async () => {
-    setIsLoading(true)
     try {
-      // Try to import and use the notificationAPI
-      const { notificationAPI } = await import('../services/notificationAPI')
       const data = await notificationAPI.getRecent(5)
       setNotifications(data.notifications)
-      const failedCount = data.notifications.filter((n: SafeNotification) => n.status === 'failed').length
+      const failedCount = data.notifications.filter(n => n.status === 'failed').length
       setUnreadCount(failedCount)
     } catch (error) {
-      // Fallback to empty notifications if API fails
-      console.warn('Failed to load notifications, using fallback:', error)
-      setNotifications([])
-      setUnreadCount(0)
-    } finally {
-      setIsLoading(false)
+      console.error('Failed to load notifications:', error)
     }
   }, [])
 
   useEffect(() => {
     const kickOff = setTimeout(() => {
       void loadNotifications()
-    }, 1000) // Delay to avoid immediate API calls
+    }, 0)
     const interval = setInterval(loadNotifications, 30000) // Refresh every 30 seconds
     return () => {
       clearTimeout(kickOff)
@@ -87,9 +63,8 @@ export const NotificationBell: React.FC = () => {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="relative p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700/50 rounded-lg transition-colors"
-        disabled={isLoading}
       >
-        <Bell className={`w-6 h-6 ${isLoading ? 'animate-pulse' : ''}`} />
+        <Bell className="w-6 h-6" />
         {unreadCount > 0 && (
           <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
             {unreadCount}
@@ -110,11 +85,7 @@ export const NotificationBell: React.FC = () => {
           </div>
 
           <div className="max-h-96 overflow-y-auto">
-            {isLoading ? (
-              <div className="p-4 text-center text-gray-500 dark:text-gray-400 text-sm">
-                Loading notifications...
-              </div>
-            ) : notifications.length === 0 ? (
+            {notifications.length === 0 ? (
               <div className="p-4 text-center text-gray-500 dark:text-gray-400 text-sm">
                 No recent notifications
               </div>
