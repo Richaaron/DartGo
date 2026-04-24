@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 const PRIMARY_CLASSES = ['Nursery 1', 'Nursery 2', 'Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6']
 const SECONDARY_CLASSES = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']
 const ALL_CLASSES = [...PRIMARY_CLASSES, ...SECONDARY_CLASSES]
-import { Plus, Trash2, Search, Download, Send, Mail, AlertCircle, LayoutGrid, List, CheckCircle2, Clock } from 'lucide-react'
+import { Plus, Trash2, Search, Download, Send, Mail, AlertCircle, CheckCircle2, Clock } from 'lucide-react'
 import { SubjectResult, Student, Subject, ResultsSentTracker } from '../types'
 import { useAuthContext } from '../context/AuthContext'
 import SubjectResultForm from '../components/SubjectResultForm'
@@ -31,10 +31,9 @@ export default function ResultEntry() {
   const [resultsSentTracker, setResultsSentTracker] = useState<ResultsSentTracker[]>([])
   const [isBulkSending, setIsBulkSending] = useState(false)
   
-  // New state for dual-mode viewing
-  const [viewMode, setViewMode] = useState<'class' | 'subject'>('class')
+  // State for class-based control (teachers always use class view)
   const [selectedClass, setSelectedClass] = useState<string>('All')
-  const [selectedSubject, setSelectedSubject] = useState<string>('All')
+  const [selectedSubject, setSelectedSubject] = useState<string>('All') // Only used by admins
   
   // New state for student selection
   const [selectedStudents, setSelectedStudents] = useState<Set<string>>(new Set())
@@ -152,28 +151,18 @@ export default function ResultEntry() {
 
         const matchesTerm = selectedTerm === 'All' || result.term === selectedTerm
 
-        // Role-based filtering
+        // Role-based filtering (always class-based for teachers)
         let matchesRoleRestriction = true
         
         if (teacher) {
-          if (viewMode === 'class') {
-            // Form Teacher: Filter by assigned classes
-            if (isFormTeacher && teacher.assignedClasses) {
-              matchesRoleRestriction = teacher.assignedClasses.includes(details.studentClass)
-            }
-            // Subject Teacher: Filter by selected class
-            if (isSubjectTeacher && selectedClass !== 'All') {
-              matchesRoleRestriction = details.studentClass === selectedClass
-            }
-          } else {
-            // Subject mode
-            if (isSubjectTeacher && teacher.assignedSubjects) {
-              matchesRoleRestriction = teacher.assignedSubjects.includes(result.subjectId)
-            }
-            // Form Teacher: Filter by selected subject
-            if (isFormTeacher && selectedSubject !== 'All') {
-              matchesRoleRestriction = result.subjectId === selectedSubject
-            }
+          // Always use class-based view for teachers
+          // Form Teacher: Filter by assigned classes
+          if (isFormTeacher && teacher.assignedClasses) {
+            matchesRoleRestriction = teacher.assignedClasses.includes(details.studentClass)
+          }
+          // Subject Teacher: Filter by selected class
+          if (isSubjectTeacher && selectedClass !== 'All') {
+            matchesRoleRestriction = details.studentClass === selectedClass
           }
         }
 
@@ -198,7 +187,7 @@ export default function ResultEntry() {
     })
 
     return withPositions
-  }, [results, students, subjects, filterTerm, selectedTerm, viewMode, selectedClass, selectedSubject, teacher, isFormTeacher, isSubjectTeacher])
+  }, [results, students, subjects, filterTerm, selectedTerm, selectedClass, selectedSubject, teacher, isFormTeacher, isSubjectTeacher])
 
   // Get available classes and subjects based on teacher's role
   const availableClasses = useMemo(() => {
@@ -232,16 +221,11 @@ export default function ResultEntry() {
   }, [isFormTeacher, isSubjectTeacher])
 
   const pageDescription = useMemo(() => {
-    if (viewMode === 'class') {
-      return isFormTeacher 
-        ? 'Enter and manage results for all subjects in your class' 
-        : 'Enter and manage results for your classes'
-    } else {
-      return isSubjectTeacher
-        ? 'Enter and manage results for your assigned subjects across classes'
-        : 'Enter and manage results by subject'
-    }
-  }, [viewMode, isFormTeacher, isSubjectTeacher])
+    // Always class-based for teachers
+    return isFormTeacher 
+      ? 'Enter and manage results for all subjects in your class' 
+      : 'Enter and manage results for your classes'
+  }, [isFormTeacher, isSubjectTeacher])
 
   const handleAddResult = async (newResult: Omit<SubjectResult, 'id'>) => {
     try {
@@ -633,35 +617,7 @@ export default function ResultEntry() {
           <p className="text-gray-600 dark:text-gray-400 mt-2">{pageDescription}</p>
         </div>
         <div className="flex flex-col gap-3">
-          {(isFormTeacher || isSubjectTeacher) && (
-            <div className="flex gap-2 bg-gray-100 dark:bg-slate-700/60 p-1 rounded-lg">
-              <button
-                onClick={() => setViewMode('class')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors ${
-                  viewMode === 'class'
-                    ? 'bg-white dark:bg-slate-600 text-purple-600 dark:text-gold-300 shadow-sm'
-                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
-                }`}
-                title="View results organized by class"
-              >
-                <LayoutGrid size={18} />
-                By Class
-              </button>
-              <button
-                onClick={() => setViewMode('subject')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors ${
-                  viewMode === 'subject'
-                    ? 'bg-white dark:bg-slate-600 text-purple-600 dark:text-gold-300 shadow-sm'
-                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
-                }`}
-                title="View results organized by subject"
-              >
-                <List size={18} />
-                By Subject
-              </button>
-            </div>
-          )}
-          <div className="flex gap-4">
+                    <div className="flex gap-4">
             <button
               onClick={handleExport}
               className="btn-secondary flex items-center gap-2"
@@ -765,31 +721,7 @@ export default function ResultEntry() {
                 <option value="Second">Second Term</option>
                 <option value="Third">Third Term</option>
               </select>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setViewMode('class')}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    viewMode === 'class'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300'
-                  }`}
-                >
-                  <LayoutGrid size={16} className="inline mr-1" />
-                  By Class
-                </button>
-                <button
-                  onClick={() => setViewMode('subject')}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    viewMode === 'subject'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300'
-                  }`}
-                >
-                  <List size={16} className="inline mr-1" />
-                  By Subject
-                </button>
-              </div>
-            </div>
+                          </div>
           </div>
           {!teacher && (
             <div>
