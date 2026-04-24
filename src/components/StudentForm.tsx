@@ -1,17 +1,18 @@
 import { useState, useRef, useEffect } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
-import { X, Upload, User as UserIcon } from 'lucide-react'
-import { Student } from '../types'
+import { X, Upload, User as UserIcon, BookOpen } from 'lucide-react'
+import { Student, Subject } from '../types'
 import { generateParentCredentials } from '../utils/calculations'
 
 interface StudentFormProps {
-  onSubmit: (student: Student | Omit<Student, 'id'>) => void
+  onSubmit: (student: Student | Omit<Student, 'id'>, selectedSubjects?: string[]) => void
   initialData?: Student
   onCancel: () => void
   isEditing?: boolean
   allowedClasses?: string[]
   defaultClass?: string
   lockClass?: boolean
+  availableSubjects?: Subject[]
 }
 
 export default function StudentForm({
@@ -22,6 +23,7 @@ export default function StudentForm({
   allowedClasses = [],
   defaultClass = '',
   lockClass = false,
+  availableSubjects = [],
 }: StudentFormProps) {
   const fileInputRef = useRef<any>(null)
   
@@ -46,11 +48,24 @@ export default function StudentForm({
     }
   })
 
+  const [selectedSubjects, setSelectedSubjects] = useState<string[]>([])
+
   useEffect(() => {
     if (!isEditing && defaultClass) {
       setFormData((prev) => ({ ...prev, class: defaultClass }))
     }
   }, [defaultClass, isEditing])
+
+  // Filter subjects based on student level
+  const filteredSubjects = availableSubjects.filter(s => s.level === formData.level)
+
+  const toggleSubject = (subjectId: string) => {
+    setSelectedSubjects(prev =>
+      prev.includes(subjectId)
+        ? prev.filter(id => id !== subjectId)
+        : [...prev, subjectId]
+    )
+  }
 
   // Auto-generate credentials when names change (only for new students)
   useEffect(() => {
@@ -125,7 +140,7 @@ export default function StudentForm({
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (validateForm()) {
-      onSubmit(formData as any)
+      onSubmit(formData as any, selectedSubjects)
     }
   }
 
@@ -248,6 +263,44 @@ export default function StudentForm({
               </select>
             </div>
           </div>
+        </div>
+
+        {/* Subject Selection (Only for New Students) */}
+        {!isEditing && filteredSubjects.length > 0 && (
+          <div className="space-y-4 pt-4 border-t-4 border-dashed border-slate-200 dark:border-slate-700">
+            <h3 className="text-xl font-black text-gray-900 dark:text-white uppercase tracking-wider border-l-4 border-purple-500 pl-3 flex items-center gap-2">
+              <BookOpen className="text-purple-500" />
+              Assign Subjects (Optional)
+            </h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+              Assign subjects to the student now for immediate result recording.
+            </p>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {filteredSubjects.map(subject => (
+                <label
+                  key={subject.id}
+                  className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${
+                    selectedSubjects.includes(subject.id)
+                      ? 'bg-purple-50 dark:bg-purple-900/20 border-purple-500 shadow-md'
+                      : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-purple-300'
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedSubjects.includes(subject.id)}
+                    onChange={() => toggleSubject(subject.id)}
+                    className="w-5 h-5 text-purple-600 rounded-lg focus:ring-purple-500 border-slate-300"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-black text-gray-900 dark:text-white truncate">{subject.name}</p>
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{subject.code}</p>
+                  </div>
+                </label>
+              ))}
+            </div>
+          </div>
+        )}
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">

@@ -23,9 +23,9 @@ export default function StudentSubjectForm({
   const [notes, setNotes] = useState<string>('')
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  // Filter subjects by student level and only for SSS classes
+  // Filter subjects by student level
   const isSSSStudent = ['SSS 1', 'SSS 2', 'SSS 3'].includes(student.class)
-  const availableSubjects = subjects.filter(s => s.level === student.level && s.subjectCategory)
+  const availableSubjects = subjects.filter(s => s.level === student.level)
 
   // Initialize selected subjects from current assignments
   useEffect(() => {
@@ -73,10 +73,10 @@ export default function StudentSubjectForm({
     }
   }
 
-  // Sort categories in order: Science, Art, Commercial
-  const categoryOrder = ['Science', 'Art', 'Commercial']
+  // Sort categories
+  const categoryOrder = ['Science', 'Art', 'Commercial', 'General']
   const subjectsByCategory = availableSubjects.reduce((acc, subject) => {
-    const category = subject.subjectCategory || 'Other'
+    const category = isSSSStudent ? (subject.subjectCategory || 'General') : 'General'
     if (!acc[category]) {
       acc[category] = []
     }
@@ -156,9 +156,11 @@ export default function StudentSubjectForm({
         <div className="space-y-4">
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-1">
-              Choose Stream - {selectedSubjects.length} subject{selectedSubjects.length !== 1 ? 's' : ''} selected
+              {isSSSStudent ? 'Choose Stream' : 'Select Subjects'} - {selectedSubjects.length} subject{selectedSubjects.length !== 1 ? 's' : ''} selected
             </h3>
-            <p className="text-xs text-gray-600 mb-2">SSS students must select subjects from one of the three streams</p>
+            <p className="text-xs text-gray-600 mb-2">
+              {isSSSStudent ? 'SSS students must select subjects from one of the three streams' : 'Assign relevant subjects to the student for result tracking'}
+            </p>
             {errors.subjects && (
               <p className="text-red-500 text-sm mt-1">{errors.subjects}</p>
             )}
@@ -170,7 +172,7 @@ export default function StudentSubjectForm({
               <div key={category} className="border-2 border-blue-300 rounded-lg p-4 bg-gradient-to-br from-blue-50 to-white">
                 <h4 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
                   <span className="px-3 py-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full text-xs font-semibold">
-                    {category} Stream
+                    {category} {isSSSStudent ? 'Stream' : 'Subjects'}
                   </span>
                   <span className="text-gray-600 font-medium">({categorySubjects.length} subjects)</span>
                 </h4>

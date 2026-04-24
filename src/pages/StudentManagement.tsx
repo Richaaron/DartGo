@@ -28,6 +28,9 @@ export default function StudentManagement() {
   const [showSubjectForm, setShowSubjectForm] = useState(false)
   const [selectedStudentForSubjects, setSelectedStudentForSubjects] = useState<Student | null>(null)
   const [studentSubjects, setStudentSubjects] = useState<any[]>([])
+  const [showBulkAssign, setShowBulkAssign] = useState(false)
+  const [bulkAssignClass, setBulkAssignClass] = useState('')
+  const [bulkAssignSubjects, setBulkAssignSubjects] = useState<string[]>([])
 
   useEffect(() => {
     let isMounted = true
@@ -118,6 +121,54 @@ export default function StudentManagement() {
     }
   }
 
+  const handleBulkAssign = async () => {
+    if (!bulkAssignClass || bulkAssignSubjects.length === 0) {
+      window.alert('Please select a class and at least one subject')
+      return
+    }
+
+    const studentsInClass = students.filter(s => s.class === bulkAssignClass)
+    if (studentsInClass.length === 0) {
+      window.alert('No students found in the selected class')
+      return
+    }
+
+    if (!window.confirm(`Are you sure you want to assign these subjects to all ${studentsInClass.length} students in ${bulkAssignClass}?`)) {
+      return
+    }
+
+    try {
+      const academicYear = new Date().getFullYear().toString()
+      const term = 'First'
+      
+      for (const student of studentsInClass) {
+        for (const subjectId of bulkAssignSubjects) {
+          try {
+            await createStudentSubject({
+              studentId: student.id,
+              subjectId,
+              enrollmentDate: new Date().toISOString().split('T')[0],
+              status: 'Active',
+              academicYear,
+              term,
+              assignedBy: user?.name || 'Admin'
+            })
+          } catch (error) {
+            console.error(`Failed to assign subject ${subjectId} to student ${student.id}:`, error)
+          }
+        }
+      }
+
+      window.alert('Subjects assigned to class successfully!')
+      setShowBulkAssign(false)
+      setBulkAssignClass('')
+      setBulkAssignSubjects([])
+    } catch (error) {
+      console.error('Bulk assignment failed:', error)
+      window.alert('Failed to complete bulk assignment')
+    }
+  }
+
   const filteredStudents = students.filter((student) => {
     const matchesSearch =
       student.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -131,13 +182,36 @@ export default function StudentManagement() {
     return matchesSearch && matchesLevel && matchesClass
   })
 
-  const handleAddStudent = async (newStudent: Omit<Student, 'id'>) => {
+  const handleAddStudent = async (newStudent: Omit<Student, 'id'>, selectedSubjects?: string[]) => {
     try {
       const studentData = {
         ...newStudent,
         registrationNumber: generateRegistrationNumber(newStudent.level),
       }
-      await createStudent(studentData)
+      const createdStudent = await createStudent(studentData)
+      
+      // Assign subjects if any were selected
+      if (selectedSubjects && selectedSubjects.length > 0) {
+        const academicYear = new Date().getFullYear().toString()
+        const term = 'First' // Default to first term
+        
+        for (const subjectId of selectedSubjects) {
+          try {
+            await createStudentSubject({
+              studentId: createdStudent.id,
+              subjectId,
+              enrollmentDate: new Date().toISOString().split('T')[0],
+              status: 'Active',
+              academicYear,
+              term,
+              assignedBy: user?.name || 'Admin'
+            })
+          } catch (error) {
+            console.error(`Failed to assign subject ${subjectId} to new student:`, error)
+          }
+        }
+      }
+      
       await loadStudents()
       setShowForm(false)
     } catch (error: any) {
@@ -161,11 +235,11 @@ export default function StudentManagement() {
     }
   }
 
-  const handleSubmitStudent = (student: Student | Omit<Student, 'id'>) => {
+  const handleSubmitStudent = (student: Student | Omit<Student, 'id'>, selectedSubjects?: string[]) => {
     if ('id' in student) {
       handleUpdateStudent(student as Student)
     } else {
-      handleAddStudent(student as Omit<Student, 'id'>)
+      handleAddStudent(student as Omit<Student, 'id'>, selectedSubjects)
     }
   }
 
@@ -224,6 +298,14 @@ export default function StudentManagement() {
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          <button
+            onClick={() => setShowBulkAssign(true)}
+            className="btn-accent flex items-center justify-center gap-2 flex-1 sm:flex-initial text-sm sm:text-base"
+          >
+            <BookOpen size={20} />
+            <span className="hidden sm:inline">Bulk Assign Subjects</span>
+            <span className="sm:hidden">Bulk Assign</span>
+          </button>
           <button
             onClick={handleExport}
             className="btn-secondary flex items-center justify-center gap-2 flex-1 sm:flex-initial text-sm sm:text-base"
@@ -317,6 +399,7 @@ export default function StudentManagement() {
               allowedClasses={isTeacher && isFormCapableTeacher ? assignedClasses : undefined}
               defaultClass={isTeacher && isFormCapableTeacher && selectedClass !== 'All' ? selectedClass : ''}
               lockClass={isTeacher && isFormCapableTeacher && selectedClass !== 'All' && !editingStudent}
+              availableSubjects={subjects}
             />
           </div>
         </div>
@@ -341,6 +424,98 @@ export default function StudentManagement() {
         </div>
       )}
 
+      {/* Bulk Subject Assignment Modal */}
+      {showBulkAssign && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full mx-4 overflow-hidden border-4 border-dashed border-school-blue">
+            <div className="p-6 bg-gradient-to-r from-school-blue to-school-green text-white flex justify-between items-center">
+              <div>
+                <h2 className="text-2xl font-black uppercase tracking-tight">Bulk Subject Assignment</h2>
+                <p className="text-xs font-medium opacity-90">Assign subjects to all students in a class</p>
+              </div>
+              <button onClick={() => setShowBulkAssign(false)} className="p-2 hover:bg-white/20 rounded-full transition-all">
+                <X size={24} />
+              </button>
+            </div>
+            
+            <div className="p-8 space-y-6 max-h-[70vh] overflow-y-auto">
+              <div>
+                <label className="block text-sm font-black text-school-blue mb-2 uppercase tracking-widest">1. Select Class</label>
+                <select
+                  value={bulkAssignClass}
+                  onChange={(e) => setBulkAssignClass(e.target.value)}
+                  className="input-field"
+                >
+                  <option value="">Choose a class...</option>
+                  {[...new Set(students.map(s => s.class))].sort().map(className => (
+                    <option key={className} value={className}>{className}</option>
+                  ))}
+                </select>
+              </div>
+
+              {bulkAssignClass && (
+                <div>
+                  <label className="block text-sm font-black text-school-blue mb-2 uppercase tracking-widest">2. Select Subjects</label>
+                  <p className="text-xs text-gray-500 mb-4 font-medium">
+                    Select the subjects to be assigned to all students in {bulkAssignClass}.
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {subjects
+                      .filter(s => {
+                        const classLevel = students.find(student => student.class === bulkAssignClass)?.level
+                        return s.level === classLevel
+                      })
+                      .map(subject => (
+                        <label
+                          key={subject.id}
+                          className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${
+                            bulkAssignSubjects.includes(subject.id)
+                              ? 'bg-school-blue/10 border-school-blue shadow-md'
+                              : 'bg-white border-slate-200 hover:border-school-blue/50'
+                          }`}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={bulkAssignSubjects.includes(subject.id)}
+                            onChange={() => {
+                              setBulkAssignSubjects(prev =>
+                                prev.includes(subject.id)
+                                  ? prev.filter(id => id !== subject.id)
+                                  : [...prev, subject.id]
+                              )
+                            }}
+                            className="w-5 h-5 text-school-blue rounded-lg focus:ring-school-blue border-slate-300"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-black text-gray-900 truncate">{subject.name}</p>
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{subject.code}</p>
+                          </div>
+                        </label>
+                      ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="p-6 bg-slate-50 border-t-4 border-dashed border-slate-200 flex gap-3">
+              <button
+                onClick={() => setShowBulkAssign(false)}
+                className="flex-1 py-3 px-6 bg-white border-2 border-slate-200 text-slate-600 rounded-full font-black hover:bg-slate-100 transition-all uppercase tracking-widest text-sm"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleBulkAssign}
+                disabled={!bulkAssignClass || bulkAssignSubjects.length === 0}
+                className="flex-1 py-3 px-6 bg-gradient-to-r from-school-blue to-school-green text-white rounded-full font-black shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all uppercase tracking-widest text-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              >
+                Assign to Class
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Table */}
       <div className="card-lg">
         <Table
@@ -349,15 +524,13 @@ export default function StudentManagement() {
             ...student,
             actions: (
               <div className="flex gap-2">
-                {['SSS 1', 'SSS 2', 'SSS 3'].includes(student.class) && (
-                  <button
-                    onClick={() => handleOpenSubjectAssignment(student)}
-                    className="p-1 text-purple-600 hover:bg-purple-50 rounded transition-colors"
-                    title="Assign subjects (SSS only)"
-                  >
-                    <BookOpen size={18} />
-                  </button>
-                )}
+                <button
+                  onClick={() => handleOpenSubjectAssignment(student)}
+                  className="p-1 text-purple-600 hover:bg-purple-50 rounded transition-colors"
+                  title="Assign subjects"
+                >
+                  <BookOpen size={18} />
+                </button>
                 <button
                   onClick={() => {
                     setEditingStudent(student)
