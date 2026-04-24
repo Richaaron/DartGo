@@ -3,12 +3,18 @@ interface Column {
   label: string
 }
 
+interface Action {
+  label: string
+  onClick: (row: any) => void
+}
+
 interface TableProps {
   columns: Column[]
   data: any[]
+  actions?: Action[]
 }
 
-export default function Table({ columns, data }: TableProps) {
+export default function Table({ columns, data, actions }: TableProps) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full">
@@ -22,7 +28,7 @@ export default function Table({ columns, data }: TableProps) {
                 {column.label}
               </th>
             ))}
-            <th className="table-header">Actions</th>
+            {actions && <th className="table-header">Actions</th>}
           </tr>
         </thead>
         <tbody>
@@ -33,7 +39,21 @@ export default function Table({ columns, data }: TableProps) {
                   {row[column.key]}
                 </td>
               ))}
-              <td className="table-cell">{row.actions}</td>
+              {actions && (
+                <td className="table-cell">
+                  <div className="flex gap-2">
+                    {actions.map((action, actionIndex) => (
+                      <button
+                        key={actionIndex}
+                        onClick={() => action.onClick(row)}
+                        className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium"
+                      >
+                        {action.label}
+                      </button>
+                    ))}
+                  </div>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
