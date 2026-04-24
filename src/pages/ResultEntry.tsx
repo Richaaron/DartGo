@@ -606,100 +606,7 @@ export default function ResultEntry() {
   }
 
   
-  // Get outstanding students (those who haven't received emails yet)
-  const getOutstandingStudents = useMemo(() => {
-    const currentTerm = selectedTerm === 'All' ? 'First' : selectedTerm
-    const currentYear = results.length > 0 ? results[0].academicYear : new Date().getFullYear().toString()
-
-    const uniqueStudentsWithResults = new Set(
-      filteredResults.map(r => r.studentId)
-    )
-
-    const outstanding = Array.from(uniqueStudentsWithResults)
-      .filter(studentId => {
-        const student = students.find(s => s.id === studentId)
-        return student && student.parentEmail && !hasResultsBeenSent(studentId, currentTerm, currentYear)
-      })
-      .map(studentId => ({
-        studentId,
-        student: students.find(s => s.id === studentId),
-        resultsCount: filteredResults.filter(r => r.studentId === studentId).length,
-      }))
-
-    return outstanding
-  }, [filteredResults, students, resultsSentTracker, selectedTerm])
-
-  // Bulk send to all outstanding parents
-  const handleBulkSendToOutstanding = async () => {
-    if (getOutstandingStudents.length === 0) {
-      setSendMessage({ type: 'error', text: 'No outstanding results to send' })
-      return
-    }
-
-    try {
-      setIsBulkSending(true)
-      let successCount = 0
-      let failureCount = 0
-      const currentTerm = selectedTerm === 'All' ? 'First' : selectedTerm
-      const currentYear = results.length > 0 ? results[0].academicYear : new Date().getFullYear().toString()
-
-      for (const outstanding of getOutstandingStudents) {
-        try {
-          const student = outstanding.student
-          if (!student || !student.parentEmail) continue
-
-          const studentTermResults = results.filter(
-            r => r.studentId === student.id && r.term === currentTerm && r.academicYear === currentYear
-          )
-
-          if (studentTermResults.length === 0) continue
-
-          const resultsWithPositions = calculatePositions(studentTermResults, student.id)
-          const classPosition = getStudentClassPosition(results, student.id, currentTerm, currentYear)
-
-          const formattedResults = resultsWithPositions.map(r => {
-            const subject = subjects.find(s => s.id === r.subjectId)
-            return {
-              subject: subject?.name || 'Unknown Subject',
-              grade: r.grade,
-              percentage: r.percentage,
-              position: r.positionText || getPositionSuffix(r.position || 0),
-            }
-          })
-
-          await apiService.post('/send-results-email', {
-            parentEmail: student.parentEmail,
-            studentName: `${student.firstName} ${student.lastName}`,
-            term: currentTerm,
-            academicYear: currentYear,
-            results: formattedResults,
-            classPosition,
-            studentId: student.id,
-          })
-
-          trackResultAsSent(student.id, currentTerm, currentYear, student.parentEmail)
-          successCount++
-        } catch (error) {
-          console.error('Failed to send to individual parent:', error)
-          failureCount++
-        }
-      }
-
-      setSendMessage({
-        type: successCount > 0 ? 'success' : 'error',
-        text: `Bulk send completed: ${successCount} successful${failureCount > 0 ? `, ${failureCount} failed` : ''}`,
-      })
-    } catch (error) {
-      console.error('Bulk send error:', error)
-      setSendMessage({
-        type: 'error',
-        text: 'Failed to initiate bulk send',
-      })
-    } finally {
-      setIsBulkSending(false)
-    }
-  }
-
+  
   return (
     <div className="p-8">
       {sendMessage && (
@@ -790,67 +697,24 @@ export default function ResultEntry() {
                 </>
               )}
             </button>
-            <button
-              onClick={handleBulkSendToOutstanding}
-              disabled={isBulkSending || getOutstandingStudents.length === 0}
-              className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-full font-black shadow-lg hover:shadow-2xl hover:scale-110 active:scale-95 flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-              title={getOutstandingStudents.length === 0 ? 'All results already sent' : 'Send results to all parents with outstanding results'}
-            >
-              {isBulkSending ? (
-                <>
-                  <Mail size={20} className="animate-pulse" />
-                  Sending...
-                </>
-              ) : (
-                <>
-                  <Mail size={20} />
-                  Send to Outstanding ({getOutstandingStudents.length})
-                </>
-              )}
-            </button>
           </div>
         </div>
       </div>
 
-      {/* Outstanding Results Tracking Dashboard */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <div className="card-lg bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 border border-blue-200 dark:border-blue-700">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-blue-600 dark:text-blue-300">Outstanding Results</p>
-              <p className="text-3xl font-bold text-blue-900 dark:text-blue-100">{getOutstandingStudents.length}</p>
-              <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">Parents to contact</p>
-            </div>
-            <Clock className="text-blue-500 opacity-20" size={48} />
+      {showForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <SubjectResultForm
+              onSubmit={handleSubmitResult}
+              initialData={editingResult || undefined}
+              onCancel={() => setShowForm(false)}
+              isEditing={!!editingResult}
+              students={students}
+              subjects={subjects}
+            />
           </div>
         </div>
-
-        <div className="card-lg bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 border border-green-200 dark:border-green-700">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-green-600 dark:text-green-300">Results Sent</p>
-              <p className="text-3xl font-bold text-green-900 dark:text-green-100">
-                {resultsSentTracker.filter(t => t.status === 'sent').length}
-              </p>
-              <p className="text-xs text-green-600 dark:text-green-400 mt-1">Successfully sent</p>
-            </div>
-            <CheckCircle2 className="text-green-500 opacity-20" size={48} />
-          </div>
-        </div>
-
-        <div className="card-lg bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 border border-purple-200 dark:border-purple-700">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-purple-600 dark:text-purple-300">Total Students</p>
-              <p className="text-3xl font-bold text-purple-900 dark:text-purple-100">
-                {new Set(filteredResults.map(r => r.studentId)).size}
-              </p>
-              <p className="text-xs text-purple-600 dark:text-purple-400 mt-1">In current view</p>
-            </div>
-            <Mail className="text-purple-500 opacity-20" size={48} />
-          </div>
-        </div>
-      </div>
+      )}
 
       <div className="card-lg mb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
