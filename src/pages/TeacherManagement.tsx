@@ -135,10 +135,12 @@ export default function TeacherManagement() {
   return (
     <div className="p-8">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Teacher Management</h1>
-          <p className="text-gray-600 mt-2">Manage school faculty and class assignments</p>
+          <h1 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">
+            Teacher <span className="text-indigo-600 dark:text-indigo-400">Management</span>
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2 font-medium">Manage school faculty and class assignments</p>
         </div>
         <div className="flex gap-4">
           <button
@@ -221,29 +223,29 @@ export default function TeacherManagement() {
             subjects: (
               <div className="flex flex-wrap gap-1">
                 {getTeacherSubjects(teacher).length > 0 ? getTeacherSubjects(teacher).map((subject) => (
-                  <span key={subject} className="px-2 py-0.5 bg-amber-50 text-amber-700 rounded text-xs">
+                  <span key={subject} className="px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 rounded-md text-xs font-bold border border-indigo-100 dark:border-indigo-800/50">
                     {subject}
                   </span>
                 )) : (
-                  <span className="px-2 py-0.5 bg-gray-100 text-gray-500 rounded text-xs">
+                  <span className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-md text-xs font-bold">
                     Form Teacher
                   </span>
                 )}
               </div>
             ),
             profile: (
-              <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200">
+              <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden border-2 border-indigo-500/20">
                 {teacher.image ? (
                   <img src={teacher.image} alt="" className="w-full h-full object-cover" />
                 ) : (
-                  <UserIcon className="w-6 h-6 text-gray-400" />
+                  <UserIcon className="w-6 h-6 text-slate-400 dark:text-slate-500" />
                 )}
               </div>
             ),
             classes: (
               <div className="flex flex-wrap gap-1">
                 {(teacher.assignedClasses || []).map((c) => (
-                  <span key={c} className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-xs">
+                  <span key={c} className="px-2 py-0.5 bg-teal-50 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300 rounded-md text-xs font-bold border border-teal-100 dark:border-teal-800/50">
                     {c}
                   </span>
                 ))}

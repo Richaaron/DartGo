@@ -1,12 +1,14 @@
 import { useMemo, useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
-import { Users, BookOpen, TrendingUp, AlertCircle, Lock, Eye, EyeOff, Check, X } from 'lucide-react'
+import { Users, BookOpen, TrendingUp, AlertCircle, Lock, Eye, EyeOff, Check, X, FileText, ClipboardList } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import StatCard from '../components/StatCard'
 import { Student, SubjectResult } from '../types'
 import { fetchStudents, fetchResults } from '../services/api'
 import apiService from '../services/apiService'
+import { useAuthContext } from '../context/AuthContext'
 import ChatSystem from '../components/ChatSystem'
 import TeacherActivityLog from '../components/TeacherActivityLog'
 import PerformanceInsights from '../components/PerformanceInsights'
@@ -36,10 +38,27 @@ const itemVariants = {
 }
 
 export default function Dashboard() {
+  const { user } = useAuthContext()
   const [students, setStudents] = useState<Student[]>([])
   const [results, setResults] = useState<SubjectResult[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [showPasswordModal, setShowPasswordModal] = useState(false)
+
+  const userRole = user?.role || 'Student'
+  const teacher = userRole === 'Teacher' ? (user as any) : null
+  const teacherType = teacher?.teacherType
+  const hasAssignedClasses = Array.isArray(teacher?.assignedClasses) && teacher.assignedClasses.length > 0
+  const hasAssignedSubjects =
+    (Array.isArray(teacher?.assignedSubjects) && teacher.assignedSubjects.length > 0) ||
+    (typeof teacher?.subject === 'string' && teacher.subject.trim().length > 0)
+
+  const isFormTeacher =
+    userRole === 'Teacher' &&
+    (teacherType === 'Form Teacher' || teacherType === 'Form + Subject Teacher' || (!teacherType && hasAssignedClasses))
+  const isSubjectTeacher =
+    userRole === 'Teacher' &&
+    (teacherType === 'Subject Teacher' || teacherType === 'Form + Subject Teacher' || (!teacherType && hasAssignedSubjects))
+
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: '',
     newPassword: '',
@@ -254,6 +273,57 @@ export default function Dashboard() {
           color="orange"
         />
       </motion.div>
+
+      {/* Quick Recording Center */}
+      {userRole === 'Teacher' && (
+        <motion.div variants={itemVariants} className="card-lg bg-gradient-to-r from-indigo-600/10 to-purple-600/10 dark:from-indigo-500/10 dark:to-purple-500/10 border-indigo-500/30">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex-1">
+              <h2 className="text-xl font-black text-gray-900 dark:text-white tracking-tight flex items-center gap-2">
+                <ClipboardList className="w-6 h-6 text-indigo-500" />
+                Recording <span className="text-indigo-600 dark:text-indigo-400">Center</span>
+              </h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 font-medium">
+                Quickly access your assigned recording sheets for seamless result entry.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-4 w-full md:w-auto">
+              {isFormTeacher && (
+                <Link
+                  to="/results"
+                  className="flex-1 md:flex-none px-6 py-4 bg-white dark:bg-slate-900 rounded-2xl border-2 border-dashed border-indigo-500/50 hover:border-indigo-500 transition-all hover:scale-105 group"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                      <FileText className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-black text-gray-400 uppercase tracking-widest">Class Records</p>
+                      <p className="text-sm font-black text-gray-900 dark:text-white">Form Teacher Entry</p>
+                    </div>
+                  </div>
+                </Link>
+              )}
+              {isSubjectTeacher && (
+                <Link
+                  to="/subject-results"
+                  className="flex-1 md:flex-none px-6 py-4 bg-white dark:bg-slate-900 rounded-2xl border-2 border-dashed border-purple-500/50 hover:border-purple-500 transition-all hover:scale-105 group"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-purple-50 dark:bg-purple-900/30 rounded-xl group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                      <BookOpen className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-black text-gray-400 uppercase tracking-widest">Subject Records</p>
+                      <p className="text-sm font-black text-gray-900 dark:text-white">Subject Teacher Entry</p>
+                    </div>
+                  </div>
+                </Link>
+              )}
+            </div>
+          </div>
+        </motion.div>
+      )}
 
       {/* Charts Row */}
       <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">

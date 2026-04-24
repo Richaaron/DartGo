@@ -197,7 +197,8 @@ export default function StudentSubjectForm({
                 ))}
               </div>
             </div>
-          ))}
+          )
+          })}
         </div>
 
         {/* Selected Summary */}

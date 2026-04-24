@@ -55,7 +55,7 @@ export default {
         'gradient-dark-purple': 'linear-gradient(135deg, #0f0f0f 0%, #2a2447 100%)',
         'gradient-dark-enhanced': 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%)',
         'gradient-school': 'linear-gradient(135deg, #FF6B6B 0%, #FFE66D 25%, #4ECDC4 50%, #C7A2FF 75%, #FF9FF3 100%)',
-        'gradient-school-dark': 'linear-gradient(135deg, #1a1a2e 0%, #FF6B6B 50%, #4ECDC4 100%)',
+        'gradient-school-dark': 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)',
       },
       animation: {
         'bounce-slow': 'bounce 2s infinite',

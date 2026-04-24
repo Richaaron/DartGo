@@ -163,11 +163,11 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
     return (
       <div className="p-8 text-center">
         <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Data Loading Error</h2>
-        <p className="text-gray-600 mb-4">{apiError}</p>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Data Loading Error</h2>
+        <p className="text-gray-600 dark:text-gray-400 mb-4">{apiError}</p>
         <button
           onClick={handleRetry}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          className="btn-primary"
         >
           Retry
         </button>
@@ -178,19 +178,32 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
   if (isLoading) {
     return (
       <div className="p-8 text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-        <p className="mt-4 text-gray-600">Loading subject results...</p>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 dark:border-indigo-400 mx-auto"></div>
+        <p className="mt-4 text-gray-600 dark:text-gray-400 font-medium">Loading subject results...</p>
       </div>
     )
+  }
+
+  const stats = {
+    totalRecords: displayResults.length,
+    averageScore: displayResults.length > 0 
+      ? (displayResults.reduce((sum, r) => sum + r.percentage, 0) / displayResults.length).toFixed(1) 
+      : 0,
+    passRate: displayResults.length > 0
+      ? Math.round((displayResults.filter(r => r.percentage >= 50).length / displayResults.length) * 100)
+      : 0,
+    passingGrade: '50%'
   }
 
   return (
     <div className="p-8">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Subject Results</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">Enter CA and Exam scores for automated grading</p>
+          <h1 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">
+            Subject <span className="text-indigo-600 dark:text-indigo-400">Results</span>
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2 font-medium">Enter CA and Exam scores for automated grading</p>
         </div>
         <div className="flex gap-4">
           <button
@@ -198,10 +211,10 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
               setEditingResult(null)
               setShowForm(true)
             }}
-            className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-blue-700 transition-all shadow-md"
+            className="btn-primary"
           >
             <Plus size={20} />
-            Add Result
+            Enter Results
           </button>
         </div>
       </div>
@@ -345,6 +358,26 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
               No results found. Try adjusting your filters or add some results.
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
+        <div className="card-lg text-center">
+          <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">Total Records</p>
+          <p className="text-3xl font-black text-gray-900 dark:text-white mt-1">{stats.totalRecords}</p>
+        </div>
+        <div className="card-lg text-center">
+          <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">Average Score</p>
+          <p className="text-3xl font-black text-indigo-600 dark:text-indigo-400 mt-1">{stats.averageScore}%</p>
+        </div>
+        <div className="card-lg text-center">
+          <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">Pass Rate</p>
+          <p className="text-3xl font-black text-emerald-600 dark:text-emerald-400 mt-1">{stats.passRate}%</p>
+        </div>
+        <div className="card-lg text-center">
+          <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">Passing Grade</p>
+          <p className="text-3xl font-black text-orange-500 dark:text-orange-400 mt-1">{stats.passingGrade}</p>
         </div>
       </div>
 

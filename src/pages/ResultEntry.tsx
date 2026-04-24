@@ -1010,28 +1010,28 @@ export default function ResultEntry() {
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
         <div className="card-lg text-center">
-          <p className="text-gray-600 text-sm">Total Results</p>
-          <p className="text-3xl font-bold text-gray-900">{filteredResults.length}</p>
+          <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">Total Results</p>
+          <p className="text-3xl font-black text-gray-900 dark:text-white mt-1">{filteredResults.length}</p>
         </div>
         <div className="card-lg text-center">
-          <p className="text-gray-600 text-sm">Average Percentage</p>
-          <p className="text-3xl font-bold text-blue-600">
+          <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">Average Percentage</p>
+          <p className="text-3xl font-black text-indigo-600 dark:text-indigo-400 mt-1">
             {filteredResults.length > 0
               ? (filteredResults.reduce((sum, r) => sum + r.percentage, 0) / filteredResults.length).toFixed(1)
               : 0}%
           </p>
         </div>
         <div className="card-lg text-center">
-          <p className="text-gray-600 text-sm">Average Score</p>
-          <p className="text-3xl font-bold text-gray-900">
+          <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">Average Score</p>
+          <p className="text-3xl font-black text-gray-900 dark:text-white mt-1">
             {filteredResults.length > 0
               ? Math.round(filteredResults.reduce((sum, r) => sum + r.totalScore, 0) / filteredResults.length)
               : 0}
           </p>
         </div>
         <div className="card-lg text-center">
-          <p className="text-gray-600 text-sm">Pass Rate</p>
-          <p className="text-3xl font-bold text-green-600">
+          <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">Pass Rate</p>
+          <p className="text-3xl font-black text-emerald-600 dark:text-emerald-400 mt-1">
             {filteredResults.length > 0
               ? Math.round((filteredResults.filter((r) => r.percentage >= 50).length / filteredResults.length) * 100)
               : 0}%

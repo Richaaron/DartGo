@@ -30,40 +30,40 @@
 
 /* School-Inspired Cards - Rounded Corners with Gradient Borders */
 .card {
-  @apply bg-white dark:bg-gradient-to-br dark:from-blue-900/30 dark:to-purple-900/30 dark:backdrop-blur-md rounded-3xl shadow-lg p-4 border-4 border-dashed border-school-blue/50 dark:border-school-pink/40 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-school-yellow;
+  @apply bg-white dark:bg-slate-900/60 dark:backdrop-blur-lg rounded-3xl shadow-lg p-4 border-4 border-dashed border-school-blue/50 dark:border-indigo-500/30 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:border-school-yellow dark:hover:border-indigo-400;
 }
 
 .card-lg {
-  @apply bg-gradient-to-br from-white to-blue-50 dark:from-blue-900/40 dark:to-purple-900/40 dark:backdrop-blur-md rounded-3xl shadow-xl p-6 border-4 border-dashed border-school-blue/50 dark:border-school-pink/40 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-school-yellow dark:hover:shadow-school-pink/50;
+  @apply bg-gradient-to-br from-white to-blue-50 dark:from-slate-900/80 dark:to-indigo-950/80 dark:backdrop-blur-lg rounded-3xl shadow-xl p-6 border-4 border-dashed border-school-blue/50 dark:border-indigo-500/30 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:border-school-yellow dark:hover:border-indigo-400 dark:hover:shadow-indigo-500/20;
 }
 
 /* School-Inspired Buttons */
 .btn-primary {
-  @apply px-6 py-3 bg-gradient-to-r from-school-red to-school-pink text-white rounded-full hover:from-school-pink hover:to-school-red transition-all font-black shadow-lg hover:shadow-2xl hover:scale-110 active:scale-95 flex items-center justify-center gap-2 animate-pulse-bright hover:animate-none;
+  @apply px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 text-white rounded-full hover:from-indigo-500 hover:to-purple-500 transition-all font-black shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center gap-2;
 }
 
 .btn-secondary {
-  @apply px-6 py-3 bg-gradient-to-r from-school-blue to-school-green text-white rounded-full hover:from-school-green hover:to-school-blue transition-all font-black border-4 border-school-yellow shadow-lg hover:shadow-2xl hover:scale-110 active:scale-95 flex items-center justify-center gap-2;
+  @apply px-6 py-3 bg-gradient-to-r from-school-blue to-school-green dark:from-teal-600 dark:to-emerald-600 text-white rounded-full hover:from-school-green hover:to-school-blue transition-all font-black border-4 border-school-yellow dark:border-indigo-400/50 shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center gap-2;
 }
 
 .btn-danger {
-  @apply px-6 py-3 bg-gradient-to-r from-school-red to-school-orange text-white rounded-full hover:from-school-orange hover:to-school-red transition-all font-black shadow-lg hover:shadow-2xl hover:scale-110 active:scale-95 flex items-center justify-center gap-2 animate-bounce-slow hover:animate-none;
+  @apply px-6 py-3 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-full hover:from-orange-500 hover:to-red-500 transition-all font-black shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center gap-2;
 }
 
 .btn-accent {
-  @apply px-6 py-3 bg-gradient-to-r from-school-yellow to-school-orange text-gray-900 rounded-full hover:from-school-orange hover:to-school-yellow transition-all font-black shadow-lg hover:shadow-2xl hover:scale-110 active:scale-95 flex items-center justify-center gap-2;
+  @apply px-6 py-3 bg-gradient-to-r from-school-yellow to-school-orange text-gray-900 rounded-full hover:from-school-orange hover:to-school-yellow transition-all font-black shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center gap-2;
 }
 
 .input-field {
-  @apply w-full px-4 py-3 bg-blue-50 dark:bg-slate-700/60 border-4 border-dashed border-school-blue/70 dark:border-school-green/60 text-gray-900 dark:text-white rounded-2xl focus:outline-none focus:ring-4 focus:ring-school-yellow dark:focus:ring-school-pink focus:border-school-yellow transition-all placeholder:text-gray-400 dark:placeholder:text-gray-300 font-medium;
+  @apply w-full px-4 py-3 bg-blue-50 dark:bg-slate-800/80 border-4 border-dashed border-school-blue/70 dark:border-indigo-500/40 text-gray-900 dark:text-white rounded-2xl focus:outline-none focus:ring-4 focus:ring-school-yellow dark:focus:ring-indigo-400 focus:border-school-yellow dark:focus:border-indigo-400 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500 font-medium;
 }
 
 .table-header {
-  @apply bg-gradient-to-r from-school-blue to-school-green backdrop-blur-sm px-6 py-4 text-left text-xs font-black text-white uppercase tracking-widest border-b-4 border-school-yellow;
+  @apply bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-900 dark:to-purple-900 backdrop-blur-sm px-6 py-4 text-left text-xs font-black text-white uppercase tracking-widest border-b-4 border-school-yellow dark:border-indigo-400;
 }
 
 .table-cell {
-  @apply px-6 py-4 text-sm text-gray-800 dark:text-gray-100 border-b-2 border-dashed border-school-blue/30 dark:border-school-green/30 hover:bg-school-blue/10 dark:hover:bg-school-green/10 transition-all font-medium;
+  @apply px-6 py-4 text-sm text-gray-800 dark:text-indigo-50 border-b-2 border-dashed border-school-blue/30 dark:border-indigo-500/20 hover:bg-school-blue/10 dark:hover:bg-indigo-500/10 transition-all font-medium;
 }
 
 .badge {

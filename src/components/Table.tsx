@@ -19,7 +19,7 @@ export default function Table({ columns, data, actions }: TableProps) {
     <div className="overflow-x-auto rounded-2xl border border-purple-200/40 dark:border-purple-600/60">
       <table className="w-full">
         <thead>
-          <tr className="bg-gradient-to-r from-purple-600 to-purple-700 dark:from-purple-900/50 dark:to-purple-800/50">
+          <tr>
             {columns.map((column) => (
               <th
                 key={column.key}
@@ -31,11 +31,11 @@ export default function Table({ columns, data, actions }: TableProps) {
             {actions && <th className="table-header text-left">Actions</th>}
           </tr>
         </thead>
-        <tbody className="divide-y divide-purple-100 dark:divide-purple-800/30">
+        <tbody className="divide-y divide-purple-100 dark:divide-indigo-900/20">
           {data.map((row, index) => (
             <tr 
               key={index} 
-              className="hover:bg-purple-50/60 dark:hover:bg-purple-900/20 transition-colors duration-200 group"
+              className="hover:bg-indigo-50/30 dark:hover:bg-indigo-900/10 transition-colors duration-200 group"
             >
               {columns.map((column) => (
                 <td key={column.key} className="table-cell">
