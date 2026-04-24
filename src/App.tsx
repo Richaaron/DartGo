@@ -7,25 +7,23 @@ import { useDarkMode } from './hooks/useLocalStorage'
 import PageTransition from './components/PageTransition'
 import NotificationBell from './components/NotificationBell'
 import { ErrorBoundary } from './components/ErrorBoundary'
-import { lazy, Suspense } from 'react'
-import { FullPageLoader } from './components/LoadingStates'
 
-// Lazy loaded components
-const Login = lazy(() => import('./pages/Login'))
-const Dashboard = lazy(() => import('./pages/Dashboard'))
-const StudentManagement = lazy(() => import('./pages/StudentManagement'))
-const TeacherManagement = lazy(() => import('./pages/TeacherManagement'))
-const ResultEntry = lazy(() => import('./pages/ResultEntry'))
-const SubjectResultEntry = lazy(() => import('./pages/SubjectResultEntry'))
-const Reports = lazy(() => import('./pages/Reports'))
-const Attendance = lazy(() => import('./pages/Attendance'))
-const Settings = lazy(() => import('./pages/Settings'))
-const TeacherDashboard = lazy(() => import('./pages/TeacherDashboard'))
-const ParentDashboard = lazy(() => import('./pages/ParentDashboard'))
-const AdminSchemeUpload = lazy(() => import('./pages/AdminSchemeUpload'))
-const NotificationsPage = lazy(() => import('./pages/Notifications'))
-const Messages = lazy(() => import('./pages/Messages'))
-const Deadlines = lazy(() => import('./pages/Deadlines'))
+// Regular imports (removed lazy loading)
+import Login from './pages/Login'
+import Dashboard from './pages/Dashboard'
+import StudentManagement from './pages/StudentManagement'
+import TeacherManagement from './pages/TeacherManagement'
+import ResultEntry from './pages/ResultEntry'
+import SubjectResultEntry from './pages/SubjectResultEntry'
+import Reports from './pages/Reports'
+import Attendance from './pages/Attendance'
+import Settings from './pages/Settings'
+import TeacherDashboard from './pages/TeacherDashboard'
+import ParentDashboard from './pages/ParentDashboard'
+import AdminSchemeUpload from './pages/AdminSchemeUpload'
+import NotificationsPage from './pages/Notifications'
+import Messages from './pages/Messages'
+import Deadlines from './pages/Deadlines'
 import './App.css'
 
 import { fetchConfig } from './services/api'
@@ -424,7 +422,6 @@ function AppContent() {
       <main className={`flex-1 overflow-auto ${isDarkMode ? 'bg-gradient-dark-purple text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
         <div className={`max-w-7xl mx-auto ${isMobile ? 'px-4 py-4' : 'px-6 py-6 md:px-8 md:py-8'}`}>
           <AnimatePresence mode="wait">
-            <Suspense fallback={<FullPageLoader message="Loading page..." />}>
             <Routes location={location} key={location.pathname}>
               {userRole === 'Teacher' ? (
                 <>
@@ -464,7 +461,6 @@ function AppContent() {
                 </>
               )}
             </Routes>
-          </Suspense>
           </AnimatePresence>
         </div>
       </main>
