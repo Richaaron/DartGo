@@ -122,7 +122,7 @@ export default function TeacherForm({
     // Username/password are auto-generated for new teachers; validate only when editing.
     if (isEditing && !formData.username.trim()) newErrors.username = 'Username is required'
     if (!isFormTeacher && !isSubjectTeacher) newErrors.teacherType = 'Select at least one teaching assignment type'
-    if (formData.assignedClasses.length === 0) newErrors.assignedClasses = 'At least one class is required'
+    if (isFormTeacher && formData.assignedClasses.length === 0) newErrors.assignedClasses = 'At least one class is required for Form Teachers'
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -476,7 +476,7 @@ export default function TeacherForm({
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Assign Classes *
+                Assign Classes {isFormTeacher && '*'}
               </label>
               <div className="flex gap-2">
                 <select
