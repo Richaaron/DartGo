@@ -288,8 +288,10 @@ export default function StudentManagement() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 md:mb-8">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Student Management</h1>
-          <p className="text-sm sm:text-base text-gray-600 mt-2">
+          <h1 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
+            Student <span className="text-indigo-600 dark:text-indigo-400">Management</span>
+          </h1>
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-2 font-medium">
             {isTeacher
               ? isFormCapableTeacher
                 ? 'Manage students in your assigned class'
@@ -333,11 +335,11 @@ export default function StudentManagement() {
       <div className="card-lg mb-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-2 uppercase tracking-widest">
               Search
             </label>
             <div className="relative">
-              <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+              <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400 dark:text-gray-500" />
               <input
                 type="text"
                 placeholder="Search by name, parent email or reg. no..."
@@ -347,14 +349,17 @@ export default function StudentManagement() {
               />
             </div>
           </div>
+
           <div>
-            <label htmlFor="level-filter" className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-2 uppercase tracking-widest">
               Level
             </label>
             <select
-              id="level-filter"
               value={selectedLevel}
-              onChange={(e) => setSelectedLevel(e.target.value as SchoolLevel | 'All')}
+              onChange={(e) => {
+                setSelectedLevel(e.target.value as any)
+                setSelectedClass('All')
+              }}
               className="input-field"
             >
               <option value="All">All Levels</option>
@@ -364,26 +369,24 @@ export default function StudentManagement() {
               <option value="Secondary">Secondary</option>
             </select>
           </div>
-          {isTeacher && isFormCapableTeacher && (
-            <div>
-              <label htmlFor="class-filter" className="block text-sm font-medium text-gray-700 mb-2">
-                Assigned Class
-              </label>
-              <select
-                id="class-filter"
-                value={selectedClass}
-                onChange={(e) => setSelectedClass(e.target.value)}
-                className="input-field"
-              >
-                {isFormCapableTeacher && <option value="All">All Assigned Classes</option>}
-                {assignedClasses.map((className: string) => (
-                  <option key={className} value={className}>
-                    {className}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+
+          <div>
+            <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-2 uppercase tracking-widest">
+              Class
+            </label>
+            <select
+              value={selectedClass}
+              onChange={(e) => setSelectedClass(e.target.value)}
+              className="input-field"
+            >
+              <option value="All">All Classes</option>
+              {(isTeacher ? assignedClasses : availableClassesForLevel).map((className: string) => (
+                <option key={className} value={className}>
+                  {className}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 

@@ -35,7 +35,7 @@ export default function Table({ columns, data, actions }: TableProps) {
           {data.map((row, index) => (
             <tr 
               key={index} 
-              className="hover:bg-indigo-50/30 dark:hover:bg-indigo-900/10 transition-colors duration-200 group"
+              className="bg-white dark:bg-slate-900/40 hover:bg-indigo-50/30 dark:hover:bg-indigo-900/20 transition-colors duration-200 group"
             >
               {columns.map((column) => (
                 <td key={column.key} className="table-cell">
