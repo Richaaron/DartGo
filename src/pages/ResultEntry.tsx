@@ -1,4 +1,9 @@
 import { useState, useEffect, useMemo } from 'react'
+
+// Define all standard classes
+const PRIMARY_CLASSES = ['Nursery 1', 'Nursery 2', 'Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6']
+const SECONDARY_CLASSES = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']
+const ALL_CLASSES = [...PRIMARY_CLASSES, ...SECONDARY_CLASSES]
 import { Plus, Trash2, Search, Download, Send, Mail, AlertCircle, LayoutGrid, List } from 'lucide-react'
 import { SubjectResult, Student, Subject } from '../types'
 import { useAuthContext } from '../context/AuthContext'
@@ -137,7 +142,10 @@ export default function ResultEntry() {
 
   // Get available classes and subjects based on teacher's role
   const availableClasses = useMemo(() => {
-    if (!teacher) return []
+    if (!teacher) {
+      // For admin users, show all classes
+      return ALL_CLASSES
+    }
     return teacher.assignedClasses || []
   }, [teacher])
 
@@ -468,7 +476,24 @@ export default function ResultEntry() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Class
+            </label>
+            <select
+              value={selectedClass}
+              onChange={(e) => setSelectedClass(e.target.value)}
+              className="input-field"
+            >
+              <option value="All">All Classes</option>
+              {availableClasses.map((className) => (
+                <option key={className} value={className}>
+                  {className}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Term
             </label>
             <select
@@ -482,6 +507,25 @@ export default function ResultEntry() {
               <option value="Third">Third Term</option>
             </select>
           </div>
+          {!teacher && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Subject
+              </label>
+              <select
+                value={selectedSubject}
+                onChange={(e) => setSelectedSubject(e.target.value)}
+                className="input-field"
+              >
+                <option value="All">All Subjects</option>
+                {subjects.map((subject) => (
+                  <option key={subject.id} value={subject.id}>
+                    {subject.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
       </div>
 
