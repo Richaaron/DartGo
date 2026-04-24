@@ -25,7 +25,7 @@ export interface Subject {
   code: string
   level: SchoolLevel
   creditUnits: number
-  subjectCategory?: 'CORE' | 'ELECTIVE' | 'VOCATIONAL'
+  subjectCategory?: 'Science' | 'Art' | 'Commercial'
   description?: string
   curriculumType?: 'NIGERIAN' | 'IGCSE' | 'OTHER'
   prerequisiteSubjects?: string[]
@@ -271,29 +271,29 @@ export const DEFAULT_SUBJECTS: Subject[] = [
   // Secondary Subjects (JSS and SSS)
   { id: 'sec-1', name: 'Mathematics', code: 'MTH', level: 'Secondary', creditUnits: 3 },
   { id: 'sec-2', name: 'English Language', code: 'ENG', level: 'Secondary', creditUnits: 3 },
-  { id: 'sec-3', name: 'Physics', code: 'PHY', level: 'Secondary', creditUnits: 3 },
-  { id: 'sec-4', name: 'Chemistry', code: 'CHM', level: 'Secondary', creditUnits: 3 },
-  { id: 'sec-5', name: 'Biology', code: 'BIO', level: 'Secondary', creditUnits: 3 },
-  { id: 'sec-6', name: 'Geography', code: 'GEO', level: 'Secondary', creditUnits: 2 },
-  { id: 'sec-7', name: 'Economics', code: 'ECO', level: 'Secondary', creditUnits: 2 },
-  { id: 'sec-8', name: 'Commerce', code: 'COM', level: 'Secondary', creditUnits: 2 },
-  { id: 'sec-9', name: 'Accounting', code: 'ACC', level: 'Secondary', creditUnits: 2 },
-  { id: 'sec-10', name: 'Government', code: 'GOV', level: 'Secondary', creditUnits: 2 },
-  { id: 'sec-11', name: 'Literature-in-English', code: 'LIT', level: 'Secondary', creditUnits: 2 },
-  { id: 'sec-12', name: 'Christian Religious Knowledge', code: 'CRK', level: 'Secondary', creditUnits: 2 },
-  { id: 'sec-13', name: 'Islamic Religious Knowledge', code: 'IRK', level: 'Secondary', creditUnits: 2 },
-  { id: 'sec-14', name: 'Yoruba Language', code: 'YOR', level: 'Secondary', creditUnits: 2 },
-  { id: 'sec-15', name: 'French Language', code: 'FRE', level: 'Secondary', creditUnits: 2 },
-  { id: 'sec-16', name: 'Computer Studies', code: 'CST', level: 'Secondary', creditUnits: 2 },
-  { id: 'sec-17', name: 'Technical Drawing', code: 'TD', level: 'Secondary', creditUnits: 2 },
-  { id: 'sec-18', name: 'Food and Nutrition', code: 'FAN', level: 'Secondary', creditUnits: 2 },
-  { id: 'sec-19', name: 'Home Management', code: 'HMG', level: 'Secondary', creditUnits: 2 },
-  { id: 'sec-20', name: 'Fine Arts', code: 'FAA', level: 'Secondary', creditUnits: 2 },
-  { id: 'sec-21', name: 'Music', code: 'MUS', level: 'Secondary', creditUnits: 2 },
-  { id: 'sec-22', name: 'Physical Education', code: 'PHE', level: 'Secondary', creditUnits: 1 },
-  { id: 'sec-23', name: 'Civic Education', code: 'CVE', level: 'Secondary', creditUnits: 1 },
-  { id: 'sec-24', name: 'Security Education', code: 'SEC', level: 'Secondary', creditUnits: 1 },
-  { id: 'sec-25', name: 'Agricultural Science', code: 'AGS', level: 'Secondary', creditUnits: 2 },
-  { id: 'sec-26', name: 'Further Mathematics', code: 'FMA', level: 'Secondary', creditUnits: 3 },
-  { id: 'sec-27', name: 'Dart Programming', code: 'DRT', level: 'Secondary', creditUnits: 3, subjectCategory: 'ELECTIVE' },
+  { id: 'sec-3', name: 'Physics', code: 'PHY', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
+  { id: 'sec-4', name: 'Chemistry', code: 'CHM', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
+  { id: 'sec-5', name: 'Biology', code: 'BIO', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
+  { id: 'sec-6', name: 'Geography', code: 'GEO', level: 'Secondary', creditUnits: 2, subjectCategory: 'Science' },
+  { id: 'sec-7', name: 'Economics', code: 'ECO', level: 'Secondary', creditUnits: 2, subjectCategory: 'Commercial' },
+  { id: 'sec-8', name: 'Commerce', code: 'COM', level: 'Secondary', creditUnits: 2, subjectCategory: 'Commercial' },
+  { id: 'sec-9', name: 'Accounting', code: 'ACC', level: 'Secondary', creditUnits: 2, subjectCategory: 'Commercial' },
+  { id: 'sec-10', name: 'Government', code: 'GOV', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
+  { id: 'sec-11', name: 'Literature-in-English', code: 'LIT', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
+  { id: 'sec-12', name: 'Christian Religious Knowledge', code: 'CRK', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
+  { id: 'sec-13', name: 'Islamic Religious Knowledge', code: 'IRK', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
+  { id: 'sec-14', name: 'Yoruba Language', code: 'YOR', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
+  { id: 'sec-15', name: 'French Language', code: 'FRE', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
+  { id: 'sec-16', name: 'Computer Studies', code: 'CST', level: 'Secondary', creditUnits: 2, subjectCategory: 'Science' },
+  { id: 'sec-17', name: 'Technical Drawing', code: 'TD', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
+  { id: 'sec-18', name: 'Food and Nutrition', code: 'FAN', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
+  { id: 'sec-19', name: 'Home Management', code: 'HMG', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
+  { id: 'sec-20', name: 'Fine Arts', code: 'FAA', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
+  { id: 'sec-21', name: 'Music', code: 'MUS', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
+  { id: 'sec-22', name: 'Physical Education', code: 'PHE', level: 'Secondary', creditUnits: 1, subjectCategory: 'Art' },
+  { id: 'sec-23', name: 'Civic Education', code: 'CVE', level: 'Secondary', creditUnits: 1, subjectCategory: 'Art' },
+  { id: 'sec-24', name: 'Security Education', code: 'SEC', level: 'Secondary', creditUnits: 1, subjectCategory: 'Art' },
+  { id: 'sec-25', name: 'Agricultural Science', code: 'AGS', level: 'Secondary', creditUnits: 2, subjectCategory: 'Science' },
+  { id: 'sec-26', name: 'Further Mathematics', code: 'FMA', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
+  { id: 'sec-27', name: 'Dart Programming', code: 'DRT', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
 ]

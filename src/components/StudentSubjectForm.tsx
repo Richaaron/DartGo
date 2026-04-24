@@ -23,8 +23,9 @@ export default function StudentSubjectForm({
   const [notes, setNotes] = useState<string>('')
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  // Filter subjects by student level
-  const availableSubjects = subjects.filter(s => s.level === student.level)
+  // Filter subjects by student level and only for SSS classes
+  const isSSSStudent = ['SSS 1', 'SSS 2', 'SSS 3'].includes(student.class)
+  const availableSubjects = subjects.filter(s => s.level === student.level && s.subjectCategory)
 
   // Initialize selected subjects from current assignments
   useEffect(() => {
@@ -72,14 +73,21 @@ export default function StudentSubjectForm({
     }
   }
 
+  // Sort categories in order: Science, Art, Commercial
+  const categoryOrder = ['Science', 'Art', 'Commercial']
   const subjectsByCategory = availableSubjects.reduce((acc, subject) => {
-    const category = subject.subjectCategory || 'CORE'
+    const category = subject.subjectCategory || 'Other'
     if (!acc[category]) {
       acc[category] = []
     }
     acc[category].push(subject)
     return acc
   }, {} as Record<string, Subject[]>)
+
+  // Sort by category order
+  const sortedCategories = Object.keys(subjectsByCategory).sort(
+    (a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b)
+  )
 
   return (
     <div className="p-6 bg-white">
@@ -148,21 +156,24 @@ export default function StudentSubjectForm({
         <div className="space-y-4">
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-1">
-              Available Subjects ({selectedSubjects.length} selected)
+              Choose Stream - {selectedSubjects.length} subject{selectedSubjects.length !== 1 ? 's' : ''} selected
             </h3>
+            <p className="text-xs text-gray-600 mb-2">SSS students must select subjects from one of the three streams</p>
             {errors.subjects && (
               <p className="text-red-500 text-sm mt-1">{errors.subjects}</p>
             )}
           </div>
 
-          {Object.entries(subjectsByCategory).map(([category, categorySubjects]) => (
-            <div key={category} className="border rounded-lg p-4">
-              <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
-                  {category}
-                </span>
-                <span className="text-gray-500">({categorySubjects.length})</span>
-              </h4>
+          {sortedCategories.map((category) => {
+            const categorySubjects = subjectsByCategory[category]
+            return (
+              <div key={category} className="border-2 border-blue-300 rounded-lg p-4 bg-gradient-to-br from-blue-50 to-white">
+                <h4 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
+                  <span className="px-3 py-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full text-xs font-semibold">
+                    {category} Stream
+                  </span>
+                  <span className="text-gray-600 font-medium">({categorySubjects.length} subjects)</span>
+                </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 {categorySubjects.map(subject => (
                   <label

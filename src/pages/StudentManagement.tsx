@@ -349,13 +349,15 @@ export default function StudentManagement() {
             ...student,
             actions: (
               <div className="flex gap-2">
-                <button
-                  onClick={() => handleOpenSubjectAssignment(student)}
-                  className="p-1 text-purple-600 hover:bg-purple-50 rounded transition-colors"
-                  title="Assign subjects"
-                >
-                  <BookOpen size={18} />
-                </button>
+                {['SSS 1', 'SSS 2', 'SSS 3'].includes(student.class) && (
+                  <button
+                    onClick={() => handleOpenSubjectAssignment(student)}
+                    className="p-1 text-purple-600 hover:bg-purple-50 rounded transition-colors"
+                    title="Assign subjects (SSS only)"
+                  >
+                    <BookOpen size={18} />
+                  </button>
+                )}
                 <button
                   onClick={() => {
                     setEditingStudent(student)
