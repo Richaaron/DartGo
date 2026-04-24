@@ -184,18 +184,6 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
     })
   }, [loadData])
 
-  // Get available classes from students
-  const availableClasses = useMemo(() => {
-    const classes = Array.from(new Set(students.map(s => s.class)))
-    return classes.sort()
-  }, [students])
-
-  // Filter students based on selected class
-  const classFilteredStudents = useMemo(() => {
-    if (selectedClass === 'All') return students
-    return students.filter(s => s.class === selectedClass)
-  }, [students, selectedClass])
-
   const filteredResults = useMemo(() => {
     return results.filter(result => {
       const student = students.find(s => s.id === result.studentId)
@@ -243,142 +231,107 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
   }
 
   return (
-    <div className="p-8">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Subject Results</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">Enter CA and Exam scores for automated grading</p>
-        </div>
-        <div className="flex gap-4">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-gray-900">Subject Results</h1>
+        <div className="flex gap-3">
           <button
             onClick={() => setShowBulkModal(true)}
-            className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-green-700 transition-all shadow-md"
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
           >
-            <Upload size={20} />
+            <Upload className="w-4 h-4" />
             Bulk Upload
           </button>
           <button
-            onClick={() => {
-              setEditingResult(null)
-              setShowForm(true)
-            }}
-            className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-blue-700 transition-all shadow-md"
+            onClick={() => setShowForm(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
-            <Plus size={20} />
-            Enter Results
+            <Plus className="w-4 h-4" />
+            Add Result
           </button>
         </div>
       </div>
 
-      {/* Message */}
-      {message.text && (
-        <div className={`mb-6 p-4 rounded-lg flex items-center gap-3 ${
-          message.type === 'success' 
-            ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800' 
-            : 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800'
-        }`}>
-          {message.type === 'success' ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
-          <p className="font-medium">{message.text}</p>
-        </div>
-      )}
-
       {/* Filters */}
-      <div className="card-lg mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Search</label>
-            <div className="relative">
-              <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400 dark:text-gray-500" />
-              <input
-                type="text"
-                placeholder="Search by student or subject..."
-                value={filterTerm}
-                onChange={(e) => setFilterTerm(e.target.value)}
-                className="input-field pl-10 dark:bg-gray-800 dark:border-gray-600 dark:text-white"
-              />
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Class</label>
-            <select
-              value={selectedClass}
-              onChange={(e) => {
-                setSelectedClass(e.target.value)
-                setSelectedStudent('All')
-              }}
-              className="input-field dark:bg-gray-800 dark:border-gray-600 dark:text-white"
-            >
-              <option value="All">All Classes</option>
-              {availableClasses.map((className) => (
-                <option key={className} value={className}>
-                  {className}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Student</label>
-            <select
-              value={selectedStudent}
-              onChange={(e) => setSelectedStudent(e.target.value)}
-              className="input-field dark:bg-gray-800 dark:border-gray-600 dark:text-white"
-            >
-              <option value="All">All Students</option>
-              {classFilteredStudents.map((student) => (
-                <option key={student.id} value={student.id}>
-                  {student.firstName} {student.lastName}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Term</label>
-            <select
-              value={selectedTerm}
-              onChange={(e) => setSelectedTerm(e.target.value)}
-              className="input-field dark:bg-gray-800 dark:border-gray-600 dark:text-white"
-            >
-              <option value="All">All Terms</option>
-              <option value="First Term">First Term</option>
-              <option value="Second Term">Second Term</option>
-              <option value="Third Term">Third Term</option>
-            </select>
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div>
+          <input
+            type="text"
+            placeholder="Search students..."
+            value={filterTerm}
+            onChange={(e) => setFilterTerm(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <select
+            value={selectedTerm}
+            onChange={(e) => setSelectedTerm(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="All">All Terms</option>
+            <option value="First Term">First Term</option>
+            <option value="Second Term">Second Term</option>
+            <option value="Third Term">Third Term</option>
+          </select>
+        </div>
+        <div>
+          <select
+            value={selectedClass}
+            onChange={(e) => setSelectedClass(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="All">All Classes</option>
+            {Array.from(new Set(students.map(s => s.class))).map(cls => (
+              <option key={cls} value={cls}>{cls}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <select
+            value={selectedStudent}
+            onChange={(e) => setSelectedStudent(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="All">All Students</option>
+            {students.map(student => (
+              <option key={student.id} value={student.id}>
+                {student.firstName} {student.lastName} ({student.registrationNumber})
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
       {/* Results Table */}
-      <div className="card-lg">
-        <Table
-          data={calculatedResults}
-          columns={[
-            { key: 'studentName', label: 'Student Name' },
-            { key: 'class', label: 'Class' },
-            { key: 'subjectName', label: 'Subject' },
-            { key: 'firstCA', label: '1st CA' },
-            { key: 'secondCA', label: '2nd CA' },
-            { key: 'exam', label: 'Exam' },
-            { key: 'totalScore', label: 'Total' },
-            { key: 'percentage', label: '%' },
-            { key: 'positionText', label: 'Position' },
-            { key: 'grade', label: 'Grade' },
-          ]}
-          actions={[
-            {
-              label: 'Edit',
-              onClick: (result: any) => {
-                setEditingResult(result)
-                setShowForm(true)
-              }
-            },
-            {
-              label: 'Delete',
-              onClick: (result: any) => handleDeleteResult(result.id)
+      <Table
+        data={calculatedResults}
+        columns={[
+          { key: 'studentName', label: 'Student' },
+          { key: 'subject', label: 'Subject' },
+          { key: 'term', label: 'Term' },
+          { key: 'firstCA', label: 'First CA' },
+          { key: 'secondCA', label: 'Second CA' },
+          { key: 'exam', label: 'Exam' },
+          { key: 'totalScore', label: 'Total' },
+          { key: 'grade', label: 'Grade' },
+          { key: 'position', label: 'Position' }
+        ]}
+        actions={[
+          {
+            label: 'Edit',
+            onClick: (result) => {
+              setEditingResult(result)
+              setShowForm(true)
             }
-          ]}
-        />
-      </div>
+          },
+          {
+            label: 'Delete',
+            onClick: (result) => handleDeleteResult(result.id)
+          }
+        ]}
+      />
 
       {/* Forms */}
       {showForm && (
@@ -396,18 +349,18 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
 
       {showBulkModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
-            <h2 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">Bulk Upload Results</h2>
+          <div className="bg-white rounded-lg p-6 max-w-md w-full">
+            <h2 className="text-lg font-bold mb-4">Bulk Upload Results</h2>
             <input
               type="file"
               accept=".csv"
               onChange={handleBulkUpload}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg mb-4 dark:bg-gray-700 dark:text-white"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg mb-4"
             />
             <div className="flex gap-3">
               <button
                 onClick={() => setShowBulkModal(false)}
-                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-white"
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
               >
                 Cancel
               </button>
