@@ -3,55 +3,6 @@ import { Calendar, Save, CheckCircle, XCircle, Clock, AlertCircle, Check } from 
 import { fetchStudents, saveBulkAttendance, fetchAttendance } from '../services/api'
 import { Student } from '../types'
 
-// Sample students for testing when no students exist in database
-const SAMPLE_STUDENTS: Student[] = [
-  {
-    id: 'sample-1',
-    firstName: 'John',
-    lastName: 'Doe',
-    registrationNumber: 'REG001',
-    class: 'Primary 1',
-    gender: 'Male',
-    dateOfBirth: new Date('2015-01-01'),
-    parentName: 'Parent 1',
-    parentPhone: '08012345678',
-    parentEmail: 'parent1@example.com',
-    address: 'Sample Address 1',
-    enrollmentDate: new Date('2023-01-01'),
-    isActive: true
-  },
-  {
-    id: 'sample-2',
-    firstName: 'Jane',
-    lastName: 'Smith',
-    registrationNumber: 'REG002',
-    class: 'Primary 1',
-    gender: 'Female',
-    dateOfBirth: new Date('2015-02-01'),
-    parentName: 'Parent 2',
-    parentPhone: '08087654321',
-    parentEmail: 'parent2@example.com',
-    address: 'Sample Address 2',
-    enrollmentDate: new Date('2023-01-01'),
-    isActive: true
-  },
-  {
-    id: 'sample-3',
-    firstName: 'Mike',
-    lastName: 'Johnson',
-    registrationNumber: 'REG003',
-    class: 'Primary 2',
-    gender: 'Male',
-    dateOfBirth: new Date('2014-03-01'),
-    parentName: 'Parent 3',
-    parentPhone: '08011223344',
-    parentEmail: 'parent3@example.com',
-    address: 'Sample Address 3',
-    enrollmentDate: new Date('2023-01-01'),
-    isActive: true
-  }
-]
-
 export default function AttendancePage() {
   const [students, setStudents] = useState<Student[]>([])
   const [attendanceRecords, setAttendanceRecords] = useState<Record<string, { status: string, remarks: string }>>({})
@@ -61,7 +12,6 @@ export default function AttendancePage() {
   const [isSaving, setIsSaving] = useState(false)
   const [message, setMessage] = useState({ type: '', text: '' })
   const [debugInfo, setDebugInfo] = useState('')
-  const [usingSampleData, setUsingSampleData] = useState(false)
 
   const classes = useMemo(() => [...new Set(students.map(s => s.class))], [students])
 
@@ -74,16 +24,8 @@ export default function AttendancePage() {
         // Fetch students first
         setDebugInfo('Fetching students...')
         const studentsData = await fetchStudents()
-        
-        if (studentsData.length === 0) {
-          setDebugInfo('No students found in database, using sample data for testing')
-          setStudents(SAMPLE_STUDENTS)
-          setUsingSampleData(true)
-        } else {
-          setStudents(studentsData)
-          setUsingSampleData(false)
-          setDebugInfo(`Loaded ${studentsData.length} students from database`)
-        }
+        setStudents(studentsData)
+        setDebugInfo(`Loaded ${studentsData.length} students`)
         
         // Then fetch attendance for the selected date
         try {
@@ -91,8 +33,7 @@ export default function AttendancePage() {
           const existingAttendance = await fetchAttendance({ date: selectedDate })
           
           const records: Record<string, { status: string, remarks: string }> = {}
-          const currentStudents = usingSampleData ? SAMPLE_STUDENTS : studentsData
-          currentStudents.forEach((s: Student) => {
+          studentsData.forEach((s: Student) => {
             const existing = existingAttendance.find((a: any) => 
               a.studentId?._id === s.id || a.studentId === s.id
             )
@@ -107,26 +48,18 @@ export default function AttendancePage() {
           setDebugInfo('Attendance fetch failed, setting default records')
           // Set default attendance records
           const records: Record<string, { status: string, remarks: string }> = {}
-          const currentStudents = usingSampleData ? SAMPLE_STUDENTS : studentsData
-          currentStudents.forEach((s: Student) => {
+          studentsData.forEach((s: Student) => {
             records[s.id] = { status: 'Present', remarks: '' }
           })
           setAttendanceRecords(records)
         }
       } catch (error: any) {
         console.error('Failed to load students:', error)
-        setMessage({ type: 'error', text: 'Failed to load student data, using sample data' })
-        setDebugInfo(`Error loading students: ${error.message}, using sample data`)
-        // Use sample data as fallback
-        setStudents(SAMPLE_STUDENTS)
-        setUsingSampleData(true)
-        
-        // Set default attendance records
-        const records: Record<string, { status: string, remarks: string }> = {}
-        SAMPLE_STUDENTS.forEach((s: Student) => {
-          records[s.id] = { status: 'Present', remarks: '' }
-        })
-        setAttendanceRecords(records)
+        setMessage({ type: 'error', text: 'Failed to load student data' })
+        setDebugInfo(`Error loading students: ${error.message}`)
+        // Set empty arrays to prevent crashes
+        setStudents([])
+        setAttendanceRecords({})
       } finally {
         setIsLoading(false)
       }
@@ -155,12 +88,6 @@ export default function AttendancePage() {
   }
 
   const handleSave = async () => {
-    if (usingSampleData) {
-      setMessage({ type: 'error', text: 'Cannot save sample data. Please add real students to the database first.' })
-      setTimeout(() => setMessage({ type: '', text: '' }), 5000)
-      return
-    }
-
     setIsSaving(true)
     try {
       const attendanceData = Object.entries(attendanceRecords).map(([studentId, record]) => ({
@@ -197,15 +124,7 @@ export default function AttendancePage() {
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Attendance</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">Mark and manage student attendance</p>
-          <div className="mt-2 space-y-1">
-            <p className="text-sm text-blue-600">Debug: {debugInfo}</p>
-            <p className="text-sm text-blue-600">Total Students: {students.length} | Filtered: {filteredStudents.length}</p>
-            {usingSampleData && (
-              <p className="text-sm text-orange-600 font-medium">
-                ⚠️ Using sample data for testing. Add real students to enable saving.
-              </p>
-            )}
-          </div>
+          <p className="text-sm text-blue-600 mt-1">Debug: {debugInfo} | Total Students: {students.length} | Filtered: {filteredStudents.length}</p>
         </div>
         <div className="flex gap-4 items-center">
           <input
@@ -216,11 +135,11 @@ export default function AttendancePage() {
           />
           <button
             onClick={handleSave}
-            disabled={isSaving || usingSampleData}
-            className="btn-primary flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isSaving}
+            className="btn-primary flex items-center gap-2"
           >
             <Save size={20} />
-            {isSaving ? 'Saving...' : usingSampleData ? 'Sample Data (No Save)' : 'Save Attendance'}
+            {isSaving ? 'Saving...' : 'Save Attendance'}
           </button>
         </div>
       </div>
@@ -233,14 +152,6 @@ export default function AttendancePage() {
         }`}>
           {message.type === 'success' ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
           <p className="font-medium">{message.text}</p>
-        </div>
-      )}
-
-      {usingSampleData && (
-        <div className="mb-6 p-4 rounded-lg bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800">
-          <AlertCircle size={20} className="inline mr-2" />
-          <p className="font-medium">Sample Data Mode</p>
-          <p className="text-sm mt-1">No students found in the database. Using sample students for testing. Add real students through the Students section to enable attendance saving.</p>
         </div>
       )}
 
@@ -275,7 +186,6 @@ export default function AttendancePage() {
                     <div>
                       <div className="font-medium text-gray-900 dark:text-white">
                         {student.firstName} {student.lastName}
-                        {usingSampleData && <span className="ml-2 text-xs text-orange-600">(Sample)</span>}
                       </div>
                       <div className="text-sm text-gray-500 dark:text-gray-400">{student.class}</div>
                     </div>
