@@ -130,37 +130,42 @@ export default function StudentForm({
   }
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">
-          {isEditing ? 'Edit Student' : 'Add New Student'}
-        </h2>
+    <div className="p-6 bg-gradient-to-b from-white dark:from-slate-800 to-slate-50 dark:to-slate-900">
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h2 className="text-3xl font-black bg-gradient-to-r from-purple-600 to-gold-600 bg-clip-text text-transparent">
+            {isEditing ? '✏️ Edit Student' : '➕ Add New Student'}
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 text-sm mt-1 font-medium">
+            {isEditing ? 'Update student information' : 'Register a new student in the system'}
+          </p>
+        </div>
         <button
           onClick={onCancel}
-          className="p-1 hover:bg-gray-100 rounded transition-colors"
+          className="p-2 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-all hover:scale-110"
         >
-          <X size={24} />
+          <X size={24} className="text-red-600" />
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Profile Image Section */}
-        <div className="flex flex-col items-center mb-6">
-          <div className="relative w-32 h-32 mb-4 group">
-            <div className="w-full h-full rounded-full bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-gray-200 group-hover:border-blue-500 transition-colors">
+        <div className="flex flex-col items-center mb-8 p-6 bg-gradient-to-br from-purple-50 dark:from-purple-900/20 to-gold-50 dark:to-gold-900/10 rounded-2xl border border-purple-200/50 dark:border-purple-700/30">
+          <div className="relative w-36 h-36 mb-4 group">
+            <div className="w-full h-full rounded-full bg-gradient-to-br from-gray-100 dark:from-slate-700 to-gray-200 dark:to-slate-800 flex items-center justify-center overflow-hidden border-4 border-purple-300 dark:border-purple-600 group-hover:border-gold-400 transition-all shadow-lg">
               {formData.image ? (
                 <img src={formData.image} alt="Profile" className="w-full h-full object-cover" />
               ) : (
-                <UserIcon className="w-16 h-16 text-gray-400" />
+                <UserIcon className="w-20 h-20 text-purple-400 dark:text-purple-300" />
               )}
             </div>
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="absolute bottom-0 right-0 p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors shadow-lg"
+              className="absolute bottom-0 right-0 p-3 bg-gradient-to-br from-gold-400 to-gold-500 dark:from-gold-500 dark:to-gold-600 text-white rounded-full hover:scale-110 transition-all shadow-lg hover:shadow-gold-500/50"
               title="Upload Photo"
             >
-              <Upload size={16} />
+              <Upload size={18} />
             </button>
             <input
               type="file"
@@ -170,12 +175,12 @@ export default function StudentForm({
               className="hidden"
             />
           </div>
-          <p className="text-xs text-gray-500">Upload profile photo</p>
+          <p className="text-xs font-semibold text-purple-700 dark:text-purple-300 uppercase tracking-widest">Click to upload photo</p>
         </div>
 
         {/* Personal Information */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">Personal Information</h3>
+          <h3 className="text-xl font-black text-gray-900 dark:text-white uppercase tracking-wider border-l-4 border-purple-600 pl-3">👤 Personal Information</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>

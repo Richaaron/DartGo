@@ -78,23 +78,23 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-          <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8 text-center">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 flex items-center justify-center">
-              <AlertTriangle className="w-8 h-8 text-red-600" />
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900 dark:from-slate-950 dark:via-slate-900 dark:to-purple-950 p-4">
+          <div className="max-w-md w-full bg-gradient-to-br from-white to-slate-50 dark:from-slate-800/95 dark:to-slate-900/95 dark:backdrop-blur-md rounded-2xl shadow-2xl p-8 text-center border border-purple-200/50 dark:border-purple-600/30">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-rose-500 to-rose-600 dark:from-rose-600 dark:to-rose-700 flex items-center justify-center shadow-lg shadow-rose-500/40 animate-pulse">
+              <AlertTriangle className="w-10 h-10 text-white" />
             </div>
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Something went wrong</h2>
-            <p className="text-gray-600 mb-6">
-              We encountered an unexpected error. The development team has been notified.
+            <h2 className="text-2xl font-black bg-gradient-to-r from-rose-600 to-purple-600 bg-clip-text text-transparent mb-3">Oops! Something went wrong</h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed font-medium">
+              We encountered an unexpected error. Don't worry, our team has been notified and is working on it.
             </p>
             {(import.meta.env.DEV || this.props.showDetails) && this.state.error && (
-              <div className="mb-6 p-4 bg-gray-100 rounded-lg text-left">
-                <p className="font-mono text-sm text-red-600 break-all">
+              <div className="mb-6 p-4 bg-rose-50 dark:bg-rose-900/20 rounded-xl text-left border border-rose-200 dark:border-rose-800/40">
+                <p className="font-mono text-xs text-rose-700 dark:text-rose-300 break-all">
                   {this.state.error.message}
                 </p>
                 {this.state.errorInfo && (
-                  <p className="font-mono text-xs text-gray-500 mt-2">
-                    Component Stack: {this.state.errorInfo.componentStack}
+                  <p className="font-mono text-xs text-gray-500 dark:text-gray-400 mt-2 line-clamp-3">
+                    {this.state.errorInfo.componentStack}
                   </p>
                 )}
               </div>
@@ -103,7 +103,7 @@ export class ErrorBoundary extends Component<Props, State> {
               {this.props.enableRetry !== false && (
                 <button
                   onClick={this.handleRetry}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  className="btn-primary flex items-center gap-2"
                 >
                   <RefreshCw className="w-4 h-4" />
                   Try Again
@@ -111,10 +111,10 @@ export class ErrorBoundary extends Component<Props, State> {
               )}
               <button
                 onClick={this.handleGoHome}
-                className="flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                className="btn-secondary flex items-center gap-2"
               >
                 <Home className="w-4 h-4" />
-                Go to Home
+                Go Home
               </button>
             </div>
           </div>

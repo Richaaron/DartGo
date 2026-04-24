@@ -97,49 +97,49 @@ export const NotificationDashboard: React.FC = () => {
     <div className="space-y-6">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-lg border border-gray-200">
+        <div className="card-lg bg-gradient-to-br from-emerald-50 dark:from-emerald-900/20 to-emerald-100/50 dark:to-emerald-800/10 border-l-4 border-emerald-500">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm">Total Sent</p>
-              <p className="text-2xl font-bold text-green-600">{stats.totalSent}</p>
+              <p className="text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-widest">Total Sent</p>
+              <p className="text-3xl font-black text-emerald-700 dark:text-emerald-300 mt-1">{stats.totalSent}</p>
             </div>
-            <CheckCircle className="w-8 h-8 text-green-600 opacity-20" />
+            <CheckCircle className="w-10 h-10 text-emerald-500 opacity-30" />
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-lg border border-gray-200">
+        <div className="card-lg bg-gradient-to-br from-rose-50 dark:from-rose-900/20 to-rose-100/50 dark:to-rose-800/10 border-l-4 border-rose-500">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm">Failed</p>
-              <p className="text-2xl font-bold text-red-600">{stats.totalFailed}</p>
+              <p className="text-rose-600 dark:text-rose-400 text-xs font-bold uppercase tracking-widest">Failed</p>
+              <p className="text-3xl font-black text-rose-700 dark:text-rose-300 mt-1">{stats.totalFailed}</p>
             </div>
-            <AlertCircle className="w-8 h-8 text-red-600 opacity-20" />
+            <AlertCircle className="w-10 h-10 text-rose-500 opacity-30" />
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-lg border border-gray-200">
+        <div className="card-lg bg-gradient-to-br from-amber-50 dark:from-amber-900/20 to-amber-100/50 dark:to-amber-800/10 border-l-4 border-amber-500">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm">Pending</p>
-              <p className="text-2xl font-bold text-yellow-600">{stats.totalPending}</p>
+              <p className="text-amber-600 dark:text-amber-400 text-xs font-bold uppercase tracking-widest">Pending</p>
+              <p className="text-3xl font-black text-amber-700 dark:text-amber-300 mt-1">{stats.totalPending}</p>
             </div>
-            <Bell className="w-8 h-8 text-yellow-600 opacity-20" />
+            <Bell className="w-10 h-10 text-amber-500 opacity-30" />
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-lg border border-gray-200">
+        <div className="card-lg bg-gradient-to-br from-purple-50 dark:from-purple-900/20 to-purple-100/50 dark:to-purple-800/10 border-l-4 border-purple-500">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm">Total</p>
-              <p className="text-2xl font-bold text-blue-600">{stats.totalSent + stats.totalFailed + stats.totalPending}</p>
+              <p className="text-purple-600 dark:text-purple-400 text-xs font-bold uppercase tracking-widest">Total</p>
+              <p className="text-3xl font-black text-purple-700 dark:text-purple-300 mt-1">{stats.totalSent + stats.totalFailed + stats.totalPending}</p>
             </div>
-            <Bell className="w-8 h-8 text-blue-600 opacity-20" />
+            <Bell className="w-10 h-10 text-purple-500 opacity-30" />
           </div>
         </div>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex gap-2 border-b border-gray-200">
+      <div className="flex gap-2 border-b-2 border-purple-200 dark:border-purple-800/50 pb-0">
         {(['all', 'sent', 'failed', 'pending'] as const).map(f => (
           <button
             key={f}

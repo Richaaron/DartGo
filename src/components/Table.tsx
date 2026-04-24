@@ -16,10 +16,10 @@ interface TableProps {
 
 export default function Table({ columns, data, actions }: TableProps) {
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto rounded-2xl border border-purple-200/40 dark:border-purple-600/60">
       <table className="w-full">
         <thead>
-          <tr className="border-b border-gray-200 dark:border-purple-700/50 bg-gray-50 dark:bg-gradient-to-r dark:from-slate-700/80 dark:to-slate-800/80">
+          <tr className="bg-gradient-to-r from-purple-600 to-purple-700 dark:from-purple-900/50 dark:to-purple-800/50">
             {columns.map((column) => (
               <th
                 key={column.key}
@@ -28,12 +28,15 @@ export default function Table({ columns, data, actions }: TableProps) {
                 {column.label}
               </th>
             ))}
-            {actions && <th className="table-header">Actions</th>}
+            {actions && <th className="table-header text-left">Actions</th>}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="divide-y divide-purple-100 dark:divide-purple-800/30">
           {data.map((row, index) => (
-            <tr key={index} className="hover:bg-gray-50 dark:hover:bg-purple-900/20 transition-colors">
+            <tr 
+              key={index} 
+              className="hover:bg-purple-50/60 dark:hover:bg-purple-900/20 transition-colors duration-200 group"
+            >
               {columns.map((column) => (
                 <td key={column.key} className="table-cell">
                   {row[column.key]}
@@ -41,12 +44,12 @@ export default function Table({ columns, data, actions }: TableProps) {
               ))}
               {actions && (
                 <td className="table-cell">
-                  <div className="flex gap-2">
+                  <div className="flex gap-3 opacity-70 group-hover:opacity-100 transition-opacity">
                     {actions.map((action, actionIndex) => (
                       <button
                         key={actionIndex}
                         onClick={() => action.onClick(row)}
-                        className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium"
+                        className="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 text-sm font-semibold transition-all hover:scale-110"
                       >
                         {action.label}
                       </button>
