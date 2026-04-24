@@ -276,29 +276,54 @@ export default function StudentForm({
               Assign subjects to the student now for immediate result recording.
             </p>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {filteredSubjects.map(subject => (
-                <label
-                  key={subject.id}
-                  className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${
-                    selectedSubjects.includes(subject.id)
-                      ? 'bg-purple-50 dark:bg-purple-900/20 border-purple-500 shadow-md'
-                      : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-purple-300'
-                  }`}
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedSubjects.includes(subject.id)}
-                    onChange={() => toggleSubject(subject.id)}
-                    className="w-5 h-5 text-purple-600 rounded-lg focus:ring-purple-500 border-slate-300"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-black text-gray-900 dark:text-white truncate">{subject.name}</p>
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{subject.code}</p>
+            {(() => {
+              const isSSSStudent = ['SSS 1', 'SSS 2', 'SSS 3'].includes(formData.class)
+              const categoryOrder = ['Science', 'Art', 'Commercial', 'General']
+              const subjectsByCategory = filteredSubjects.reduce((acc, subject) => {
+                const category = isSSSStudent ? (subject.subjectCategory || 'General') : 'General'
+                if (!acc[category]) {
+                  acc[category] = []
+                }
+                acc[category].push(subject)
+                return acc
+              }, {} as Record<string, Subject[]>)
+
+              const sortedCategories = Object.keys(subjectsByCategory).sort(
+                (a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b)
+              )
+
+              return sortedCategories.map(category => (
+                <div key={category} className="space-y-3">
+                  <h4 className="text-sm font-black text-school-blue dark:text-school-yellow uppercase tracking-widest flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-school-red animate-pulse"></span>
+                    {category} {isSSSStudent ? 'Stream' : 'Subjects'}
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {subjectsByCategory[category].map(subject => (
+                      <label
+                        key={subject.id}
+                        className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${
+                          selectedSubjects.includes(subject.id)
+                            ? 'bg-purple-50 dark:bg-purple-900/20 border-purple-500 shadow-md'
+                            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-purple-300'
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedSubjects.includes(subject.id)}
+                          onChange={() => toggleSubject(subject.id)}
+                          className="w-5 h-5 text-purple-600 rounded-lg focus:ring-purple-500 border-slate-300"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-black text-gray-900 dark:text-white truncate">{subject.name}</p>
+                          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{subject.code}</p>
+                        </div>
+                      </label>
+                    ))}
                   </div>
-                </label>
-              ))}
-            </div>
+                </div>
+              ))
+            })()}
           </div>
         )}
 

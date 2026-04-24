@@ -4,7 +4,7 @@ import apiService from './apiService'
 const DEV_SUBJECTS: Subject[] = DEFAULT_SUBJECTS.map((subject) => ({
   ...subject,
   description: subject.description || `${subject.name} for ${subject.level} level with guided classroom content and learning objectives.`,
-  subjectCategory: subject.subjectCategory || 'CORE',
+  subjectCategory: subject.subjectCategory || 'General',
   curriculumType: subject.curriculumType || 'NIGERIAN',
   prerequisiteSubjects: subject.prerequisiteSubjects || [],
 }))
