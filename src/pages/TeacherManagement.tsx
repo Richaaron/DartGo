@@ -129,6 +129,7 @@ export default function TeacherManagement() {
     { key: 'subjects', label: 'Subjects' },
     { key: 'level', label: 'Level' },
     { key: 'classes', label: 'Classes' },
+    { key: 'actions', label: 'Actions' },
   ]
 
   return (
