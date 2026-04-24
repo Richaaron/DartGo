@@ -265,70 +265,46 @@ export default function StudentForm({
           </div>
         </div>
 
-        {/* Subject Selection (Only for New Students) */}
-        {!isEditing && filteredSubjects.length > 0 && (
-          <div className="space-y-4 pt-4 border-t-4 border-dashed border-slate-200 dark:border-slate-700">
-            <h3 className="text-xl font-black text-gray-900 dark:text-white uppercase tracking-wider border-l-4 border-purple-500 pl-3 flex items-center gap-2">
-              <BookOpen className="text-purple-500" />
-              Assign Subjects (Optional)
-            </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
-              Assign subjects to the student now for immediate result recording.
-            </p>
-            
-            {(() => {
-              const isSSSStudent = ['SSS 1', 'SSS 2', 'SSS 3'].includes(formData.class)
-              const categoryOrder = ['Science', 'Art', 'Commercial', 'General']
-              const subjectsByCategory = filteredSubjects.reduce((acc, subject) => {
-                const category = isSSSStudent ? (subject.subjectCategory || 'General') : 'General'
-                if (!acc[category]) {
-                  acc[category] = []
-                }
-                acc[category].push(subject)
-                return acc
-              }, {} as Record<string, Subject[]>)
+        {/* Parent Information */}
+        <div className="space-y-4 border-t-4 border-school-yellow pt-4">
+          <h3 className="text-lg font-black text-gray-900 dark:text-white uppercase tracking-wider border-l-4 border-school-green pl-3 animate-cartoon-bounce">👨‍👩‍👧 Parent/Guardian Information</h3>
 
-              const sortedCategories = Object.keys(subjectsByCategory).sort(
-                (a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b)
-              )
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
+                Parent/Guardian Name *
+              </label>
+              <input
+                type="text"
+                name="parentName"
+                value={formData.parentName}
+                onChange={handleChange}
+                className={`input-field ${errors.parentName ? 'border-school-red' : ''}`}
+              />
+              {errors.parentName && (
+                <p className="text-school-red text-sm mt-1 font-black animate-shake">{errors.parentName}</p>
+              )}
+            </div>
 
-              return sortedCategories.map(category => (
-                <div key={category} className="space-y-3">
-                  <h4 className="text-sm font-black text-school-blue dark:text-school-yellow uppercase tracking-widest flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-school-red animate-pulse"></span>
-                    {category} {isSSSStudent ? 'Stream' : 'Subjects'}
-                  </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                    {subjectsByCategory[category].map(subject => (
-                      <label
-                        key={subject.id}
-                        className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${
-                          selectedSubjects.includes(subject.id)
-                            ? 'bg-purple-50 dark:bg-purple-900/20 border-purple-500 shadow-md'
-                            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-purple-300'
-                        }`}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedSubjects.includes(subject.id)}
-                          onChange={() => toggleSubject(subject.id)}
-                          className="w-5 h-5 text-purple-600 rounded-lg focus:ring-purple-500 border-slate-300"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-black text-gray-900 dark:text-white truncate">{subject.name}</p>
-                          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{subject.code}</p>
-                        </div>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              ))
-            })()}
+            <div>
+              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
+                Parent/Guardian Phone *
+              </label>
+              <input
+                type="tel"
+                name="parentPhone"
+                value={formData.parentPhone}
+                onChange={handleChange}
+                className={`input-field ${errors.parentPhone ? 'border-school-red' : ''}`}
+              />
+              {errors.parentPhone && (
+                <p className="text-school-red text-sm mt-1 font-black animate-shake">{errors.parentPhone}</p>
+              )}
+            </div>
           </div>
-        )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Parent Email (Optional)
             </label>
             <input
@@ -375,10 +351,10 @@ export default function StudentForm({
                 onChange={handleChange}
                 className="input-field"
               >
-                <option value="Pre-Nursery">👶 Pre-Nursery</option>
-                <option value="Nursery">🍼 Nursery</option>
-                <option value="Primary">✏️ Primary</option>
-                <option value="Secondary">📖 Secondary</option>
+                <option value="Pre-Nursery">Pre-Nursery</option>
+                <option value="Nursery">Nursery</option>
+                <option value="Primary">Primary</option>
+                <option value="Secondary">Secondary</option>
               </select>
             </div>
 
@@ -449,68 +425,91 @@ export default function StudentForm({
           </div>
         </div>
 
-        {/* Parent Information */}
-        <div className="space-y-4 border-t-4 border-school-yellow pt-4">
-          <h3 className="text-lg font-black text-gray-900 dark:text-white uppercase tracking-wider border-l-4 border-school-green pl-3 animate-cartoon-bounce">👨‍👩‍👧 Parent/Guardian Information</h3>
+        {/* Subject Selection (Only for New Students) */}
+        {!isEditing && filteredSubjects.length > 0 && (
+          <div className="space-y-4 pt-4 border-t-4 border-dashed border-slate-200 dark:border-slate-700">
+            <h3 className="text-xl font-black text-gray-900 dark:text-white uppercase tracking-wider border-l-4 border-purple-500 pl-3 flex items-center gap-2">
+              <BookOpen className="text-purple-500" />
+              Assign Subjects (Optional)
+            </h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+              Assign subjects to the student now for immediate result recording.
+            </p>
+            
+            {(() => {
+              const isSSSStudent = ['SSS 1', 'SSS 2', 'SSS 3'].includes(formData.class)
+              const categoryOrder = ['Science', 'Art', 'Commercial', 'General']
+              const subjectsByCategory = filteredSubjects.reduce((acc, subject) => {
+                const category = isSSSStudent ? (subject.subjectCategory || 'General') : 'General'
+                if (!acc[category]) {
+                  acc[category] = []
+                }
+                acc[category].push(subject)
+                return acc
+              }, {} as Record<string, Subject[]>)
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
-                Parent/Guardian Name *
-              </label>
-              <input
-                type="text"
-                name="parentName"
-                value={formData.parentName}
-                onChange={handleChange}
-                className={`input-field ${errors.parentName ? 'border-school-red' : ''}`}
-              />
-              {errors.parentName && (
-                <p className="text-school-red text-sm mt-1 font-black animate-shake">{errors.parentName}</p>
-              )}
-            </div>
+              const sortedCategories = Object.keys(subjectsByCategory).sort(
+                (a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b)
+              )
 
-            <div>
-              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
-                Parent/Guardian Phone *
-              </label>
-              <input
-                type="tel"
-                name="parentPhone"
-                value={formData.parentPhone}
-                onChange={handleChange}
-                className={`input-field ${errors.parentPhone ? 'border-school-red' : ''}`}
-              />
-              {errors.parentPhone && (
-                <p className="text-school-red text-sm mt-1 font-black animate-shake">{errors.parentPhone}</p>
-              )}
-            </div>
+              return sortedCategories.map(category => (
+                <div key={category} className="space-y-3">
+                  <h4 className="text-sm font-black text-school-blue dark:text-school-yellow uppercase tracking-widest flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-school-red animate-pulse"></span>
+                    {category} {isSSSStudent ? 'Stream' : 'Subjects'}
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {subjectsByCategory[category].map(subject => (
+                      <label
+                        key={subject.id}
+                        className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${
+                          selectedSubjects.includes(subject.id)
+                            ? 'bg-purple-50 dark:bg-purple-900/20 border-purple-500 shadow-md'
+                            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-purple-300'
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedSubjects.includes(subject.id)}
+                          onChange={() => toggleSubject(subject.id)}
+                          className="w-5 h-5 text-purple-600 rounded-lg focus:ring-purple-500 border-slate-300"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-black text-gray-900 dark:text-white truncate">{subject.name}</p>
+                          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{subject.code}</p>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              ))
+            })()}
           </div>
+        )}
 
-          {formData.parentUsername && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 bg-gradient-to-br from-school-yellow/20 to-school-orange/10 p-4 rounded-2xl border-2 border-dashed border-school-yellow">
-              <div>
-                <label className="block text-xs font-black text-school-red uppercase tracking-wider mb-1">
-                  📱 Parent Portal Username
-                </label>
-                <div className="font-mono text-sm bg-white dark:bg-slate-800 p-2 rounded-lg border-2 border-school-blue">
-                  {formData.parentUsername}
-                </div>
+        {formData.parentUsername && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 bg-gradient-to-br from-school-yellow/20 to-school-orange/10 p-4 rounded-2xl border-2 border-dashed border-school-yellow">
+            <div>
+              <label className="block text-xs font-black text-school-red uppercase tracking-wider mb-1">
+                📱 Parent Portal Username
+              </label>
+              <div className="font-mono text-sm bg-white dark:bg-slate-800 p-2 rounded-lg border-2 border-school-blue">
+                {formData.parentUsername}
               </div>
-              <div>
-                <label className="block text-xs font-black text-school-red uppercase tracking-wider mb-1">
-                  🔐 Parent Portal Password
-                </label>
-                <div className="font-mono text-sm bg-white dark:bg-slate-800 p-2 rounded-lg border-2 border-school-blue">
-                  {formData.parentPassword}
-                </div>
-              </div>
-              <p className="text-xs text-school-blue dark:text-school-yellow col-span-2 mt-2 font-black">
-                ✨ Share these auto-generated credentials with the parent to allow them to view their child's results.
-              </p>
             </div>
-          )}
-        </div>
+            <div>
+              <label className="block text-xs font-black text-school-red uppercase tracking-wider mb-1">
+                🔐 Parent Portal Password
+              </label>
+              <div className="font-mono text-sm bg-white dark:bg-slate-800 p-2 rounded-lg border-2 border-school-blue">
+                {formData.parentPassword}
+              </div>
+            </div>
+            <p className="text-xs text-school-blue dark:text-school-yellow col-span-2 mt-2 font-black">
+              ✨ Share these auto-generated credentials with the parent to allow them to view their child's results.
+            </p>
+          </div>
+        )}
 
         {/* Form Actions */}
         <div className="flex gap-4 pt-4 border-t-4 border-school-yellow">
