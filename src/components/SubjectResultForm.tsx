@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
-import { X } from 'lucide-react'
+import { X, Save, AlertCircle, TrendingUp, Award, MessageSquare } from 'lucide-react'
 import { SubjectResult, Student, Subject } from '../types'
 import { calculateGrade, calculateGradePoint, calculatePercentage } from '../utils/calculations'
+import { useAuthContext } from '../context/AuthContext'
 
 interface SubjectResultFormProps {
   onSubmit: (result: SubjectResult | Omit<SubjectResult, 'id'>) => void
@@ -21,27 +22,48 @@ export default function SubjectResultForm({
   students,
   subjects,
 }: SubjectResultFormProps) {
-  const [formData, setFormData] = useState<Omit<SubjectResult, 'id'> & { id?: string }>({
-    studentId: '',
-    subjectId: '',
-    term: 'First',
-    academicYear: new Date().getFullYear().toString(),
-    firstCA: 0,
-    secondCA: 0,
-    exam: 0,
-    totalScore: 0,
-    percentage: 0,
-    grade: '',
-    gradePoint: 0,
-    remarks: '',
-    dateRecorded: new Date().toISOString().split('T')[0],
-    recordedBy: '',
-    ...(initialData && initialData),
+  const { user } = useAuthContext()
+  const [formData, setFormData] = useState<Omit<SubjectResult, 'id'> & { id?: string }>(() => {
+    const data = {
+      studentId: '',
+      subjectId: '',
+      term: 'First',
+      academicYear: new Date().getFullYear().toString(),
+      firstCA: 0,
+      secondCA: 0,
+      exam: 0,
+      totalScore: 0,
+      percentage: 0,
+      grade: '',
+      gradePoint: 0,
+      remarks: '',
+      dateRecorded: new Date().toISOString().split('T')[0],
+      recordedBy: user?.name || '',
+      ...(initialData && initialData),
+    }
+
+    // If it's a pending result, remove the dummy ID so it's treated as new
+    if (data.id && data.id.startsWith('pending-')) {
+      delete data.id
+    }
+
+    return data
   })
+
+  // Update totals if initialData is provided
+  useEffect(() => {
+    if (initialData) {
+      const totals = calculateTotals(initialData.firstCA, initialData.secondCA, initialData.exam)
+      setFormData(prev => ({
+        ...prev,
+        ...totals
+      }))
+    }
+  }, [initialData])
 
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  const calculateTotals = (firstCA: number, secondCA: number, exam: number) => {
+  function calculateTotals(firstCA: number, secondCA: number, exam: number) {
     const total = firstCA + secondCA + exam
     const percentage = calculatePercentage(total, 100)
     const grade = calculateGrade(percentage)
@@ -62,7 +84,7 @@ export default function SubjectResultForm({
       remarks = 'Failed. Required to retake the subject and seek extra help.'
     }
 
-    return { total, percentage, grade, gradePoint, remarks }
+    return { totalScore: total, percentage, grade, gradePoint, remarks }
   }
 
   const handleChange = (
@@ -133,26 +155,33 @@ export default function SubjectResultForm({
   }
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">
-          {isEditing ? 'Edit Subject Result' : 'Enter Subject Results'}
-        </h2>
+    <div className="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border-4 border-dashed border-school-blue dark:border-indigo-500/40 shadow-2xl">
+      <div className="p-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white flex justify-between items-center">
+        <div>
+          <h2 className="text-2xl font-black uppercase tracking-tight">
+            {isEditing ? '✏️ Edit Result' : '📝 Enter Result'}
+          </h2>
+          <p className="text-xs font-medium opacity-90">Recording scores for automated grading</p>
+        </div>
         <button
           onClick={onCancel}
-          className="p-1 hover:bg-gray-100 rounded transition-colors"
+          className="p-2 hover:bg-white/20 rounded-full transition-all"
         >
           <X size={24} />
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="p-8 space-y-8 max-h-[80vh] overflow-y-auto">
+        {/* Selection Section */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">Selection</h3>
+          <div className="flex items-center gap-2 text-school-blue dark:text-indigo-400 font-black uppercase tracking-widest text-sm">
+            <Award size={18} />
+            <span>Student & Subject Selection</span>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
                 Student *
               </label>
               <select
@@ -160,21 +189,22 @@ export default function SubjectResultForm({
                 value={formData.studentId}
                 onChange={handleChange}
                 className={`input-field ${errors.studentId ? 'border-red-500' : ''}`}
+                disabled={isEditing || !!initialData}
               >
                 <option value="">Select a student...</option>
                 {students.map((student) => (
                   <option key={student.id} value={student.id}>
-                    {student.firstName} {student.lastName} ({student.registrationNumber})
+                    {student.firstName} {student.lastName} ({student.registrationNumber}) - {student.class}
                   </option>
                 ))}
               </select>
               {errors.studentId && (
-                <p className="text-red-500 text-sm mt-1">{errors.studentId}</p>
+                <p className="text-red-500 text-xs mt-1 font-bold">{errors.studentId}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
                 Subject *
               </label>
               <select
@@ -182,6 +212,7 @@ export default function SubjectResultForm({
                 value={formData.subjectId}
                 onChange={handleChange}
                 className={`input-field ${errors.subjectId ? 'border-red-500' : ''}`}
+                disabled={isEditing || !!initialData}
               >
                 <option value="">Select a subject...</option>
                 {subjects.map((subject) => (
@@ -191,18 +222,22 @@ export default function SubjectResultForm({
                 ))}
               </select>
               {errors.subjectId && (
-                <p className="text-red-500 text-sm mt-1">{errors.subjectId}</p>
+                <p className="text-red-500 text-xs mt-1 font-bold">{errors.subjectId}</p>
               )}
             </div>
           </div>
         </div>
 
-        <div className="space-y-4 border-t pt-4">
-          <h3 className="text-lg font-semibold text-gray-900">Scores</h3>
+        {/* Scores Section */}
+        <div className="space-y-4 pt-6 border-t-2 border-dashed border-slate-100 dark:border-slate-800">
+          <div className="flex items-center gap-2 text-school-blue dark:text-indigo-400 font-black uppercase tracking-widest text-sm">
+            <TrendingUp size={18} />
+            <span>Academic Scores</span>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
                 1st CA (Max 20) *
               </label>
               <input
@@ -216,12 +251,12 @@ export default function SubjectResultForm({
                 className={`input-field ${errors.firstCA ? 'border-red-500' : ''}`}
               />
               {errors.firstCA && (
-                <p className="text-red-500 text-sm mt-1">{errors.firstCA}</p>
+                <p className="text-red-500 text-xs mt-1 font-bold">{errors.firstCA}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
                 2nd CA (Max 20) *
               </label>
               <input
@@ -235,12 +270,12 @@ export default function SubjectResultForm({
                 className={`input-field ${errors.secondCA ? 'border-red-500' : ''}`}
               />
               {errors.secondCA && (
-                <p className="text-red-500 text-sm mt-1">{errors.secondCA}</p>
+                <p className="text-red-500 text-xs mt-1 font-bold">{errors.secondCA}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
                 Exam (Max 60) *
               </label>
               <input
@@ -254,96 +289,45 @@ export default function SubjectResultForm({
                 className={`input-field ${errors.exam ? 'border-red-500' : ''}`}
               />
               {errors.exam && (
-                <p className="text-red-500 text-sm mt-1">{errors.exam}</p>
+                <p className="text-red-500 text-xs mt-1 font-bold">{errors.exam}</p>
               )}
             </div>
           </div>
         </div>
 
-        <div className="bg-blue-50 p-4 rounded-lg border-t pt-4">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Automated Results</h3>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            <div>
-              <p className="text-gray-600 text-sm">Total Score</p>
-              <p className="text-2xl font-bold text-blue-600">{preview.total}/100</p>
+        {/* Grading Preview */}
+        <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-3xl p-6 border-2 border-indigo-100 dark:border-indigo-800/50">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="text-center">
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Total Score</p>
+              <p className="text-2xl font-black text-indigo-600 dark:text-indigo-400">{preview.total}</p>
             </div>
-            <div>
-              <p className="text-gray-600 text-sm">Percentage</p>
-              <p className="text-2xl font-bold text-blue-600">{preview.percentage}%</p>
+            <div className="text-center">
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Percentage</p>
+              <p className="text-2xl font-black text-indigo-600 dark:text-indigo-400">{preview.percentage}%</p>
             </div>
-            <div>
-              <p className="text-gray-600 text-sm">Grade</p>
-              <p className="text-2xl font-bold text-blue-600">{preview.grade}</p>
+            <div className="text-center">
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Grade</p>
+              <p className="text-2xl font-black text-indigo-600 dark:text-indigo-400">{preview.grade}</p>
             </div>
-            <div>
-              <p className="text-gray-600 text-sm">Grade Point</p>
-              <p className="text-2xl font-bold text-blue-600">{preview.gradePoint}</p>
-            </div>
-            <div>
-              <p className="text-gray-600 text-sm">Status</p>
-              <p className={`text-2xl font-bold ${preview.grade === 'F' ? 'text-red-600' : 'text-green-600'}`}>
-                {preview.grade === 'F' ? 'Fail' : 'Pass'}
-              </p>
+            <div className="text-center">
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Grade Point</p>
+              <p className="text-2xl font-black text-indigo-600 dark:text-indigo-400">{preview.gradePoint}</p>
             </div>
           </div>
-          <div className="mt-4 p-3 bg-white rounded-lg border border-blue-200">
-            <p className="text-gray-600 text-sm">Teacher's Remarks</p>
-            <p className="text-gray-900 font-medium">{preview.remarks}</p>
-          </div>
-        </div>
-
-        <div className="space-y-4 border-t pt-4">
-          <h3 className="text-lg font-semibold text-gray-900">Academic Period</h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="mt-4 pt-4 border-t border-indigo-100 dark:border-indigo-800/50 flex items-start gap-3">
+            <MessageSquare className="w-5 h-5 text-indigo-500 mt-1 shrink-0" />
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Term
-              </label>
-              <select
-                name="term"
-                value={formData.term}
-                onChange={handleChange}
-                className="input-field"
-              >
-                <option value="First">First Term</option>
-                <option value="Second">Second Term</option>
-                <option value="Third">Third Term</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Academic Year
-              </label>
-              <input
-                type="text"
-                name="academicYear"
-                value={formData.academicYear}
-                onChange={handleChange}
-                placeholder="e.g., 2024"
-                className="input-field"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Date Recorded
-              </label>
-              <input
-                type="date"
-                name="dateRecorded"
-                value={formData.dateRecorded}
-                onChange={handleChange}
-                className="input-field"
-              />
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Automated Remarks</p>
+              <p className="text-xs font-bold text-gray-700 dark:text-gray-300 italic">{preview.remarks}</p>
             </div>
           </div>
         </div>
 
-        <div className="space-y-4 border-t pt-4">
+        {/* Meta Info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t-2 border-dashed border-slate-100 dark:border-slate-800">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
               Recorded By *
             </label>
             <input
@@ -351,23 +335,41 @@ export default function SubjectResultForm({
               name="recordedBy"
               value={formData.recordedBy}
               onChange={handleChange}
-              placeholder="Teacher name"
+              placeholder="Your name..."
               className={`input-field ${errors.recordedBy ? 'border-red-500' : ''}`}
             />
             {errors.recordedBy && (
-              <p className="text-red-500 text-sm mt-1">{errors.recordedBy}</p>
+              <p className="text-red-500 text-xs mt-1 font-bold">{errors.recordedBy}</p>
             )}
+          </div>
+          <div>
+            <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
+              Academic Year
+            </label>
+            <input
+              type="text"
+              name="academicYear"
+              value={formData.academicYear}
+              onChange={handleChange}
+              placeholder="e.g. 2024"
+              className="input-field"
+            />
           </div>
         </div>
 
-        <div className="flex gap-4 pt-4 border-t">
-          <button type="submit" className="btn-primary">
+        {/* Actions */}
+        <div className="flex gap-4 pt-4">
+          <button
+            type="submit"
+            className="flex-1 btn-primary"
+          >
+            <Save size={20} />
             {isEditing ? 'Update Result' : 'Save Result'}
           </button>
           <button
             type="button"
             onClick={onCancel}
-            className="btn-secondary"
+            className="px-8 py-4 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full font-black uppercase tracking-widest text-sm hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
           >
             Cancel
           </button>

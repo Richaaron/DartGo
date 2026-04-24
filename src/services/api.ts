@@ -118,8 +118,9 @@ export async function deleteResult(id: string): Promise<void> {
   await apiService.delete(`/results/${id}`)
 }
 
-export async function fetchStudentSubjects(studentId: string): Promise<StudentSubject[]> {
-  const { data } = await apiService.get(`/student-subjects/${studentId}`)
+export async function fetchStudentSubjects(studentId?: string): Promise<StudentSubject[]> {
+  const endpoint = studentId ? `/student-subjects/${studentId}` : '/student-subjects'
+  const { data } = await apiService.get(endpoint)
   return data as StudentSubject[]
 }
 
