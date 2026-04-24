@@ -4,8 +4,8 @@ import { useState, useEffect, useMemo } from 'react'
 const PRIMARY_CLASSES = ['Nursery 1', 'Nursery 2', 'Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6']
 const SECONDARY_CLASSES = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']
 const ALL_CLASSES = [...PRIMARY_CLASSES, ...SECONDARY_CLASSES]
-import { Plus, Trash2, Search, Download, Send, Mail, AlertCircle, LayoutGrid, List } from 'lucide-react'
-import { SubjectResult, Student, Subject } from '../types'
+import { Plus, Trash2, Search, Download, Send, Mail, AlertCircle, LayoutGrid, List, CheckCircle2, Clock } from 'lucide-react'
+import { SubjectResult, Student, Subject, ResultsSentTracker } from '../types'
 import { useAuthContext } from '../context/AuthContext'
 import SubjectResultForm from '../components/SubjectResultForm'
 import Table from '../components/Table'
@@ -26,6 +26,10 @@ export default function ResultEntry() {
   const [selectedTerm, setSelectedTerm] = useState<string>('All')
   const [sending, setSending] = useState<string | null>(null)
   const [sendMessage, setSendMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+  
+  // New state for bulk sending and tracking
+  const [resultsSentTracker, setResultsSentTracker] = useState<ResultsSentTracker[]>([])
+  const [isBulkSending, setIsBulkSending] = useState(false)
   
   // New state for dual-mode viewing
   const [viewMode, setViewMode] = useState<'class' | 'subject'>('class')
@@ -64,6 +68,16 @@ export default function ResultEntry() {
       .catch((error) => {
         console.error('Failed to load results data', error)
       })
+
+    // Load tracking data from localStorage
+    try {
+      const savedTracker = localStorage.getItem('resultsSentTracker')
+      if (savedTracker) {
+        setResultsSentTracker(JSON.parse(savedTracker))
+      }
+    } catch (error) {
+      console.error('Failed to load tracking data:', error)
+    }
 
     return () => {
       isMounted = false
@@ -306,6 +320,9 @@ export default function ResultEntry() {
         studentId: result.studentId,
       })
 
+      // Track the result as sent
+      trackResultAsSent(result.studentId, result.term, result.academicYear, student.parentEmail)
+
       setSendMessage({
         type: 'success',
         text: `Results sent to ${student.parentName} (${student.parentEmail})`,
@@ -367,6 +384,9 @@ export default function ResultEntry() {
         studentId: student.id,
       })
 
+      // Track the result as sent
+      trackResultAsSent(student.id, term, academicYear, student.parentEmail)
+
       setSendMessage({
         type: 'success',
         text: `Results sent successfully to ${student.parentName}`,
@@ -379,6 +399,240 @@ export default function ResultEntry() {
       })
     } finally {
       setSending(null)
+    }
+  }
+
+  // Get unique students in current view based on filters
+  const studentsInCurrentView = useMemo(() => {
+    let filteredResults = results
+
+    // Apply term filter
+    if (selectedTerm !== 'All') {
+      filteredResults = filteredResults.filter(r => r.term === selectedTerm)
+    }
+
+    // Apply class filter
+    if (selectedClass !== 'All') {
+      filteredResults = filteredResults.filter(r => {
+        const student = students.find(s => s.id === r.studentId)
+        return student && student.class === selectedClass
+      })
+    }
+
+    // Apply subject filter
+    if (selectedSubject !== 'All') {
+      filteredResults = filteredResults.filter(r => r.subjectId === selectedSubject)
+    }
+
+    // Get unique student IDs from filtered results
+    const uniqueStudentIds = [...new Set(filteredResults.map(r => r.studentId))]
+    
+    return uniqueStudentIds
+      .map(studentId => students.find(s => s.id === studentId))
+      .filter((student): student is Student => student !== undefined && student.parentEmail !== undefined) // Only students with parent emails
+  }, [results, selectedTerm, selectedClass, selectedSubject, students])
+
+  // Function to send results to all parents in current view
+  const handleSendToAllParents = async () => {
+    if (!user) return
+
+    setIsBulkSending(true)
+    setSendMessage(null)
+
+    try {
+      // Get current term and year
+      const currentTerm = selectedTerm === 'All' ? 'First' : selectedTerm
+      const currentYear = results.length > 0 ? results[0].academicYear : new Date().getFullYear().toString()
+
+      let successCount = 0
+      let failureCount = 0
+
+      for (const student of studentsInCurrentView) {
+        try {
+          if (!student || !student.parentEmail) continue
+
+          const studentTermResults = results.filter(
+            r => r.studentId === student.id && r.term === currentTerm && r.academicYear === currentYear
+          )
+
+          if (studentTermResults.length === 0) continue
+
+          // Calculate positions for the student's results
+          const resultsWithPositions = studentTermResults.map(result => {
+            const subjectResults = results.filter(
+              r => r.subjectId === result.subjectId && r.term === currentTerm && r.academicYear === currentYear
+            )
+            const positionData = getStudentClassPosition(subjectResults, result.studentId, currentTerm, currentYear)
+            return {
+              ...result,
+              position: positionData.position,
+              positionText: getPositionSuffix(positionData.position)
+            }
+          })
+
+          // Format results for email
+          const formattedResults = resultsWithPositions.map(r => {
+            const subject = subjects.find(s => s.id === r.subjectId)
+            return {
+              subject: subject?.name || 'Unknown Subject',
+              score: r.totalScore,
+              totalMarks: r.totalScore,
+              grade: r.grade,
+              position: r.positionText,
+              remarks: r.remarks
+            }
+          })
+
+          // Send email via backend
+          await apiService.post('/send-results-email', {
+            parentEmail: student.parentEmail,
+            studentName: `${student.firstName} ${student.lastName}`,
+            term: currentTerm,
+            academicYear: currentYear,
+            results: formattedResults,
+            studentId: student.id,
+          })
+
+          // Track the result as sent
+          trackResultAsSent(student.id, currentTerm, currentYear, student.parentEmail)
+          successCount++
+        } catch (error) {
+          console.error('Failed to send to individual parent:', error)
+          failureCount++
+        }
+      }
+
+      setSendMessage({
+        type: 'success',
+        text: `Results sent to ${successCount} parents${failureCount > 0 ? ` (${failureCount} failed)` : ''}`,
+      })
+    } catch (error) {
+      console.error('Failed to send bulk results:', error)
+      setSendMessage({
+        type: 'error',
+        text: 'Failed to send some results. Please try again.',
+      })
+    } finally {
+      setIsBulkSending(false)
+    }
+  }
+
+  // Helper function to mark results as sent
+  const trackResultAsSent = (studentId: string, term: string, academicYear: string, parentEmail: string) => {
+    const newTracker: ResultsSentTracker = {
+      id: `${studentId}-${term}-${academicYear}-${Date.now()}`,
+      studentId,
+      term,
+      academicYear,
+      sentDate: new Date().toISOString(),
+      sentBy: user?.id || 'unknown',
+      parentEmail,
+      status: 'sent',
+      attemptCount: 1,
+    }
+    const updatedTracker = [...resultsSentTracker, newTracker]
+    setResultsSentTracker(updatedTracker)
+    localStorage.setItem('resultsSentTracker', JSON.stringify(updatedTracker))
+  }
+
+  // Helper function to check if results were sent for a student
+  const hasResultsBeenSent = (studentId: string, term: string, academicYear: string): boolean => {
+    return resultsSentTracker.some(
+      t => t.studentId === studentId && t.term === term && t.academicYear === academicYear && t.status === 'sent'
+    )
+  }
+
+  // Get outstanding students (those who haven't received emails yet)
+  const getOutstandingStudents = useMemo(() => {
+    const currentTerm = selectedTerm === 'All' ? 'First' : selectedTerm
+    const currentYear = results.length > 0 ? results[0].academicYear : new Date().getFullYear().toString()
+
+    const uniqueStudentsWithResults = new Set(
+      filteredResults.map(r => r.studentId)
+    )
+
+    const outstanding = Array.from(uniqueStudentsWithResults)
+      .filter(studentId => {
+        const student = students.find(s => s.id === studentId)
+        return student && student.parentEmail && !hasResultsBeenSent(studentId, currentTerm, currentYear)
+      })
+      .map(studentId => ({
+        studentId,
+        student: students.find(s => s.id === studentId),
+        resultsCount: filteredResults.filter(r => r.studentId === studentId).length,
+      }))
+
+    return outstanding
+  }, [filteredResults, students, resultsSentTracker, selectedTerm])
+
+  // Bulk send to all outstanding parents
+  const handleBulkSendToOutstanding = async () => {
+    if (getOutstandingStudents.length === 0) {
+      setSendMessage({ type: 'error', text: 'No outstanding results to send' })
+      return
+    }
+
+    try {
+      setIsBulkSending(true)
+      let successCount = 0
+      let failureCount = 0
+      const currentTerm = selectedTerm === 'All' ? 'First' : selectedTerm
+      const currentYear = results.length > 0 ? results[0].academicYear : new Date().getFullYear().toString()
+
+      for (const outstanding of getOutstandingStudents) {
+        try {
+          const student = outstanding.student
+          if (!student || !student.parentEmail) continue
+
+          const studentTermResults = results.filter(
+            r => r.studentId === student.id && r.term === currentTerm && r.academicYear === currentYear
+          )
+
+          if (studentTermResults.length === 0) continue
+
+          const resultsWithPositions = calculatePositions(studentTermResults, student.id)
+          const classPosition = getStudentClassPosition(results, student.id, currentTerm, currentYear)
+
+          const formattedResults = resultsWithPositions.map(r => {
+            const subject = subjects.find(s => s.id === r.subjectId)
+            return {
+              subject: subject?.name || 'Unknown Subject',
+              grade: r.grade,
+              percentage: r.percentage,
+              position: r.positionText || getPositionSuffix(r.position || 0),
+            }
+          })
+
+          await apiService.post('/send-results-email', {
+            parentEmail: student.parentEmail,
+            studentName: `${student.firstName} ${student.lastName}`,
+            term: currentTerm,
+            academicYear: currentYear,
+            results: formattedResults,
+            classPosition,
+            studentId: student.id,
+          })
+
+          trackResultAsSent(student.id, currentTerm, currentYear, student.parentEmail)
+          successCount++
+        } catch (error) {
+          console.error('Failed to send to individual parent:', error)
+          failureCount++
+        }
+      }
+
+      setSendMessage({
+        type: successCount > 0 ? 'success' : 'error',
+        text: `Bulk send completed: ${successCount} successful${failureCount > 0 ? `, ${failureCount} failed` : ''}`,
+      })
+    } catch (error) {
+      console.error('Bulk send error:', error)
+      setSendMessage({
+        type: 'error',
+        text: 'Failed to initiate bulk send',
+      })
+    } finally {
+      setIsBulkSending(false)
     }
   }
 
@@ -454,6 +708,82 @@ export default function ResultEntry() {
             <Plus size={20} />
             Add Result
           </button>
+            <button
+              onClick={handleSendToAllParents}
+              disabled={isBulkSending}
+              className="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white rounded-full font-black shadow-lg hover:shadow-2xl hover:scale-110 active:scale-95 flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              title="Send results to all parents in current view"
+            >
+              {isBulkSending ? (
+                <>
+                  <Mail size={20} className="animate-pulse" />
+                  Sending...
+                </>
+              ) : (
+                <>
+                  <Send size={20} />
+                  Send to Parents
+                </>
+              )}
+            </button>
+            <button
+              onClick={handleBulkSendToOutstanding}
+              disabled={isBulkSending || getOutstandingStudents.length === 0}
+              className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-full font-black shadow-lg hover:shadow-2xl hover:scale-110 active:scale-95 flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              title={getOutstandingStudents.length === 0 ? 'All results already sent' : 'Send results to all parents with outstanding results'}
+            >
+              {isBulkSending ? (
+                <>
+                  <Mail size={20} className="animate-pulse" />
+                  Sending...
+                </>
+              ) : (
+                <>
+                  <Mail size={20} />
+                  Send to Outstanding ({getOutstandingStudents.length})
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Outstanding Results Tracking Dashboard */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="card-lg bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 border border-blue-200 dark:border-blue-700">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-blue-600 dark:text-blue-300">Outstanding Results</p>
+              <p className="text-3xl font-bold text-blue-900 dark:text-blue-100">{getOutstandingStudents.length}</p>
+              <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">Parents to contact</p>
+            </div>
+            <Clock className="text-blue-500 opacity-20" size={48} />
+          </div>
+        </div>
+
+        <div className="card-lg bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 border border-green-200 dark:border-green-700">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-green-600 dark:text-green-300">Results Sent</p>
+              <p className="text-3xl font-bold text-green-900 dark:text-green-100">
+                {resultsSentTracker.filter(t => t.status === 'sent').length}
+              </p>
+              <p className="text-xs text-green-600 dark:text-green-400 mt-1">Successfully sent</p>
+            </div>
+            <CheckCircle2 className="text-green-500 opacity-20" size={48} />
+          </div>
+        </div>
+
+        <div className="card-lg bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 border border-purple-200 dark:border-purple-700">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-purple-600 dark:text-purple-300">Total Students</p>
+              <p className="text-3xl font-bold text-purple-900 dark:text-purple-100">
+                {new Set(filteredResults.map(r => r.studentId)).size}
+              </p>
+              <p className="text-xs text-purple-600 dark:text-purple-400 mt-1">In current view</p>
+            </div>
+            <Mail className="text-purple-500 opacity-20" size={48} />
           </div>
         </div>
       </div>
