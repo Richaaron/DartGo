@@ -35,7 +35,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
     setApiError(null)
     
     try {
-      const { fetchStudents, fetchResults, fetchSubjects } = await import('../services/api')
+      const { fetchStudents, fetchResults, fetchSubjects, fetchStudentSubjects } = await import('../services/api')
       
       const [studentsData, resultsData, subjectsData, studentSubjectsData] = await Promise.all([
         fetchStudents().catch(() => []),
@@ -44,10 +44,10 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
         fetchStudentSubjects().catch(() => [])
       ])
       
-      setStudents(studentsData)
-      setResults(resultsData)
-      setSubjects(subjectsData)
-      setAllStudentSubjects(studentSubjectsData)
+      setStudents(Array.isArray(studentsData) ? studentsData : [])
+      setResults(Array.isArray(resultsData) ? resultsData : [])
+      setSubjects(Array.isArray(subjectsData) ? subjectsData : [])
+      setAllStudentSubjects(Array.isArray(studentSubjectsData) ? studentSubjectsData : [])
     } catch (error: any) {
       console.error('Failed to load results data', error)
       setApiError('Failed to load data. Please try again.')
@@ -254,10 +254,10 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
   const stats = {
     totalRecords: displayResults.length,
     averageScore: displayResults.length > 0 
-      ? (displayResults.reduce((sum, r) => sum + r.percentage, 0) / displayResults.length).toFixed(1) 
+      ? (displayResults.reduce((sum, r) => sum + (r.percentage || 0), 0) / displayResults.length).toFixed(1) 
       : 0,
     passRate: displayResults.length > 0
-      ? Math.round((displayResults.filter(r => r.percentage >= 50).length / displayResults.length) * 100)
+      ? Math.round((displayResults.filter(r => (r.percentage || 0) >= 50).length / displayResults.length) * 100)
       : 0,
     passingGrade: '50%'
   }

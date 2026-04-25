@@ -92,30 +92,42 @@ export default function ResultEntry() {
   async function loadData() {
     try {
       const [studentsData, resultsData, subjectsData] = await Promise.all([
-        fetchStudents(),
-        fetchResults(),
-        fetchSubjects()
+        fetchStudents().catch(() => []),
+        fetchResults().catch(() => []),
+        fetchSubjects().catch(() => [])
       ])
-      setStudents(studentsData)
-      setResults(resultsData)
-      setSubjects(subjectsData)
+      setStudents(Array.isArray(studentsData) ? studentsData : [])
+      setResults(Array.isArray(resultsData) ? resultsData : [])
+      setSubjects(Array.isArray(subjectsData) ? subjectsData : [])
     } catch (error) {
       console.error('Failed to load results data', error)
+      setStudents([])
+      setResults([])
+      setSubjects([])
     }
   }
 
   useEffect(() => {
     let isMounted = true
 
-    Promise.all([fetchStudents(), fetchResults(), fetchSubjects()])
+    Promise.all([
+      fetchStudents().catch(() => []),
+      fetchResults().catch(() => []),
+      fetchSubjects().catch(() => [])
+    ])
       .then(([studentsData, resultsData, subjectsData]) => {
         if (!isMounted) return
-        setStudents(studentsData)
-        setResults(resultsData)
-        setSubjects(subjectsData)
+        setStudents(Array.isArray(studentsData) ? studentsData : [])
+        setResults(Array.isArray(resultsData) ? resultsData : [])
+        setSubjects(Array.isArray(subjectsData) ? subjectsData : [])
       })
       .catch((error) => {
         console.error('Failed to load results data', error)
+        if (isMounted) {
+          setStudents([])
+          setResults([])
+          setSubjects([])
+        }
       })
 
     // Load tracking data from localStorage

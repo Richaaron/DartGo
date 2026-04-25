@@ -73,28 +73,31 @@ export default function AttendancePage() {
       try {
         // Fetch students first
         setDebugInfo('Fetching students...')
-        const studentsData = await fetchStudents()
+        const studentsData = await fetchStudents().catch(() => [])
+        const safeStudentsData = Array.isArray(studentsData) ? studentsData : []
         
-        if (studentsData.length === 0) {
+        if (safeStudentsData.length === 0) {
           setDebugInfo('No students found in database, using sample data for testing')
           setStudents(SAMPLE_STUDENTS)
           setUsingSampleData(true)
         } else {
-          setStudents(studentsData)
+          setStudents(safeStudentsData)
           setUsingSampleData(false)
-          setDebugInfo(`Loaded ${studentsData.length} students from database`)
+          setDebugInfo(`Loaded ${safeStudentsData.length} students from database`)
         }
         
         // Then fetch attendance for the selected date
         try {
           setDebugInfo('Fetching attendance data...')
-          const existingAttendance = await fetchAttendance({ date: selectedDate })
+          const existingAttendance = await fetchAttendance({ date: selectedDate }).catch(() => [])
+          const safeExistingAttendance = Array.isArray(existingAttendance) ? existingAttendance : []
           
           const records: Record<string, { status: string, remarks: string }> = {}
-          const currentStudents = usingSampleData ? SAMPLE_STUDENTS : studentsData
+          const currentStudents = usingSampleData ? SAMPLE_STUDENTS : safeStudentsData
           currentStudents.forEach((s: Student) => {
-            const existing = existingAttendance.find((a: any) => 
-              a.studentId?._id === s.id || a.studentId === s.id
+            if (!s) return
+            const existing = safeExistingAttendance.find((a: any) => 
+              a && (a.studentId?._id === s.id || a.studentId === s.id)
             )
             records[s.id] = existing 
               ? { status: existing.status, remarks: existing.remarks || '' } 

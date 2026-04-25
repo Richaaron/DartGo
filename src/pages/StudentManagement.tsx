@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Plus, Edit2, Trash2, Search, Download, BookOpen } from 'lucide-react'
+import { useState, useEffect, useMemo } from 'react'
+import { Plus, Edit2, Trash2, Search, Download, BookOpen, X } from 'lucide-react'
 import { Student, SchoolLevel } from '../types'
 import StudentForm from '../components/StudentForm'
 import StudentSubjectForm from '../components/StudentSubjectForm'
@@ -32,21 +32,32 @@ export default function StudentManagement() {
   const [bulkAssignClass, setBulkAssignClass] = useState('')
   const [bulkAssignSubjects, setBulkAssignSubjects] = useState<string[]>([])
 
+  const availableClassesForLevel = useMemo(() => {
+    let filtered = students
+    if (selectedLevel !== 'All') {
+      filtered = students.filter((s) => s.level === selectedLevel)
+    }
+    return [...new Set(filtered.map((s) => s.class))].sort()
+  }, [students, selectedLevel])
+
   useEffect(() => {
     let isMounted = true
 
     Promise.all([fetchStudents(), fetchSubjects()])
       .then(([studentData, subjectData]) => {
         if (isMounted) {
+          const safeStudents = Array.isArray(studentData) ? studentData : []
+          const safeSubjects = Array.isArray(subjectData) ? subjectData : []
+
           if (isSubjectOnlyTeacher) {
-            setStudents(studentData.filter((s: Student) => s.level === 'Secondary'))
+            setStudents(safeStudents.filter((s: Student) => s?.level === 'Secondary'))
           } else if (isTeacher) {
             // Form-capable teachers: only students in assigned classes
-            setStudents(studentData.filter((s: Student) => assignedClasses.includes(s.class)))
+            setStudents(safeStudents.filter((s: Student) => assignedClasses.includes(s?.class)))
           } else {
-            setStudents(studentData)
+            setStudents(safeStudents)
           }
-          setSubjects(subjectData)
+          setSubjects(safeSubjects)
         }
       })
       .catch((error) => {
@@ -67,15 +78,18 @@ export default function StudentManagement() {
   async function loadStudents() {
     try {
       const data = await fetchStudents()
+      const safeData = Array.isArray(data) ? data : []
+      
       if (isSubjectOnlyTeacher) {
-        setStudents(data.filter((s: Student) => s.level === 'Secondary'))
+        setStudents(safeData.filter((s: Student) => s?.level === 'Secondary'))
       } else if (isTeacher) {
-        setStudents(data.filter((s: Student) => assignedClasses.includes(s.class)))
+        setStudents(safeData.filter((s: Student) => assignedClasses.includes(s?.class)))
       } else {
-        setStudents(data)
+        setStudents(safeData)
       }
     } catch (error) {
       console.error('Failed to load students', error)
+      setStudents([])
     }
   }
 
@@ -170,11 +184,18 @@ export default function StudentManagement() {
   }
 
   const filteredStudents = students.filter((student) => {
+    if (!student) return false
+    
+    const firstName = student.firstName || ''
+    const lastName = student.lastName || ''
+    const regNum = student.registrationNumber || ''
+    const parentEmail = student.parentEmail || ''
+
     const matchesSearch =
-      student.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      student.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      student.registrationNumber.includes(searchTerm) ||
-      (student.parentEmail || '').toLowerCase().includes(searchTerm.toLowerCase())
+      firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      regNum.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      parentEmail.toLowerCase().includes(searchTerm.toLowerCase())
 
     const matchesLevel = selectedLevel === 'All' || student.level === selectedLevel
     const matchesClass = !isFormCapableTeacher || selectedClass === 'All' || student.class === selectedClass
@@ -281,6 +302,7 @@ export default function StudentManagement() {
     { key: 'parentUsername', label: 'Parent Username' },
     { key: 'parentPassword', label: 'Parent Password' },
     { key: 'status', label: 'Status' },
+    { key: 'actions', label: 'Actions' },
   ]
 
   return (
@@ -450,7 +472,7 @@ export default function StudentManagement() {
                   className="input-field"
                 >
                   <option value="">Choose a class...</option>
-                  {[...new Set(students.map(s => s.class))].sort().map(className => (
+                  {[...new Set(students.filter(s => s && s.class).map(s => s.class))].sort().map(className => (
                     <option key={className} value={className}>{className}</option>
                   ))}
                 </select>
@@ -465,8 +487,9 @@ export default function StudentManagement() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {subjects
                       .filter(s => {
-                        const classLevel = students.find(student => student.class === bulkAssignClass)?.level
-                        return s.level === classLevel
+                        if (!s) return false
+                        const classLevel = students.find(student => student && student.class === bulkAssignClass)?.level
+                        return classLevel && s.level === classLevel
                       })
                       .map(subject => (
                         <label

@@ -39,7 +39,7 @@ export default function Table({ columns, data, actions }: TableProps) {
             >
               {columns.map((column) => (
                 <td key={column.key} className="table-cell">
-                  {row[column.key]}
+                  {row[column.key] !== null && row[column.key] !== undefined ? row[column.key] : '-'}
                 </td>
               ))}
               {actions && (

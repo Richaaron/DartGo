@@ -129,12 +129,20 @@ export const getPerformanceTrend = (previousGPA: number, currentGPA: number): st
   return 'Stable'
 }
 
-export const formatDate = (date: string): string => {
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  })
+export const formatDate = (date: string | undefined | null): string => {
+  if (!date) return 'N/A'
+  try {
+    const d = new Date(date)
+    if (isNaN(d.getTime())) return 'N/A'
+    return d.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+  } catch (error) {
+    console.error('Error formatting date:', error)
+    return 'N/A'
+  }
 }
 
 export const calculateStudentAge = (dateOfBirth: string): number => {

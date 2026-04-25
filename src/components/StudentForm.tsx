@@ -57,7 +57,7 @@ export default function StudentForm({
   }, [defaultClass, isEditing])
 
   // Filter subjects based on student level
-  const filteredSubjects = availableSubjects.filter(s => s.level === formData.level)
+  const filteredSubjects = (Array.isArray(availableSubjects) ? availableSubjects : []).filter(s => s && s.level === formData.level)
 
   const toggleSubject = (subjectId: string) => {
     setSelectedSubjects(prev =>
