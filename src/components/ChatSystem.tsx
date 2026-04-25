@@ -18,15 +18,19 @@ export default function ChatSystem() {
   const loadMessages = useCallback(async (otherUserId: string) => {
     try {
       const allMessages = await messageService.getMessages()
+      if (!Array.isArray(allMessages)) return
+      
       const filtered = allMessages.filter(
-        m => (m.senderId._id === otherUserId || m.recipientId._id === otherUserId)
+        m => m && m.senderId && m.recipientId && (m.senderId._id === otherUserId || m.recipientId._id === otherUserId)
       )
       setMessages(filtered)
       
       // Mark unread messages as read
-      const unread = filtered.filter(m => !m.isRead && m.recipientId._id === user?._id)
+      const unread = filtered.filter(m => !m.isRead && m.recipientId && m.recipientId._id === user?._id)
       for (const msg of unread) {
-        await messageService.markAsRead(msg._id)
+        if (msg && msg._id) {
+          await messageService.markAsRead(msg._id)
+        }
       }
     } catch (error) {
       console.error('Failed to load messages:', error)
@@ -88,8 +92,10 @@ export default function ChatSystem() {
   }
 
   const filteredConversations = conversations.filter(c => 
-    c.user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    c.user.email.toLowerCase().includes(searchTerm.toLowerCase())
+    c && c.user && (
+      (c.user.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (c.user.email || '').toLowerCase().includes(searchTerm.toLowerCase())
+    )
   )
 
   return (

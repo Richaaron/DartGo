@@ -42,10 +42,16 @@ export default function TeacherActivityLog() {
   }
 
   const formatAction = (action: string) => {
-    const [method, url] = action.split(' ')
-    const parts = url.split('/')
-    const resource = parts[parts.length - 1] || parts[parts.length - 2] || 'Resource'
-    return `${method} ${resource.charAt(0).toUpperCase() + resource.slice(1)}`
+    if (!action || typeof action !== 'string' || !action.includes(' ')) return action || 'Unknown Action'
+    try {
+      const [method, url] = action.split(' ')
+      if (!url) return method
+      const parts = url.split('/')
+      const resource = parts[parts.length - 1] || parts[parts.length - 2] || 'Resource'
+      return `${method} ${resource.charAt(0).toUpperCase() + resource.slice(1)}`
+    } catch (e) {
+      return action
+    }
   }
 
   return (

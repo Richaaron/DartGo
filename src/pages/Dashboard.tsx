@@ -92,19 +92,22 @@ export default function Dashboard() {
   }, [])
 
   const stats = useMemo(() => {
-    const activeStudents = students.filter((s) => s.status === 'Active').length
-    const totalResults = results.length
+    const studentList = Array.isArray(students) ? students : []
+    const resultList = Array.isArray(results) ? results : []
+    
+    const activeStudents = studentList.filter((s) => s && s.status === 'Active').length
+    const totalResults = resultList.length
     const avgScore =
       totalResults > 0
         ? Math.round(
-            (results.reduce((sum, r) => sum + r.percentage, 0) /
+            (resultList.reduce((sum, r) => sum + (r?.percentage || 0), 0) /
               totalResults) *
               100
           ) / 100
         : 0
 
     return {
-      totalStudents: students.length,
+      totalStudents: studentList.length,
       activeStudents,
       totalResults,
       averageScore: avgScore,
@@ -112,18 +115,25 @@ export default function Dashboard() {
   }, [students, results])
 
   const classPerformanceData = useMemo(() => {
-    const classes = [...new Set(students.map(s => s.class))]
+    const studentList = Array.isArray(students) ? students : []
+    const resultList = Array.isArray(results) ? results : []
+    
+    const classes = [...new Set(studentList.map(s => s?.class).filter(Boolean))]
     
     // Optimization: Group students by class and results by studentId
-    const studentsByClass = students.reduce((acc, s) => {
-      if (!acc[s.class]) acc[s.class] = []
-      acc[s.class].push(s.id)
+    const studentsByClass = studentList.reduce((acc, s) => {
+      if (s && s.class) {
+        if (!acc[s.class]) acc[s.class] = []
+        acc[s.class].push(s.id)
+      }
       return acc
     }, {} as Record<string, string[]>)
 
-    const resultsByStudent = results.reduce((acc, r) => {
-      if (!acc[r.studentId]) acc[r.studentId] = []
-      acc[r.studentId].push(r)
+    const resultsByStudent = resultList.reduce((acc, r) => {
+      if (r && r.studentId) {
+        if (!acc[r.studentId]) acc[r.studentId] = []
+        acc[r.studentId].push(r)
+      }
       return acc
     }, {} as Record<string, SubjectResult[]>)
 
@@ -131,22 +141,26 @@ export default function Dashboard() {
       const classStudentIds = studentsByClass[className] || []
       const classResults = classStudentIds.flatMap(id => resultsByStudent[id] || [])
       const avgScore = classResults.length > 0 
-        ? Math.round(classResults.reduce((sum, r) => sum + r.percentage, 0) / classResults.length)
+        ? Math.round(classResults.reduce((sum, r) => sum + (r?.percentage || 0), 0) / classResults.length)
         : 0
       return { name: className, average: avgScore }
     })
   }, [students, results])
 
   const studentStatusData = useMemo(() => {
-    const statusCounts = students.reduce((acc: any, s) => {
-      acc[s.status] = (acc[s.status] || 0) + 1
+    const studentList = Array.isArray(students) ? students : []
+    const statusCounts = studentList.reduce((acc: any, s) => {
+      if (s && s.status) {
+        acc[s.status] = (acc[s.status] || 0) + 1
+      }
       return acc
     }, {})
     return Object.entries(statusCounts).map(([name, value]) => ({ name, value }))
   }, [students])
 
   const recentResults = useMemo(() => {
-    return [...results].reverse().slice(0, 5)
+    const resultList = Array.isArray(results) ? results : []
+    return [...resultList].reverse().slice(0, 5)
   }, [results])
 
   const validatePassword = (password: string): string[] => {
@@ -438,23 +452,29 @@ export default function Dashboard() {
         )}
       </motion.div>
 
-      {/* AI Performance Insights Section */}
-      <motion.div variants={itemVariants} className="mt-8 mb-8">
-        <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-4">AI-Powered Performance Analytics</h2>
-        <PerformanceInsights />
-      </motion.div>
+      {/* AI Performance Insights Section - Only for Admin/Teacher */}
+      {(userRole === 'Admin' || userRole === 'Teacher') && (
+        <motion.div variants={itemVariants} className="mt-8 mb-8">
+          <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-4">AI-Powered Performance Analytics</h2>
+          <PerformanceInsights />
+        </motion.div>
+      )}
 
-      {/* Teacher Activity and Messages Section */}
-      <motion.div variants={itemVariants} className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        <div className="space-y-4">
-          <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-4">Teacher Activity Monitor</h2>
-          <TeacherActivityLog />
-        </div>
-        <div className="space-y-4">
-          <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-4">Message Center</h2>
-          <ChatSystem />
-        </div>
-      </motion.div>
+      {/* Teacher Activity and Messages Section - Activity for Admin, Messages for Admin/Teacher */}
+      {(userRole === 'Admin' || userRole === 'Teacher') && (
+        <motion.div variants={itemVariants} className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+          {userRole === 'Admin' && (
+            <div className="space-y-4">
+              <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-4">Teacher Activity Monitor</h2>
+              <TeacherActivityLog />
+            </div>
+          )}
+          <div className="space-y-4">
+            <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-4">Message Center</h2>
+            <ChatSystem />
+          </div>
+        </motion.div>
+      )}
 
       {/* Change Password Modal */}
       {showPasswordModal && (

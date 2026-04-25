@@ -26,8 +26,9 @@ export default function PerformanceInsights() {
   }
 
   const filteredInsights = insights.filter(i => {
+    if (!i || !i.studentName) return false
     const matchesSearch = i.studentName.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                         i.registrationNumber.toLowerCase().includes(searchTerm.toLowerCase())
+                         (i.registrationNumber || '').toLowerCase().includes(searchTerm.toLowerCase())
     
     if (filter === 'at-risk') return matchesSearch && i.isAtRisk
     if (filter === 'improving') return matchesSearch && i.trend === 'improving'
