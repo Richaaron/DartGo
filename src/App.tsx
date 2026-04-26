@@ -23,6 +23,7 @@ import {
   FileText,
   MessageSquare,
   Timer,
+  Eye,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuthContext } from "./context/AuthContext";
@@ -47,6 +48,7 @@ import AdminSchemeUpload from "./pages/AdminSchemeUpload";
 import NotificationsPage from "./pages/Notifications";
 import Messages from "./pages/Messages";
 import Deadlines from "./pages/Deadlines";
+import ActivityLog from "./pages/ActivityLog";
 import "./App.css";
 
 import { fetchConfig } from "./services/api";
@@ -452,6 +454,15 @@ function AppContent() {
               )}
               {userRole === "Admin" && (
                 <NavLink
+                  to="/activity-log"
+                  icon={<Eye size={isMobile ? 20 : 18} />}
+                  label="Activity Log"
+                  isOpen={isMobile || isSidebarOpen}
+                  isDarkMode={isDarkMode}
+                />
+              )}
+              {userRole === "Admin" && (
+                <NavLink
                   to="/settings"
                   icon={<SettingsIcon size={isMobile ? 20 : 18} />}
                   label="Settings"
@@ -699,6 +710,14 @@ function AppContent() {
                     element={
                       <PageTransition>
                         <Deadlines />
+                      </PageTransition>
+                    }
+                  />
+                  <Route
+                    path="/activity-log"
+                    element={
+                      <PageTransition>
+                        <ActivityLog />
                       </PageTransition>
                     }
                   />
