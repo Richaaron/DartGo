@@ -451,7 +451,8 @@ export default function Reports() {
                   Excellence in Learning & Character
                 </p>
                 <p className="text-xs text-gray-400 font-bold mt-2 uppercase tracking-widest">
-                  123 Victory Lane, Lagos, Nigeria | +234 800 000 0000
+                  {config?.schoolAddress || "123 Victory Lane, Lagos, Nigeria"}{" "}
+                  | {config?.schoolPhone || "+234 800 000 0000"}
                 </p>
               </div>
             </div>
@@ -698,7 +699,9 @@ export default function Reports() {
             </div>
             <div className="bg-gray-50/50 p-8 rounded-[1.5rem] border-l-8 border-gray-900">
               <p className="text-[10px] font-black text-gray-900 uppercase tracking-widest mb-4">
-                Institutional Principal's Authorization
+                {config?.principalName
+                  ? `${config.principalName} — Principal's Remarks`
+                  : "Principal's Remarks"}
               </p>
               <p className="text-gray-900 italic font-bold text-lg leading-relaxed">
                 "
@@ -710,17 +713,39 @@ export default function Reports() {
           </div>
 
           {/* Footer Signatures */}
-          <div className="grid grid-cols-2 gap-32 pt-16 border-t-2 border-gray-100">
+          <div className="grid grid-cols-3 gap-12 pt-16 border-t-2 border-gray-100">
+            {/* Class Teacher */}
             <div className="text-center">
-              <div className="h-px bg-gray-200 mb-6 w-full mx-auto"></div>
+              <div className="h-16 mb-3" />
+              <div className="h-px bg-gray-300 mb-3 w-full" />
               <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
-                Class Teacher's Authorization
+                Class Teacher's Signature
               </p>
             </div>
+            {/* Principal */}
             <div className="text-center">
-              <div className="h-px bg-gray-200 mb-6 w-full mx-auto"></div>
+              <div className="h-16 mb-3" />
+              <div className="h-px bg-gray-300 mb-3 w-full" />
+              {config?.principalName && (
+                <p className="text-sm font-black text-gray-900 uppercase tracking-tight mb-1">
+                  {config.principalName}
+                </p>
+              )}
               <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
-                Principal's Final Signature
+                Principal
+              </p>
+            </div>
+            {/* Proprietress */}
+            <div className="text-center">
+              <div className="h-16 mb-3" />
+              <div className="h-px bg-gray-300 mb-3 w-full" />
+              {config?.proprietressName && (
+                <p className="text-sm font-black text-gray-900 uppercase tracking-tight mb-1">
+                  {config.proprietressName}
+                </p>
+              )}
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
+                Proprietress
               </p>
             </div>
           </div>

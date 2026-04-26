@@ -189,6 +189,10 @@ CREATE TABLE IF NOT EXISTS public.school_config (
     theme_color TEXT DEFAULT '#2563eb',
     school_logo TEXT,
     available_classes TEXT[] DEFAULT '{}',
+    principal_name TEXT,
+    proprietress_name TEXT,
+    school_address TEXT,
+    school_phone TEXT,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -256,3 +260,9 @@ ALTER TABLE public.deadlines ENABLE ROW LEVEL SECURITY;
 
 -- Simple policies to allow authenticated service role access (backend)
 -- These are usually default for service_role key
+
+-- Migration: Add principal, proprietress, address and phone to school_config
+ALTER TABLE public.school_config ADD COLUMN IF NOT EXISTS principal_name TEXT;
+ALTER TABLE public.school_config ADD COLUMN IF NOT EXISTS proprietress_name TEXT;
+ALTER TABLE public.school_config ADD COLUMN IF NOT EXISTS school_address TEXT;
+ALTER TABLE public.school_config ADD COLUMN IF NOT EXISTS school_phone TEXT;
