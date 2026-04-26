@@ -1,309 +1,374 @@
-import { useState, useEffect, useMemo } from 'react'
-import { Plus, Edit2, Trash2, Search, Download, BookOpen, X } from 'lucide-react'
-import { Student, SchoolLevel } from '../types'
-import StudentForm from '../components/StudentForm'
-import StudentSubjectForm from '../components/StudentSubjectForm'
-import Table from '../components/Table'
-import { exportToCSV, formatDate, generateRegistrationNumber, generateParentCredentials } from '../utils/calculations'
-import { fetchStudents, createStudent, updateStudent, deleteStudent, fetchSubjects, fetchStudentSubjects, createStudentSubject, deleteStudentSubject } from '../services/api'
-import { useAuthContext } from '../context/AuthContext'
+import { useState, useEffect, useMemo } from "react";
+import {
+  Plus,
+  Edit2,
+  Trash2,
+  Search,
+  Download,
+  BookOpen,
+  X,
+} from "lucide-react";
+import { Student, SchoolLevel } from "../types";
+import StudentForm from "../components/StudentForm";
+import StudentSubjectForm from "../components/StudentSubjectForm";
+import Table from "../components/Table";
+import {
+  exportToCSV,
+  formatDate,
+  generateRegistrationNumber,
+  generateParentCredentials,
+} from "../utils/calculations";
+import {
+  fetchStudents,
+  createStudent,
+  updateStudent,
+  deleteStudent,
+  fetchSubjects,
+  fetchStudentSubjects,
+  createStudentSubject,
+  deleteStudentSubject,
+} from "../services/api";
+import { useAuthContext } from "../context/AuthContext";
 
 export default function StudentManagement() {
-  const { user } = useAuthContext()
-  const isTeacher = user?.role === 'Teacher'
-  const teacherType = isTeacher ? (user as any)?.teacherType : undefined
-  const isSubjectOnlyTeacher = isTeacher && teacherType === 'Subject Teacher'
+  const { user } = useAuthContext();
+  const isTeacher = user?.role === "Teacher";
+  const teacherType = isTeacher ? (user as any)?.teacherType : undefined;
+  const isSubjectOnlyTeacher = isTeacher && teacherType === "Subject Teacher";
   const isFormCapableTeacher =
     isTeacher &&
-    (!teacherType || teacherType === 'Form Teacher' || teacherType === 'Form + Subject Teacher')
-  const assignedClasses = (user as any)?.assignedClasses || []
-  
-  const [students, setStudents] = useState<Student[]>([])
-  const [searchTerm, setSearchTerm] = useState('')
-  const [selectedLevel, setSelectedLevel] = useState<SchoolLevel | 'All'>('All')
-  const [selectedClass, setSelectedClass] = useState<string>('All')
-  const [showForm, setShowForm] = useState(false)
-  const [editingStudent, setEditingStudent] = useState<Student | null>(null)
-  const [subjects, setSubjects] = useState<any[]>([])
-  const [showSubjectForm, setShowSubjectForm] = useState(false)
-  const [selectedStudentForSubjects, setSelectedStudentForSubjects] = useState<Student | null>(null)
-  const [studentSubjects, setStudentSubjects] = useState<any[]>([])
-  const [showBulkAssign, setShowBulkAssign] = useState(false)
-  const [bulkAssignClass, setBulkAssignClass] = useState('')
-  const [bulkAssignSubjects, setBulkAssignSubjects] = useState<string[]>([])
+    (!teacherType ||
+      teacherType === "Form Teacher" ||
+      teacherType === "Form + Subject Teacher");
+  const assignedClasses = (user as any)?.assignedClasses || [];
+
+  const [students, setStudents] = useState<Student[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState<SchoolLevel | "All">(
+    "All",
+  );
+  const [selectedClass, setSelectedClass] = useState<string>("All");
+  const [showForm, setShowForm] = useState(false);
+  const [editingStudent, setEditingStudent] = useState<Student | null>(null);
+  const [subjects, setSubjects] = useState<any[]>([]);
+  const [showSubjectForm, setShowSubjectForm] = useState(false);
+  const [selectedStudentForSubjects, setSelectedStudentForSubjects] =
+    useState<Student | null>(null);
+  const [studentSubjects, setStudentSubjects] = useState<any[]>([]);
+  const [showBulkAssign, setShowBulkAssign] = useState(false);
+  const [bulkAssignClass, setBulkAssignClass] = useState("");
+  const [bulkAssignSubjects, setBulkAssignSubjects] = useState<string[]>([]);
 
   const availableClassesForLevel = useMemo(() => {
-    let filtered = students
-    if (selectedLevel !== 'All') {
-      filtered = students.filter((s) => s.level === selectedLevel)
+    let filtered = students;
+    if (selectedLevel !== "All") {
+      filtered = students.filter((s) => s.level === selectedLevel);
     }
-    return [...new Set(filtered.map((s) => s.class))].sort()
-  }, [students, selectedLevel])
+    return [...new Set(filtered.map((s) => s.class))].sort();
+  }, [students, selectedLevel]);
 
   useEffect(() => {
-    let isMounted = true
+    let isMounted = true;
 
     Promise.all([fetchStudents(), fetchSubjects()])
       .then(([studentData, subjectData]) => {
         if (isMounted) {
-          const safeStudents = Array.isArray(studentData) ? studentData : []
-          const safeSubjects = Array.isArray(subjectData) ? subjectData : []
+          const safeStudents = Array.isArray(studentData) ? studentData : [];
+          const safeSubjects = Array.isArray(subjectData) ? subjectData : [];
 
           if (isSubjectOnlyTeacher) {
-            setStudents(safeStudents.filter((s: Student) => s?.level === 'Secondary'))
+            setStudents(
+              safeStudents.filter((s: Student) => s?.level === "Secondary"),
+            );
           } else if (isTeacher) {
             // Form-capable teachers: only students in assigned classes
-            setStudents(safeStudents.filter((s: Student) => assignedClasses.includes(s?.class)))
+            setStudents(
+              safeStudents.filter((s: Student) =>
+                assignedClasses.includes(s?.class),
+              ),
+            );
           } else {
-            setStudents(safeStudents)
+            setStudents(safeStudents);
           }
-          setSubjects(safeSubjects)
+          setSubjects(safeSubjects);
         }
       })
       .catch((error) => {
-        console.error('Failed to load students or subjects', error)
-      })
+        console.error("Failed to load students or subjects", error);
+      });
 
     return () => {
-      isMounted = false
-    }
-  }, [isTeacher, isSubjectOnlyTeacher, assignedClasses])
+      isMounted = false;
+    };
+  }, [isTeacher, isSubjectOnlyTeacher, assignedClasses]);
 
   useEffect(() => {
-    if (isTeacher && assignedClasses.length > 0 && selectedClass === 'All') {
-      setSelectedClass(assignedClasses[0])
+    if (isTeacher && assignedClasses.length > 0 && selectedClass === "All") {
+      setSelectedClass(assignedClasses[0]);
     }
-  }, [isTeacher, assignedClasses, selectedClass])
+  }, [isTeacher, assignedClasses, selectedClass]);
 
   async function loadStudents() {
     try {
-      const data = await fetchStudents()
-      const safeData = Array.isArray(data) ? data : []
-      
+      const data = await fetchStudents();
+      const safeData = Array.isArray(data) ? data : [];
+
       if (isSubjectOnlyTeacher) {
-        setStudents(safeData.filter((s: Student) => s?.level === 'Secondary'))
+        setStudents(safeData.filter((s: Student) => s?.level === "Secondary"));
       } else if (isTeacher) {
-        setStudents(safeData.filter((s: Student) => assignedClasses.includes(s?.class)))
+        setStudents(
+          safeData.filter((s: Student) => assignedClasses.includes(s?.class)),
+        );
       } else {
-        setStudents(safeData)
+        setStudents(safeData);
       }
     } catch (error) {
-      console.error('Failed to load students', error)
-      setStudents([])
+      console.error("Failed to load students", error);
+      setStudents([]);
     }
   }
 
   const handleOpenSubjectAssignment = async (student: Student) => {
-    setSelectedStudentForSubjects(student)
+    setSelectedStudentForSubjects(student);
     try {
-      const subjects = await fetchStudentSubjects(student.id)
-      setStudentSubjects(subjects)
+      const subjects = await fetchStudentSubjects(student.id);
+      setStudentSubjects(subjects);
     } catch (error) {
-      console.error('Failed to load student subjects', error)
-      setStudentSubjects([])
+      console.error("Failed to load student subjects", error);
+      setStudentSubjects([]);
     }
-    setShowSubjectForm(true)
-  }
+    setShowSubjectForm(true);
+  };
 
   const handleAssignSubjects = async (assignments: any[]) => {
     try {
       // Delete old assignments and create new ones
       for (const oldSubject of studentSubjects) {
         try {
-          await deleteStudentSubject(oldSubject.id)
+          await deleteStudentSubject(oldSubject.id);
         } catch (error) {
-          console.error('Failed to delete old subject assignment', error)
+          console.error("Failed to delete old subject assignment", error);
         }
       }
 
       // Create new assignments
       for (const assignment of assignments) {
         try {
-          await createStudentSubject(assignment)
+          await createStudentSubject(assignment);
         } catch (error) {
-          console.error('Failed to create subject assignment', error)
+          console.error("Failed to create subject assignment", error);
         }
       }
 
-      setShowSubjectForm(false)
-      setSelectedStudentForSubjects(null)
-      setStudentSubjects([])
-      window.alert('Subjects assigned successfully!')
+      setShowSubjectForm(false);
+      setSelectedStudentForSubjects(null);
+      setStudentSubjects([]);
+      window.alert("Subjects assigned successfully!");
     } catch (error) {
-      window.alert('Failed to assign subjects')
-      console.error('Error assigning subjects:', error)
+      window.alert("Failed to assign subjects");
+      console.error("Error assigning subjects:", error);
     }
-  }
+  };
 
   const handleBulkAssign = async () => {
     if (!bulkAssignClass || bulkAssignSubjects.length === 0) {
-      window.alert('Please select a class and at least one subject')
-      return
+      window.alert("Please select a class and at least one subject");
+      return;
     }
 
-    const studentsInClass = students.filter(s => s.class === bulkAssignClass)
+    const studentsInClass = students.filter((s) => s.class === bulkAssignClass);
     if (studentsInClass.length === 0) {
-      window.alert('No students found in the selected class')
-      return
+      window.alert("No students found in the selected class");
+      return;
     }
 
-    if (!window.confirm(`Are you sure you want to assign these subjects to all ${studentsInClass.length} students in ${bulkAssignClass}?`)) {
-      return
+    if (
+      !window.confirm(
+        `Are you sure you want to assign these subjects to all ${studentsInClass.length} students in ${bulkAssignClass}?`,
+      )
+    ) {
+      return;
     }
 
     try {
-      const academicYear = new Date().getFullYear().toString()
-      const term = 'First'
-      
+      const academicYear = new Date().getFullYear().toString();
+      const term = "First";
+
       for (const student of studentsInClass) {
         for (const subjectId of bulkAssignSubjects) {
           try {
             await createStudentSubject({
               studentId: student.id,
               subjectId,
-              enrollmentDate: new Date().toISOString().split('T')[0],
-              status: 'Active',
+              enrollmentDate: new Date().toISOString().split("T")[0],
+              status: "Active",
               academicYear,
               term,
-              assignedBy: user?.name || 'Admin'
-            })
+              assignedBy: user?.name || "Admin",
+            });
           } catch (error) {
-            console.error(`Failed to assign subject ${subjectId} to student ${student.id}:`, error)
+            console.error(
+              `Failed to assign subject ${subjectId} to student ${student.id}:`,
+              error,
+            );
           }
         }
       }
 
-      window.alert('Subjects assigned to class successfully!')
-      setShowBulkAssign(false)
-      setBulkAssignClass('')
-      setBulkAssignSubjects([])
+      window.alert("Subjects assigned to class successfully!");
+      setShowBulkAssign(false);
+      setBulkAssignClass("");
+      setBulkAssignSubjects([]);
     } catch (error) {
-      console.error('Bulk assignment failed:', error)
-      window.alert('Failed to complete bulk assignment')
+      console.error("Bulk assignment failed:", error);
+      window.alert("Failed to complete bulk assignment");
     }
-  }
+  };
 
   const filteredStudents = students.filter((student) => {
-    if (!student) return false
-    
-    const firstName = student.firstName || ''
-    const lastName = student.lastName || ''
-    const regNum = student.registrationNumber || ''
-    const parentEmail = student.parentEmail || ''
+    if (!student) return false;
+
+    const firstName = student.firstName || "";
+    const lastName = student.lastName || "";
+    const regNum = student.registrationNumber || "";
+    const parentEmail = student.parentEmail || "";
 
     const matchesSearch =
       firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       regNum.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      parentEmail.toLowerCase().includes(searchTerm.toLowerCase())
+      parentEmail.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesLevel = selectedLevel === 'All' || student.level === selectedLevel
-    const matchesClass = !isFormCapableTeacher || selectedClass === 'All' || student.class === selectedClass
+    const matchesLevel =
+      selectedLevel === "All" || student.level === selectedLevel;
+    const matchesClass =
+      !isFormCapableTeacher ||
+      selectedClass === "All" ||
+      student.class === selectedClass;
 
-    return matchesSearch && matchesLevel && matchesClass
-  })
+    return matchesSearch && matchesLevel && matchesClass;
+  });
 
-  const handleAddStudent = async (newStudent: Omit<Student, 'id'>, selectedSubjects?: string[]) => {
+  const handleAddStudent = async (
+    newStudent: Omit<Student, "id">,
+    selectedSubjects?: string[],
+  ) => {
     try {
       const studentData = {
         ...newStudent,
         registrationNumber: generateRegistrationNumber(newStudent.level),
-      }
-      const createdStudent = await createStudent(studentData)
-      
+      };
+      const createdStudent = await createStudent(studentData);
+
       // Assign subjects if any were selected
       if (selectedSubjects && selectedSubjects.length > 0) {
-        const academicYear = new Date().getFullYear().toString()
-        const term = 'First' // Default to first term
-        
+        const academicYear = new Date().getFullYear().toString();
+        const term = "First"; // Default to first term
+
         for (const subjectId of selectedSubjects) {
           try {
             await createStudentSubject({
               studentId: createdStudent.id,
               subjectId,
-              enrollmentDate: new Date().toISOString().split('T')[0],
-              status: 'Active',
+              enrollmentDate: new Date().toISOString().split("T")[0],
+              status: "Active",
               academicYear,
               term,
-              assignedBy: user?.name || 'Admin'
-            })
+              assignedBy: user?.name || "Admin",
+            });
           } catch (error) {
-            console.error(`Failed to assign subject ${subjectId} to new student:`, error)
+            console.error(
+              `Failed to assign subject ${subjectId} to new student:`,
+              error,
+            );
           }
         }
       }
-      
-      await loadStudents()
-      setShowForm(false)
+
+      await loadStudents();
+      setShowForm(false);
     } catch (error: any) {
-      const errorMsg = error.response?.data?.error || error.message || 'Failed to add student'
-      const details = error.response?.data?.details ? `\nDetails: ${error.response.data.details}` : ''
-      const hint = error.response?.data?.hint ? `\nHint: ${error.response.data.hint}` : ''
-      window.alert(`Error: ${errorMsg}${details}${hint}`)
+      const errorMsg =
+        error.response?.data?.error || error.message || "Failed to add student";
+      const details = error.response?.data?.details
+        ? `\nDetails: ${error.response.data.details}`
+        : "";
+      const hint = error.response?.data?.hint
+        ? `\nHint: ${error.response.data.hint}`
+        : "";
+      window.alert(`Error: ${errorMsg}${details}${hint}`);
     }
-  }
+  };
 
   const handleUpdateStudent = async (updatedStudent: Student) => {
     try {
-      await updateStudent(updatedStudent.id, updatedStudent)
-      await loadStudents()
-      setEditingStudent(null)
-      setShowForm(false)
+      await updateStudent(updatedStudent.id, updatedStudent);
+      await loadStudents();
+      setEditingStudent(null);
+      setShowForm(false);
     } catch (error: any) {
-      const errorMsg = error.response?.data?.error || error.message || 'Failed to update student'
-      const details = error.response?.data?.details ? `\nDetails: ${error.response.data.details}` : ''
-      window.alert(`Error: ${errorMsg}${details}`)
+      const errorMsg =
+        error.response?.data?.error ||
+        error.message ||
+        "Failed to update student";
+      const details = error.response?.data?.details
+        ? `\nDetails: ${error.response.data.details}`
+        : "";
+      window.alert(`Error: ${errorMsg}${details}`);
     }
-  }
+  };
 
-  const handleSubmitStudent = (student: Student | Omit<Student, 'id'>, selectedSubjects?: string[]) => {
-    if ('id' in student) {
-      handleUpdateStudent(student as Student)
+  const handleSubmitStudent = (
+    student: Student | Omit<Student, "id">,
+    selectedSubjects?: string[],
+  ) => {
+    if ("id" in student) {
+      handleUpdateStudent(student as Student);
     } else {
-      handleAddStudent(student as Omit<Student, 'id'>, selectedSubjects)
+      handleAddStudent(student as Omit<Student, "id">, selectedSubjects);
     }
-  }
+  };
 
   const handleDeleteStudent = async (id: string) => {
-    if (window.confirm('Are you sure you want to delete this student?')) {
+    if (window.confirm("Are you sure you want to delete this student?")) {
       try {
-        await deleteStudent(id)
-        await loadStudents()
+        await deleteStudent(id);
+        await loadStudents();
       } catch {
-        window.alert('Failed to delete student')
+        window.alert("Failed to delete student");
       }
     }
-  }
+  };
 
   const handleExport = () => {
     const dataToExport = filteredStudents.map((student) => ({
-      'Registration No': student.registrationNumber,
-      'First Name': student.firstName,
-      'Last Name': student.lastName,
-      'Date of Birth': formatDate(student.dateOfBirth),
+      "Registration No": student.registrationNumber,
+      "First Name": student.firstName,
+      "Last Name": student.lastName,
+      "Date of Birth": formatDate(student.dateOfBirth),
       Gender: student.gender,
       Level: student.level,
       Class: student.class,
-      'Parent Name': student.parentName,
-      'Parent Phone': student.parentPhone,
-      'Parent Email': student.parentEmail || 'N/A',
-      'Enrollment Date': formatDate(student.enrollmentDate),
+      "Parent Name": student.parentName,
+      "Parent Phone": student.parentPhone,
+      "Parent Email": student.parentEmail || "N/A",
+      "Enrollment Date": formatDate(student.enrollmentDate),
       Status: student.status,
-    }))
-    exportToCSV(dataToExport, 'students_report')
-  }
+    }));
+    exportToCSV(dataToExport, "students_report");
+  };
 
   const columns = [
-    { key: 'registrationNumber', label: 'Reg. No.' },
-    { key: 'firstName', label: 'First Name' },
-    { key: 'lastName', label: 'Last Name' },
-    { key: 'level', label: 'Level' },
-    { key: 'class', label: 'Class' },
-    { key: 'parentUsername', label: 'Parent Username' },
-    { key: 'parentPassword', label: 'Parent Password' },
-    { key: 'status', label: 'Status' },
-    { key: 'actions', label: 'Actions' },
-  ]
+    { key: "registrationNumber", label: "Reg. No." },
+    { key: "firstName", label: "First Name" },
+    { key: "lastName", label: "Last Name" },
+    { key: "level", label: "Level" },
+    { key: "class", label: "Class" },
+    { key: "parentUsername", label: "Parent Username" },
+    { key: "parentPassword", label: "Parent Password" },
+    { key: "status", label: "Status" },
+    { key: "actions", label: "Actions" },
+  ];
 
   return (
     <div className="p-4 md:p-8">
@@ -311,14 +376,17 @@ export default function StudentManagement() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 md:mb-8">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
-            Student <span className="text-indigo-600 dark:text-indigo-400">Management</span>
+            Champions{" "}
+            <span className="text-indigo-600 dark:text-indigo-400">
+              Management
+            </span>
           </h1>
           <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-2 font-medium">
             {isTeacher
               ? isFormCapableTeacher
-                ? 'Manage students in your assigned class'
-                : 'View students in your assigned classes'
-              : 'Manage all students in the school'}
+                ? "Manage students in your assigned class"
+                : "View students in your assigned classes"
+              : "Manage all students in the school"}
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
@@ -339,12 +407,16 @@ export default function StudentManagement() {
           </button>
           <button
             onClick={() => {
-              setEditingStudent(null)
-              setShowForm(true)
+              setEditingStudent(null);
+              setShowForm(true);
             }}
             className="btn-primary flex items-center justify-center gap-2 flex-1 sm:flex-initial text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isTeacher && !isFormCapableTeacher}
-            title={isTeacher && !isFormCapableTeacher ? 'Only form teachers can add students' : 'Add student'}
+            title={
+              isTeacher && !isFormCapableTeacher
+                ? "Only form teachers can add students"
+                : "Add student"
+            }
           >
             <Plus size={20} />
             <span className="hidden sm:inline">Add Student</span>
@@ -379,8 +451,8 @@ export default function StudentManagement() {
             <select
               value={selectedLevel}
               onChange={(e) => {
-                setSelectedLevel(e.target.value as any)
-                setSelectedClass('All')
+                setSelectedLevel(e.target.value as any);
+                setSelectedClass("All");
               }}
               className="input-field"
             >
@@ -402,11 +474,13 @@ export default function StudentManagement() {
               className="input-field"
             >
               <option value="All">All Classes</option>
-              {(isTeacher ? assignedClasses : availableClassesForLevel).map((className: string) => (
-                <option key={className} value={className}>
-                  {className}
-                </option>
-              ))}
+              {(isTeacher ? assignedClasses : availableClassesForLevel).map(
+                (className: string) => (
+                  <option key={className} value={className}>
+                    {className}
+                  </option>
+                ),
+              )}
             </select>
           </div>
         </div>
@@ -421,9 +495,20 @@ export default function StudentManagement() {
               initialData={editingStudent || undefined}
               onCancel={() => setShowForm(false)}
               isEditing={!!editingStudent}
-              allowedClasses={isTeacher && isFormCapableTeacher ? assignedClasses : undefined}
-              defaultClass={isTeacher && isFormCapableTeacher && selectedClass !== 'All' ? selectedClass : ''}
-              lockClass={isTeacher && isFormCapableTeacher && selectedClass !== 'All' && !editingStudent}
+              allowedClasses={
+                isTeacher && isFormCapableTeacher ? assignedClasses : undefined
+              }
+              defaultClass={
+                isTeacher && isFormCapableTeacher && selectedClass !== "All"
+                  ? selectedClass
+                  : ""
+              }
+              lockClass={
+                isTeacher &&
+                isFormCapableTeacher &&
+                selectedClass !== "All" &&
+                !editingStudent
+              }
               availableSubjects={subjects}
             />
           </div>
@@ -440,9 +525,9 @@ export default function StudentManagement() {
               currentSubjects={studentSubjects}
               onSubmit={handleAssignSubjects}
               onCancel={() => {
-                setShowSubjectForm(false)
-                setSelectedStudentForSubjects(null)
-                setStudentSubjects([])
+                setShowSubjectForm(false);
+                setSelectedStudentForSubjects(null);
+                setStudentSubjects([]);
               }}
             />
           </div>
@@ -455,66 +540,93 @@ export default function StudentManagement() {
           <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full mx-4 overflow-hidden border-4 border-dashed border-school-blue">
             <div className="p-6 bg-gradient-to-r from-school-blue to-school-green text-white flex justify-between items-center">
               <div>
-                <h2 className="text-2xl font-black uppercase tracking-tight">Bulk Subject Assignment</h2>
-                <p className="text-xs font-medium opacity-90">Assign subjects to all students in a class</p>
+                <h2 className="text-2xl font-black uppercase tracking-tight">
+                  Bulk Subject Assignment
+                </h2>
+                <p className="text-xs font-medium opacity-90">
+                  Assign subjects to all students in a class
+                </p>
               </div>
-              <button onClick={() => setShowBulkAssign(false)} className="p-2 hover:bg-white/20 rounded-full transition-all">
+              <button
+                onClick={() => setShowBulkAssign(false)}
+                className="p-2 hover:bg-white/20 rounded-full transition-all"
+              >
                 <X size={24} />
               </button>
             </div>
-            
+
             <div className="p-8 space-y-6 max-h-[70vh] overflow-y-auto">
               <div>
-                <label className="block text-sm font-black text-school-blue mb-2 uppercase tracking-widest">1. Select Class</label>
+                <label className="block text-sm font-black text-school-blue mb-2 uppercase tracking-widest">
+                  1. Select Class
+                </label>
                 <select
                   value={bulkAssignClass}
                   onChange={(e) => setBulkAssignClass(e.target.value)}
                   className="input-field"
                 >
                   <option value="">Choose a class...</option>
-                  {[...new Set(students.filter(s => s && s.class).map(s => s.class))].sort().map(className => (
-                    <option key={className} value={className}>{className}</option>
-                  ))}
+                  {[
+                    ...new Set(
+                      students.filter((s) => s && s.class).map((s) => s.class),
+                    ),
+                  ]
+                    .sort()
+                    .map((className) => (
+                      <option key={className} value={className}>
+                        {className}
+                      </option>
+                    ))}
                 </select>
               </div>
 
               {bulkAssignClass && (
                 <div>
-                  <label className="block text-sm font-black text-school-blue mb-2 uppercase tracking-widest">2. Select Subjects</label>
+                  <label className="block text-sm font-black text-school-blue mb-2 uppercase tracking-widest">
+                    2. Select Subjects
+                  </label>
                   <p className="text-xs text-gray-500 mb-4 font-medium">
-                    Select the subjects to be assigned to all students in {bulkAssignClass}.
+                    Select the subjects to be assigned to all students in{" "}
+                    {bulkAssignClass}.
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {subjects
-                      .filter(s => {
-                        if (!s) return false
-                        const classLevel = students.find(student => student && student.class === bulkAssignClass)?.level
-                        return classLevel && s.level === classLevel
+                      .filter((s) => {
+                        if (!s) return false;
+                        const classLevel = students.find(
+                          (student) =>
+                            student && student.class === bulkAssignClass,
+                        )?.level;
+                        return classLevel && s.level === classLevel;
                       })
-                      .map(subject => (
+                      .map((subject) => (
                         <label
                           key={subject.id}
                           className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${
                             bulkAssignSubjects.includes(subject.id)
-                              ? 'bg-school-blue/10 border-school-blue shadow-md'
-                              : 'bg-white border-slate-200 hover:border-school-blue/50'
+                              ? "bg-school-blue/10 border-school-blue shadow-md"
+                              : "bg-white border-slate-200 hover:border-school-blue/50"
                           }`}
                         >
                           <input
                             type="checkbox"
                             checked={bulkAssignSubjects.includes(subject.id)}
                             onChange={() => {
-                              setBulkAssignSubjects(prev =>
+                              setBulkAssignSubjects((prev) =>
                                 prev.includes(subject.id)
-                                  ? prev.filter(id => id !== subject.id)
-                                  : [...prev, subject.id]
-                              )
+                                  ? prev.filter((id) => id !== subject.id)
+                                  : [...prev, subject.id],
+                              );
                             }}
                             className="w-5 h-5 text-school-blue rounded-lg focus:ring-school-blue border-slate-300"
                           />
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-black text-gray-900 truncate">{subject.name}</p>
-                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{subject.code}</p>
+                            <p className="text-sm font-black text-gray-900 truncate">
+                              {subject.name}
+                            </p>
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                              {subject.code}
+                            </p>
                           </div>
                         </label>
                       ))}
@@ -559,8 +671,8 @@ export default function StudentManagement() {
                 </button>
                 <button
                   onClick={() => {
-                    setEditingStudent(student)
-                    setShowForm(true)
+                    setEditingStudent(student);
+                    setShowForm(true);
                   }}
                   className="p-1 text-blue-500 hover:bg-blue-50 rounded transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                   title="Edit"
@@ -591,21 +703,23 @@ export default function StudentManagement() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
         <div className="card-lg text-center">
           <p className="text-gray-600 text-sm">Total Students</p>
-          <p className="text-3xl font-bold text-gray-900">{filteredStudents.length}</p>
+          <p className="text-3xl font-bold text-gray-900">
+            {filteredStudents.length}
+          </p>
         </div>
         <div className="card-lg text-center">
           <p className="text-gray-600 text-sm">Active Students</p>
           <p className="text-3xl font-bold text-green-600">
-            {filteredStudents.filter((s) => s.status === 'Active').length}
+            {filteredStudents.filter((s) => s.status === "Active").length}
           </p>
         </div>
         <div className="card-lg text-center">
           <p className="text-gray-600 text-sm">Inactive Students</p>
           <p className="text-3xl font-bold text-red-600">
-            {filteredStudents.filter((s) => s.status !== 'Active').length}
+            {filteredStudents.filter((s) => s.status !== "Active").length}
           </p>
         </div>
       </div>
     </div>
-  )
+  );
 }

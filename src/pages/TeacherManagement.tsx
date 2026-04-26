@@ -1,136 +1,159 @@
-import { useState, useEffect } from 'react'
-import { Plus, Edit2, Trash2, Search, Download, User as UserIcon } from 'lucide-react'
-import { Teacher, SchoolLevel } from '../types'
-import TeacherForm from '../components/TeacherForm'
-import Table from '../components/Table'
-import { exportToCSV } from '../utils/calculations'
-import { fetchTeachers, createTeacher, updateTeacher, deleteTeacher } from '../services/api'
+import { useState, useEffect } from "react";
+import {
+  Plus,
+  Edit2,
+  Trash2,
+  Search,
+  Download,
+  User as UserIcon,
+} from "lucide-react";
+import { Teacher, SchoolLevel } from "../types";
+import TeacherForm from "../components/TeacherForm";
+import Table from "../components/Table";
+import { exportToCSV } from "../utils/calculations";
+import {
+  fetchTeachers,
+  createTeacher,
+  updateTeacher,
+  deleteTeacher,
+} from "../services/api";
 
 export default function TeacherManagement() {
-  const [teachers, setTeachers] = useState<Teacher[]>([])
-  const [searchTerm, setSearchTerm] = useState('')
-  const [selectedLevel, setSelectedLevel] = useState<SchoolLevel | 'All'>('All')
-  const [showForm, setShowForm] = useState(false)
-  const [editingTeacher, setEditingTeacher] = useState<Teacher | null>(null)
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState<SchoolLevel | "All">(
+    "All",
+  );
+  const [showForm, setShowForm] = useState(false);
+  const [editingTeacher, setEditingTeacher] = useState<Teacher | null>(null);
 
   useEffect(() => {
-    let isMounted = true
+    let isMounted = true;
 
     fetchTeachers()
       .then((data) => {
-        if (isMounted) setTeachers(data)
+        if (isMounted) setTeachers(data);
       })
       .catch((error) => {
-        console.error('Failed to load teachers', error)
-      })
+        console.error("Failed to load teachers", error);
+      });
 
     return () => {
-      isMounted = false
-    }
-  }, [])
+      isMounted = false;
+    };
+  }, []);
 
   async function loadTeachers() {
     try {
-      const data = await fetchTeachers()
-      setTeachers(data)
+      const data = await fetchTeachers();
+      setTeachers(data);
     } catch (error) {
-      console.error('Failed to load teachers', error)
+      console.error("Failed to load teachers", error);
     }
   }
 
   const getTeacherSubjects = (teacher: Teacher) =>
     teacher.assignedSubjects && teacher.assignedSubjects.length > 0
       ? teacher.assignedSubjects
-      : (teacher.subject || '')
-          .split(',')
+      : (teacher.subject || "")
+          .split(",")
           .map((subject) => subject.trim())
-          .filter(Boolean)
+          .filter(Boolean);
 
   const filteredTeachers = teachers.filter((teacher) => {
-    const teacherSubjects = getTeacherSubjects(teacher)
+    const teacherSubjects = getTeacherSubjects(teacher);
     const matchesSearch =
       teacher.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (teacher.username?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+      (teacher.username?.toLowerCase() || "").includes(
+        searchTerm.toLowerCase(),
+      ) ||
       teacher.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      teacherSubjects.some((subject) => subject.toLowerCase().includes(searchTerm.toLowerCase()))
+      teacherSubjects.some((subject) =>
+        subject.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
 
-    const matchesLevel = selectedLevel === 'All' || teacher.level === selectedLevel
+    const matchesLevel =
+      selectedLevel === "All" || teacher.level === selectedLevel;
 
-    return matchesSearch && matchesLevel
-  })
+    return matchesSearch && matchesLevel;
+  });
 
-  const handleAddTeacher = async (newTeacher: Omit<Teacher, 'id'>) => {
+  const handleAddTeacher = async (newTeacher: Omit<Teacher, "id">) => {
     try {
-      const firstName = newTeacher.name.split(' ')[0].toLowerCase()
-      const uniqueNum = Math.floor(1000 + Math.random() * 9000)
-      
+      const firstName = newTeacher.name.split(" ")[0].toLowerCase();
+      const uniqueNum = Math.floor(1000 + Math.random() * 9000);
+
       const teacherData = {
         ...newTeacher,
         teacherId: `T${uniqueNum}`,
         username: `${firstName}@folusho.com`,
         password: `fvs@${uniqueNum}`,
-      }
-      
-      await createTeacher(teacherData)
-      await loadTeachers()
-      setShowForm(false)
+      };
+
+      await createTeacher(teacherData);
+      await loadTeachers();
+      setShowForm(false);
     } catch {
-      window.alert('Failed to add teacher')
+      window.alert("Failed to add teacher");
     }
-  }
+  };
 
   const handleUpdateTeacher = async (updatedTeacher: Teacher) => {
     try {
-      await updateTeacher(updatedTeacher.id, updatedTeacher)
-      await loadTeachers()
-      setEditingTeacher(null)
-      setShowForm(false)
+      await updateTeacher(updatedTeacher.id, updatedTeacher);
+      await loadTeachers();
+      setEditingTeacher(null);
+      setShowForm(false);
     } catch {
-      window.alert('Failed to update teacher')
+      window.alert("Failed to update teacher");
     }
-  }
+  };
 
-  const handleSubmitTeacher = (teacher: Teacher | Omit<Teacher, 'id'>) => {
-    if ('id' in teacher) {
-      handleUpdateTeacher(teacher as Teacher)
+  const handleSubmitTeacher = (teacher: Teacher | Omit<Teacher, "id">) => {
+    if ("id" in teacher) {
+      handleUpdateTeacher(teacher as Teacher);
     } else {
-      handleAddTeacher(teacher as Omit<Teacher, 'id'>)
+      handleAddTeacher(teacher as Omit<Teacher, "id">);
     }
-  }
+  };
 
   const handleDeleteTeacher = async (id: string) => {
-    if (window.confirm('Are you sure you want to delete this teacher? This will also remove their access to the system.')) {
+    if (
+      window.confirm(
+        "Are you sure you want to delete this teacher? This will also remove their access to the system.",
+      )
+    ) {
       try {
-        await deleteTeacher(id)
-        await loadTeachers()
+        await deleteTeacher(id);
+        await loadTeachers();
       } catch {
-        window.alert('Failed to delete teacher')
+        window.alert("Failed to delete teacher");
       }
     }
-  }
+  };
 
   const handleExport = () => {
     const dataToExport = filteredTeachers.map((teacher) => ({
-      'Teacher ID': teacher.teacherId,
+      "Teacher ID": teacher.teacherId,
       Name: teacher.name,
       Username: teacher.username,
       Email: teacher.email,
-      Subjects: getTeacherSubjects(teacher).join(', '),
+      Subjects: getTeacherSubjects(teacher).join(", "),
       Level: teacher.level,
-      Classes: teacher.assignedClasses.join(', '),
-    }))
-    exportToCSV(dataToExport, 'teachers_report')
-  }
+      Classes: teacher.assignedClasses.join(", "),
+    }));
+    exportToCSV(dataToExport, "teachers_report");
+  };
 
   const columns = [
-    { key: 'profile', label: 'Photo' },
-    { key: 'name', label: 'Name' },
-    { key: 'email', label: 'Email' },
-    { key: 'subjects', label: 'Subjects' },
-    { key: 'level', label: 'Level' },
-    { key: 'classes', label: 'Classes' },
-    { key: 'actions', label: 'Actions' },
-  ]
+    { key: "profile", label: "Photo" },
+    { key: "name", label: "Name" },
+    { key: "email", label: "Email" },
+    { key: "subjects", label: "Subjects" },
+    { key: "level", label: "Level" },
+    { key: "classes", label: "Classes" },
+    { key: "actions", label: "Actions" },
+  ];
 
   return (
     <div className="p-8">
@@ -138,9 +161,14 @@ export default function TeacherManagement() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">
-            Teacher <span className="text-indigo-600 dark:text-indigo-400">Management</span>
+            Squads{" "}
+            <span className="text-indigo-600 dark:text-indigo-400">
+              Management
+            </span>
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2 font-medium">Manage school faculty and class assignments</p>
+          <p className="text-gray-600 dark:text-gray-400 mt-2 font-medium">
+            Manage teachers and class assignments
+          </p>
         </div>
         <div className="flex gap-4">
           <button
@@ -152,8 +180,8 @@ export default function TeacherManagement() {
           </button>
           <button
             onClick={() => {
-              setEditingTeacher(null)
-              setShowForm(true)
+              setEditingTeacher(null);
+              setShowForm(true);
             }}
             className="btn-primary flex items-center gap-2"
           >
@@ -187,7 +215,9 @@ export default function TeacherManagement() {
             </label>
             <select
               value={selectedLevel}
-              onChange={(e) => setSelectedLevel(e.target.value as SchoolLevel | 'All')}
+              onChange={(e) =>
+                setSelectedLevel(e.target.value as SchoolLevel | "All")
+              }
               className="input-field"
             >
               <option value="All">All Levels</option>
@@ -222,11 +252,16 @@ export default function TeacherManagement() {
             ...teacher,
             subjects: (
               <div className="flex flex-wrap gap-1">
-                {getTeacherSubjects(teacher).length > 0 ? getTeacherSubjects(teacher).map((subject) => (
-                  <span key={subject} className="px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 rounded-md text-xs font-bold border border-indigo-100 dark:border-indigo-800/50">
-                    {subject}
-                  </span>
-                )) : (
+                {getTeacherSubjects(teacher).length > 0 ? (
+                  getTeacherSubjects(teacher).map((subject) => (
+                    <span
+                      key={subject}
+                      className="px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 rounded-md text-xs font-bold border border-indigo-100 dark:border-indigo-800/50"
+                    >
+                      {subject}
+                    </span>
+                  ))
+                ) : (
                   <span className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-md text-xs font-bold">
                     Form Teacher
                   </span>
@@ -236,7 +271,11 @@ export default function TeacherManagement() {
             profile: (
               <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden border-2 border-indigo-500/20">
                 {teacher.image ? (
-                  <img src={teacher.image} alt="" className="w-full h-full object-cover" />
+                  <img
+                    src={teacher.image}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
                   <UserIcon className="w-6 h-6 text-slate-400 dark:text-slate-500" />
                 )}
@@ -245,7 +284,10 @@ export default function TeacherManagement() {
             classes: (
               <div className="flex flex-wrap gap-1">
                 {(teacher.assignedClasses || []).map((c) => (
-                  <span key={c} className="px-2 py-0.5 bg-teal-50 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300 rounded-md text-xs font-bold border border-teal-100 dark:border-teal-800/50">
+                  <span
+                    key={c}
+                    className="px-2 py-0.5 bg-teal-50 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300 rounded-md text-xs font-bold border border-teal-100 dark:border-teal-800/50"
+                  >
                     {c}
                   </span>
                 ))}
@@ -255,8 +297,8 @@ export default function TeacherManagement() {
               <div className="flex gap-2">
                 <button
                   onClick={() => {
-                    setEditingTeacher(teacher)
-                    setShowForm(true)
+                    setEditingTeacher(teacher);
+                    setShowForm(true);
                   }}
                   className="p-1 text-blue-500 hover:bg-blue-50 rounded transition-colors"
                   title="Edit"
@@ -281,5 +323,5 @@ export default function TeacherManagement() {
         )}
       </div>
     </div>
-  )
+  );
 }

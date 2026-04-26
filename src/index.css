@@ -3,187 +3,246 @@
 @tailwind utilities;
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-html, body, #root {
-  width: 100%;
-  height: 100%;
+html,
+body,
+#root {
+    width: 100%;
+    height: 100%;
 }
 
 body {
-  font-family: 'Comic Sans MS', 'Trebuchet MS', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #FFE66D 0%, #95E1D3 25%, #87CEEB 50%, #FFB5B5 75%, #FF9FF3 100%);
-  background-attachment: fixed;
-  background-size: 400% 400%;
-  animation: gradientFlow 15s ease infinite;
+    font-family:
+        "Inter",
+        "Segoe UI",
+        -apple-system,
+        BlinkMacSystemFont,
+        "Roboto",
+        "Oxygen",
+        "Ubuntu",
+        "Cantarell",
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: linear-gradient(
+        135deg,
+        #ffe66d 0%,
+        #95e1d3 25%,
+        #87ceeb 50%,
+        #ffb5b5 75%,
+        #ff9ff3 100%
+    );
+    background-attachment: fixed;
+    background-size: 400% 400%;
+    animation: gradientFlow 15s ease infinite;
 }
 
 body.dark {
-  background: linear-gradient(135deg, #2C3E50 0%, #1a3a52 25%, #2d5a7b 50%, #1a2a3a 75%, #2C3E50 100%);
-  background-attachment: fixed;
-  background-size: 400% 400%;
-  animation: gradientDarkFlow 15s ease infinite;
+    background: linear-gradient(
+        135deg,
+        #2c3e50 0%,
+        #1a3a52 25%,
+        #2d5a7b 50%,
+        #1a2a3a 75%,
+        #2c3e50 100%
+    );
+    background-attachment: fixed;
+    background-size: 400% 400%;
+    animation: gradientDarkFlow 15s ease infinite;
 }
 
 @keyframes gradientFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 @keyframes gradientDarkFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .transition-all {
-  transition: all 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .shadow-card {
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2), 0 0 20px rgba(78, 205, 196, 0.1);
+    box-shadow:
+        0 4px 15px rgba(255, 107, 107, 0.2),
+        0 0 20px rgba(78, 205, 196, 0.1);
 }
 
 /* Smooth scrolling */
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 /* School-Themed Focus States */
 :focus-visible {
-  outline: 3px solid #FF6B6B;
-  outline-offset: 2px;
-  border-radius: 4px;
+    outline: 3px solid #ff6b6b;
+    outline-offset: 2px;
+    border-radius: 4px;
 }
 
 :focus {
-  outline: 3px solid #FF6B6B;
-  outline-offset: 2px;
+    outline: 3px solid #ff6b6b;
+    outline-offset: 2px;
 }
 
 /* School-Themed Selection */
 ::selection {
-  background: linear-gradient(90deg, #FF6B6B, #FFE66D);
-  color: white;
+    background: linear-gradient(90deg, #ff6b6b, #ffe66d);
+    color: white;
 }
 
 ::-moz-selection {
-  background: linear-gradient(90deg, #FF6B6B, #FFE66D);
-  color: white;
+    background: linear-gradient(90deg, #ff6b6b, #ffe66d);
+    color: white;
 }
 
 .shadow-card-lg {
-  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.25), 0 0 40px rgba(78, 205, 196, 0.15);
+    box-shadow:
+        0 10px 30px rgba(255, 107, 107, 0.25),
+        0 0 40px rgba(78, 205, 196, 0.15);
 }
 
 .dark .shadow-card {
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.15), 0 0 20px rgba(78, 205, 196, 0.1);
+    box-shadow:
+        0 4px 15px rgba(255, 107, 107, 0.15),
+        0 0 20px rgba(78, 205, 196, 0.1);
 }
 
 .dark .shadow-card-lg {
-  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.2), 0 0 40px rgba(78, 205, 196, 0.15);
+    box-shadow:
+        0 10px 30px rgba(255, 107, 107, 0.2),
+        0 0 40px rgba(78, 205, 196, 0.15);
 }
 
 /* School-Inspired Text Styles */
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 900;
-  letter-spacing: 0.5px;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 900;
+    letter-spacing: 0.5px;
 }
 
 /* Input and Textarea */
-input, textarea, select {
-  font-family: 'Comic Sans MS', 'Trebuchet MS', sans-serif;
+input,
+textarea,
+select {
+    font-family:
+        "Inter",
+        "Segoe UI",
+        -apple-system,
+        sans-serif;
 }
 
 /* Link Styling */
 a {
-  color: #FF6B6B;
-  text-decoration: none;
-  transition: all 0.3s ease;
+    color: #ff6b6b;
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
 
 a:hover {
-  color: #FFE66D;
-  text-decoration: underline;
+    color: #ffe66d;
+    text-decoration: underline;
 }
 
 /* Custom Scrollbar for Light Mode */
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+    width: 12px;
+    height: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: linear-gradient(180deg, #FFE66D, #4ECDC4);
+    background: linear-gradient(180deg, #ffe66d, #4ecdc4);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #FF6B6B, #FF9FF3);
-  border-radius: 6px;
+    background: linear-gradient(180deg, #ff6b6b, #ff9ff3);
+    border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #FF5252, #FFB5B5);
+    background: linear-gradient(180deg, #ff5252, #ffb5b5);
 }
 
 /* Dark Mode Scrollbar */
 .dark::-webkit-scrollbar-track {
-  background: linear-gradient(180deg, #4ECDC4, #87CEEB);
+    background: linear-gradient(180deg, #4ecdc4, #87ceeb);
 }
 
 .dark::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #FF6B6B, #FFA502);
-  border-radius: 6px;
+    background: linear-gradient(180deg, #ff6b6b, #ffa502);
+    border-radius: 6px;
 }
 
 .dark::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #FFE66D, #C7A2FF);
+    background: linear-gradient(180deg, #ffe66d, #c7a2ff);
 }
 
 /* Highlight/Mark Styling */
 mark {
-  background: linear-gradient(120deg, #FFE66D, transparent);
-  padding: 2px 6px;
-  border-radius: 4px;
+    background: linear-gradient(120deg, #ffe66d, transparent);
+    padding: 2px 6px;
+    border-radius: 4px;
 }
 
 /* Line Height and Readability */
 body {
-  line-height: 1.6;
-  letter-spacing: 0.3px;
+    line-height: 1.6;
+    letter-spacing: 0.3px;
 }
 
 /* Code and Preformatted Text */
 code {
-  background: rgba(255, 107, 107, 0.1);
-  color: #FF6B6B;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-family: 'Courier New', monospace;
-  font-weight: 600;
+    background: rgba(255, 107, 107, 0.1);
+    color: #ff6b6b;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: "Courier New", monospace;
+    font-weight: 600;
 }
 
 pre {
-  background: linear-gradient(135deg, rgba(255, 230, 109, 0.1), rgba(78, 205, 196, 0.1));
-  border-left: 4px solid #FF6B6B;
-  padding: 1rem;
-  border-radius: 8px;
-  overflow-x: auto;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 230, 109, 0.1),
+        rgba(78, 205, 196, 0.1)
+    );
+    border-left: 4px solid #ff6b6b;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
 }
 
 /* Divider Styling */
 hr {
-  border: none;
-  height: 2px;
-  background: linear-gradient(90deg, #FF6B6B, transparent, #4ECDC4);
-  border-radius: 1px;
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, #ff6b6b, transparent, #4ecdc4);
+    border-radius: 1px;
 }
-
