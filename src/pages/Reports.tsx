@@ -713,21 +713,51 @@ export default function Reports() {
           </div>
 
           {/* Footer Signatures */}
-          <div className="grid grid-cols-3 gap-12 pt-16 border-t-2 border-gray-100">
-            {/* Class Teacher */}
+          <div className="grid grid-cols-3 gap-8 pt-10 mt-4 border-t-2 border-gray-100">
+            {/* Class Teacher — blank manual signing space */}
             <div className="text-center">
-              <div className="h-16 mb-3" />
-              <div className="h-px bg-gray-300 mb-3 w-full" />
+              <div className="h-16 mb-1 mx-4 border border-dashed border-gray-200 rounded-lg flex items-center justify-center">
+                <span className="text-[9px] text-gray-300 uppercase tracking-widest select-none">
+                  Sign here
+                </span>
+              </div>
+              <div className="h-px bg-gray-400 mb-2 w-full" />
               <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
-                Class Teacher's Signature
+                Class Teacher
               </p>
             </div>
-            {/* Principal */}
+
+            {/* Principal — cursive signature */}
             <div className="text-center">
-              <div className="h-16 mb-3" />
-              <div className="h-px bg-gray-300 mb-3 w-full" />
+              <div className="h-16 mb-1 flex items-end justify-center overflow-hidden pb-1">
+                {config?.principalName ? (
+                  <span
+                    style={{
+                      fontFamily:
+                        "'Dancing Script', 'Brush Script MT', cursive",
+                      fontSize: "2rem",
+                      fontWeight: 700,
+                      color: "#1e3a8a",
+                      lineHeight: 1,
+                      display: "inline-block",
+                      transform: "rotate(-3deg)",
+                      transformOrigin: "bottom center",
+                      letterSpacing: "0.02em",
+                      textShadow: "0.5px 0.5px 0 rgba(30,58,138,0.15)",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {config.principalName}
+                  </span>
+                ) : (
+                  <span className="text-[9px] text-gray-300 uppercase tracking-widest border border-dashed border-gray-200 rounded px-3 py-2 select-none">
+                    Not set
+                  </span>
+                )}
+              </div>
+              <div className="h-px bg-gray-400 mb-2 w-full" />
               {config?.principalName && (
-                <p className="text-sm font-black text-gray-900 uppercase tracking-tight mb-1">
+                <p className="text-xs font-bold text-gray-700 mb-0.5 tracking-tight">
                   {config.principalName}
                 </p>
               )}
@@ -735,12 +765,38 @@ export default function Reports() {
                 Principal
               </p>
             </div>
-            {/* Proprietress */}
+
+            {/* Proprietress — cursive signature */}
             <div className="text-center">
-              <div className="h-16 mb-3" />
-              <div className="h-px bg-gray-300 mb-3 w-full" />
+              <div className="h-16 mb-1 flex items-end justify-center overflow-hidden pb-1">
+                {config?.proprietressName ? (
+                  <span
+                    style={{
+                      fontFamily:
+                        "'Dancing Script', 'Brush Script MT', cursive",
+                      fontSize: "2rem",
+                      fontWeight: 700,
+                      color: "#1e3a8a",
+                      lineHeight: 1,
+                      display: "inline-block",
+                      transform: "rotate(-2deg)",
+                      transformOrigin: "bottom center",
+                      letterSpacing: "0.02em",
+                      textShadow: "0.5px 0.5px 0 rgba(30,58,138,0.15)",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {config.proprietressName}
+                  </span>
+                ) : (
+                  <span className="text-[9px] text-gray-300 uppercase tracking-widest border border-dashed border-gray-200 rounded px-3 py-2 select-none">
+                    Not set
+                  </span>
+                )}
+              </div>
+              <div className="h-px bg-gray-400 mb-2 w-full" />
               {config?.proprietressName && (
-                <p className="text-sm font-black text-gray-900 uppercase tracking-tight mb-1">
+                <p className="text-xs font-bold text-gray-700 mb-0.5 tracking-tight">
                   {config.proprietressName}
                 </p>
               )}
