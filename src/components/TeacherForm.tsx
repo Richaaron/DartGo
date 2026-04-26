@@ -1,38 +1,38 @@
-import { useState, useRef, useEffect, useMemo } from 'react'
-import type { ChangeEvent, FormEvent } from 'react'
-import { X, Upload, User as UserIcon } from 'lucide-react'
-import { Teacher, Subject, Student } from '../types'
-import { fetchSubjects, fetchStudents } from '../services/api'
+import { useState, useRef, useEffect, useMemo } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+import { X, Upload, User as UserIcon } from "lucide-react";
+import { Teacher, Subject, Student } from "../types";
+import { fetchSubjects, fetchStudents } from "../services/api";
 
 const STANDARD_CLASSES = [
-  'Pre-Nursery',
-  'Nursery 1',
-  'Nursery 2',
-  'Primary 1',
-  'Primary 2',
-  'Primary 3',
-  'Primary 4',
-  'Primary 5',
-  'JSS 1',
-  'JSS 2',
-  'JSS 3',
-  'SSS 1',
-  'SSS 2',
-  'SSS 3',
-]
+  "Pre-Nursery",
+  "Nursery 1",
+  "Nursery 2",
+  "Primary 1",
+  "Primary 2",
+  "Primary 3",
+  "Primary 4",
+  "Primary 5",
+  "JSS 1",
+  "JSS 2",
+  "JSS 3",
+  "SSS 1",
+  "SSS 2",
+  "SSS 3",
+];
 
-const LEVEL_CLASS_MAP: Record<Teacher['level'], string[]> = {
-  'Pre-Nursery': ['Pre-Nursery'],
-  'Nursery': ['Nursery 1', 'Nursery 2'],
-  'Primary': ['Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5'],
-  'Secondary': ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'],
-}
+const LEVEL_CLASS_MAP: Record<Teacher["level"], string[]> = {
+  "Pre-Nursery": ["Pre-Nursery"],
+  Nursery: ["Nursery 1", "Nursery 2"],
+  Primary: ["Primary 1", "Primary 2", "Primary 3", "Primary 4", "Primary 5"],
+  Secondary: ["JSS 1", "JSS 2", "JSS 3", "SSS 1", "SSS 2", "SSS 3"],
+};
 
 interface TeacherFormProps {
-  onSubmit: (teacher: Teacher | Omit<Teacher, 'id'>) => void
-  initialData?: Teacher
-  onCancel: () => void
-  isEditing?: boolean
+  onSubmit: (teacher: Teacher | Omit<Teacher, "id">) => void;
+  initialData?: Teacher;
+  onCancel: () => void;
+  isEditing?: boolean;
 }
 
 export default function TeacherForm({
@@ -45,42 +45,46 @@ export default function TeacherForm({
     () =>
       initialData?.assignedSubjects && initialData.assignedSubjects.length > 0
         ? initialData.assignedSubjects
-        : (initialData?.subject || '')
-            .split(',')
+        : (initialData?.subject || "")
+            .split(",")
             .map((subject) => subject.trim())
             .filter(Boolean),
-    [initialData]
-  )
-  const fileInputRef = useRef<any>(null)
-  const [formData, setFormData] = useState<Omit<Teacher, 'id'> & { id?: string }>({
-    name: '',
-    email: '',
-    username: '',
-    password: '',
-    role: 'Teacher',
-    teacherId: '',
-    subject: initialAssignedSubjects.join(', '),
+    [initialData],
+  );
+  const fileInputRef = useRef<any>(null);
+  const [formData, setFormData] = useState<
+    Omit<Teacher, "id"> & { id?: string }
+  >({
+    name: "",
+    email: "",
+    username: "",
+    password: "",
+    role: "Teacher",
+    teacherId: "",
+    subject: initialAssignedSubjects.join(", "),
     assignedSubjects: initialAssignedSubjects,
-    level: 'Primary',
+    level: "Primary",
     assignedClasses: [],
-    image: '',
+    image: "",
     ...(initialData && initialData),
-  })
+  });
 
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const [availableSubjects, setAvailableSubjects] = useState<Subject[]>([])
-  const [availableClasses, setAvailableClasses] = useState<string[]>([])
-  const [selectedSubject, setSelectedSubject] = useState('')
-  const [selectedClass, setSelectedClass] = useState('')
-  const [isFormTeacher, setIsFormTeacher] = useState(true)
-  const [isSubjectTeacher, setIsSubjectTeacher] = useState(initialAssignedSubjects.length > 0)
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [availableSubjects, setAvailableSubjects] = useState<Subject[]>([]);
+  const [availableClasses, setAvailableClasses] = useState<string[]>([]);
+  const [selectedSubject, setSelectedSubject] = useState("");
+  const [selectedClass, setSelectedClass] = useState("");
+  const [isFormTeacher, setIsFormTeacher] = useState(true);
+  const [isSubjectTeacher, setIsSubjectTeacher] = useState(
+    initialAssignedSubjects.length > 0,
+  );
 
   useEffect(() => {
     if (initialData) {
-      setIsSubjectTeacher(initialAssignedSubjects.length > 0)
-      setIsFormTeacher(true)
+      setIsSubjectTeacher(initialAssignedSubjects.length > 0);
+      setIsFormTeacher(true);
     }
-  }, [initialData, initialAssignedSubjects])
+  }, [initialData, initialAssignedSubjects]);
 
   useEffect(() => {
     const loadOptions = async () => {
@@ -88,151 +92,170 @@ export default function TeacherForm({
         const [subjectsData, studentsData] = await Promise.all([
           fetchSubjects(),
           fetchStudents(),
-        ])
+        ]);
 
-        setAvailableSubjects(subjectsData)
+        setAvailableSubjects(subjectsData);
 
-        const studentClasses = studentsData.map((student: Student) => student.class).filter(Boolean)
-        const classOptions = [...new Set([...STANDARD_CLASSES, ...studentClasses])]
-        setAvailableClasses(classOptions)
+        const studentClasses = studentsData
+          .map((student: Student) => student.class)
+          .filter(Boolean);
+        const classOptions = [
+          ...new Set([...STANDARD_CLASSES, ...studentClasses]),
+        ];
+        setAvailableClasses(classOptions);
       } catch (error) {
-        console.error('Failed to load teacher form options', error)
+        console.error("Failed to load teacher form options", error);
       }
-    }
+    };
 
-    loadOptions()
-  }, [])
+    loadOptions();
+  }, []);
 
   const levelSubjects = useMemo(
-    () => availableSubjects.filter((subject) => subject.level === formData.level),
-    [availableSubjects, formData.level]
-  )
+    () =>
+      availableSubjects.filter((subject) => subject.level === formData.level),
+    [availableSubjects, formData.level],
+  );
 
   const levelClasses = useMemo(() => {
-    const preferredClasses = LEVEL_CLASS_MAP[formData.level] || []
-    const extraClasses = availableClasses.filter((className) => !preferredClasses.includes(className))
-    return [...preferredClasses, ...extraClasses]
-  }, [availableClasses, formData.level])
+    const preferredClasses = LEVEL_CLASS_MAP[formData.level] || [];
+    const extraClasses = availableClasses.filter(
+      (className) => !preferredClasses.includes(className),
+    );
+    return [...preferredClasses, ...extraClasses];
+  }, [availableClasses, formData.level]);
 
   const validateForm = () => {
-    const newErrors: Record<string, string> = {}
+    const newErrors: Record<string, string> = {};
 
-    if (!formData.name.trim()) newErrors.name = 'Full name is required'
-    if (!formData.email.includes('@')) newErrors.email = 'Valid email is required'
+    if (!formData.name.trim()) newErrors.name = "Full name is required";
+    if (!formData.email.includes("@"))
+      newErrors.email = "Valid email is required";
     // Username/password are auto-generated for new teachers; validate only when editing.
-    if (isEditing && !formData.username.trim()) newErrors.username = 'Username is required'
-    
+    if (isEditing && !formData.username.trim())
+      newErrors.username = "Username is required";
+
     if (!isFormTeacher && !isSubjectTeacher) {
-      newErrors.teacherType = 'Select at least one teaching assignment type'
+      newErrors.teacherType = "Select at least one teaching assignment type";
     }
 
     // Level-based validation
-    if (formData.level === 'Secondary') {
+    if (formData.level === "Secondary") {
       if (isSubjectTeacher && (formData.assignedSubjects || []).length === 0) {
-        newErrors.assignedSubjects = 'At least one subject is required for Secondary Subject Teachers'
+        newErrors.assignedSubjects =
+          "At least one subject is required for Secondary Subject Teachers";
       }
       if (isFormTeacher && formData.assignedClasses.length === 0) {
-        newErrors.assignedClasses = 'At least one class is required for Form Teachers'
+        newErrors.assignedClasses =
+          "At least one class is required for Form Teachers";
       }
     } else {
       // Primary, Nursery, Pre-Nursery
       if (formData.assignedClasses.length === 0) {
-        newErrors.assignedClasses = `At least one class is required for ${formData.level} teachers`
+        newErrors.assignedClasses = `At least one class is required for ${formData.level} teachers`;
       }
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleImageChange = (e: ChangeEvent<any>) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
     if (file) {
-      const reader = new window.FileReader()
+      const reader = new window.FileReader();
       reader.onloadend = () => {
-        setFormData((prev) => ({ ...prev, image: reader.result as string }))
-      }
-      reader.readAsDataURL(file)
+        setFormData((prev) => ({ ...prev, image: reader.result as string }));
+      };
+      reader.readAsDataURL(file);
     }
-  }
+  };
 
-  const handleChange = (
-    e: ChangeEvent<any>
-  ) => {
-    const { name, value } = e.target
+  const handleChange = (e: ChangeEvent<any>) => {
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }))
+    }));
     if (errors[name]) {
       setErrors((prev) => {
-        const newErrors = { ...prev }
-        delete newErrors[name]
-        return newErrors
-      })
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
     }
-  }
+  };
 
   const addSubject = () => {
-    if (selectedSubject && !formData.assignedSubjects?.includes(selectedSubject)) {
-      setFormData(prev => ({
+    if (
+      selectedSubject &&
+      !formData.assignedSubjects?.includes(selectedSubject)
+    ) {
+      setFormData((prev) => ({
         ...prev,
         assignedSubjects: [...(prev.assignedSubjects || []), selectedSubject],
-        subject: [...(prev.assignedSubjects || []), selectedSubject].join(', ')
-      }))
-      setSelectedSubject('')
+        subject: [...(prev.assignedSubjects || []), selectedSubject].join(", "),
+      }));
+      setSelectedSubject("");
     }
-  }
+  };
 
   const removeSubject = (subjectName: string) => {
-    setFormData(prev => {
-      const assignedSubjects = (prev.assignedSubjects || []).filter(subject => subject !== subjectName)
+    setFormData((prev) => {
+      const assignedSubjects = (prev.assignedSubjects || []).filter(
+        (subject) => subject !== subjectName,
+      );
       return {
         ...prev,
         assignedSubjects,
-        subject: assignedSubjects.join(', ')
-      }
-    })
-  }
+        subject: assignedSubjects.join(", "),
+      };
+    });
+  };
 
   const addClass = () => {
     if (selectedClass && !formData.assignedClasses.includes(selectedClass)) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        assignedClasses: [...prev.assignedClasses, selectedClass]
-      }))
-      setSelectedClass('')
+        assignedClasses: [...prev.assignedClasses, selectedClass],
+      }));
+      setSelectedClass("");
     }
-  }
+  };
 
   const removeClass = (className: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      assignedClasses: prev.assignedClasses.filter(c => c !== className)
-    }))
-  }
+      assignedClasses: prev.assignedClasses.filter((c) => c !== className),
+    }));
+  };
 
   const handleSubmit = (e: FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (validateForm()) {
       onSubmit({
         ...formData,
-        assignedSubjects: isSubjectTeacher ? (formData.assignedSubjects || []) : [],
-        subject: isSubjectTeacher ? (formData.assignedSubjects || []).join(', ') : '',
-        teacherType: isFormTeacher && isSubjectTeacher
-          ? 'Form + Subject Teacher'
-          : isSubjectTeacher
-            ? 'Subject Teacher'
-            : 'Form Teacher'
-      } as any)
+        assignedSubjects: isSubjectTeacher
+          ? formData.assignedSubjects || []
+          : [],
+        subject: isSubjectTeacher
+          ? (formData.assignedSubjects || []).join(", ")
+          : "",
+        teacherType:
+          isFormTeacher && isSubjectTeacher
+            ? "Form + Subject Teacher"
+            : isSubjectTeacher
+              ? "Subject Teacher"
+              : "Form Teacher",
+      } as any);
     }
-  }
+  };
 
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-900">
-          {isEditing ? 'Edit Teacher' : 'Add New Teacher'}
+          {isEditing ? "Edit Teacher" : "Add New Teacher"}
         </h2>
         <button
           onClick={onCancel}
@@ -248,7 +271,11 @@ export default function TeacherForm({
           <div className="relative w-32 h-32 mb-4 group">
             <div className="w-full h-full rounded-full bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-gray-200 group-hover:border-blue-500 transition-colors">
               {formData.image ? (
-                <img src={formData.image} alt="Profile" className="w-full h-full object-cover" />
+                <img
+                  src={formData.image}
+                  alt="Profile"
+                  className="w-full h-full object-cover"
+                />
               ) : (
                 <UserIcon className="w-16 h-16 text-gray-400" />
               )}
@@ -274,8 +301,10 @@ export default function TeacherForm({
 
         {/* Account Information */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">Account Information</h3>
-          
+          <h3 className="text-lg font-semibold text-gray-900">
+            Account Information
+          </h3>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -286,7 +315,7 @@ export default function TeacherForm({
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className={`input-field ${errors.name ? 'border-red-500' : ''}`}
+                className={`input-field ${errors.name ? "border-red-500" : ""}`}
               />
               {errors.name && (
                 <p className="text-red-500 text-sm mt-1">{errors.name}</p>
@@ -302,7 +331,7 @@ export default function TeacherForm({
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className={`input-field ${errors.email ? 'border-red-500' : ''}`}
+                className={`input-field ${errors.email ? "border-red-500" : ""}`}
               />
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">{errors.email}</p>
@@ -322,7 +351,7 @@ export default function TeacherForm({
                 onChange={handleChange}
                 placeholder={isEditing ? "" : "Auto-generated"}
                 disabled={!isEditing}
-                className={`input-field ${errors.username ? 'border-red-500' : ''} ${!isEditing ? 'bg-gray-50 opacity-60' : ''}`}
+                className={`input-field ${errors.username ? "border-red-500" : ""} ${!isEditing ? "bg-gray-50 opacity-60" : ""}`}
               />
               {errors.username && (
                 <p className="text-red-500 text-sm mt-1">{errors.username}</p>
@@ -331,7 +360,7 @@ export default function TeacherForm({
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Password {isEditing ? '(Leave blank to keep current)' : '*'}
+                Password {isEditing ? "(Leave blank to keep current)" : "*"}
               </label>
               <input
                 type="password"
@@ -340,7 +369,7 @@ export default function TeacherForm({
                 onChange={handleChange}
                 placeholder={isEditing ? "" : "Auto-generated"}
                 disabled={!isEditing}
-                className={`input-field ${errors.password ? 'border-red-500' : ''} ${!isEditing ? 'bg-gray-50 opacity-60' : ''}`}
+                className={`input-field ${errors.password ? "border-red-500" : ""} ${!isEditing ? "bg-gray-50 opacity-60" : ""}`}
               />
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1">{errors.password}</p>
@@ -351,52 +380,93 @@ export default function TeacherForm({
 
         {/* Professional Information */}
         <div className="space-y-4 border-t pt-4">
-          <h3 className="text-lg font-semibold text-gray-900">Professional Information</h3>
+          <h3 className="text-lg font-semibold text-gray-900">
+            Professional Information
+          </h3>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-3">
               Teaching Assignment Type
             </label>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <button
-                type="button"
-                onClick={() => setIsFormTeacher((prev) => !prev)}
-                className={`rounded-xl border px-4 py-3 text-left transition-all ${
+            <div className="space-y-3">
+              {/* Form Teacher Toggle */}
+              <div
+                className={`flex items-center justify-between p-4 rounded-xl border transition-all duration-200 ${
                   isFormTeacher
-                    ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm'
-                    : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+                    ? "border-blue-200 bg-blue-50"
+                    : "border-gray-200 bg-gray-50"
                 }`}
               >
-                <p className="font-semibold">Form Teacher {isFormTeacher ? 'On' : 'Off'}</p>
-                <p className="text-xs mt-1 text-inherit opacity-80">Handles class welfare, coordination, and assigned class oversight.</p>
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setIsSubjectTeacher((prev) => {
-                    const nextValue = !prev
-                    if (!nextValue) {
-                      setFormData((current) => ({
-                        ...current,
-                        assignedSubjects: [],
-                        subject: '',
-                      }))
-                    }
-                    return nextValue
-                  })
-                }}
-                className={`rounded-xl border px-4 py-3 text-left transition-all ${
+                <div>
+                  <p className="font-semibold text-gray-900">Form Teacher</p>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    Handles class welfare, coordination and assigned class
+                    oversight.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsFormTeacher((prev) => !prev)}
+                  role="switch"
+                  aria-checked={isFormTeacher}
+                  className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                    isFormTeacher ? "bg-blue-600" : "bg-gray-300"
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition-transform duration-200 ${
+                      isFormTeacher ? "translate-x-6" : "translate-x-1"
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {/* Subject Teacher Toggle */}
+              <div
+                className={`flex items-center justify-between p-4 rounded-xl border transition-all duration-200 ${
                   isSubjectTeacher
-                    ? 'border-amber-600 bg-amber-50 text-amber-700 shadow-sm'
-                    : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+                    ? "border-amber-200 bg-amber-50"
+                    : "border-gray-200 bg-gray-50"
                 }`}
               >
-                <p className="font-semibold">Subject Teacher {isSubjectTeacher ? 'On' : 'Off'}</p>
-                <p className="text-xs mt-1 text-inherit opacity-80">Teaches selected subjects for assigned classes.</p>
-              </button>
+                <div>
+                  <p className="font-semibold text-gray-900">Subject Teacher</p>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    Teaches selected subjects for assigned classes.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsSubjectTeacher((prev) => {
+                      const nextValue = !prev;
+                      if (!nextValue) {
+                        setFormData((current) => ({
+                          ...current,
+                          assignedSubjects: [],
+                          subject: "",
+                        }));
+                      }
+                      return nextValue;
+                    });
+                  }}
+                  role="switch"
+                  aria-checked={isSubjectTeacher}
+                  className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 ${
+                    isSubjectTeacher ? "bg-amber-500" : "bg-gray-300"
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition-transform duration-200 ${
+                      isSubjectTeacher ? "translate-x-6" : "translate-x-1"
+                    }`}
+                  />
+                </button>
+              </div>
             </div>
             <p className="text-xs text-gray-500 mt-2">
-              A teacher can be both a form teacher and a subject teacher at the same time.
+              A teacher can be both a form teacher and a subject teacher at the
+              same time.
             </p>
             {errors.teacherType && (
               <p className="text-red-500 text-sm mt-2">{errors.teacherType}</p>
@@ -420,7 +490,7 @@ export default function TeacherForm({
             </div>
 
             <div>
-              {formData.level === 'Secondary' ? (
+              {formData.level === "Secondary" ? (
                 isSubjectTeacher ? (
                   <>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -465,19 +535,28 @@ export default function TeacherForm({
                       ))}
                     </div>
                     {errors.assignedSubjects && (
-                      <p className="text-red-500 text-sm mt-1">{errors.assignedSubjects}</p>
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.assignedSubjects}
+                      </p>
                     )}
-                    <p className="text-xs text-gray-500 mt-2">Select one or more subjects this teacher handles.</p>
+                    <p className="text-xs text-gray-500 mt-2">
+                      Select one or more subjects this teacher handles.
+                    </p>
                   </>
                 ) : (
                   <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 px-4 py-5 text-sm text-gray-600">
-                    This teacher is marked as a form teacher only, so subject assignment is not required.
+                    This teacher is marked as a form teacher only, so subject
+                    assignment is not required.
                   </div>
                 )
               ) : (
                 <div className="rounded-xl border border-dashed border-indigo-200 bg-indigo-50 px-4 py-5 text-sm text-indigo-700">
-                  <p className="font-black uppercase tracking-widest text-[10px] mb-1">Automatic Assignment</p>
-                  As a <span className="font-bold">{formData.level}</span> teacher, you will automatically handle all subjects for your assigned classes.
+                  <p className="font-black uppercase tracking-widest text-[10px] mb-1">
+                    Automatic Assignment
+                  </p>
+                  As a <span className="font-bold">{formData.level}</span>{" "}
+                  teacher, you will automatically handle all subjects for your
+                  assigned classes.
                 </div>
               )}
             </div>
@@ -503,7 +582,7 @@ export default function TeacherForm({
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Assign Classes {isFormTeacher && '*'}
+                Assign Classes {isFormTeacher && "*"}
               </label>
               <div className="flex gap-2">
                 <select
@@ -544,7 +623,9 @@ export default function TeacherForm({
                 ))}
               </div>
               {errors.assignedClasses && (
-                <p className="text-red-500 text-sm mt-1">{errors.assignedClasses}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.assignedClasses}
+                </p>
               )}
             </div>
           </div>
@@ -562,10 +643,10 @@ export default function TeacherForm({
             type="submit"
             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
           >
-            {isEditing ? 'Save Changes' : 'Create Teacher'}
+            {isEditing ? "Save Changes" : "Create Teacher"}
           </button>
         </div>
       </form>
     </div>
-  )
+  );
 }
