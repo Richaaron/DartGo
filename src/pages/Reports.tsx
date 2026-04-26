@@ -18,6 +18,7 @@ import {
   fetchObservations,
   saveObservation,
   fetchConfig,
+  fetchTeachers,
 } from "../services/api";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -41,6 +42,7 @@ const itemVariants = {
 
 export default function Reports() {
   const [students, setStudents] = useState<Student[]>([]);
+  const [teachers, setTeachers] = useState<any[]>([]);
   const [results, setResults] = useState<SubjectResult[]>([]);
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [observations, setObservations] = useState<any[]>([]);
@@ -77,14 +79,17 @@ export default function Reports() {
           subjectsData,
           observationsData,
           configData,
+          teachersData,
         ] = await Promise.all([
           fetchStudents(),
           fetchResults(),
           fetchSubjects(),
           fetchObservations(),
           fetchConfig(),
+          fetchTeachers(),
         ]);
         setStudents(studentsData);
+        setTeachers(teachersData);
         setResults(resultsData);
         setSubjects(subjectsData);
         setObservations(observationsData);
@@ -113,6 +118,26 @@ export default function Reports() {
     () => observations.find((o: any) => o.studentId === selectedStudentId),
     [observations, selectedStudentId],
   );
+
+  // Find the form teacher assigned to the selected student's class
+  const classTeacher = useMemo(() => {
+    if (!selectedStudent?.class) return null;
+    return (
+      teachers.find((t) => {
+        const isFormCapable =
+          t.teacherType === "Form Teacher" ||
+          t.teacherType === "Form + Subject Teacher" ||
+          (!t.teacherType &&
+            Array.isArray(t.assignedClasses) &&
+            t.assignedClasses.length > 0);
+        return (
+          isFormCapable &&
+          Array.isArray(t.assignedClasses) &&
+          t.assignedClasses.includes(selectedStudent.class)
+        );
+      }) || null
+    );
+  }, [teachers, selectedStudent]);
 
   useEffect(() => {
     if (studentObservation) {
@@ -714,14 +739,40 @@ export default function Reports() {
 
           {/* Footer Signatures */}
           <div className="grid grid-cols-3 gap-8 pt-10 mt-4 border-t-2 border-gray-100">
-            {/* Class Teacher — blank manual signing space */}
+            {/* Class Teacher — cursive signature from assigned form teacher */}
             <div className="text-center">
-              <div className="h-16 mb-1 mx-4 border border-dashed border-gray-200 rounded-lg flex items-center justify-center">
-                <span className="text-[9px] text-gray-300 uppercase tracking-widest select-none">
-                  Sign here
-                </span>
+              <div className="h-16 mb-1 flex items-end justify-center overflow-hidden pb-1">
+                {classTeacher ? (
+                  <span
+                    style={{
+                      fontFamily:
+                        "'Dancing Script', 'Brush Script MT', cursive",
+                      fontSize: "2rem",
+                      fontWeight: 700,
+                      color: "#1e3a8a",
+                      lineHeight: 1,
+                      display: "inline-block",
+                      transform: "rotate(-2.5deg)",
+                      transformOrigin: "bottom center",
+                      letterSpacing: "0.02em",
+                      textShadow: "0.5px 0.5px 0 rgba(30,58,138,0.15)",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {classTeacher.name}
+                  </span>
+                ) : (
+                  <span className="text-[9px] text-gray-300 uppercase tracking-widest border border-dashed border-gray-200 rounded px-3 py-2 select-none">
+                    Sign here
+                  </span>
+                )}
               </div>
               <div className="h-px bg-gray-400 mb-2 w-full" />
+              {classTeacher && (
+                <p className="text-xs font-bold text-gray-700 mb-0.5 tracking-tight">
+                  {classTeacher.name}
+                </p>
+              )}
               <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
                 Class Teacher
               </p>
