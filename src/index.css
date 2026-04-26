@@ -30,125 +30,70 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: linear-gradient(
-        135deg,
-        #ffe66d 0%,
-        #95e1d3 25%,
-        #87ceeb 50%,
-        #ffb5b5 75%,
-        #ff9ff3 100%
-    );
-    background-attachment: fixed;
-    background-size: 400% 400%;
-    animation: gradientFlow 15s ease infinite;
+    background-color: #f1f5f9;
+    color: #0f172a;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
 }
 
-body.dark {
-    background: linear-gradient(
-        135deg,
-        #2c3e50 0%,
-        #1a3a52 25%,
-        #2d5a7b 50%,
-        #1a2a3a 75%,
-        #2c3e50 100%
-    );
-    background-attachment: fixed;
-    background-size: 400% 400%;
-    animation: gradientDarkFlow 15s ease infinite;
-}
-
-@keyframes gradientFlow {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-@keyframes gradientDarkFlow {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-.transition-all {
-    transition: all 0.3s ease;
-}
-
-.shadow-card {
-    box-shadow:
-        0 4px 15px rgba(255, 107, 107, 0.2),
-        0 0 20px rgba(78, 205, 196, 0.1);
-}
-
-/* Smooth scrolling */
 html {
     scroll-behavior: smooth;
 }
 
-/* School-Themed Focus States */
+/* Dark mode body */
+.dark body {
+    background-color: #0f172a;
+    color: #f8fafc;
+}
+
+/* Focus states */
 :focus-visible {
-    outline: 3px solid #ff6b6b;
+    outline: 2px solid #2563eb;
     outline-offset: 2px;
-    border-radius: 4px;
+    border-radius: 6px;
 }
 
-:focus {
-    outline: 3px solid #ff6b6b;
-    outline-offset: 2px;
-}
-
-/* School-Themed Selection */
+/* Selection */
 ::selection {
-    background: linear-gradient(90deg, #ff6b6b, #ffe66d);
-    color: white;
+    background: #bfdbfe;
+    color: #1e40af;
 }
 
-::-moz-selection {
-    background: linear-gradient(90deg, #ff6b6b, #ffe66d);
-    color: white;
+/* Global scrollbar */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
 }
 
-.shadow-card-lg {
-    box-shadow:
-        0 10px 30px rgba(255, 107, 107, 0.25),
-        0 0 40px rgba(78, 205, 196, 0.15);
+.dark ::-webkit-scrollbar-thumb {
+    background: #475569;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
 }
 
-.dark .shadow-card {
-    box-shadow:
-        0 4px 15px rgba(255, 107, 107, 0.15),
-        0 0 20px rgba(78, 205, 196, 0.1);
-}
-
-.dark .shadow-card-lg {
-    box-shadow:
-        0 10px 30px rgba(255, 107, 107, 0.2),
-        0 0 40px rgba(78, 205, 196, 0.15);
-}
-
-/* School-Inspired Text Styles */
+/* Typography */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-    font-weight: 900;
-    letter-spacing: 0.5px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.3;
 }
 
-/* Input and Textarea */
 input,
 textarea,
 select {
@@ -159,90 +104,56 @@ select {
         sans-serif;
 }
 
-/* Link Styling */
 a {
-    color: #ff6b6b;
+    color: #2563eb;
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: color 0.15s;
 }
-
 a:hover {
-    color: #ffe66d;
-    text-decoration: underline;
+    color: #1d4ed8;
 }
 
-/* Custom Scrollbar for Light Mode */
-::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
+hr {
+    border: none;
+    height: 1px;
+    background: #e2e8f0;
+}
+.dark hr {
+    background: #334155;
 }
 
-::-webkit-scrollbar-track {
-    background: linear-gradient(180deg, #ffe66d, #4ecdc4);
-}
-
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #ff6b6b, #ff9ff3);
-    border-radius: 6px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #ff5252, #ffb5b5);
-}
-
-/* Dark Mode Scrollbar */
-.dark::-webkit-scrollbar-track {
-    background: linear-gradient(180deg, #4ecdc4, #87ceeb);
-}
-
-.dark::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #ff6b6b, #ffa502);
-    border-radius: 6px;
-}
-
-.dark::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #ffe66d, #c7a2ff);
-}
-
-/* Highlight/Mark Styling */
-mark {
-    background: linear-gradient(120deg, #ffe66d, transparent);
-    padding: 2px 6px;
-    border-radius: 4px;
-}
-
-/* Line Height and Readability */
-body {
-    line-height: 1.6;
-    letter-spacing: 0.3px;
-}
-
-/* Code and Preformatted Text */
 code {
-    background: rgba(255, 107, 107, 0.1);
-    color: #ff6b6b;
+    background: #f1f5f9;
+    color: #1e40af;
     padding: 2px 6px;
     border-radius: 4px;
     font-family: "Courier New", monospace;
+    font-size: 0.85em;
     font-weight: 600;
 }
-
-pre {
-    background: linear-gradient(
-        135deg,
-        rgba(255, 230, 109, 0.1),
-        rgba(78, 205, 196, 0.1)
-    );
-    border-left: 4px solid #ff6b6b;
-    padding: 1rem;
-    border-radius: 8px;
-    overflow-x: auto;
+.dark code {
+    background: #1e293b;
+    color: #93c5fd;
 }
 
-/* Divider Styling */
-hr {
-    border: none;
-    height: 2px;
-    background: linear-gradient(90deg, #ff6b6b, transparent, #4ecdc4);
-    border-radius: 1px;
+mark {
+    background: #fef9c3;
+    padding: 1px 4px;
+    border-radius: 3px;
+}
+
+.transition-all {
+    transition: all 0.2s ease;
+}
+
+/* shadow-card utility */
+.shadow-card {
+    box-shadow:
+        0 1px 3px 0 rgb(0 0 0 / 0.07),
+        0 1px 2px -1px rgb(0 0 0 / 0.07);
+}
+.shadow-card-lg {
+    box-shadow:
+        0 4px 6px -1px rgb(0 0 0 / 0.07),
+        0 2px 4px -2px rgb(0 0 0 / 0.07);
 }

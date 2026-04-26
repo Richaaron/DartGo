@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link,
+  NavLink as RRNavLink,
   Navigate,
   useLocation,
 } from "react-router-dom";
@@ -140,13 +140,11 @@ function AppContent() {
 
   return (
     <div
-      className={`flex flex-col md:flex-row h-screen ${isDarkMode ? "dark bg-gradient-school-dark" : "bg-gradient-school"} transition-colors duration-300`}
+      className={`flex flex-col md:flex-row h-screen bg-slate-100 dark:bg-slate-900 transition-colors duration-200 ${isDarkMode ? "dark" : ""}`}
     >
       {/* Mobile Header */}
       {isMobile && (
-        <div
-          className={`${isDarkMode ? "bg-gradient-to-r from-school-blue via-school-green to-school-blue border-b-4 border-school-yellow" : "bg-gradient-to-r from-school-red to-school-orange border-b-4 border-school-yellow"} text-white px-4 py-3 flex items-center justify-between z-40 shadow-lg`}
-        >
+        <div className="bg-slate-900 border-b border-slate-700/50 text-white px-4 py-3 flex items-center justify-between z-40 shadow-lg">
           <button
             onClick={() => setShowMobileMenu(!showMobileMenu)}
             className="p-2 hover:bg-gold-500/10 rounded-lg transition-all active:scale-90"
@@ -158,14 +156,14 @@ function AppContent() {
               <img
                 src={config.schoolLogo}
                 alt="Logo"
-                className="w-8 h-8 object-contain rounded-full border-2 border-school-yellow shadow-lg"
+                className="w-8 h-8 object-contain rounded-full ring-2 ring-white/20"
               />
             ) : (
-              <div className="w-8 h-8 bg-gradient-to-br from-school-yellow to-school-orange rounded-full flex items-center justify-center text-school-red border-2 border-white shadow-lg animate-bounce-slow">
+              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white shadow-sm">
                 <GraduationCap size={18} />
               </div>
             )}
-            <span className="text-xs font-black uppercase bg-gradient-to-r from-school-yellow to-white bg-clip-text text-transparent animate-pulse-bright">
+            <span className="text-sm font-semibold text-white">
               {config?.schoolName?.split(" ")[0] || "FOLUSHO"}
             </span>
           </div>
@@ -194,14 +192,12 @@ function AppContent() {
         className={`${
           isMobile
             ? "fixed left-0 top-[60px] bottom-0 w-72 z-30"
-            : `${isSidebarOpen ? "w-72" : "w-24"} relative`
-        } ${isDarkMode ? "bg-gradient-to-b from-school-blue via-school-green/20 to-school-blue border-r-4 border-school-yellow" : "bg-gradient-to-b from-school-red to-school-pink border-r-4 border-school-yellow"} text-white transition-all duration-500 flex flex-col shadow-2xl overflow-y-auto md:overflow-visible`}
+            : `${isSidebarOpen ? "w-64" : "w-[72px]"} relative`
+        } bg-slate-900 border-r border-slate-700/30 text-white transition-all duration-300 flex flex-col shadow-xl overflow-y-auto md:overflow-visible`}
       >
         {/* Desktop Logo - Hidden on Mobile */}
         {!isMobile && (
-          <div
-            className={`p-6 border-b-4 ${isDarkMode ? "border-school-yellow" : "border-school-yellow"} flex items-center justify-between flex-shrink-0`}
-          >
+          <div className="p-5 border-b border-slate-700/50 flex items-center justify-between flex-shrink-0">
             {isSidebarOpen && (
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
@@ -212,20 +208,18 @@ function AppContent() {
                   <img
                     src={config.schoolLogo}
                     alt="Logo"
-                    className="w-10 h-10 object-contain shadow-school-yellow shadow-lg rounded-full border-2 border-school-yellow bg-gradient-to-br from-school-yellow to-school-orange p-1"
+                    className="w-9 h-9 object-contain rounded-lg ring-2 ring-white/10"
                   />
                 ) : (
-                  <div className="w-10 h-10 bg-gradient-to-br from-school-yellow to-school-orange rounded-full flex items-center justify-center text-school-red shadow-lg shadow-school-yellow/50 border-2 border-white animate-bounce-slow">
+                  <div className="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-sm">
                     <GraduationCap size={24} />
                   </div>
                 )}
                 <div className="overflow-hidden">
-                  <h1 className="text-sm font-black truncate tracking-tighter uppercase bg-gradient-to-r from-school-yellow to-white bg-clip-text text-transparent">
+                  <h1 className="text-sm font-bold text-white truncate">
                     {config?.schoolName?.split(" ")[0] || "FOLUSHO"}
                   </h1>
-                  <p
-                    className={`text-[9px] ${isDarkMode ? "text-school-yellow/80" : "text-school-yellow"} truncate uppercase font-black tracking-widest`}
-                  >
+                  <p className="text-[10px] text-slate-400 truncate mt-0.5">
                     {config?.schoolName?.split(" ").slice(1).join(" ") ||
                       "Victory Schools"}
                   </p>
@@ -234,7 +228,7 @@ function AppContent() {
             )}
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className={`p-2 hover:bg-school-yellow/20 rounded-full transition-all active:scale-90 text-school-yellow animate-bounce-slow`}
+              className="p-1.5 hover:bg-white/10 rounded-lg transition-colors text-slate-400 hover:text-white"
             >
               {isSidebarOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
@@ -246,30 +240,20 @@ function AppContent() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className={`px-6 py-4 border-b-4 ${isDarkMode ? "border-school-yellow bg-school-blue/20" : "border-school-yellow bg-school-red/20"}`}
+            className="px-4 py-4 border-b border-slate-700/50 bg-slate-800/40"
           >
-            <p
-              className={`text-[9px] uppercase font-black tracking-[0.2em] ${isDarkMode ? "text-school-yellow/80" : "text-school-yellow"}`}
-            >
+            <p className="text-[10px] uppercase font-medium tracking-wider text-slate-400">
               Signed In As
             </p>
-            <p className="font-black text-white truncate text-sm mt-1">
+            <p className="font-semibold text-white truncate text-sm mt-1">
               {userName}
             </p>
             <div className="flex items-center gap-2 mt-1.5">
-              <div
-                className={`w-1.5 h-1.5 rounded-full animate-pulse ${isDarkMode ? "bg-school-yellow" : "bg-school-yellow"}`}
-              ></div>
-              <p
-                className={`text-[10px] font-black uppercase tracking-widest text-white`}
-              >
-                {userRole}
-              </p>
+              <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
+              <p className="text-xs text-slate-300">{userRole}</p>
             </div>
             {userRole === "Teacher" && (
-              <p
-                className={`text-[9px] mt-1 uppercase tracking-[0.2em] text-school-yellow/90`}
-              >
+              <p className="text-[10px] text-slate-400 mt-0.5">
                 {teacherRoleLabel}
               </p>
             )}
@@ -281,30 +265,20 @@ function AppContent() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className={`px-6 py-5 border-b-4 ${isDarkMode ? "border-school-yellow bg-school-blue/20" : "border-school-yellow bg-school-red/20"} flex-shrink-0`}
+            className="px-5 py-4 border-b border-slate-700/50 bg-slate-800/40 flex-shrink-0"
           >
-            <p
-              className={`text-[9px] uppercase font-black tracking-[0.2em] ${isDarkMode ? "text-school-yellow/80" : "text-school-yellow"}`}
-            >
+            <p className="text-[10px] uppercase font-medium tracking-wider text-slate-400">
               Signed In As
             </p>
-            <p className="font-black text-white truncate text-sm mt-1">
+            <p className="font-semibold text-white truncate text-sm mt-1">
               {userName}
             </p>
             <div className="flex items-center gap-2 mt-1.5">
-              <div
-                className={`w-1.5 h-1.5 rounded-full animate-pulse ${isDarkMode ? "bg-school-yellow" : "bg-school-yellow"}`}
-              ></div>
-              <p
-                className={`text-[10px] font-black uppercase tracking-widest text-white`}
-              >
-                {userRole}
-              </p>
+              <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
+              <p className="text-xs text-slate-300">{userRole}</p>
             </div>
             {userRole === "Teacher" && (
-              <p
-                className={`text-[9px] mt-1 uppercase tracking-[0.2em] text-school-yellow/90`}
-              >
+              <p className="text-[10px] text-slate-400 mt-0.5">
                 {teacherRoleLabel}
               </p>
             )}
@@ -312,7 +286,7 @@ function AppContent() {
         )}
 
         {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-1.5 overflow-y-auto custom-scrollbar">
+        <nav className="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto custom-scrollbar">
           {userRole === "Teacher" ? (
             <>
               <NavLink
@@ -475,17 +449,11 @@ function AppContent() {
         </nav>
 
         {/* Bottom Section */}
-        <div
-          className={`p-4 border-t ${isDarkMode ? "border-gold-500/20" : "border-gold-500/30"} space-y-2 flex-shrink-0`}
-        >
+        <div className="px-3 py-3 border-t border-slate-700/50 space-y-0.5 flex-shrink-0">
           {/* Dark Mode Toggle */}
           <button
             onClick={() => setIsDarkMode(!isDarkMode)}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
-              isDarkMode
-                ? "text-gold-400 hover:bg-gold-500/10 bg-black/30 shadow-inner"
-                : "text-gold-200 hover:bg-gold-500/20 bg-gold-500/10"
-            }`}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.07] transition-colors duration-150"
           >
             {isDarkMode ? (
               <Sun size={isMobile ? 20 : 18} />
@@ -493,7 +461,7 @@ function AppContent() {
               <Moon size={isMobile ? 20 : 18} />
             )}
             {(isMobile || isSidebarOpen) && (
-              <span className="font-black text-[10px] uppercase tracking-widest">
+              <span className="text-sm font-medium">
                 {isDarkMode ? "Light Mode" : "Dark Mode"}
               </span>
             )}
@@ -503,17 +471,11 @@ function AppContent() {
           <div className="relative">
             <button
               onClick={() => setShowLogout(!showLogout)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group ${
-                isDarkMode
-                  ? "text-rose-400/80 hover:bg-rose-500/10 hover:text-rose-300"
-                  : "text-rose-400/60 hover:bg-rose-500/10 hover:text-rose-400"
-              }`}
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-rose-300 hover:bg-rose-500/10 transition-colors duration-150"
             >
               <LogOut size={isMobile ? 20 : 18} />
               {(isMobile || isSidebarOpen) && (
-                <span className="font-black text-[10px] uppercase tracking-widest">
-                  Logout
-                </span>
+                <span className="text-sm font-medium">Logout</span>
               )}
             </button>
             <AnimatePresence>
@@ -522,11 +484,11 @@ function AppContent() {
                   initial={{ opacity: 0, scale: 0.95, y: 10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                  className="absolute bottom-full mb-3 left-0 right-0 bg-gradient-to-r from-school-red to-school-pink rounded-full p-2 shadow-2xl z-50 border-2 border-school-yellow"
+                  className="absolute bottom-full mb-2 left-0 right-0 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-50 p-2"
                 >
                   <button
                     onClick={handleLogout}
-                    className="w-full text-white text-[10px] font-black hover:bg-school-yellow/20 px-3 py-3 rounded-full transition-all uppercase tracking-[0.2em]"
+                    className="w-full text-sm font-semibold text-rose-300 hover:text-white hover:bg-red-600 px-4 py-2.5 rounded-lg transition-colors duration-150"
                   >
                     Confirm Sign Out
                   </button>
@@ -535,9 +497,7 @@ function AppContent() {
             </AnimatePresence>
           </div>
           {(isMobile || isSidebarOpen) && (
-            <p
-              className={`text-[8px] font-black ${isDarkMode ? "text-school-yellow/40" : "text-school-yellow/30"} mt-6 text-center uppercase tracking-[0.3em] opacity-50`}
-            >
+            <p className="text-[10px] text-slate-600 mt-3 text-center">
               Folusho © 2025
             </p>
           )}
@@ -545,9 +505,7 @@ function AppContent() {
       </motion.aside>
 
       {/* Main Content */}
-      <main
-        className={`flex-1 overflow-auto ${isDarkMode ? "bg-gradient-school-dark text-white" : "bg-gradient-school text-gray-900"}`}
-      >
+      <main className="flex-1 overflow-auto bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white">
         <div
           className={`max-w-7xl mx-auto ${isMobile ? "px-4 py-4" : "px-6 py-6 md:px-8 md:py-8"}`}
         >
@@ -748,23 +706,23 @@ interface NavLinkProps {
   isDarkMode?: boolean;
 }
 
-function NavLink({ to, icon, label, isOpen, isDarkMode }: NavLinkProps) {
+function NavLink({ to, icon, label, isOpen }: NavLinkProps) {
   return (
-    <Link
+    <RRNavLink
       to={to}
-      className={`flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-200 group text-sm md:text-sm font-black hover:scale-105 active:scale-95 ${
-        isDarkMode
-          ? "text-white hover:bg-school-yellow/20 hover:text-school-yellow active:bg-school-yellow/30 border-2 border-transparent hover:border-school-yellow"
-          : "text-white hover:bg-school-yellow/30 hover:text-school-yellow active:bg-school-yellow/40 border-2 border-transparent hover:border-school-yellow"
-      }`}
+      className={({ isActive }: { isActive: boolean }) =>
+        `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors duration-150 text-sm font-medium ${
+          isActive
+            ? "bg-blue-600 text-white"
+            : "text-slate-300 hover:text-white hover:bg-white/[0.07]"
+        }`
+      }
     >
-      <span
-        className={`flex-shrink-0 ${isDarkMode ? "text-school-yellow" : "text-school-yellow"} group-hover:scale-110 transition-transform`}
-      >
+      <span className="flex-shrink-0 w-[18px] flex items-center justify-center">
         {icon}
       </span>
-      {isOpen && <span className="font-black">{label}</span>}
-    </Link>
+      {isOpen && <span className="truncate">{label}</span>}
+    </RRNavLink>
   );
 }
 
