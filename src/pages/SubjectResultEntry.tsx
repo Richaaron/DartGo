@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo, useCallback, memo } from 'react'
-import { Plus, Search, AlertCircle, Filter, User, BookOpen, ClipboardList } from 'lucide-react'
+import { useState, useEffect, useMemo, useCallback, memo, useRef } from 'react'
+import { Plus, Search, AlertCircle, Filter, User, BookOpen, ClipboardList, ChevronLeft, ChevronRight } from 'lucide-react'
 import { SubjectResult, Student, Subject, StudentSubject, Teacher } from '../types'
 import SubjectResultForm from '../components/SubjectResultForm'
 import { createResult, updateResult, fetchStudentSubjects } from '../services/api'
@@ -8,6 +8,7 @@ import { useAuthContext } from '../context/AuthContext'
 const PRIMARY_CLASSES = ['Nursery 1', 'Nursery 2', 'Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6']
 const SECONDARY_CLASSES = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']
 const ALL_CLASSES = [...PRIMARY_CLASSES, ...SECONDARY_CLASSES]
+const ITEMS_PER_PAGE = 25 // Paginate results to improve rendering performance
 
 const SubjectResultEntry = memo(function SubjectResultEntry() {
   const { user } = useAuthContext()
@@ -18,18 +19,44 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
   const [showForm, setShowForm] = useState(false)
   const [editingResult, setEditingResult] = useState<SubjectResult | null>(null)
   const [filterTerm, setFilterTerm] = useState('')
+  const [debouncedFilterTerm, setDebouncedFilterTerm] = useState('')
   const [selectedTerm, setSelectedTerm] = useState<string>('All')
   const [selectedClass, setSelectedClass] = useState<string>('All')
   const [selectedSubject, setSelectedSubject] = useState<string>('All')
   const [isLoading, setIsLoading] = useState(true)
   const [message, setMessage] = useState({ type: '', text: '' })
   const [apiError, setApiError] = useState<string | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const searchDebounceTimer = useRef<NodeJS.Timeout | null>(null)
 
   const userRole = user?.role || 'Teacher'
   const isTeacher = userRole === 'Teacher'
   const teacher = isTeacher ? (user as Teacher) : null
 
-  // Simple data loading with timeout
+  // Debounce search input for performance
+  useEffect(() => {
+    if (searchDebounceTimer.current) {
+      clearTimeout(searchDebounceTimer.current)
+    }
+    
+    searchDebounceTimer.current = setTimeout(() => {
+      setDebouncedFilterTerm(filterTerm)
+      setCurrentPage(1) // Reset to first page when filter changes
+    }, 300) // Wait 300ms after user stops typing
+
+    return () => {
+      if (searchDebounceTimer.current) {
+        clearTimeout(searchDebounceTimer.current)
+      }
+    }
+  }, [filterTerm])
+
+  // Reset page when other filters change
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [selectedTerm, selectedClass, selectedSubject])
+
+  // Simple data loading with timeout - optimized for performance
   const loadData = useCallback(async () => {
     setIsLoading(true)
     setApiError(null)
@@ -37,10 +64,36 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
     try {
       const { fetchStudents, fetchResults, fetchSubjects, fetchStudentSubjects } = await import('../services/api')
       
-      const [studentsData, resultsData, subjectsData, studentSubjectsData] = await Promise.all([
+      // For teachers, optimize by loading only relevant data
+      // For admins, load all data
+      const isTeacher = user?.role === 'Teacher'
+      
+      // Load core data
+      let subjectsData = await fetchSubjects().catch(() => [])
+      let resultsData = await fetchResults().catch(() => [])
+      
+      // If teacher, optimize by filtering results
+      if (isTeacher && teacher) {
+        const teacherSubjectNames = new Set<string>()
+        if (teacher.subject) teacherSubjectNames.add(teacher.subject)
+        if (teacher.assignedSubjects) {
+          teacher.assignedSubjects.forEach(s => teacherSubjectNames.add(s))
+        }
+        
+        // Filter to only teacher's subjects
+        const teacherSubjectIds = new Set(
+          (subjectsData || [])
+            .filter(s => teacherSubjectNames.has(s.name) || teacherSubjectNames.has(s.id))
+            .map(s => s.id)
+        )
+        
+        // Filter results to only teacher's subjects
+        resultsData = (resultsData || []).filter(r => teacherSubjectIds.has(r.subjectId))
+      }
+      
+      // Load students and student subjects in parallel
+      const [studentsData, studentSubjectsData] = await Promise.all([
         fetchStudents().catch(() => []),
-        fetchResults().catch(() => []),
-        fetchSubjects().catch(() => []),
         fetchStudentSubjects().catch(() => [])
       ])
       
@@ -58,7 +111,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [user?.role, teacher])
 
   useEffect(() => {
     loadData()
@@ -144,7 +197,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
     return items
   }, [allStudentSubjects, results, teacherSubjects, isTeacher, teacher, students])
 
-  // Simple filtering for the combined list
+  // Simple filtering for the combined list - uses debounced filter for performance
   const filteredDisplayData = useMemo(() => {
     const dataToFilter = isTeacher ? offeringStudents : results.map(r => ({ ...r, status: 'Completed' }))
 
@@ -155,10 +208,10 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
       const subject = subjects.find(s => s.id === item.subjectId)
       if (!subject) return false
 
-      const matchesSearch = filterTerm === '' || 
-        student.registrationNumber.toLowerCase().includes(filterTerm.toLowerCase()) ||
-        `${student.firstName} ${student.lastName}`.toLowerCase().includes(filterTerm.toLowerCase()) ||
-        subject.name.toLowerCase().includes(filterTerm.toLowerCase())
+      const matchesSearch = debouncedFilterTerm === '' || 
+        student.registrationNumber.toLowerCase().includes(debouncedFilterTerm.toLowerCase()) ||
+        `${student.firstName} ${student.lastName}`.toLowerCase().includes(debouncedFilterTerm.toLowerCase()) ||
+        subject.name.toLowerCase().includes(debouncedFilterTerm.toLowerCase())
       
       const matchesTerm = selectedTerm === 'All' || item.term === selectedTerm
       const matchesClass = selectedClass === 'All' || student.class === selectedClass
@@ -166,11 +219,11 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
 
       return matchesSearch && matchesTerm && matchesClass && matchesSubject
     })
-  }, [offeringStudents, results, students, subjects, filterTerm, selectedTerm, selectedClass, selectedSubject, isTeacher])
+  }, [offeringStudents, results, students, subjects, debouncedFilterTerm, selectedTerm, selectedClass, selectedSubject, isTeacher])
 
-  // Transform for display in the table
+  // Transform for display in the table with pagination
   const displayResults = useMemo(() => {
-    return filteredDisplayData.map(item => {
+    const transformed = filteredDisplayData.map(item => {
       const student = students.find(s => s.id === item.studentId)
       const subject = subjects.find(s => s.id === item.subjectId)
       
@@ -182,7 +235,30 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
         positionText: item.position ? `${item.position}th` : 'N/A'
       }
     })
-  }, [filteredDisplayData, students, subjects])
+    
+    // Apply pagination
+    const startIdx = (currentPage - 1) * ITEMS_PER_PAGE
+    return transformed.slice(startIdx, startIdx + ITEMS_PER_PAGE)
+  }, [filteredDisplayData, students, subjects, currentPage])
+
+  // Calculate total pages
+  const totalPages = useMemo(() => {
+    return Math.ceil(filteredDisplayData.length / ITEMS_PER_PAGE)
+  }, [filteredDisplayData.length])
+
+  // Memoize stats calculation for the full filtered data
+  const stats = useMemo(() => {
+    return {
+      totalRecords: filteredDisplayData.length,
+      averageScore: filteredDisplayData.length > 0 
+        ? (filteredDisplayData.reduce((sum, r) => sum + (r.percentage || 0), 0) / filteredDisplayData.length).toFixed(1) 
+        : 0,
+      passRate: filteredDisplayData.length > 0
+        ? Math.round((filteredDisplayData.filter(r => (r.percentage || 0) >= 50).length / filteredDisplayData.length) * 100)
+        : 0,
+      passingGrade: '50%'
+    }
+  }, [filteredDisplayData])
 
   const handleDeleteResult = useCallback(async (id: string) => {
     if (window.confirm('Are you sure you want to delete this result?')) {
@@ -245,21 +321,13 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
   if (isLoading) {
     return (
       <div className="p-8 text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 dark:border-indigo-400 mx-auto"></div>
-        <p className="mt-4 text-gray-600 dark:text-gray-400 font-medium">Loading subject results...</p>
+        <div className="inline-flex flex-col items-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 dark:border-indigo-400 mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400 font-medium">Loading subject results...</p>
+          <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">This may take a moment on first load</p>
+        </div>
       </div>
     )
-  }
-
-  const stats = {
-    totalRecords: displayResults.length,
-    averageScore: displayResults.length > 0 
-      ? (displayResults.reduce((sum, r) => sum + (r.percentage || 0), 0) / displayResults.length).toFixed(1) 
-      : 0,
-    passRate: displayResults.length > 0
-      ? Math.round((displayResults.filter(r => (r.percentage || 0) >= 50).length / displayResults.length) * 100)
-      : 0,
-    passingGrade: '50%'
   }
 
   return (
@@ -458,6 +526,50 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
             </div>
           )}
         </div>
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="mt-6 flex items-center justify-between">
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              Showing <span className="font-bold">{Math.min((currentPage - 1) * ITEMS_PER_PAGE + 1, filteredDisplayData.length)}</span> to{' '}
+              <span className="font-bold">{Math.min(currentPage * ITEMS_PER_PAGE, filteredDisplayData.length)}</span> of{' '}
+              <span className="font-bold">{filteredDisplayData.length}</span> results
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="flex items-center gap-1 px-3 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                <ChevronLeft size={16} />
+                Previous
+              </button>
+              <div className="flex items-center gap-2">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`w-8 h-8 rounded-lg font-bold text-sm transition-colors ${
+                      page === currentPage
+                        ? 'bg-indigo-600 text-white'
+                        : 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="flex items-center gap-1 px-3 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Next
+                <ChevronRight size={16} />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Stats Cards */}
