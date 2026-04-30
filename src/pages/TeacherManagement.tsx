@@ -93,8 +93,10 @@ export default function TeacherManagement() {
       await createTeacher(teacherData);
       await loadTeachers();
       setShowForm(false);
-    } catch {
-      window.alert("Failed to add teacher");
+    } catch (error: any) {
+      const errorMessage = error?.message || "Failed to add teacher";
+      console.error("Teacher creation error:", error);
+      window.alert("Error adding teacher: " + errorMessage);
     }
   };
 
@@ -104,8 +106,10 @@ export default function TeacherManagement() {
       await loadTeachers();
       setEditingTeacher(null);
       setShowForm(false);
-    } catch {
-      window.alert("Failed to update teacher");
+    } catch (error: any) {
+      const errorMessage = error?.message || "Failed to update teacher";
+      console.error("Teacher update error:", error);
+      window.alert("Error updating teacher: " + errorMessage);
     }
   };
 

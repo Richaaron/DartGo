@@ -53,7 +53,7 @@ export default function TeacherForm({
   );
   const fileInputRef = useRef<any>(null);
   const [formData, setFormData] = useState<
-    Omit<Teacher, "id"> & { id?: string }
+    Omit<Teacher, "id"> & { id?: string; _imageModified?: boolean }
   >({
     name: "",
     email: "",
@@ -66,6 +66,7 @@ export default function TeacherForm({
     level: "Primary",
     assignedClasses: [],
     image: "",
+    _imageModified: false,
     ...(initialData && initialData),
   });
 
@@ -163,9 +164,47 @@ export default function TeacherForm({
   const handleImageChange = (e: ChangeEvent<any>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Check file size - limit to 2MB
+      if (file.size > 2 * 1024 * 1024) {
+        alert("Image file is too large. Maximum size is 2MB. Please compress the image and try again.");
+        return;
+      }
+
+      // Create image preview with compression
       const reader = new window.FileReader();
       reader.onloadend = () => {
-        setFormData((prev) => ({ ...prev, image: reader.result as string }));
+        const base64String = reader.result as string;
+        
+        // For large images, compress before storing
+        const img = new Image();
+        img.onload = () => {
+          // Create canvas and draw resized image
+          const canvas = document.createElement("canvas");
+          let width = img.width;
+          let height = img.height;
+          
+          // Resize if too large
+          const maxDimension = 800;
+          if (width > maxDimension || height > maxDimension) {
+            const ratio = Math.min(maxDimension / width, maxDimension / height);
+            width = Math.round(width * ratio);
+            height = Math.round(height * ratio);
+          }
+          
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx?.drawImage(img, 0, 0, width, height);
+          
+          // Convert to compressed JPEG
+          const compressedBase64 = canvas.toDataURL("image/jpeg", 0.75);
+          setFormData((prev) => ({ 
+            ...prev, 
+            image: compressedBase64,
+            _imageModified: true  // Flag to indicate image was changed
+          }));
+        };
+        img.src = base64String;
       };
       reader.readAsDataURL(file);
     }
@@ -233,7 +272,8 @@ export default function TeacherForm({
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      onSubmit({
+      // Prepare data for submission
+      const dataToSubmit: any = {
         ...formData,
         assignedSubjects: isSubjectTeacher
           ? formData.assignedSubjects || []
@@ -241,13 +281,27 @@ export default function TeacherForm({
         subject: isSubjectTeacher
           ? (formData.assignedSubjects || []).join(", ")
           : "",
-        teacherType:
-          isFormTeacher && isSubjectTeacher
-            ? "Form + Subject Teacher"
-            : isSubjectTeacher
-              ? "Subject Teacher"
-              : "Form Teacher",
-      } as any);
+      };
+
+      // If editing and image wasn't modified, don't send the old image to reduce payload
+      if (isEditing && !dataToSubmit._imageModified && dataToSubmit.image) {
+        // Keep existing image by sending it as-is, or remove to keep database value
+        // Only send image if it's a new base64 (starts with 'data:')
+        if (!dataToSubmit.image.startsWith('data:')) {
+          delete dataToSubmit.image;
+        }
+      }
+
+      // Remove the _imageModified flag before sending
+      delete dataToSubmit._imageModified;
+
+      onSubmit(dataToSubmit as Teacher | Omit<Teacher, "id">);
+    } else {
+      // Show alert if validation fails
+      const errorMessages = Object.values(errors).join("\n");
+      if (errorMessages) {
+        window.alert("Please fix the following errors:\n" + errorMessages);
+      }
     }
   };
 

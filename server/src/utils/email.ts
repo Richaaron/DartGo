@@ -147,7 +147,7 @@ export const sendTeacherCredentialsEmail = async (
   password: string,
 ) => {
   const subject = "Your Faculty Account Credentials - Folusho Victory Schools";
-  const text = `Hello ${teacherName}, your faculty account has been created. Username: ${username}, Password: ${password}.`;
+  const text = `Hello ${teacherName}, your faculty account has been created. Username: ${username}, Password: ${password}. Access the app at: https://folushovictoryschools.netlify.app`;
   const html = `
     <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;">
       <h1 style="color: #7c3aed;">Welcome to the Faculty!</h1>
@@ -159,8 +159,12 @@ export const sendTeacherCredentialsEmail = async (
         <p style="margin: 5px 0;"><strong>Password:</strong> <code style="color: #4f46e5;">${password}</code></p>
       </div>
       <p>For security reasons, we recommend that you change your password immediately after your first login.</p>
-      <p style="margin-top: 30px;">
+      <div style="margin-top: 30px; display: flex; gap: 12px;">
+        <a href="https://folushovictoryschools.netlify.app" style="background-color: #059669; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">Visit Application</a>
         <a href="${frontendUrl}/login?type=teacher" style="background-color: #7c3aed; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">Login to Dashboard</a>
+      </div>
+      <p style="margin-top: 20px; font-size: 13px; color: #64748b;">
+        <strong>Application URL:</strong> <a href="https://folushovictoryschools.netlify.app" style="color: #7c3aed; text-decoration: none;">https://folushovictoryschools.netlify.app</a>
       </p>
       <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 30px 0;">
       <p style="font-size: 12px; color: #64748b;">This is an automated message. Please do not reply to this email.</p>

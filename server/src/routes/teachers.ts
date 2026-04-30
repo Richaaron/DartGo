@@ -106,11 +106,16 @@ router.put('/:id', authenticate, authorize(['Admin']), async (req, res) => {
     const dbData = mapToDB(req.body)
 
     if (dbData.password) {
-      const { data: currentTeacher } = await supabase
+      const { data: currentTeacher, error: fetchError } = await supabase
         .from('teachers')
         .select('password')
         .eq('id', req.params.id)
         .single()
+
+      if (fetchError) {
+        console.error('[TEACHERS] Error fetching current teacher:', fetchError)
+        return res.status(404).json({ error: 'Teacher not found' })
+      }
 
       if (currentTeacher && dbData.password !== currentTeacher.password) {
         dbData.password = await bcrypt.hash(dbData.password, 10)
@@ -124,12 +129,19 @@ router.put('/:id', authenticate, authorize(['Admin']), async (req, res) => {
       .select()
       .single()
     
-    if (error) throw error
-    if (!data) return res.status(404).json({ error: 'Teacher not found' })
+    if (error) {
+      console.error('[TEACHERS] Supabase update error:', error)
+      throw error
+    }
+    if (!data) {
+      console.error('[TEACHERS] Update returned no data for id:', req.params.id)
+      return res.status(404).json({ error: 'Teacher not found' })
+    }
     res.json(mapTeacher(data))
-  } catch (error) {
+  } catch (error: any) {
     console.error('[TEACHERS] Update error:', error)
-    res.status(400).json({ error: 'Failed to update teacher' })
+    const errorMessage = error?.message || 'Failed to update teacher'
+    res.status(400).json({ error: errorMessage })
   }
 })
 
