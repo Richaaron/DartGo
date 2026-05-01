@@ -250,7 +250,7 @@ export const DEFAULT_SUBJECTS: Subject[] = [
   { id: 'nur-9', name: 'Phonics', code: 'PHN', level: 'Nursery', creditUnits: 1 },
   { id: 'nur-10', name: 'Handwriting', code: 'HWT', level: 'Nursery', creditUnits: 1 },
   
-  // Primary Subjects (16 subjects)
+  // Primary Subjects (17 subjects)
   { id: 'pri-1', name: 'Mathematics', code: 'MTH', level: 'Primary', creditUnits: 2 },
   { id: 'pri-2', name: 'English Language', code: 'ENG', level: 'Primary', creditUnits: 2 },
   { id: 'pri-3', name: 'Basic Science', code: 'BSC', level: 'Primary', creditUnits: 2 },
@@ -258,7 +258,7 @@ export const DEFAULT_SUBJECTS: Subject[] = [
   { id: 'pri-5', name: 'National Values', code: 'NVL', level: 'Primary', creditUnits: 2 },
   { id: 'pri-6', name: 'Quantitative Reasoning', code: 'QTR', level: 'Primary', creditUnits: 2 },
   { id: 'pri-7', name: 'Verbal Reasoning', code: 'VRR', level: 'Primary', creditUnits: 2 },
-  { id: 'pri-8', name: 'Religious Knowledge', code: 'RK', level: 'Primary', creditUnits: 2 },
+  { id: 'pri-8', name: 'Religious Studies', code: 'RES', level: 'Primary', creditUnits: 2 },
   { id: 'pri-9', name: 'Vocational Aptitude', code: 'VAP', level: 'Primary', creditUnits: 2 },
   { id: 'pri-10', name: 'Creative Arts', code: 'CAR', level: 'Primary', creditUnits: 2 },
   { id: 'pri-11', name: 'Writing', code: 'WRT', level: 'Primary', creditUnits: 2 },
@@ -267,6 +267,7 @@ export const DEFAULT_SUBJECTS: Subject[] = [
   { id: 'pri-14', name: 'Home Economics', code: 'HEC', level: 'Primary', creditUnits: 2 },
   { id: 'pri-15', name: 'Physical & Health Education', code: 'PHE', level: 'Primary', creditUnits: 2 },
   { id: 'pri-16', name: 'Computer Studies', code: 'CST', level: 'Primary', creditUnits: 2 },
+  { id: 'pri-17', name: 'Phonics', code: 'PHN', level: 'Primary', creditUnits: 2 },
   
   // Secondary Subjects - Junior Secondary (13 subjects)
   { id: 'jss-1', name: 'Mathematics', code: 'MTH', level: 'Secondary', creditUnits: 2 },
