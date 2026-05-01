@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import type { ChangeEvent, FormEvent } from "react";
-import { X, Upload, User as UserIcon } from "lucide-react";
+import { X, Upload, User as UserIcon, Search } from "lucide-react";
 import { motion } from "framer-motion";
 import { Teacher, Subject, Student } from "../types";
 import { fetchSubjects, fetchStudents } from "../services/api";
@@ -80,6 +80,7 @@ export default function TeacherForm({
   const [isSubjectTeacher, setIsSubjectTeacher] = useState(
     initialAssignedSubjects.length > 0,
   );
+  const [subjectSearchTerm, setSubjectSearchTerm] = useState("");
 
   useEffect(() => {
     if (initialData) {
@@ -226,29 +227,16 @@ export default function TeacherForm({
     }
   };
 
-  const addSubject = () => {
-    if (
-      selectedSubject &&
-      !formData.assignedSubjects?.includes(selectedSubject)
-    ) {
-      setFormData((prev) => ({
-        ...prev,
-        assignedSubjects: [...(prev.assignedSubjects || []), selectedSubject],
-        subject: [...(prev.assignedSubjects || []), selectedSubject].join(", "),
-      }));
-      setSelectedSubject("");
-    }
-  };
-
-  const removeSubject = (subjectName: string) => {
+  const toggleSubject = (subjectName: string) => {
     setFormData((prev) => {
-      const assignedSubjects = (prev.assignedSubjects || []).filter(
-        (subject) => subject !== subjectName,
-      );
+      const currentSubjects = prev.assignedSubjects || [];
+      const updatedSubjects = currentSubjects.includes(subjectName)
+        ? currentSubjects.filter((s) => s !== subjectName)
+        : [...currentSubjects, subjectName];
       return {
         ...prev,
-        assignedSubjects,
-        subject: assignedSubjects.join(", "),
+        assignedSubjects: updatedSubjects,
+        subject: updatedSubjects.join(", "),
       };
     });
   };
@@ -585,59 +573,108 @@ export default function TeacherForm({
               {formData.level === "Secondary" ? (
                 isSubjectTeacher ? (
                   <>
-                    <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
+                    <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-3">
                       Assigned Subjects *
                     </label>
-                    <div className="flex gap-2">
-                      <select
-                        value={selectedSubject}
-                        onChange={(e) => setSelectedSubject(e.target.value)}
-                        className="input-field border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"
-                      >
-                        <option value="">Select subject...</option>
-                        {levelSubjects.map((subject) => (
-                          <option key={subject.id} value={subject.name}>
-                            {subject.name}
-                          </option>
-                        ))}
-                      </select>
-                      <motion.button
-                        type="button"
-                        onClick={addSubject}
-                        className="px-4 py-2 bg-gradient-to-r from-royal-purple-600 to-royal-purple-700 text-white rounded-lg hover:from-royal-purple-700 hover:to-royal-purple-800 transition-all font-semibold"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        Add
-                      </motion.button>
+
+                    {/* Search Input */}
+                    <div className="mb-4 relative">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-royal-purple-400 dark:text-royal-gold-400" />
+                      <input
+                        type="text"
+                        placeholder="Search subjects..."
+                        value={subjectSearchTerm}
+                        onChange={(e) => setSubjectSearchTerm(e.target.value)}
+                        className="input-field pl-10 border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500 w-full"
+                      />
                     </div>
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {(formData.assignedSubjects || []).map((subjectName) => (
-                        <motion.span
-                          key={subjectName}
-                          className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-royal-gold-50 to-royal-purple-50 dark:from-royal-gold-900/40 dark:to-royal-purple-900/40 text-royal-gold-700 dark:text-royal-gold-300 rounded-full text-sm font-bold border border-royal-gold-300 dark:border-royal-gold-700/50"
-                          initial={{ scale: 0.8, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                        >
-                          {subjectName}
-                          <motion.button
-                            type="button"
-                            onClick={() => removeSubject(subjectName)}
-                            className="hover:text-royal-gold-900 dark:hover:text-royal-gold-200"
-                            whileHover={{ scale: 1.2 }}
-                          >
-                            <X size={14} />
-                          </motion.button>
-                        </motion.span>
-                      ))}
-                    </div>
+
+                    {/* Subject Selection Grid */}
+                    <motion.div 
+                      className="border-2 border-royal-gold-300 dark:border-royal-purple-600 rounded-xl p-4 bg-gradient-to-br from-royal-gold-50 to-white dark:from-royal-purple-900/20 dark:to-royal-black-800 mb-4"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                    >
+                      <h4 className="text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-3">
+                        {levelSubjects.length} Subject{levelSubjects.length !== 1 ? "s" : ""} Available
+                      </h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {levelSubjects
+                          .filter(
+                            (s) =>
+                              s.name.toLowerCase().includes(subjectSearchTerm.toLowerCase()) ||
+                              s.code.toLowerCase().includes(subjectSearchTerm.toLowerCase())
+                          )
+                          .map((subject) => (
+                            <motion.label
+                              key={subject.id}
+                              className="flex items-start gap-3 p-3 bg-white dark:bg-royal-black-800 hover:bg-royal-gold-50 dark:hover:bg-royal-purple-900/30 rounded-lg cursor-pointer transition-all border-2 border-royal-gold-200 dark:border-royal-purple-700/50 hover:border-royal-purple-500 shadow-sm"
+                              whileHover={{ scale: 1.02 }}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={(formData.assignedSubjects || []).includes(subject.name)}
+                                onChange={() => toggleSubject(subject.name)}
+                                className="mt-1 w-4 h-4 text-royal-purple-600 border-royal-gold-300 rounded focus:ring-royal-purple-500 cursor-pointer"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <p className="font-bold text-royal-purple-900 dark:text-white text-sm">{subject.name}</p>
+                                <p className="text-xs text-royal-purple-600 dark:text-royal-gold-400 font-semibold">{subject.code}</p>
+                              </div>
+                            </motion.label>
+                          ))}
+                      </div>
+                      {levelSubjects.filter(
+                        (s) =>
+                          s.name.toLowerCase().includes(subjectSearchTerm.toLowerCase()) ||
+                          s.code.toLowerCase().includes(subjectSearchTerm.toLowerCase())
+                      ).length === 0 && (
+                        <p className="text-sm text-royal-purple-600 dark:text-royal-gold-400 text-center py-4">
+                          No subjects found matching your search
+                        </p>
+                      )}
+                    </motion.div>
+
+                    {/* Selected Subjects Summary */}
+                    {(formData.assignedSubjects || []).length > 0 && (
+                      <motion.div 
+                        className="bg-gradient-to-r from-royal-gold-50 to-royal-purple-50 dark:from-royal-gold-900/20 dark:to-royal-purple-900/20 border-2 border-royal-gold-300 dark:border-royal-gold-700/50 rounded-lg p-4 mb-4"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                      >
+                        <p className="text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
+                          Selected: {(formData.assignedSubjects || []).length} Subject{(formData.assignedSubjects || []).length !== 1 ? "s" : ""}
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {(formData.assignedSubjects || []).map((subject) => (
+                            <motion.span
+                              key={subject}
+                              className="inline-flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-royal-gold-200 to-royal-gold-100 dark:from-royal-gold-900/50 dark:to-royal-gold-800/30 text-royal-gold-800 dark:text-royal-gold-200 rounded-full text-xs font-bold border border-royal-gold-400 dark:border-royal-gold-700"
+                              initial={{ scale: 0.8, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                            >
+                              {subject}
+                              <motion.button
+                                type="button"
+                                onClick={() => toggleSubject(subject)}
+                                className="hover:text-royal-gold-900 dark:hover:text-royal-gold-100"
+                                whileHover={{ scale: 1.2 }}
+                              >
+                                <X size={14} />
+                              </motion.button>
+                            </motion.span>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+
                     {errors.assignedSubjects && (
                       <p className="text-red-500 text-sm mt-1 font-semibold">
                         {errors.assignedSubjects}
                       </p>
                     )}
                     <p className="text-xs text-royal-purple-600 dark:text-royal-gold-400 mt-2 font-medium">
-                      Select one or more subjects this teacher handles.
+                      Select one or more subjects this teacher handles. Search by subject name or code.
                     </p>
                   </>
                 ) : (
