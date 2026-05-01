@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { X, Upload, User as UserIcon } from "lucide-react";
+import { motion } from "framer-motion";
 import { Teacher, Subject, Student } from "../types";
 import { fetchSubjects, fetchStudents } from "../services/api";
 
@@ -306,24 +307,43 @@ export default function TeacherForm({
   };
 
   return (
-    <div className="p-6">
+    <motion.div 
+      className="p-6 bg-gradient-to-br from-royal-gold-50 via-white to-royal-purple-50 dark:bg-gradient-to-br dark:from-royal-black-900 dark:via-royal-purple-900/10 dark:to-royal-black-900"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">
-          {isEditing ? "Edit Teacher" : "Add New Teacher"}
-        </h2>
-        <button
-          onClick={onCancel}
-          className="p-1 hover:bg-gray-100 rounded transition-colors"
+        <motion.h2 
+          className="text-3xl font-black bg-gradient-to-r from-royal-purple-600 to-royal-gold-500 bg-clip-text text-transparent"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
         >
-          <X size={24} />
-        </button>
+          {isEditing ? "Edit Squad Member" : "Add New Squad Member"}
+        </motion.h2>
+        <motion.button
+          onClick={onCancel}
+          className="p-2 hover:bg-royal-purple-100 dark:hover:bg-royal-purple-900/30 rounded-lg transition-colors"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <X size={24} className="text-royal-purple-600 dark:text-royal-gold-400" />
+        </motion.button>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <motion.form onSubmit={handleSubmit} className="space-y-6">
         {/* Profile Image Section */}
-        <div className="flex flex-col items-center mb-6">
-          <div className="relative w-32 h-32 mb-4 group">
-            <div className="w-full h-full rounded-full bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-gray-200 group-hover:border-blue-500 transition-colors">
+        <motion.div 
+          className="flex flex-col items-center mb-8"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1 }}
+        >
+          <motion.div 
+            className="relative w-32 h-32 mb-4 group"
+            whileHover={{ scale: 1.05 }}
+          >
+            <div className="w-full h-full rounded-full bg-gradient-to-br from-royal-gold-100 to-royal-purple-100 dark:from-royal-purple-900/50 dark:to-royal-gold-900/30 flex items-center justify-center overflow-hidden border-4 border-royal-gold-300 dark:border-royal-purple-600 group-hover:border-royal-purple-500 transition-colors shadow-lg">
               {formData.image ? (
                 <img
                   src={formData.image}
@@ -331,17 +351,19 @@ export default function TeacherForm({
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <UserIcon className="w-16 h-16 text-gray-400" />
+                <UserIcon className="w-16 h-16 text-royal-purple-300 dark:text-royal-gold-400" />
               )}
             </div>
-            <button
+            <motion.button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="absolute bottom-0 right-0 p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors shadow-lg"
+              className="absolute bottom-0 right-0 p-2 bg-gradient-to-r from-royal-purple-600 to-royal-purple-700 text-white rounded-full hover:from-royal-purple-700 hover:to-royal-purple-800 transition-all shadow-lg"
               title="Upload Photo"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
             >
               <Upload size={16} />
-            </button>
+            </motion.button>
             <input
               type="file"
               ref={fileInputRef}
@@ -349,19 +371,24 @@ export default function TeacherForm({
               accept="image/*"
               className="hidden"
             />
-          </div>
-          <p className="text-xs text-gray-500">Upload profile photo</p>
-        </div>
+          </motion.div>
+          <p className="text-xs text-royal-purple-600 dark:text-royal-gold-400 font-semibold">Upload profile photo</p>
+        </motion.div>
 
         {/* Account Information */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">
+        <motion.div 
+          className="space-y-4"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <h3 className="text-sm font-black text-royal-purple-600 dark:text-royal-gold-400 uppercase tracking-widest">
             Account Information
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
                 Full Name *
               </label>
               <input
@@ -369,15 +396,15 @@ export default function TeacherForm({
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className={`input-field ${errors.name ? "border-red-500" : ""}`}
+                className={`input-field border-2 ${errors.name ? "border-red-500" : "border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"}`}
               />
               {errors.name && (
-                <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+                <p className="text-red-500 text-sm mt-1 font-semibold">{errors.name}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
                 Email *
               </label>
               <input
@@ -385,17 +412,17 @@ export default function TeacherForm({
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className={`input-field ${errors.email ? "border-red-500" : ""}`}
+                className={`input-field border-2 ${errors.email ? "border-red-500" : "border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"}`}
               />
               {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                <p className="text-red-500 text-sm mt-1 font-semibold">{errors.email}</p>
               )}
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
                 Username *
               </label>
               <input
@@ -405,15 +432,15 @@ export default function TeacherForm({
                 onChange={handleChange}
                 placeholder={isEditing ? "" : "Auto-generated"}
                 disabled={!isEditing}
-                className={`input-field ${errors.username ? "border-red-500" : ""} ${!isEditing ? "bg-gray-50 opacity-60" : ""}`}
+                className={`input-field border-2 ${errors.username ? "border-red-500" : "border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"} ${!isEditing ? "bg-royal-black-50 dark:bg-royal-purple-900/20 opacity-70" : ""}`}
               />
               {errors.username && (
-                <p className="text-red-500 text-sm mt-1">{errors.username}</p>
+                <p className="text-red-500 text-sm mt-1 font-semibold">{errors.username}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
                 Password {isEditing ? "(Leave blank to keep current)" : "*"}
               </label>
               <input
@@ -423,73 +450,82 @@ export default function TeacherForm({
                 onChange={handleChange}
                 placeholder={isEditing ? "" : "Auto-generated"}
                 disabled={!isEditing}
-                className={`input-field ${errors.password ? "border-red-500" : ""} ${!isEditing ? "bg-gray-50 opacity-60" : ""}`}
+                className={`input-field border-2 ${errors.password ? "border-red-500" : "border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"} ${!isEditing ? "bg-royal-black-50 dark:bg-royal-purple-900/20 opacity-70" : ""}`}
               />
               {errors.password && (
-                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+                <p className="text-red-500 text-sm mt-1 font-semibold">{errors.password}</p>
               )}
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Professional Information */}
-        <div className="space-y-4 border-t pt-4">
-          <h3 className="text-lg font-semibold text-gray-900">
+        <motion.div 
+          className="space-y-4 border-t-2 border-royal-gold-200 dark:border-royal-purple-700/50 pt-6"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <h3 className="text-sm font-black text-royal-purple-600 dark:text-royal-gold-400 uppercase tracking-widest">
             Professional Information
           </h3>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-3">
               Teaching Assignment Type
             </label>
             <div className="space-y-3">
               {/* Form Teacher Toggle */}
-              <div
-                className={`flex items-center justify-between p-4 rounded-xl border transition-all duration-200 ${
+              <motion.div
+                className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all duration-200 ${
                   isFormTeacher
-                    ? "border-blue-200 bg-blue-50"
-                    : "border-gray-200 bg-gray-50"
+                    ? "border-royal-purple-400 bg-gradient-to-r from-royal-purple-50 to-royal-gold-50 dark:from-royal-purple-900/30 dark:to-royal-gold-900/20"
+                    : "border-royal-gold-200 dark:border-royal-purple-700/50 bg-white dark:bg-royal-black-800"
                 }`}
+                whileHover={{ scale: 1.01 }}
               >
                 <div>
-                  <p className="font-semibold text-gray-900">Form Teacher</p>
-                  <p className="text-xs text-gray-500 mt-0.5">
+                  <p className="font-bold text-royal-purple-900 dark:text-white">Form Teacher</p>
+                  <p className="text-xs text-royal-purple-600 dark:text-royal-gold-400 mt-0.5 font-medium">
                     Handles class welfare, coordination and assigned class
                     oversight.
                   </p>
                 </div>
-                <button
+                <motion.button
                   type="button"
                   onClick={() => setIsFormTeacher((prev) => !prev)}
                   role="switch"
                   aria-checked={isFormTeacher}
-                  className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                    isFormTeacher ? "bg-blue-600" : "bg-gray-300"
+                  className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-royal-purple-500 focus:ring-offset-2 ${
+                    isFormTeacher ? "bg-gradient-to-r from-royal-purple-600 to-royal-purple-700" : "bg-gray-300 dark:bg-gray-600"
                   }`}
+                  whileHover={{ scale: 1.1 }}
                 >
-                  <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition-transform duration-200 ${
+                  <motion.span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 ${
                       isFormTeacher ? "translate-x-6" : "translate-x-1"
                     }`}
+                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
                   />
-                </button>
-              </div>
+                </motion.button>
+              </motion.div>
 
               {/* Subject Teacher Toggle */}
-              <div
-                className={`flex items-center justify-between p-4 rounded-xl border transition-all duration-200 ${
+              <motion.div
+                className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all duration-200 ${
                   isSubjectTeacher
-                    ? "border-amber-200 bg-amber-50"
-                    : "border-gray-200 bg-gray-50"
+                    ? "border-royal-gold-400 bg-gradient-to-r from-royal-gold-50 to-royal-purple-50 dark:from-royal-gold-900/30 dark:to-royal-purple-900/20"
+                    : "border-royal-gold-200 dark:border-royal-purple-700/50 bg-white dark:bg-royal-black-800"
                 }`}
+                whileHover={{ scale: 1.01 }}
               >
                 <div>
-                  <p className="font-semibold text-gray-900">Subject Teacher</p>
-                  <p className="text-xs text-gray-500 mt-0.5">
+                  <p className="font-bold text-royal-purple-900 dark:text-white">Subject Teacher</p>
+                  <p className="text-xs text-royal-purple-600 dark:text-royal-gold-400 mt-0.5 font-medium">
                     Teaches selected subjects for assigned classes.
                   </p>
                 </div>
-                <button
+                <motion.button
                   type="button"
                   onClick={() => {
                     setIsSubjectTeacher((prev) => {
@@ -506,30 +542,32 @@ export default function TeacherForm({
                   }}
                   role="switch"
                   aria-checked={isSubjectTeacher}
-                  className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 ${
-                    isSubjectTeacher ? "bg-amber-500" : "bg-gray-300"
+                  className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-royal-gold-500 focus:ring-offset-2 ${
+                    isSubjectTeacher ? "bg-gradient-to-r from-royal-gold-500 to-royal-gold-600" : "bg-gray-300 dark:bg-gray-600"
                   }`}
+                  whileHover={{ scale: 1.1 }}
                 >
-                  <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition-transform duration-200 ${
+                  <motion.span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 ${
                       isSubjectTeacher ? "translate-x-6" : "translate-x-1"
                     }`}
+                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
                   />
-                </button>
-              </div>
+                </motion.button>
+              </motion.div>
             </div>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-royal-purple-600 dark:text-royal-gold-400 mt-2 font-medium">
               A teacher can be both a form teacher and a subject teacher at the
               same time.
             </p>
             {errors.teacherType && (
-              <p className="text-red-500 text-sm mt-2">{errors.teacherType}</p>
+              <p className="text-red-500 text-sm mt-2 font-semibold">{errors.teacherType}</p>
             )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
                 Teacher ID
               </label>
               <input
@@ -538,7 +576,7 @@ export default function TeacherForm({
                 value={formData.teacherId}
                 onChange={handleChange}
                 placeholder="Auto-generated"
-                className="input-field bg-gray-50"
+                className="input-field border-2 border-royal-gold-200 dark:border-royal-purple-700/50 bg-royal-black-50 dark:bg-royal-purple-900/20"
                 disabled
               />
             </div>
@@ -547,14 +585,14 @@ export default function TeacherForm({
               {formData.level === "Secondary" ? (
                 isSubjectTeacher ? (
                   <>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
                       Assigned Subjects *
                     </label>
                     <div className="flex gap-2">
                       <select
                         value={selectedSubject}
                         onChange={(e) => setSelectedSubject(e.target.value)}
-                        className="input-field"
+                        className="input-field border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"
                       >
                         <option value="">Select subject...</option>
                         {levelSubjects.map((subject) => (
@@ -563,48 +601,53 @@ export default function TeacherForm({
                           </option>
                         ))}
                       </select>
-                      <button
+                      <motion.button
                         type="button"
                         onClick={addSubject}
-                        className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                        className="px-4 py-2 bg-gradient-to-r from-royal-purple-600 to-royal-purple-700 text-white rounded-lg hover:from-royal-purple-700 hover:to-royal-purple-800 transition-all font-semibold"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                       >
                         Add
-                      </button>
+                      </motion.button>
                     </div>
                     <div className="flex flex-wrap gap-2 mt-2">
                       {(formData.assignedSubjects || []).map((subjectName) => (
-                        <span
+                        <motion.span
                           key={subjectName}
-                          className="inline-flex items-center gap-1 px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-sm font-medium"
+                          className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-royal-gold-50 to-royal-purple-50 dark:from-royal-gold-900/40 dark:to-royal-purple-900/40 text-royal-gold-700 dark:text-royal-gold-300 rounded-full text-sm font-bold border border-royal-gold-300 dark:border-royal-gold-700/50"
+                          initial={{ scale: 0.8, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
                         >
                           {subjectName}
-                          <button
+                          <motion.button
                             type="button"
                             onClick={() => removeSubject(subjectName)}
-                            className="hover:text-amber-900"
+                            className="hover:text-royal-gold-900 dark:hover:text-royal-gold-200"
+                            whileHover={{ scale: 1.2 }}
                           >
                             <X size={14} />
-                          </button>
-                        </span>
+                          </motion.button>
+                        </motion.span>
                       ))}
                     </div>
                     {errors.assignedSubjects && (
-                      <p className="text-red-500 text-sm mt-1">
+                      <p className="text-red-500 text-sm mt-1 font-semibold">
                         {errors.assignedSubjects}
                       </p>
                     )}
-                    <p className="text-xs text-gray-500 mt-2">
+                    <p className="text-xs text-royal-purple-600 dark:text-royal-gold-400 mt-2 font-medium">
                       Select one or more subjects this teacher handles.
                     </p>
                   </>
                 ) : (
-                  <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 px-4 py-5 text-sm text-gray-600">
+                  <div className="rounded-xl border-2 border-dashed border-royal-purple-300 dark:border-royal-purple-600/50 bg-royal-purple-50 dark:bg-royal-purple-900/20 px-4 py-5 text-sm text-royal-purple-700 dark:text-royal-purple-300 font-semibold">
                     This teacher is marked as a form teacher only, so subject
                     assignment is not required.
                   </div>
                 )
               ) : (
-                <div className="rounded-xl border border-dashed border-indigo-200 bg-indigo-50 px-4 py-5 text-sm text-indigo-700">
+                <div className="rounded-xl border-2 border-dashed border-royal-gold-300 dark:border-royal-gold-600/50 bg-royal-gold-50 dark:bg-royal-gold-900/20 px-4 py-5 text-sm text-royal-gold-700 dark:text-royal-gold-300">
                   <p className="font-black uppercase tracking-widest text-[10px] mb-1">
                     Automatic Assignment
                   </p>
@@ -618,14 +661,14 @@ export default function TeacherForm({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
                 School Level
               </label>
               <select
                 name="level"
                 value={formData.level}
                 onChange={handleChange}
-                className="input-field"
+                className="input-field border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"
               >
                 <option value="Pre-Nursery">Pre-Nursery</option>
                 <option value="Nursery">Nursery</option>
@@ -635,14 +678,14 @@ export default function TeacherForm({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
                 Assign Classes {isFormTeacher && "*"}
               </label>
               <div className="flex gap-2">
                 <select
                   value={selectedClass}
                   onChange={(e) => setSelectedClass(e.target.value)}
-                  className="input-field"
+                  className="input-field border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"
                 >
                   <option value="">Select class...</option>
                   {levelClasses.map((className) => (
@@ -651,56 +694,70 @@ export default function TeacherForm({
                     </option>
                   ))}
                 </select>
-                <button
+                <motion.button
                   type="button"
                   onClick={addClass}
-                  className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                  className="px-4 py-2 bg-gradient-to-r from-royal-purple-600 to-royal-purple-700 text-white rounded-lg hover:from-royal-purple-700 hover:to-royal-purple-800 transition-all font-semibold"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   Add
-                </button>
+                </motion.button>
               </div>
               <div className="flex flex-wrap gap-2 mt-2">
                 {formData.assignedClasses.map((c) => (
-                  <span
+                  <motion.span
                     key={c}
-                    className="inline-flex items-center gap-1 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm font-medium"
+                    className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-royal-purple-50 to-royal-gold-50 dark:from-royal-purple-900/40 dark:to-royal-gold-900/40 text-royal-purple-700 dark:text-royal-purple-300 rounded-full text-sm font-bold border border-royal-purple-300 dark:border-royal-purple-700/50"
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
                   >
                     {c}
-                    <button
+                    <motion.button
                       type="button"
                       onClick={() => removeClass(c)}
-                      className="hover:text-blue-900"
+                      className="hover:text-royal-purple-900 dark:hover:text-royal-purple-200"
+                      whileHover={{ scale: 1.2 }}
                     >
                       <X size={14} />
-                    </button>
-                  </span>
+                    </motion.button>
+                  </motion.span>
                 ))}
               </div>
               {errors.assignedClasses && (
-                <p className="text-red-500 text-sm mt-1">
+                <p className="text-red-500 text-sm mt-1 font-semibold">
                   {errors.assignedClasses}
                 </p>
               )}
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="flex justify-end gap-4 mt-8 pt-4 border-t">
-          <button
+        <motion.div 
+          className="flex justify-end gap-4 mt-8 pt-6 border-t-2 border-royal-gold-200 dark:border-royal-purple-700/50"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <motion.button
             type="button"
             onClick={onCancel}
-            className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+            className="px-6 py-2 border-2 border-royal-gold-300 dark:border-royal-purple-600 text-royal-purple-700 dark:text-royal-gold-300 rounded-lg hover:bg-royal-gold-50 dark:hover:bg-royal-purple-900/30 transition-colors font-bold"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
             Cancel
-          </button>
-          <button
+          </motion.button>
+          <motion.button
             type="submit"
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+            className="px-8 py-2 bg-gradient-to-r from-royal-purple-600 to-royal-purple-700 text-white rounded-lg hover:from-royal-purple-700 hover:to-royal-purple-800 transition-all font-bold shadow-lg shadow-royal-purple-500/30"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
-            {isEditing ? "Save Changes" : "Create Teacher"}
-          </button>
-        </div>
-      </form>
-    </div>
+            {isEditing ? "Save Changes" : "Create Squad Member"}
+          </motion.button>
+        </motion.div>
+      </motion.form>
+    </motion.div>
   );
 }

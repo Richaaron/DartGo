@@ -7,6 +7,7 @@ import {
   Download,
   User as UserIcon,
 } from "lucide-react";
+import { motion } from "framer-motion";
 import { Teacher, SchoolLevel } from "../types";
 import TeacherForm from "../components/TeacherForm";
 import Table from "../components/Table";
@@ -160,61 +161,96 @@ export default function TeacherManagement() {
   ];
 
   return (
-    <div className="p-8">
+    <motion.div 
+      className="p-4 md:p-8 bg-gradient-to-br from-royal-gold-50 via-white to-royal-purple-50 dark:bg-gradient-to-br dark:from-royal-black-900 dark:via-royal-purple-900/10 dark:to-royal-black-900 min-h-screen"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+    >
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+      <motion.div 
+        className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
         <div>
-          <h1 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">
-            Squads{" "}
-            <span className="text-indigo-600 dark:text-indigo-400">
-              Management
-            </span>
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2 font-medium">
+          <motion.h1 
+            className="text-4xl font-black bg-gradient-to-r from-royal-purple-600 via-royal-black-700 to-royal-gold-500 bg-clip-text text-transparent tracking-tight"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            Squad Management
+          </motion.h1>
+          <motion.p 
+            className="text-royal-purple-600 dark:text-royal-gold-400 mt-2 font-semibold"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.1 }}
+          >
             Manage teachers and class assignments
-          </p>
+          </motion.p>
         </div>
-        <div className="flex gap-4">
-          <button
+        <motion.div 
+          className="flex gap-4"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+        >
+          <motion.button
             onClick={handleExport}
             className="btn-secondary flex items-center gap-2"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
             <Download size={20} />
             Export
-          </button>
-          <button
+          </motion.button>
+          <motion.button
             onClick={() => {
               setEditingTeacher(null);
               setShowForm(true);
             }}
             className="btn-primary flex items-center gap-2"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
             <Plus size={20} />
-            Add Teacher
-          </button>
-        </div>
-      </div>
+            Add Squad Member
+          </motion.button>
+        </motion.div>
+      </motion.div>
 
       {/* Search and Filter */}
-      <div className="card-lg mb-8">
+      <motion.div 
+        className="card-lg mb-8 border-2 border-royal-gold-200 dark:border-royal-purple-700/50"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+          <motion.div
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.15 }}
+          >
+            <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
               Search
             </label>
             <div className="relative">
-              <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-royal-purple-400 dark:text-royal-gold-400" />
               <input
                 type="text"
                 placeholder="Search by name, username, email or subject..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="input-field pl-10"
+                className="input-field pl-10 border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"
               />
             </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.15 }}
+          >
+            <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
               Level
             </label>
             <select
@@ -222,7 +258,7 @@ export default function TeacherManagement() {
               onChange={(e) =>
                 setSelectedLevel(e.target.value as SchoolLevel | "All")
               }
-              className="input-field"
+              className="input-field border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"
             >
               <option value="All">All Levels</option>
               <option value="Pre-Nursery">Pre-Nursery</option>
@@ -230,26 +266,41 @@ export default function TeacherManagement() {
               <option value="Primary">Primary</option>
               <option value="Secondary">Secondary</option>
             </select>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Form Modal */}
       {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <motion.div 
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <motion.div 
+            className="bg-white dark:bg-royal-black-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border-2 border-royal-gold-300 dark:border-royal-purple-600"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+          >
             <TeacherForm
               onSubmit={handleSubmitTeacher}
               initialData={editingTeacher || undefined}
               onCancel={() => setShowForm(false)}
               isEditing={!!editingTeacher}
             />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
 
       {/* Table */}
-      <div className="card-lg">
+      <motion.div 
+        className="card-lg border-2 border-royal-gold-200 dark:border-royal-purple-700/50"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
         <Table
           columns={columns}
           data={filteredTeachers.map((teacher) => ({
@@ -258,22 +309,29 @@ export default function TeacherManagement() {
               <div className="flex flex-wrap gap-1">
                 {getTeacherSubjects(teacher).length > 0 ? (
                   getTeacherSubjects(teacher).map((subject) => (
-                    <span
+                    <motion.span
                       key={subject}
-                      className="px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 rounded-md text-xs font-bold border border-indigo-100 dark:border-indigo-800/50"
+                      className="px-2 py-0.5 bg-gradient-to-r from-royal-purple-50 to-royal-gold-50 dark:from-royal-purple-900/40 dark:to-royal-gold-900/40 text-royal-purple-700 dark:text-royal-purple-300 rounded-md text-xs font-bold border border-royal-purple-300 dark:border-royal-purple-700/50"
+                      whileHover={{ scale: 1.05 }}
                     >
                       {subject}
-                    </span>
+                    </motion.span>
                   ))
                 ) : (
-                  <span className="px-2 py-0.5 bg-brand-100 dark:bg-brand-800 text-brand-500 dark:text-brand-400 rounded-md text-xs font-bold">
+                  <motion.span 
+                    className="px-2 py-0.5 bg-gradient-to-r from-royal-gold-100 to-royal-gold-50 dark:from-royal-gold-900/40 dark:to-royal-gold-800/30 text-royal-gold-700 dark:text-royal-gold-300 rounded-md text-xs font-bold border border-royal-gold-300 dark:border-royal-gold-700/50"
+                    whileHover={{ scale: 1.05 }}
+                  >
                     Form Teacher
-                  </span>
+                  </motion.span>
                 )}
               </div>
             ),
             profile: (
-              <div className="w-10 h-10 rounded-full bg-brand-100 dark:bg-brand-800 flex items-center justify-center overflow-hidden border-2 border-indigo-500/20">
+              <motion.div 
+                className="w-10 h-10 rounded-full bg-gradient-to-br from-royal-purple-100 to-royal-gold-100 dark:from-royal-purple-900/40 dark:to-royal-gold-900/40 flex items-center justify-center overflow-hidden border-2 border-royal-gold-300 dark:border-royal-purple-600/50 shadow-sm"
+                whileHover={{ scale: 1.05 }}
+              >
                 {teacher.image ? (
                   <img
                     src={teacher.image}
@@ -281,51 +339,60 @@ export default function TeacherManagement() {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <UserIcon className="w-6 h-6 text-brand-400 dark:text-brand-500" />
+                  <UserIcon className="w-6 h-6 text-royal-purple-600 dark:text-royal-gold-400" />
                 )}
-              </div>
+              </motion.div>
             ),
             classes: (
               <div className="flex flex-wrap gap-1">
                 {(teacher.assignedClasses || []).map((c) => (
-                  <span
+                  <motion.span
                     key={c}
-                    className="px-2 py-0.5 bg-teal-50 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300 rounded-md text-xs font-bold border border-teal-100 dark:border-teal-800/50"
+                    className="px-2 py-0.5 bg-gradient-to-r from-royal-gold-50 to-royal-gold-100 dark:from-royal-gold-900/30 dark:to-royal-gold-900/50 text-royal-gold-700 dark:text-royal-gold-300 rounded-md text-xs font-bold border border-royal-gold-300 dark:border-royal-gold-700/50"
+                    whileHover={{ scale: 1.05 }}
                   >
                     {c}
-                  </span>
+                  </motion.span>
                 ))}
               </div>
             ),
             actions: (
               <div className="flex gap-2">
-                <button
+                <motion.button
                   onClick={() => {
                     setEditingTeacher(teacher);
                     setShowForm(true);
                   }}
-                  className="p-1 text-blue-500 hover:bg-blue-50 rounded transition-colors"
+                  className="p-1 text-royal-purple-600 dark:text-royal-gold-400 hover:bg-royal-purple-100 dark:hover:bg-royal-purple-900/30 rounded transition-colors"
                   title="Edit"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <Edit2 size={18} />
-                </button>
-                <button
+                </motion.button>
+                <motion.button
                   onClick={() => handleDeleteTeacher(teacher.id)}
-                  className="p-1 text-red-500 hover:bg-red-50 rounded transition-colors"
+                  className="p-1 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 rounded transition-colors"
                   title="Delete"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <Trash2 size={18} />
-                </button>
+                </motion.button>
               </div>
             ),
           }))}
         />
         {filteredTeachers.length === 0 && (
-          <div className="text-center py-8">
-            <p className="text-gray-500">No teachers found</p>
-          </div>
+          <motion.div 
+            className="text-center py-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <p className="text-royal-purple-600 dark:text-royal-gold-400 font-semibold">No squad members found</p>
+          </motion.div>
         )}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
