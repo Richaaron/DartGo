@@ -1,0 +1,22 @@
+{
+  "subjectName": "Literature",
+  "subjectCode": "LIT-PRIMARY",
+  "level": "Primary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Fairy Tales and Folk Stories", "objectives": ["Read fairy tales", "Understand stories", "Explore imagination"], "duration": 40, "resources": ["Story collections", "Folk tales"], "assessmentMethod": "Story discussion"},
+    {"weekNumber": 2, "topicName": "Children's Literature", "objectives": ["Explore children's books", "Understand themes", "Develop love of reading"], "duration": 40, "resources": ["Children's books", "Picture books"], "assessmentMethod": "Literature response"},
+    {"weekNumber": 3, "topicName": "Poetry for Children", "objectives": ["Read poems", "Understand rhythm", "Appreciate poetry"], "duration": 40, "resources": ["Poetry collections", "Poem examples"], "assessmentMethod": "Poetry appreciation"},
+    {"weekNumber": 4, "topicName": "Character and Plot Development", "objectives": ["Identify characters", "Understand plots", "Analyze story elements"], "duration": 40, "resources": ["Story guides", "Analysis worksheets"], "assessmentMethod": "Story analysis"},
+    {"weekNumber": 5, "topicName": "Midterm Assessment", "objectives": ["Assess learning"], "duration": 60, "resources": ["Assessment papers"], "assessmentMethod": "Literature test"},
+    {"weekNumber": 6, "topicName": "Fantasy and Adventure Stories", "objectives": ["Explore fantasy", "Understand adventure", "Engage imagination"], "duration": 40, "resources": ["Adventure books", "Fantasy materials"], "assessmentMethod": "Story exploration"},
+    {"weekNumber": 7, "topicName": "Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Themes and Morals in Literature", "objectives": ["Identify themes", "Understand morals", "Learn lessons"], "duration": 40, "resources": ["Themed collections", "Moral stories"], "assessmentMethod": "Theme identification"},
+    {"weekNumber": 9, "topicName": "Author Study", "objectives": ["Learn about authors", "Understand writing styles", "Appreciate works"], "duration": 40, "resources": ["Author biographies", "Author works"], "assessmentMethod": "Author research"},
+    {"weekNumber": 10, "topicName": "Literature and Life", "objectives": ["Connect stories to life", "Apply lessons", "Develop critical thinking"], "duration": 40, "resources": ["Discussion guides", "Application materials"], "assessmentMethod": "Life connection project"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Final Assessment", "objectives": ["Final evaluation"], "duration": 180, "resources": ["Assessment papers"], "assessmentMethod": "Final literature project"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

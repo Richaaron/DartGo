@@ -1,0 +1,22 @@
+{
+  "subjectName": "Verbal Reasoning",
+  "subjectCode": "VR-PRIMARY",
+  "level": "Primary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Word Building and Vocabulary", "objectives": ["Expand vocabulary", "Build word families", "Learn new words"], "duration": 40, "resources": ["Word cards", "Vocabulary lists"], "assessmentMethod": "Vocabulary test"},
+    {"weekNumber": 2, "topicName": "Synonyms and Antonyms", "objectives": ["Identify synonyms", "Find antonyms", "Apply word relationships"], "duration": 40, "resources": ["Word pair cards", "Relationship charts"], "assessmentMethod": "Synonym-antonym exercises"},
+    {"weekNumber": 3, "topicName": "Sentence Construction and Grammar", "objectives": ["Form correct sentences", "Understand grammar basics", "Apply grammar rules"], "duration": 40, "resources": ["Grammar guides", "Sentence models"], "assessmentMethod": "Sentence construction"},
+    {"weekNumber": 4, "topicName": "Comprehension and Understanding", "objectives": ["Develop comprehension", "Understand main ideas", "Extract information"], "duration": 40, "resources": ["Reading passages", "Comprehension guides"], "assessmentMethod": "Comprehension questions"},
+    {"weekNumber": 5, "topicName": "Midterm Assessment", "objectives": ["Assess learning"], "duration": 60, "resources": ["Assessment papers"], "assessmentMethod": "Test"},
+    {"weekNumber": 6, "topicName": "Analogies and Word Relations", "objectives": ["Identify word analogies", "Recognize relationships", "Apply analogical reasoning"], "duration": 40, "resources": ["Analogy cards", "Word relation worksheets"], "assessmentMethod": "Analogy exercises"},
+    {"weekNumber": 7, "topicName": "Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Inference and Interpretation", "objectives": ["Make inferences", "Interpret meaning", "Draw conclusions"], "duration": 40, "resources": ["Inference texts", "Interpretation guides"], "assessmentMethod": "Inference tasks"},
+    {"weekNumber": 9, "topicName": "Classification and Categorization", "objectives": ["Classify words", "Categorize information", "Recognize patterns"], "duration": 40, "resources": ["Classification charts", "Category cards"], "assessmentMethod": "Classification activity"},
+    {"weekNumber": 10, "topicName": "Argument and Reasoning", "objectives": ["Understand arguments", "Recognize reasoning", "Evaluate statements"], "duration": 40, "resources": ["Argument examples", "Reasoning guides"], "assessmentMethod": "Reasoning analysis"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Final Assessment", "objectives": ["Final evaluation"], "duration": 180, "resources": ["Assessment papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

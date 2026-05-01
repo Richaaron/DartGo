@@ -1,0 +1,22 @@
+{
+  "subjectName": "Religious Studies",
+  "subjectCode": "RS-JSS3",
+  "level": "Junior Secondary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "World Religions Overview", "objectives": ["Learn major religions", "Understand diversity", "Respect faiths"], "duration": 40, "resources": ["Religion guides", "Faith materials"], "assessmentMethod": "Religion knowledge"},
+    {"weekNumber": 2, "topicName": "Religious Beliefs and Doctrines", "objectives": ["Understand beliefs", "Learn doctrines", "Appreciate differences"], "duration": 40, "resources": ["Belief guides", "Doctrine materials"], "assessmentMethod": "Belief study"},
+    {"weekNumber": 3, "topicName": "Moral and Ethical Values", "objectives": ["Learn values", "Understand ethics", "Develop morality"], "duration": 40, "resources": ["Value guides", "Ethics materials"], "assessmentMethod": "Value discussion"},
+    {"weekNumber": 4, "topicName": "Religious Practices and Rituals", "objectives": ["Understand practices", "Learn rituals", "Appreciate traditions"], "duration": 40, "resources": ["Practice guides", "Ritual materials"], "assessmentMethod": "Practice study"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Sacred Texts and Teachings", "objectives": ["Study texts", "Learn teachings", "Apply lessons"], "duration": 40, "resources": ["Sacred texts", "Teaching guides"], "assessmentMethod": "Text analysis"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Religious Leadership and Authority", "objectives": ["Learn about leaders", "Understand authority", "Study roles"], "duration": 40, "resources": ["Leadership guides", "Authority materials"], "assessmentMethod": "Leader study"},
+    {"weekNumber": 9, "topicName": "Religious Festivals and Celebrations", "objectives": ["Learn festivals", "Understand celebrations", "Respect traditions"], "duration": 40, "resources": ["Festival guides", "Celebration materials"], "assessmentMethod": "Festival project"},
+    {"weekNumber": 10, "topicName": "Interfaith Understanding and Tolerance", "objectives": ["Develop understanding", "Learn tolerance", "Build harmony"], "duration": 40, "resources": ["Interfaith guides", "Tolerance materials"], "assessmentMethod": "Tolerance project"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

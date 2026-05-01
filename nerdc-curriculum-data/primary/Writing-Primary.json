@@ -1,0 +1,22 @@
+{
+  "subjectName": "Writing",
+  "subjectCode": "WRT-PRIMARY",
+  "level": "Primary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Letter Formation and Handwriting", "objectives": ["Practice letter formation", "Develop handwriting skills", "Master letter shapes"], "duration": 40, "resources": ["Writing paper", "Handwriting guides"], "assessmentMethod": "Handwriting practice"},
+    {"weekNumber": 2, "topicName": "Sentence Writing", "objectives": ["Form sentences", "Practice sentence structure", "Write complete thoughts"], "duration": 40, "resources": ["Writing templates", "Sentence guides"], "assessmentMethod": "Sentence writing"},
+    {"weekNumber": 3, "topicName": "Basic Composition", "objectives": ["Write short stories", "Create simple compositions", "Organize thoughts"], "duration": 40, "resources": ["Story starters", "Composition guides"], "assessmentMethod": "Composition writing"},
+    {"weekNumber": 4, "topicName": "Grammar and Punctuation", "objectives": ["Understand grammar rules", "Learn punctuation", "Apply correctly"], "duration": 40, "resources": ["Grammar guides", "Punctuation rules"], "assessmentMethod": "Grammar exercises"},
+    {"weekNumber": 5, "topicName": "Midterm Assessment", "objectives": ["Assess learning"], "duration": 60, "resources": ["Assessment papers"], "assessmentMethod": "Writing test"},
+    {"weekNumber": 6, "topicName": "Descriptive Writing", "objectives": ["Write descriptions", "Use vivid language", "Develop details"], "duration": 40, "resources": ["Description guides", "Descriptive texts"], "assessmentMethod": "Descriptive writing"},
+    {"weekNumber": 7, "topicName": "Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Narrative Writing", "objectives": ["Write narratives", "Tell stories", "Develop plot"], "duration": 40, "resources": ["Narrative guides", "Story structures"], "assessmentMethod": "Narrative creation"},
+    {"weekNumber": 9, "topicName": "Poetry and Creative Writing", "objectives": ["Write poems", "Explore creativity", "Play with language"], "duration": 40, "resources": ["Poetry guides", "Poetry examples"], "assessmentMethod": "Poetry writing"},
+    {"weekNumber": 10, "topicName": "Letter and Email Writing", "objectives": ["Write letters", "Compose emails", "Understand formats"], "duration": 40, "resources": ["Letter templates", "Email guides"], "assessmentMethod": "Correspondence writing"},
+    {"weekNumber": 11, "topicName": "Revision and Editing", "objectives": ["Revise writing", "Edit for clarity", "Improve quality"], "duration": 40, "resources": ["Editing guides", "Revision checklists"], "assessmentMethod": "Revision practice"},
+    {"weekNumber": 12, "topicName": "Final Assessment", "objectives": ["Final evaluation"], "duration": 180, "resources": ["Assessment papers"], "assessmentMethod": "Final writing project"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

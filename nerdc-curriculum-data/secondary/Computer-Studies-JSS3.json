@@ -1,0 +1,22 @@
+{
+  "subjectName": "Computer Studies",
+  "subjectCode": "CS-JSS3",
+  "level": "Junior Secondary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Computer Architecture and Components", "objectives": ["Understand architecture", "Learn components", "Study hardware"], "duration": 40, "resources": ["Architecture guides", "Component materials"], "assessmentMethod": "Hardware study"},
+    {"weekNumber": 2, "topicName": "Operating Systems and Software", "objectives": ["Understand OS", "Learn software", "Practice use"], "duration": 40, "resources": ["OS guides", "Software materials"], "assessmentMethod": "OS practice"},
+    {"weekNumber": 3, "topicName": "Database Basics and Information Management", "objectives": ["Learn databases", "Understand data", "Manage information"], "duration": 40, "resources": ["Database guides", "Data materials"], "assessmentMethod": "Database exercise"},
+    {"weekNumber": 4, "topicName": "Programming and Coding Basics", "objectives": ["Learn programming", "Understand coding", "Write simple programs"], "duration": 40, "resources": ["Programming guides", "Coding materials"], "assessmentMethod": "Coding exercise"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Internet and Web Technologies", "objectives": ["Understand internet", "Learn web tech", "Explore applications"], "duration": 40, "resources": ["Internet guides", "Web materials"], "assessmentMethod": "Web exploration"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Computer Networks and Communication", "objectives": ["Understand networks", "Learn communication", "Study connectivity"], "duration": 40, "resources": ["Network guides", "Communication materials"], "assessmentMethod": "Network study"},
+    {"weekNumber": 9, "topicName": "Cybersecurity and Data Protection", "objectives": ["Learn security", "Understand protection", "Practice safety"], "duration": 40, "resources": ["Security guides", "Protection materials"], "assessmentMethod": "Security project"},
+    {"weekNumber": 10, "topicName": "Digital Applications and Software Tools", "objectives": ["Learn applications", "Practice tools", "Develop skills"], "duration": 40, "resources": ["Application guides", "Tool tutorials"], "assessmentMethod": "Software practice"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

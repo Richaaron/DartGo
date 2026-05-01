@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { X, Plus, Trash2 } from 'lucide-react'
+import { X, Plus, Trash2, Search } from 'lucide-react'
 import { StudentSubject, Subject, Student } from '../types'
 
 interface StudentSubjectFormProps {
@@ -18,13 +18,17 @@ export default function StudentSubjectForm({
   onCancel,
 }: StudentSubjectFormProps) {
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>([])
+  const [searchTerm, setSearchTerm] = useState('')
   const [academicYear, setAcademicYear] = useState<string>(new Date().getFullYear().toString())
   const [term, setTerm] = useState<string>('First')
   const [notes, setNotes] = useState<string>('')
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   // Filter subjects by student level
-  const isSSSStudent = ['SSS 1', 'SSS 2', 'SSS 3'].includes(student.class)
+  const isSSSStudent = 
+    student.level === 'Secondary' && 
+    (student.class.toUpperCase().startsWith('SSS') || student.class.toUpperCase().startsWith('SS'))
+  
   const availableSubjects = subjects.filter(s => s.level === student.level)
 
   // Initialize selected subjects from current assignments
@@ -154,53 +158,85 @@ export default function StudentSubjectForm({
 
         {/* Subjects by Category */}
         <div className="space-y-4">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-1">
-              {isSSSStudent ? 'Choose Stream' : 'Select Subjects'} - {selectedSubjects.length} subject{selectedSubjects.length !== 1 ? 's' : ''} selected
-            </h3>
-            <p className="text-xs text-gray-600 mb-2">
-              {isSSSStudent ? 'SSS students must select subjects from one of the three streams' : 'Assign relevant subjects to the student for result tracking'}
-            </p>
-            {errors.subjects && (
-              <p className="text-red-500 text-sm mt-1">{errors.subjects}</p>
-            )}
-          </div>
-
-          {sortedCategories.map((category) => {
-            const categorySubjects = subjectsByCategory[category]
-            return (
-              <div key={category} className="border-2 border-blue-300 rounded-lg p-4 bg-gradient-to-br from-blue-50 to-white">
-                <h4 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
-                  <span className="px-3 py-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full text-xs font-semibold">
-                    {category} {isSSSStudent ? 'Stream' : 'Subjects'}
-                  </span>
-                  <span className="text-gray-600 font-medium">({categorySubjects.length} subjects)</span>
-                </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {categorySubjects.map(subject => (
-                  <label
-                    key={subject.id}
-                    className="flex items-start gap-3 p-3 bg-gray-50 hover:bg-blue-50 rounded-lg cursor-pointer transition-colors border border-gray-200 hover:border-blue-300"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedSubjects.includes(subject.id)}
-                      onChange={() => toggleSubject(subject.id)}
-                      className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-gray-900 text-sm">{subject.name}</p>
-                      <p className="text-xs text-gray-500">{subject.code}</p>
-                      {subject.description && (
-                        <p className="text-xs text-gray-600 mt-1 line-clamp-2">{subject.description}</p>
-                      )}
-                    </div>
-                  </label>
-                ))}
-              </div>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                {isSSSStudent ? 'Choose Stream' : 'Select Subjects'} - {selectedSubjects.length} subject{selectedSubjects.length !== 1 ? 's' : ''} selected
+              </h3>
+              <p className="text-xs text-gray-600 mb-2">
+                {isSSSStudent ? 'SSS students must select subjects from one of the three streams' : 'Assign relevant subjects to the student for result tracking'}
+              </p>
             </div>
-          )
-          })}
+            <div className="relative w-full sm:w-64">
+              <input
+                type="text"
+                placeholder="Search subjects..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
+            </div>
+          </div>
+          {errors.subjects && (
+            <p className="text-red-500 text-sm mt-1">{errors.subjects}</p>
+          )}
+
+          {(() => {
+            const searchedSubjects = availableSubjects.filter(s => 
+              s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              s.code.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+
+            const subjectsByCategory = searchedSubjects.reduce((acc, subject) => {
+              const category = isSSSStudent ? (subject.subjectCategory || 'General') : 'General'
+              if (!acc[category]) {
+                acc[category] = []
+              }
+              acc[category].push(subject)
+              return acc
+            }, {} as Record<string, Subject[]>)
+
+            const sortedCategories = Object.keys(subjectsByCategory).sort(
+              (a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b)
+            )
+
+            return sortedCategories.map((category) => {
+              const categorySubjects = subjectsByCategory[category]
+              return (
+                <div key={category} className="border-2 border-blue-300 rounded-lg p-4 bg-gradient-to-br from-blue-50 to-white">
+                  <h4 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span className="px-3 py-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full text-xs font-semibold">
+                      {category} {isSSSStudent ? 'Stream' : 'Subjects'}
+                    </span>
+                    <span className="text-gray-600 font-medium">({categorySubjects.length} subjects)</span>
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {categorySubjects.map(subject => (
+                      <label
+                        key={subject.id}
+                        className="flex items-start gap-3 p-3 bg-white hover:bg-blue-50 rounded-lg cursor-pointer transition-colors border border-gray-200 hover:border-blue-300 shadow-sm"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedSubjects.includes(subject.id)}
+                          onChange={() => toggleSubject(subject.id)}
+                          className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-gray-900 text-sm">{subject.name}</p>
+                          <p className="text-xs text-gray-500">{subject.code}</p>
+                          {subject.description && (
+                            <p className="text-xs text-gray-600 mt-1 line-clamp-2">{subject.description}</p>
+                          )}
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )
+            })
+          })()}
         </div>
 
         {/* Selected Summary */}

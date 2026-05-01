@@ -1,0 +1,22 @@
+{
+  "subjectName": "Agricultural Science",
+  "subjectCode": "AG-JSS3",
+  "level": "Junior Secondary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Introduction to Agriculture", "objectives": ["Understand agriculture", "Learn farming systems", "Appreciate production"], "duration": 40, "resources": ["Agriculture guides", "Farming materials"], "assessmentMethod": "Agriculture knowledge"},
+    {"weekNumber": 2, "topicName": "Soil Science and Land Preparation", "objectives": ["Understand soil", "Learn preparation", "Study fertility"], "duration": 40, "resources": ["Soil guides", "Land materials"], "assessmentMethod": "Soil analysis"},
+    {"weekNumber": 3, "topicName": "Crop Production and Management", "objectives": ["Learn crop production", "Understand management", "Study techniques"], "duration": 40, "resources": ["Crop guides", "Management materials"], "assessmentMethod": "Crop study"},
+    {"weekNumber": 4, "topicName": "Livestock and Animal Husbandry", "objectives": ["Understand livestock", "Learn animal care", "Study systems"], "duration": 40, "resources": ["Livestock guides", "Husbandry materials"], "assessmentMethod": "Livestock project"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Pest and Disease Management", "objectives": ["Learn pest control", "Understand diseases", "Study solutions"], "duration": 40, "resources": ["Pest guides", "Disease materials"], "assessmentMethod": "Pest management"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Sustainable and Organic Farming", "objectives": ["Learn sustainability", "Understand organic", "Study practices"], "duration": 40, "resources": ["Sustainability guides", "Organic materials"], "assessmentMethod": "Sustainability project"},
+    {"weekNumber": 9, "topicName": "Post-Harvest and Food Processing", "objectives": ["Understand post-harvest", "Learn processing", "Study preservation"], "duration": 40, "resources": ["Processing guides", "Preservation materials"], "assessmentMethod": "Processing activity"},
+    {"weekNumber": 10, "topicName": "Agricultural Technology and Extension", "objectives": ["Learn technology", "Understand innovation", "Study services"], "duration": 40, "resources": ["Technology guides", "Extension materials"], "assessmentMethod": "Technology exploration"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

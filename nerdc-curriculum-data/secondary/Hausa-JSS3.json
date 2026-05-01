@@ -1,0 +1,22 @@
+{
+  "subjectName": "Hausa",
+  "subjectCode": "HAU-JSS3",
+  "level": "Junior Secondary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Hausa Alphabet and Phonetics", "objectives": ["Learn alphabet", "Understand sounds", "Practice pronunciation"], "duration": 40, "resources": ["Alphabet charts", "Audio materials"], "assessmentMethod": "Phonetics practice"},
+    {"weekNumber": 2, "topicName": "Basic Vocabulary Building", "objectives": ["Build vocabulary", "Learn words", "Practice usage"], "duration": 40, "resources": ["Vocabulary lists", "Word cards"], "assessmentMethod": "Vocabulary test"},
+    {"weekNumber": 3, "topicName": "Grammar Basics", "objectives": ["Learn grammar rules", "Understand structure", "Apply correctly"], "duration": 40, "resources": ["Grammar guides", "Examples"], "assessmentMethod": "Grammar exercises"},
+    {"weekNumber": 4, "topicName": "Simple Conversation and Communication", "objectives": ["Learn phrases", "Practice conversation", "Develop communication"], "duration": 40, "resources": ["Conversation guides", "Dialog materials"], "assessmentMethod": "Conversation practice"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Reading and Comprehension", "objectives": ["Learn reading", "Understand texts", "Develop comprehension"], "duration": 40, "resources": ["Reading materials", "Comprehension guides"], "assessmentMethod": "Reading exercise"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Writing and Composition", "objectives": ["Learn writing", "Practice composition", "Develop skills"], "duration": 40, "resources": ["Writing guides", "Composition materials"], "assessmentMethod": "Writing exercise"},
+    {"weekNumber": 9, "topicName": "Hausa Culture and Traditions", "objectives": ["Learn culture", "Understand traditions", "Appreciate heritage"], "duration": 40, "resources": ["Culture guides", "Tradition materials"], "assessmentMethod": "Culture project"},
+    {"weekNumber": 10, "topicName": "Idioms and Proverbs", "objectives": ["Learn idioms", "Understand proverbs", "Apply usage"], "duration": 40, "resources": ["Idiom collections", "Proverb materials"], "assessmentMethod": "Idiom identification"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

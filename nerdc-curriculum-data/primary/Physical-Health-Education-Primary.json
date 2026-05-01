@@ -1,0 +1,22 @@
+{
+  "subjectName": "Physical & Health Education",
+  "subjectCode": "PHE-PRIMARY",
+  "level": "Primary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Basic Physical Fitness", "objectives": ["Understand fitness", "Learn exercises", "Develop strength"], "duration": 40, "resources": ["Fitness guides", "Exercise demonstrations"], "assessmentMethod": "Fitness assessment"},
+    {"weekNumber": 2, "topicName": "Team Sports and Games", "objectives": ["Learn sports", "Play games", "Develop teamwork"], "duration": 40, "resources": ["Sports equipment", "Game guides"], "assessmentMethod": "Sport participation"},
+    {"weekNumber": 3, "topicName": "Individual Sports and Athletics", "objectives": ["Learn athletics", "Develop skills", "Practice individually"], "duration": 40, "resources": ["Athletic guides", "Training materials"], "assessmentMethod": "Athletic activity"},
+    {"weekNumber": 4, "topicName": "Health Habits and Hygiene", "objectives": ["Learn health habits", "Practice hygiene", "Develop wellness"], "duration": 40, "resources": ["Health guides", "Hygiene materials"], "assessmentMethod": "Hygiene practice"},
+    {"weekNumber": 5, "topicName": "Midterm Assessment", "objectives": ["Assess learning"], "duration": 60, "resources": ["Assessment materials"], "assessmentMethod": "Fitness test"},
+    {"weekNumber": 6, "topicName": "Nutrition and Healthy Eating", "objectives": ["Understand nutrition", "Learn healthy eating", "Practice wellness"], "duration": 40, "resources": ["Nutrition guides", "Food materials"], "assessmentMethod": "Nutrition project"},
+    {"weekNumber": 7, "topicName": "Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Disease Prevention and Safety", "objectives": ["Learn prevention", "Understand safety", "Practice protection"], "duration": 40, "resources": ["Prevention guides", "Safety materials"], "assessmentMethod": "Safety knowledge"},
+    {"weekNumber": 9, "topicName": "Mental and Emotional Health", "objectives": ["Understand mental health", "Develop emotional wellness", "Build resilience"], "duration": 40, "resources": ["Mental health guides", "Wellness materials"], "assessmentMethod": "Wellness discussion"},
+    {"weekNumber": 10, "topicName": "First Aid Basics", "objectives": ["Learn first aid", "Practice response", "Develop readiness"], "duration": 40, "resources": ["First aid kit", "Training guides"], "assessmentMethod": "First aid practice"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Final Assessment", "objectives": ["Final evaluation"], "duration": 180, "resources": ["Assessment materials"], "assessmentMethod": "Final fitness exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

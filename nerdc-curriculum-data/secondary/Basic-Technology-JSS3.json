@@ -1,0 +1,22 @@
+{
+  "subjectName": "Basic Technology",
+  "subjectCode": "BT-JSS3",
+  "level": "Junior Secondary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Technology and Society", "objectives": ["Understand technology impact", "Learn technology benefits", "Study implications"], "duration": 40, "resources": ["Society guides", "Impact materials"], "assessmentMethod": "Impact analysis"},
+    {"weekNumber": 2, "topicName": "Basic Engineering Principles", "objectives": ["Learn engineering basics", "Understand design", "Explore applications"], "duration": 40, "resources": ["Engineering guides", "Design materials"], "assessmentMethod": "Design project"},
+    {"weekNumber": 3, "topicName": "Materials and Their Properties", "objectives": ["Understand materials", "Learn properties", "Explore applications"], "duration": 40, "resources": ["Material samples", "Property guides"], "assessmentMethod": "Material testing"},
+    {"weekNumber": 4, "topicName": "Information and Communication Technology", "objectives": ["Understand ICT", "Learn applications", "Explore digital systems"], "duration": 40, "resources": ["ICT guides", "Tech materials"], "assessmentMethod": "ICT application"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Energy and Power Systems", "objectives": ["Understand energy systems", "Learn power sources", "Explore applications"], "duration": 40, "resources": ["Energy guides", "Power materials"], "assessmentMethod": "Energy analysis"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Manufacturing and Production", "objectives": ["Understand manufacturing", "Learn processes", "Explore industries"], "duration": 40, "resources": ["Production guides", "Industry materials"], "assessmentMethod": "Production study"},
+    {"weekNumber": 9, "topicName": "Construction and Building Technology", "objectives": ["Understand construction", "Learn techniques", "Explore structures"], "duration": 40, "resources": ["Construction guides", "Structure materials"], "assessmentMethod": "Construction project"},
+    {"weekNumber": 10, "topicName": "Sustainable Technology", "objectives": ["Learn sustainability", "Understand green tech", "Explore solutions"], "duration": 40, "resources": ["Sustainability guides", "Green tech materials"], "assessmentMethod": "Sustainability project"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

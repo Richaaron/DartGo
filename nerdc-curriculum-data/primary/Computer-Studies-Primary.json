@@ -1,0 +1,22 @@
+{
+  "subjectName": "Computer Studies",
+  "subjectCode": "CS-PRIMARY",
+  "level": "Primary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Introduction to Computers", "objectives": ["Learn computer basics", "Understand computer parts", "Develop computer awareness"], "duration": 40, "resources": ["Computer diagrams", "Hardware guides"], "assessmentMethod": "Computer knowledge test"},
+    {"weekNumber": 2, "topicName": "Computer Hardware Components", "objectives": ["Identify hardware", "Understand functions", "Appreciate technology"], "duration": 40, "resources": ["Hardware examples", "Component guides"], "assessmentMethod": "Hardware identification"},
+    {"weekNumber": 3, "topicName": "Operating System Basics", "objectives": ["Understand OS", "Learn basic functions", "Practice computer operation"], "duration": 40, "resources": ["OS guides", "Tutorial videos"], "assessmentMethod": "OS operation practice"},
+    {"weekNumber": 4, "topicName": "Computer Safety and Security", "objectives": ["Learn online safety", "Understand security", "Practice safe computing"], "duration": 40, "resources": ["Safety guides", "Security tips"], "assessmentMethod": "Safety knowledge test"},
+    {"weekNumber": 5, "topicName": "Midterm Assessment", "objectives": ["Assess learning"], "duration": 60, "resources": ["Assessment materials"], "assessmentMethod": "Theory test"},
+    {"weekNumber": 6, "topicName": "Basic Typing and Keyboard Skills", "objectives": ["Learn typing", "Practice keyboard", "Develop speed"], "duration": 40, "resources": ["Typing software", "Keyboard guides"], "assessmentMethod": "Typing practice"},
+    {"weekNumber": 7, "topicName": "Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Internet and Digital Citizenship", "objectives": ["Understand internet", "Learn digital citizenship", "Practice responsible use"], "duration": 40, "resources": ["Internet guides", "Citizenship materials"], "assessmentMethod": "Digital citizenship project"},
+    {"weekNumber": 9, "topicName": "Basic Software Applications", "objectives": ["Learn applications", "Practice programs", "Develop skills"], "duration": 40, "resources": ["Software tutorials", "Application guides"], "assessmentMethod": "Software practice"},
+    {"weekNumber": 10, "topicName": "Programming Basics and Logic", "objectives": ["Learn logic", "Understand coding concepts", "Develop problem-solving"], "duration": 40, "resources": ["Programming guides", "Logic materials"], "assessmentMethod": "Programming activity"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Final Assessment", "objectives": ["Final evaluation"], "duration": 180, "resources": ["Assessment materials"], "assessmentMethod": "Final computer test"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

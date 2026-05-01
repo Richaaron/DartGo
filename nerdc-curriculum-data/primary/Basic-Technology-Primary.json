@@ -1,0 +1,22 @@
+{
+  "subjectName": "Basic Technology",
+  "subjectCode": "BT-PRIMARY",
+  "level": "Primary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Introduction to Technology", "objectives": ["Understand technology basics", "Learn simple tools", "Explore everyday technology"], "duration": 40, "resources": ["Technology cards", "Tool pictures"], "assessmentMethod": "Identification exercise"},
+    {"weekNumber": 2, "topicName": "Simple Machines and Tools", "objectives": ["Learn basic machines", "Understand how tools work", "Apply machines in daily life"], "duration": 40, "resources": ["Machine models", "Tool demonstrations"], "assessmentMethod": "Machine identification"},
+    {"weekNumber": 3, "topicName": "Basic Computer Concepts", "objectives": ["Understand computer parts", "Learn computer basics", "Practice safe computer use"], "duration": 40, "resources": ["Computer diagrams", "Safety guides"], "assessmentMethod": "Computer knowledge test"},
+    {"weekNumber": 4, "topicName": "Technology in Daily Life", "objectives": ["Explore technology uses", "Understand technology benefits", "Learn technology safety"], "duration": 40, "resources": ["Technology examples", "Safety materials"], "assessmentMethod": "Technology use project"},
+    {"weekNumber": 5, "topicName": "Midterm Assessment", "objectives": ["Assess learning"], "duration": 60, "resources": ["Assessment papers"], "assessmentMethod": "Test"},
+    {"weekNumber": 6, "topicName": "Simple Construction and Design", "objectives": ["Learn basic design", "Practice simple construction", "Understand materials"], "duration": 40, "resources": ["Design templates", "Construction materials"], "assessmentMethod": "Design project"},
+    {"weekNumber": 7, "topicName": "Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Problem-Solving with Technology", "objectives": ["Identify problems", "Find technology solutions", "Apply critical thinking"], "duration": 40, "resources": ["Problem scenarios", "Solution guides"], "assessmentMethod": "Problem-solving activity"},
+    {"weekNumber": 9, "topicName": "Environmental Technology", "objectives": ["Learn eco-friendly technology", "Understand sustainability", "Explore renewable energy basics"], "duration": 40, "resources": ["Environmental guides", "Energy information"], "assessmentMethod": "Sustainability project"},
+    {"weekNumber": 10, "topicName": "Technology and Communication", "objectives": ["Understand communication tools", "Learn digital safety", "Explore telecommunications basics"], "duration": 40, "resources": ["Communication guides", "Safety tips"], "assessmentMethod": "Communication quiz"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Final Assessment", "objectives": ["Final evaluation"], "duration": 180, "resources": ["Assessment papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

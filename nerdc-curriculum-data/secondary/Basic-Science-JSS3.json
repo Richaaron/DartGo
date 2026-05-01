@@ -1,0 +1,22 @@
+{
+  "subjectName": "Basic Science",
+  "subjectCode": "BS-JSS3",
+  "level": "Junior Secondary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Matter and its Properties", "objectives": ["Understand matter", "Learn physical properties", "Study states of matter"], "duration": 40, "resources": ["Matter samples", "Property guides"], "assessmentMethod": "Matter identification"},
+    {"weekNumber": 2, "topicName": "Energy and its Forms", "objectives": ["Understand energy", "Learn energy types", "Explore energy transformation"], "duration": 40, "resources": ["Energy guides", "Examples"], "assessmentMethod": "Energy classification"},
+    {"weekNumber": 3, "topicName": "Living Organisms", "objectives": ["Study organisms", "Understand life processes", "Appreciate biodiversity"], "duration": 40, "resources": ["Organism guides", "Biodiversity materials"], "assessmentMethod": "Organism study"},
+    {"weekNumber": 4, "topicName": "Ecosystems and Environment", "objectives": ["Understand ecosystems", "Learn relationships", "Study environmental issues"], "duration": 40, "resources": ["Ecosystem diagrams", "Environmental guides"], "assessmentMethod": "Ecosystem analysis"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Chemical Reactions", "objectives": ["Understand reactions", "Learn chemistry basics", "Explore changes"], "duration": 40, "resources": ["Reaction guides", "Chemistry materials"], "assessmentMethod": "Reaction study"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Forces and Motion", "objectives": ["Understand forces", "Learn Newton's laws", "Apply motion principles"], "duration": 40, "resources": ["Force diagrams", "Motion guides"], "assessmentMethod": "Force analysis"},
+    {"weekNumber": 9, "topicName": "Light and Sound", "objectives": ["Understand light", "Learn sound properties", "Explore wave behavior"], "duration": 40, "resources": ["Light guides", "Sound materials"], "assessmentMethod": "Wave study"},
+    {"weekNumber": 10, "topicName": "Electricity and Magnetism", "objectives": ["Understand electricity", "Learn magnetism", "Explore applications"], "duration": 40, "resources": ["Electricity guides", "Magnet materials"], "assessmentMethod": "Electricity practice"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "subjectName": "Fine Arts",
+  "subjectCode": "FA-JSS3",
+  "level": "Junior Secondary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Art History and Movements", "objectives": ["Learn art history", "Understand movements", "Appreciate development"], "duration": 40, "resources": ["Art history guides", "Movement materials"], "assessmentMethod": "Art history study"},
+    {"weekNumber": 2, "topicName": "Drawing and Composition", "objectives": ["Learn drawing techniques", "Understand composition", "Practice skills"], "duration": 40, "resources": ["Drawing guides", "Composition materials"], "assessmentMethod": "Drawing portfolio"},
+    {"weekNumber": 3, "topicName": "Painting and Color Theory", "objectives": ["Learn painting", "Understand color", "Apply theory"], "duration": 40, "resources": ["Painting guides", "Color materials"], "assessmentMethod": "Painting project"},
+    {"weekNumber": 4, "topicName": "Sculpture and 3D Forms", "objectives": ["Learn sculpture", "Create forms", "Understand space"], "duration": 40, "resources": ["Sculpture materials", "Form guides"], "assessmentMethod": "Sculpture creation"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Assessment materials"], "assessmentMethod": "Art exhibition"},
+    {"weekNumber": 6, "topicName": "Printmaking and Graphic Arts", "objectives": ["Learn printmaking", "Understand graphics", "Create prints"], "duration": 40, "resources": ["Printmaking materials", "Graphic guides"], "assessmentMethod": "Printmaking project"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Photography and Digital Arts", "objectives": ["Learn photography", "Understand digital", "Create images"], "duration": 40, "resources": ["Camera access", "Digital tools"], "assessmentMethod": "Photo project"},
+    {"weekNumber": 9, "topicName": "Mixed Media and Collage", "objectives": ["Explore mixed media", "Create collages", "Combine materials"], "duration": 40, "resources": ["Mixed media materials", "Collage guides"], "assessmentMethod": "Collage creation"},
+    {"weekNumber": 10, "topicName": "Contemporary Art and Installation", "objectives": ["Understand contemporary", "Learn installation", "Explore concepts"], "duration": 40, "resources": ["Contemporary guides", "Installation materials"], "assessmentMethod": "Installation project"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Art review"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Assessment materials"], "assessmentMethod": "Final art project"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "subjectName": "Vocational Aptitude",
+  "subjectCode": "VA-PRIMARY",
+  "level": "Primary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Career Awareness and Exploration", "objectives": ["Learn about careers", "Explore job options", "Understand career paths"], "duration": 40, "resources": ["Career guides", "Job descriptions"], "assessmentMethod": "Career exploration"},
+    {"weekNumber": 2, "topicName": "Skills and Aptitudes Assessment", "objectives": ["Identify personal skills", "Understand abilities", "Recognize strengths"], "duration": 40, "resources": ["Skill checklists", "Aptitude guides"], "assessmentMethod": "Aptitude assessment"},
+    {"weekNumber": 3, "topicName": "Practical Skills Development", "objectives": ["Learn practical skills", "Develop competencies", "Practice techniques"], "duration": 40, "resources": ["Skill demonstration", "Practice materials"], "assessmentMethod": "Skill practice"},
+    {"weekNumber": 4, "topicName": "Work Ethic and Professionalism", "objectives": ["Learn work values", "Understand professionalism", "Develop good work habits"], "duration": 40, "resources": ["Professionalism guides", "Work ethic materials"], "assessmentMethod": "Work ethic discussion"},
+    {"weekNumber": 5, "topicName": "Midterm Assessment", "objectives": ["Assess learning"], "duration": 60, "resources": ["Assessment papers"], "assessmentMethod": "Test"},
+    {"weekNumber": 6, "topicName": "Hands-on Vocational Activities", "objectives": ["Participate in activities", "Apply skills", "Gain experience"], "duration": 40, "resources": ["Activity materials", "Equipment"], "assessmentMethod": "Activity participation"},
+    {"weekNumber": 7, "topicName": "Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Problem Solving in Work Context", "objectives": ["Solve workplace problems", "Apply critical thinking", "Make decisions"], "duration": 40, "resources": ["Problem scenarios", "Solution guides"], "assessmentMethod": "Problem-solving task"},
+    {"weekNumber": 9, "topicName": "Communication in Professional Settings", "objectives": ["Develop communication skills", "Practice professional interaction", "Learn workplace communication"], "duration": 40, "resources": ["Communication guides", "Role-play materials"], "assessmentMethod": "Communication exercise"},
+    {"weekNumber": 10, "topicName": "Entrepreneurship Basics", "objectives": ["Learn entrepreneurship", "Understand business basics", "Explore enterprise"], "duration": 40, "resources": ["Business guides", "Enterprise materials"], "assessmentMethod": "Enterprise project"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Final Assessment", "objectives": ["Final evaluation"], "duration": 180, "resources": ["Assessment papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

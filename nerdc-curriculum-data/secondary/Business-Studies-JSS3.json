@@ -1,0 +1,22 @@
+{
+  "subjectName": "Business Studies",
+  "subjectCode": "BUS-JSS3",
+  "level": "Junior Secondary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Business Basics and Entrepreneurship", "objectives": ["Understand business", "Learn entrepreneurship", "Explore opportunities"], "duration": 40, "resources": ["Business guides", "Entrepreneurship materials"], "assessmentMethod": "Business awareness"},
+    {"weekNumber": 2, "topicName": "Types of Business Organizations", "objectives": ["Learn organization types", "Understand structures", "Study models"], "duration": 40, "resources": ["Organization guides", "Structure materials"], "assessmentMethod": "Organization study"},
+    {"weekNumber": 3, "topicName": "Business Management and Leadership", "objectives": ["Understand management", "Learn leadership", "Develop skills"], "duration": 40, "resources": ["Management guides", "Leadership materials"], "assessmentMethod": "Management exercise"},
+    {"weekNumber": 4, "topicName": "Marketing and Consumer Behavior", "objectives": ["Understand marketing", "Learn consumer behavior", "Study strategies"], "duration": 40, "resources": ["Marketing guides", "Consumer materials"], "assessmentMethod": "Marketing analysis"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Financial Accounting Basics", "objectives": ["Understand accounting", "Learn records", "Study finances"], "duration": 40, "resources": ["Accounting guides", "Finance materials"], "assessmentMethod": "Accounting exercise"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Production and Operations", "objectives": ["Understand production", "Learn operations", "Study efficiency"], "duration": 40, "resources": ["Production guides", "Operations materials"], "assessmentMethod": "Operations study"},
+    {"weekNumber": 9, "topicName": "Human Resources Management", "objectives": ["Understand HRM", "Learn personnel", "Study development"], "duration": 40, "resources": ["HR guides", "Personnel materials"], "assessmentMethod": "HR project"},
+    {"weekNumber": 10, "topicName": "Economics and Business Environment", "objectives": ["Understand economics", "Learn environment", "Study factors"], "duration": 40, "resources": ["Economics guides", "Environment materials"], "assessmentMethod": "Economic analysis"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

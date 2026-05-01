@@ -1,0 +1,22 @@
+{
+  "subjectName": "Quantitative Reasoning",
+  "subjectCode": "QR-PRIMARY",
+  "level": "Primary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Number Patterns and Sequences", "objectives": ["Identify number patterns", "Extend sequences", "Apply pattern recognition"], "duration": 40, "resources": ["Pattern cards", "Sequence worksheets"], "assessmentMethod": "Pattern identification"},
+    {"weekNumber": 2, "topicName": "Logical Reasoning and Problem Solving", "objectives": ["Develop logical thinking", "Solve puzzles", "Apply reasoning skills"], "duration": 40, "resources": ["Puzzle sets", "Logic problems"], "assessmentMethod": "Problem-solving activity"},
+    {"weekNumber": 3, "topicName": "Number Relations and Comparisons", "objectives": ["Compare quantities", "Understand relationships", "Apply comparison skills"], "duration": 40, "resources": ["Comparison charts", "Quantity materials"], "assessmentMethod": "Comparison exercises"},
+    {"weekNumber": 4, "topicName": "Basic Mathematical Reasoning", "objectives": ["Understand math concepts", "Apply reasoning in math", "Develop mathematical thinking"], "duration": 40, "resources": ["Math guides", "Reasoning worksheets"], "assessmentMethod": "Math reasoning test"},
+    {"weekNumber": 5, "topicName": "Midterm Assessment", "objectives": ["Assess learning"], "duration": 60, "resources": ["Assessment papers"], "assessmentMethod": "Test"},
+    {"weekNumber": 6, "topicName": "Analogies and Similarities", "objectives": ["Identify analogies", "Recognize similarities", "Apply analogical thinking"], "duration": 40, "resources": ["Analogy cards", "Similarity worksheets"], "assessmentMethod": "Analogy exercises"},
+    {"weekNumber": 7, "topicName": "Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Data Interpretation Basics", "objectives": ["Understand data", "Interpret simple data", "Read charts and graphs"], "duration": 40, "resources": ["Data charts", "Graph examples"], "assessmentMethod": "Data interpretation task"},
+    {"weekNumber": 9, "topicName": "Logic and Deduction", "objectives": ["Apply logical deduction", "Understand cause and effect", "Use deductive reasoning"], "duration": 40, "resources": ["Logic puzzles", "Deduction examples"], "assessmentMethod": "Logic puzzle solving"},
+    {"weekNumber": 10, "topicName": "Critical Thinking Development", "objectives": ["Develop critical thinking", "Analyze situations", "Make reasoned judgments"], "duration": 40, "resources": ["Thinking guides", "Analysis materials"], "assessmentMethod": "Critical thinking project"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Final Assessment", "objectives": ["Final evaluation"], "duration": 180, "resources": ["Assessment papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

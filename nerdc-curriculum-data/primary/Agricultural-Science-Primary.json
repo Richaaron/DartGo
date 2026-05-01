@@ -1,0 +1,22 @@
+{
+  "subjectName": "Agricultural Science",
+  "subjectCode": "AG-PRIMARY",
+  "level": "Primary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Introduction to Agriculture", "objectives": ["Learn about agriculture", "Understand farming basics", "Appreciate food production"], "duration": 40, "resources": ["Agriculture guides", "Farming pictures"], "assessmentMethod": "Agriculture knowledge"},
+    {"weekNumber": 2, "topicName": "Crops and Plant Growing", "objectives": ["Learn about crops", "Understand plant growth", "Practice growing plants"], "duration": 40, "resources": ["Crop information", "Growing guides"], "assessmentMethod": "Plant care activity"},
+    {"weekNumber": 3, "topicName": "Soil and its Importance", "objectives": ["Understand soil", "Learn soil types", "Appreciate soil care"], "duration": 40, "resources": ["Soil samples", "Soil guides"], "assessmentMethod": "Soil exploration"},
+    {"weekNumber": 4, "topicName": "Livestock and Animal Husbandry", "objectives": ["Learn about livestock", "Understand animal care", "Explore farming animals"], "duration": 40, "resources": ["Animal guides", "Husbandry information"], "assessmentMethod": "Animal study"},
+    {"weekNumber": 5, "topicName": "Midterm Assessment", "objectives": ["Assess learning"], "duration": 60, "resources": ["Assessment papers"], "assessmentMethod": "Test"},
+    {"weekNumber": 6, "topicName": "Food Production and Processing", "objectives": ["Understand food production", "Learn processing basics", "Appreciate food journey"], "duration": 40, "resources": ["Production guides", "Processing materials"], "assessmentMethod": "Food production project"},
+    {"weekNumber": 7, "topicName": "Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Pest Management and Diseases", "objectives": ["Learn pest control", "Understand diseases", "Appreciate solutions"], "duration": 40, "resources": ["Pest guides", "Disease information"], "assessmentMethod": "Pest identification"},
+    {"weekNumber": 9, "topicName": "Sustainable and Organic Farming", "objectives": ["Learn sustainability", "Understand organic farming", "Explore green practices"], "duration": 40, "resources": ["Sustainability guides", "Organic materials"], "assessmentMethod": "Sustainability project"},
+    {"weekNumber": 10, "topicName": "Agricultural Technology and Tools", "objectives": ["Learn about tools", "Understand technology", "Explore innovations"], "duration": 40, "resources": ["Tool guides", "Technology information"], "assessmentMethod": "Technology exploration"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Final Assessment", "objectives": ["Final evaluation"], "duration": 180, "resources": ["Assessment papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

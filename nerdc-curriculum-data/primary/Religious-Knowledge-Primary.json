@@ -1,0 +1,22 @@
+{
+  "subjectName": "Religious Knowledge",
+  "subjectCode": "RK-PRIMARY",
+  "level": "Primary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "World Religions Overview", "objectives": ["Learn about major religions", "Understand religious diversity", "Respect all faiths"], "duration": 40, "resources": ["Religion guides", "Faith materials"], "assessmentMethod": "Religion knowledge test"},
+    {"weekNumber": 2, "topicName": "Religious Beliefs and Practices", "objectives": ["Understand beliefs", "Learn practices", "Appreciate traditions"], "duration": 40, "resources": ["Practice guides", "Belief materials"], "assessmentMethod": "Practice identification"},
+    {"weekNumber": 3, "topicName": "Moral and Ethical Values", "objectives": ["Learn moral values", "Understand ethics", "Practice good behavior"], "duration": 40, "resources": ["Morality guides", "Ethics materials"], "assessmentMethod": "Values discussion"},
+    {"weekNumber": 4, "topicName": "Religious Stories and Teachings", "objectives": ["Learn stories", "Understand teachings", "Apply lessons"], "duration": 40, "resources": ["Story collections", "Teaching materials"], "assessmentMethod": "Story comprehension"},
+    {"weekNumber": 5, "topicName": "Midterm Assessment", "objectives": ["Assess learning"], "duration": 60, "resources": ["Assessment papers"], "assessmentMethod": "Test"},
+    {"weekNumber": 6, "topicName": "Religious Festivals and Celebrations", "objectives": ["Learn festivals", "Understand celebrations", "Respect traditions"], "duration": 40, "resources": ["Festival guides", "Celebration materials"], "assessmentMethod": "Festival project"},
+    {"weekNumber": 7, "topicName": "Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Religious Leaders and Figures", "objectives": ["Learn about leaders", "Understand influence", "Respect authority"], "duration": 40, "resources": ["Biography materials", "Leader guides"], "assessmentMethod": "Leader study"},
+    {"weekNumber": 9, "topicName": "Religious Places of Worship", "objectives": ["Learn worship places", "Understand sacred sites", "Appreciate significance"], "duration": 40, "resources": ["Place guides", "Sacred site materials"], "assessmentMethod": "Worship place exploration"},
+    {"weekNumber": 10, "topicName": "Personal Faith and Spirituality", "objectives": ["Develop faith understanding", "Explore spirituality", "Personal reflection"], "duration": 40, "resources": ["Reflection guides", "Spirituality materials"], "assessmentMethod": "Personal reflection"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Final Assessment", "objectives": ["Final evaluation"], "duration": 180, "resources": ["Assessment papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

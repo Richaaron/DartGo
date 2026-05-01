@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
-import { X, Upload, User as UserIcon, BookOpen } from 'lucide-react'
+import { X, Upload, User as UserIcon, BookOpen, Search } from 'lucide-react'
 import { Student, Subject } from '../types'
 import { generateParentCredentials } from '../utils/calculations'
 
@@ -50,6 +50,7 @@ export default function StudentForm({
   })
 
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>([])
+  const [subjectSearchTerm, setSubjectSearchTerm] = useState('')
 
   useEffect(() => {
     if (!isEditing && defaultClass) {
@@ -484,14 +485,35 @@ export default function StudentForm({
               <BookOpen className="text-purple-500" />
               Assign Subjects (Optional)
             </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
-              Assign subjects to the student now for immediate result recording.
-            </p>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                Assign subjects to the student now for immediate result recording.
+              </p>
+              <div className="relative w-full sm:w-64">
+                <input
+                  type="text"
+                  placeholder="Search subjects..."
+                  value={subjectSearchTerm}
+                  onChange={(e) => setSubjectSearchTerm(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2 text-sm border-2 border-brand-200 dark:border-brand-700 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-brand-800"
+                />
+                <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
+              </div>
+            </div>
             
             {(() => {
-              const isSSSStudent = ['SSS 1', 'SSS 2', 'SSS 3'].includes(formData.class)
+              const isSSSStudent = 
+                formData.level === 'Secondary' && 
+                (formData.class.toUpperCase().startsWith('SSS') || formData.class.toUpperCase().startsWith('SS'))
+              
               const categoryOrder = ['Science', 'Art', 'Commercial', 'General']
-              const subjectsByCategory = filteredSubjects.reduce((acc, subject) => {
+              
+              const searchedSubjects = filteredSubjects.filter(s => 
+                s.name.toLowerCase().includes(subjectSearchTerm.toLowerCase()) ||
+                s.code.toLowerCase().includes(subjectSearchTerm.toLowerCase())
+              )
+
+              const subjectsByCategory = searchedSubjects.reduce((acc, subject) => {
                 const category = isSSSStudent ? (subject.subjectCategory || 'General') : 'General'
                 if (!acc[category]) {
                   acc[category] = []

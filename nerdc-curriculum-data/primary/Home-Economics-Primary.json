@@ -1,0 +1,22 @@
+{
+  "subjectName": "Home Economics",
+  "subjectCode": "HE-PRIMARY",
+  "level": "Primary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Family and Home Management", "objectives": ["Understand family roles", "Learn home management", "Appreciate family unity"], "duration": 40, "resources": ["Family guides", "Home management materials"], "assessmentMethod": "Family discussion"},
+    {"weekNumber": 2, "topicName": "Basic Cooking and Nutrition", "objectives": ["Learn cooking basics", "Understand nutrition", "Practice healthy eating"], "duration": 40, "resources": ["Cooking guides", "Nutrition information"], "assessmentMethod": "Cooking activity"},
+    {"weekNumber": 3, "topicName": "Food Preparation and Safety", "objectives": ["Learn food preparation", "Understand food safety", "Practice hygiene"], "duration": 40, "resources": ["Food guides", "Safety rules"], "assessmentMethod": "Food safety practice"},
+    {"weekNumber": 4, "topicName": "Clothing Care and Maintenance", "objectives": ["Learn clothing care", "Practice maintenance", "Understand laundry"], "duration": 40, "resources": ["Clothing guides", "Laundry information"], "assessmentMethod": "Clothing care task"},
+    {"weekNumber": 5, "topicName": "Midterm Assessment", "objectives": ["Assess learning"], "duration": 60, "resources": ["Assessment materials"], "assessmentMethod": "Practical test"},
+    {"weekNumber": 6, "topicName": "Home Cleanliness and Sanitation", "objectives": ["Learn cleaning", "Understand sanitation", "Practice hygiene"], "duration": 40, "resources": ["Cleaning guides", "Sanitation materials"], "assessmentMethod": "Cleaning project"},
+    {"weekNumber": 7, "topicName": "Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Budgeting and Resource Management", "objectives": ["Learn budgeting", "Manage resources", "Understand money"], "duration": 40, "resources": ["Budget guides", "Resource materials"], "assessmentMethod": "Budget planning"},
+    {"weekNumber": 9, "topicName": "Sewing and Basic Craft Skills", "objectives": ["Learn sewing basics", "Develop craft skills", "Create items"], "duration": 40, "resources": ["Sewing materials", "Craft guides"], "assessmentMethod": "Craft project"},
+    {"weekNumber": 10, "topicName": "Consumer Awareness", "objectives": ["Understand consumption", "Learn awareness", "Make wise choices"], "duration": 40, "resources": ["Consumer guides", "Choice materials"], "assessmentMethod": "Consumer project"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Final Assessment", "objectives": ["Final evaluation"], "duration": 180, "resources": ["Assessment materials"], "assessmentMethod": "Final practical exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}
