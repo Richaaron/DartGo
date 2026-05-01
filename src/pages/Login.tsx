@@ -30,27 +30,27 @@ const loginTypes: {
 }[] = [
   {
     id: "admin",
-    label: "Admin",
+    label: "Admin Login",
     desc: "Manage students, teachers and results",
     icon: <Shield className="w-5 h-5" />,
-    color: "text-blue-600 dark:text-blue-400",
-    iconBg: "bg-blue-50 dark:bg-blue-900/30",
+    color: "text-royal-purple-600 dark:text-royal-gold-300",
+    iconBg: "bg-gradient-to-br from-royal-purple-100 to-royal-purple-50 dark:from-royal-purple-900/30 dark:to-royal-purple-800/20",
   },
   {
     id: "teacher",
-    label: "Teacher",
+    label: "Teacher Login",
     desc: "Enter and manage subject results",
     icon: <BookOpen className="w-5 h-5" />,
-    color: "text-amber-600 dark:text-amber-400",
-    iconBg: "bg-amber-50 dark:bg-amber-900/30",
+    color: "text-royal-gold-600 dark:text-royal-gold-300",
+    iconBg: "bg-gradient-to-br from-royal-gold-100 to-royal-gold-50 dark:from-royal-gold-900/30 dark:to-royal-gold-800/20",
   },
   {
     id: "parent",
-    label: "Parent",
+    label: "Parent Login",
     desc: "View your child's progress",
     icon: <Users className="w-5 h-5" />,
-    color: "text-emerald-600 dark:text-emerald-400",
-    iconBg: "bg-emerald-50 dark:bg-emerald-900/30",
+    color: "text-royal-black-600 dark:text-royal-gold-300",
+    iconBg: "bg-gradient-to-br from-royal-purple-100 to-royal-gold-50 dark:from-royal-black-800 dark:to-royal-purple-800/20",
   },
 ];
 
@@ -110,31 +110,54 @@ export default function Login({ onLoginSuccess }: LoginProps) {
   return (
     <div className="min-h-screen flex">
       {/* ── Left Panel ─────────────────────────────── */}
-      <div className="hidden lg:flex lg:w-[45%] xl:w-[40%] bg-brand-900 flex-col items-center justify-center p-12 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-[45%] xl:w-[40%] bg-gradient-to-br from-royal-purple-600 via-royal-black-500 to-royal-purple-700 flex-col items-center justify-center p-12 relative overflow-hidden">
         {/* Background pattern */}
         <div
-          className="absolute inset-0 opacity-[0.03]"
+          className="absolute inset-0 opacity-[0.05]"
           style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
+            backgroundImage: `radial-gradient(circle at 1px 1px, #D4AF37 1px, transparent 0)`,
             backgroundSize: "32px 32px",
           }}
         />
-        {/* Blue glow orbs */}
-        <div className="absolute top-1/4 left-1/2 w-64 h-64 bg-blue-600/20 rounded-full blur-3xl -translate-x-1/2" />
-        <div className="absolute bottom-1/4 left-1/3 w-48 h-48 bg-indigo-600/15 rounded-full blur-3xl" />
+        {/* Gold glow orbs */}
+        <motion.div 
+          className="absolute top-1/4 left-1/2 w-80 h-80 bg-royal-gold-500/20 rounded-full blur-3xl -translate-x-1/2"
+          animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 4, repeat: Infinity }}
+        />
+        <motion.div 
+          className="absolute bottom-1/4 left-1/3 w-60 h-60 bg-royal-purple-400/15 rounded-full blur-3xl"
+          animate={{ scale: [1.1, 1, 1.1], opacity: [0.3, 0.4, 0.3] }}
+          transition={{ duration: 5, repeat: Infinity, delay: 0.5 }}
+        />
 
-        <div className="relative z-10 text-center">
+        <motion.div 
+          className="relative z-10 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
           {/* Logo */}
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mb-8 shadow-lg shadow-blue-600/30">
-            <GraduationCap className="w-9 h-9 text-white" />
-          </div>
+          <motion.div 
+            className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-royal-gold-400 to-royal-gold-500 rounded-2xl mb-8 shadow-2xl shadow-royal-gold-500/40"
+            animate={{ rotateY: [0, 360] }}
+            transition={{ duration: 3, repeat: Infinity }}
+            style={{ perspective: '1200px' }}
+          >
+            <motion.div
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <GraduationCap className="w-11 h-11 text-royal-purple-700" />
+            </motion.div>
+          </motion.div>
 
-          <h1 className="text-3xl font-bold text-white mb-3 leading-tight">
+          <h1 className="text-4xl font-bold text-white mb-3 leading-tight animate-fadeInDown">
             Folusho Victory
             <br />
             Schools
           </h1>
-          <p className="text-brand-400 text-sm font-medium mb-12">
+          <p className="text-royal-gold-300 text-base font-semibold mb-12 animate-fadeInUp">
             Result Management System
           </p>
 
@@ -145,38 +168,61 @@ export default function Login({ onLoginSuccess }: LoginProps) {
               "Automated report card generation",
               "Teacher and class management",
               "Real-time performance analytics",
-            ].map((feature) => (
-              <div key={feature} className="flex items-center gap-3">
-                <div className="w-5 h-5 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center flex-shrink-0">
-                  <Check className="w-3 h-3 text-blue-400" />
-                </div>
-                <span className="text-brand-300 text-sm">{feature}</span>
-              </div>
+            ].map((feature, i) => (
+              <motion.div 
+                key={feature}
+                className="flex items-center gap-3"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 + i * 0.1 }}
+              >
+                <motion.div 
+                  className="w-5 h-5 rounded-full bg-royal-gold-400/30 border border-royal-gold-400 flex items-center justify-center flex-shrink-0"
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <Check className="w-3 h-3 text-royal-gold-300" />
+                </motion.div>
+                <span className="text-royal-gold-200 text-sm font-medium">{feature}</span>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Bottom copyright */}
-        <p className="absolute bottom-8 text-brand-600 text-xs">
+        <motion.p 
+          className="absolute bottom-8 text-royal-gold-400 text-xs font-semibold"
+          animate={{ opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 3, repeat: Infinity }}
+        >
           © 2025 Folusho Victory Schools
-        </p>
+        </motion.p>
       </div>
 
       {/* ── Right Panel ────────────────────────────── */}
-      <div className="flex-1 flex items-center justify-center p-6 bg-brand-50 dark:bg-brand-900">
-        <div className="w-full max-w-md">
+      <div className="flex-1 flex items-center justify-center p-6 bg-gradient-to-br from-royal-gold-50 via-white to-royal-purple-50 dark:bg-gradient-to-br dark:from-royal-black-900 dark:via-royal-purple-900/20 dark:to-royal-black-900">
+        <motion.div 
+          className="w-full max-w-md"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+        >
           {/* Mobile logo */}
-          <div className="flex items-center gap-3 mb-8 lg:hidden">
-            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
-              <GraduationCap className="w-6 h-6 text-white" />
+          <motion.div 
+            className="flex items-center gap-3 mb-8 lg:hidden"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="w-12 h-12 bg-gradient-to-br from-royal-purple-600 to-royal-gold-500 rounded-xl flex items-center justify-center shadow-lg">
+              <GraduationCap className="w-7 h-7 text-white" />
             </div>
             <div>
-              <p className="font-bold text-brand-900 dark:text-white text-sm">
+              <p className="font-bold text-royal-purple-900 dark:text-royal-gold-300 text-base">
                 Folusho Victory Schools
               </p>
-              <p className="text-xs text-brand-500">Result Management System</p>
+              <p className="text-xs text-royal-purple-600 dark:text-royal-gold-400 font-medium">Result Management System</p>
             </div>
-          </div>
+          </motion.div>
 
           <AnimatePresence mode="wait">
             {!loginType ? (
@@ -186,12 +232,12 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.2 }}
+                transition={{ duration: 0.3 }}
               >
-                <h2 className="text-2xl font-bold text-brand-900 dark:text-white mb-1">
+                <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-royal-purple-600 to-royal-gold-500 mb-1">
                   Welcome back
                 </h2>
-                <p className="text-brand-500 dark:text-brand-400 mb-8 text-sm">
+                <p className="text-royal-purple-600 dark:text-royal-gold-400 mb-8 text-sm font-semibold">
                   Select your role to continue
                 </p>
 
@@ -199,26 +245,35 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                   {loginTypes.map((type, i) => (
                     <motion.button
                       key={type.id}
-                      initial={{ opacity: 0, x: -12 }}
+                      initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.07 }}
+                      whileHover={{ scale: 1.02, translateX: 4 }}
+                      whileTap={{ scale: 0.98 }}
+                      transition={{ delay: i * 0.08 }}
                       onClick={() => setLoginType(type.id)}
-                      className="w-full flex items-center gap-4 p-4 bg-white dark:bg-brand-800 border border-brand-200 dark:border-brand-700 rounded-xl hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-card-md transition-all duration-150 group text-left"
+                      className="w-full flex items-center gap-4 p-4 bg-white dark:bg-royal-black-800 border-2 border-royal-gold-200 dark:border-royal-purple-700/50 rounded-xl hover:border-royal-purple-400 dark:hover:border-royal-gold-500 hover:shadow-xl transition-all duration-200 group text-left"
                     >
-                      <div
-                        className={`p-2.5 rounded-lg ${type.iconBg} ${type.color} flex-shrink-0`}
+                      <motion.div
+                        className={`p-3 rounded-lg ${type.iconBg} ${type.color} flex-shrink-0`}
+                        animate={{ scale: [1, 1.1, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
                       >
                         {type.icon}
-                      </div>
+                      </motion.div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-brand-900 dark:text-white text-sm">
-                          {type.label} Login
+                        <p className="font-bold text-royal-purple-900 dark:text-white text-base">
+                          {type.label}
                         </p>
-                        <p className="text-xs text-brand-500 dark:text-brand-400 mt-0.5">
+                        <p className="text-xs text-royal-purple-600 dark:text-royal-gold-400 mt-0.5 font-medium">
                           {type.desc}
                         </p>
                       </div>
-                      <ChevronRight className="w-4 h-4 text-brand-400 group-hover:text-brand-600 dark:group-hover:text-brand-300 flex-shrink-0 transition-colors" />
+                      <motion.div
+                        animate={{ x: [0, 4, 0] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      >
+                        <ChevronRight className="w-5 h-5 text-royal-gold-500 group-hover:text-royal-purple-600 dark:group-hover:text-royal-gold-400 flex-shrink-0 transition-colors" />
+                      </motion.div>
                     </motion.button>
                   ))}
                 </div>
@@ -230,24 +285,154 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.2 }}
+                transition={{ duration: 0.3 }}
               >
-                <button
+                <motion.button
                   onClick={handleBack}
-                  className="flex items-center gap-1.5 text-sm text-brand-500 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-200 mb-6 transition-colors"
+                  className="flex items-center gap-1.5 text-sm text-royal-purple-600 hover:text-royal-purple-700 dark:text-royal-gold-400 dark:hover:text-royal-gold-300 mb-6 transition-colors font-semibold"
+                  whileHover={{ x: -4 }}
                 >
                   <ChevronRight className="w-4 h-4 rotate-180" />
                   Back
-                </button>
+                </motion.button>
 
                 {/* Role badge */}
                 {selectedType && (
-                  <div className="flex items-center gap-3 mb-6">
+                  <motion.div 
+                    className="flex items-center gap-3 mb-6"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                  >
                     <div
-                      className={`p-2.5 rounded-lg ${selectedType.iconBg} ${selectedType.color}`}
+                      className={`p-3 rounded-lg ${selectedType.iconBg} ${selectedType.color}`}
                     >
                       {selectedType.icon}
                     </div>
+                    <div>
+                      <h2 className="text-xl font-bold text-royal-purple-900 dark:text-white">
+                        {selectedType.label}
+                      </h2>
+                      <p className="text-xs text-royal-purple-600 dark:text-royal-gold-400 font-medium">
+                        {selectedType.desc}
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Error */}
+                <AnimatePresence>
+                  {error && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800/50 rounded-xl"
+                    >
+                      <p className="text-red-700 dark:text-red-300 text-sm font-bold">
+                        {error}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                  >
+                    <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
+                      {loginType === "parent"
+                        ? "Parent Username"
+                        : "Username / Email"}
+                    </label>
+                    <div className="relative">
+                      <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-royal-purple-400 dark:text-royal-gold-400" />
+                      <input
+                        type="text"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="input-field pl-12"
+                        placeholder={
+                          loginType === "parent"
+                            ? "Enter parent username"
+                            : "Enter your username"
+                        }
+                        disabled={isLoading}
+                        autoComplete="username"
+                      />
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.15 }}
+                  >
+                    <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
+                      Password
+                    </label>
+                    <div className="relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="input-field pr-12"
+                        placeholder="Enter your password"
+                        disabled={isLoading}
+                        autoComplete="current-password"
+                      />
+                      <motion.button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        disabled={isLoading}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-royal-purple-400 hover:text-royal-purple-600 dark:hover:text-royal-gold-400 transition-colors"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        {showPassword ? (
+                          <EyeOff size={18} />
+                        ) : (
+                          <Eye size={18} />
+                        )}
+                      </motion.button>
+                    </div>
+                  </motion.div>
+
+                  <motion.button
+                    type="submit"
+                    disabled={isLoading}
+                    className="btn-primary w-full py-3 mt-6 text-base font-bold shadow-lg shadow-royal-purple-500/30"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    {isLoading ? (
+                      <>
+                        <motion.div 
+                          className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full"
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                        />
+                        Signing in...
+                      </>
+                    ) : (
+                      <>
+                        <Check size={18} />
+                        Sign In
+                      </>
+                    )}
+                  </motion.button>
+                </form>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </div>
+    </div>
+  );
                     <div>
                       <h2 className="text-xl font-bold text-brand-900 dark:text-white">
                         {selectedType.label} Login
