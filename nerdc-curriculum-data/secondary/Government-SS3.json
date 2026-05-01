@@ -1,0 +1,22 @@
+{
+  "subjectName": "Government",
+  "subjectCode": "GOV-SS3",
+  "level": "Senior Secondary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Government and Political Systems", "objectives": ["Understand government", "Study systems", "Learn structures"], "duration": 40, "resources": ["Government guides", "System materials"], "assessmentMethod": "Government knowledge"},
+    {"weekNumber": 2, "topicName": "Types of Government", "objectives": ["Study forms", "Understand differences", "Analyze structures"], "duration": 40, "resources": ["Government types guides", "Structure materials"], "assessmentMethod": "Government comparison"},
+    {"weekNumber": 3, "topicName": "Constitutionalism and the State", "objectives": ["Understand constitution", "Study state", "Learn principles"], "duration": 40, "resources": ["Constitution guides", "State materials"], "assessmentMethod": "Constitutional study"},
+    {"weekNumber": 4, "topicName": "Organs and Functions of Government", "objectives": ["Understand organs", "Study functions", "Learn separation"], "duration": 40, "resources": ["Organ guides", "Function materials"], "assessmentMethod": "Function analysis"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Executive and Legislative Powers", "objectives": ["Understand branches", "Study powers", "Learn interaction"], "duration": 40, "resources": ["Branch guides", "Power materials"], "assessmentMethod": "Power analysis"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "The Judiciary and Justice System", "objectives": ["Understand courts", "Study justice", "Learn procedures"], "duration": 40, "resources": ["Judiciary guides", "Justice materials"], "assessmentMethod": "Judiciary study"},
+    {"weekNumber": 9, "topicName": "Political Parties and Elections", "objectives": ["Study parties", "Understand elections", "Learn process"], "duration": 40, "resources": ["Party guides", "Election materials"], "assessmentMethod": "Election analysis"},
+    {"weekNumber": 10, "topicName": "Nigeria's Political System and History", "objectives": ["Study Nigerian government", "Learn history", "Analyze development"], "duration": 40, "resources": ["Nigerian guides", "History materials"], "assessmentMethod": "Nigerian politics study"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

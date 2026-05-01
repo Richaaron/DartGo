@@ -1,0 +1,22 @@
+{
+  "subjectName": "Chemistry",
+  "subjectCode": "CHEM-SS3",
+  "level": "Senior Secondary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Atomic Structure and Bonding", "objectives": ["Study atoms", "Understand bonding", "Analyze structure"], "duration": 40, "resources": ["Atomic guides", "Bonding materials"], "assessmentMethod": "Atomic structure problems"},
+    {"weekNumber": 2, "topicName": "Periodic Table and Elements", "objectives": ["Understand periodicity", "Study elements", "Analyze properties"], "duration": 40, "resources": ["Periodic guides", "Element materials"], "assessmentMethod": "Element classification"},
+    {"weekNumber": 3, "topicName": "Chemical Reactions and Stoichiometry", "objectives": ["Study reactions", "Calculate stoichiometry", "Balance equations"], "duration": 40, "resources": ["Reaction guides", "Stoichiometry materials"], "assessmentMethod": "Reaction problems"},
+    {"weekNumber": 4, "topicName": "Acid-Base Chemistry", "objectives": ["Understand acids", "Study bases", "Analyze pH"], "duration": 40, "resources": ["Acid-base guides", "pH materials"], "assessmentMethod": "pH calculations"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Organic Chemistry", "objectives": ["Study hydrocarbons", "Understand functional groups", "Learn reactions"], "duration": 40, "resources": ["Organic guides", "Compound materials"], "assessmentMethod": "Organic structure problems"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Electrochemistry", "objectives": ["Understand redox", "Study electrolysis", "Analyze cells"], "duration": 40, "resources": ["Electrochemistry guides", "Cell materials"], "assessmentMethod": "Redox analysis"},
+    {"weekNumber": 9, "topicName": "Thermochemistry and Kinetics", "objectives": ["Study energy", "Understand rates", "Analyze equilibrium"], "duration": 40, "resources": ["Thermochemistry guides", "Kinetics materials"], "assessmentMethod": "Equilibrium problems"},
+    {"weekNumber": 10, "topicName": "Chemistry Applications and Industry", "objectives": ["Learn applications", "Understand production", "Explore industries"], "duration": 40, "resources": ["Application guides", "Industry materials"], "assessmentMethod": "Chemistry project"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

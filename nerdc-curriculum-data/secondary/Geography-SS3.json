@@ -1,0 +1,22 @@
+{
+  "subjectName": "Geography",
+  "subjectCode": "GEO-SS3",
+  "level": "Senior Secondary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Physical Geography and Landforms", "objectives": ["Study landforms", "Understand processes", "Analyze geography"], "duration": 40, "resources": ["Geography maps", "Landform materials"], "assessmentMethod": "Map analysis"},
+    {"weekNumber": 2, "topicName": "Climate and Weather Systems", "objectives": ["Understand climate", "Study weather", "Analyze patterns"], "duration": 40, "resources": ["Climate guides", "Weather materials"], "assessmentMethod": "Weather analysis"},
+    {"weekNumber": 3, "topicName": "Population and Settlement", "objectives": ["Study population", "Understand settlement", "Analyze distribution"], "duration": 40, "resources": ["Population data", "Settlement guides"], "assessmentMethod": "Settlement study"},
+    {"weekNumber": 4, "topicName": "Economic Geography", "objectives": ["Understand economies", "Study industries", "Analyze trade"], "duration": 40, "resources": ["Economic guides", "Industry materials"], "assessmentMethod": "Economic analysis"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Human and Cultural Geography", "objectives": ["Study cultures", "Understand societies", "Analyze interactions"], "duration": 40, "resources": ["Cultural guides", "Society materials"], "assessmentMethod": "Cultural study"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Political Geography and Boundaries", "objectives": ["Understand politics", "Study boundaries", "Analyze conflicts"], "duration": 40, "resources": ["Political guides", "Boundary materials"], "assessmentMethod": "Political analysis"},
+    {"weekNumber": 9, "topicName": "Environmental Issues and Sustainability", "objectives": ["Understand issues", "Learn solutions", "Study sustainability"], "duration": 40, "resources": ["Environmental guides", "Sustainability materials"], "assessmentMethod": "Environmental project"},
+    {"weekNumber": 10, "topicName": "Geographic Methods and Technology", "objectives": ["Learn research methods", "Understand GIS", "Apply technology"], "duration": 40, "resources": ["Method guides", "GIS materials"], "assessmentMethod": "Geographic study"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

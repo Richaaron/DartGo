@@ -1,0 +1,22 @@
+{
+  "subjectName": "Biology",
+  "subjectCode": "BIO-SS3",
+  "level": "Senior Secondary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Cell Structure and Function", "objectives": ["Study cell organelles", "Understand functions", "Explore organization"], "duration": 40, "resources": ["Cell diagrams", "Biology guides"], "assessmentMethod": "Cell identification"},
+    {"weekNumber": 2, "topicName": "Genetics and Heredity", "objectives": ["Learn inheritance", "Understand DNA", "Apply Mendel's laws"], "duration": 40, "resources": ["Genetics guides", "DNA materials"], "assessmentMethod": "Genetics problems"},
+    {"weekNumber": 3, "topicName": "Evolution and Natural Selection", "objectives": ["Understand evolution", "Study adaptation", "Analyze evidence"], "duration": 40, "resources": ["Evolution guides", "Fossil materials"], "assessmentMethod": "Evolution analysis"},
+    {"weekNumber": 4, "topicName": "Human Physiology", "objectives": ["Study body systems", "Understand functions", "Learn processes"], "duration": 40, "resources": ["Physiology guides", "Body system materials"], "assessmentMethod": "System study"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Ecology and Ecosystems", "objectives": ["Understand ecosystems", "Study relationships", "Learn cycles"], "duration": 40, "resources": ["Ecology guides", "Ecosystem materials"], "assessmentMethod": "Ecosystem analysis"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Reproduction and Development", "objectives": ["Understand reproduction", "Study development", "Learn processes"], "duration": 40, "resources": ["Reproduction guides", "Development materials"], "assessmentMethod": "Development study"},
+    {"weekNumber": 9, "topicName": "Microbiology and Disease", "objectives": ["Study microorganisms", "Understand disease", "Learn immunity"], "duration": 40, "resources": ["Microbiology guides", "Disease materials"], "assessmentMethod": "Microbiology project"},
+    {"weekNumber": 10, "topicName": "Biotechnology and Applications", "objectives": ["Understand biotechnology", "Learn applications", "Explore innovations"], "duration": 40, "resources": ["Biotech guides", "Application materials"], "assessmentMethod": "Biotech project"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

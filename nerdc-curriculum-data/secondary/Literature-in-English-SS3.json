@@ -1,0 +1,22 @@
+{
+  "subjectName": "Literature in English",
+  "subjectCode": "LIT-SS3",
+  "level": "Senior Secondary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Drama and Theatrical Study", "objectives": ["Study drama", "Understand plays", "Analyze characters"], "duration": 40, "resources": ["Play texts", "Drama guides"], "assessmentMethod": "Drama analysis"},
+    {"weekNumber": 2, "topicName": "Poetry and Verse Analysis", "objectives": ["Study poetry", "Learn devices", "Analyze form"], "duration": 40, "resources": ["Poetry collections", "Analysis guides"], "assessmentMethod": "Poetry analysis"},
+    {"weekNumber": 3, "topicName": "Prose and Fiction", "objectives": ["Study novels", "Analyze stories", "Understand themes"], "duration": 40, "resources": ["Novels", "Prose guides"], "assessmentMethod": "Fiction analysis"},
+    {"weekNumber": 4, "topicName": "Literary Criticism and Theory", "objectives": ["Understand criticism", "Learn theory", "Apply concepts"], "duration": 40, "resources": ["Theory guides", "Criticism materials"], "assessmentMethod": "Critical analysis"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "African Literature and Context", "objectives": ["Study African works", "Understand context", "Analyze culture"], "duration": 40, "resources": ["African literature", "Context guides"], "assessmentMethod": "Literature study"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Shakespeare and Classical Works", "objectives": ["Study Shakespeare", "Analyze classics", "Learn themes"], "duration": 40, "resources": ["Shakespeare texts", "Classical materials"], "assessmentMethod": "Shakespeare analysis"},
+    {"weekNumber": 9, "topicName": "Modern and Contemporary Literature", "objectives": ["Study modern works", "Analyze contemporary", "Learn trends"], "duration": 40, "resources": ["Modern works", "Contemporary materials"], "assessmentMethod": "Modern literature study"},
+    {"weekNumber": 10, "topicName": "Literary Appreciation and Interpretation", "objectives": ["Develop appreciation", "Learn interpretation", "Enhance understanding"], "duration": 40, "resources": ["Appreciation guides", "Interpretation materials"], "assessmentMethod": "Literature project"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

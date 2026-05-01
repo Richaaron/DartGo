@@ -1,0 +1,22 @@
+{
+  "subjectName": "Religious Studies",
+  "subjectCode": "RS-SS3",
+  "level": "Senior Secondary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Comparative Religion", "objectives": ["Study religions", "Understand differences", "Learn similarities"], "duration": 40, "resources": ["Religion guides", "Comparison materials"], "assessmentMethod": "Religion comparison"},
+    {"weekNumber": 2, "topicName": "Religious Philosophy and Ethics", "objectives": ["Understand philosophy", "Study ethics", "Analyze morality"], "duration": 40, "resources": ["Philosophy guides", "Ethics materials"], "assessmentMethod": "Philosophy analysis"},
+    {"weekNumber": 3, "topicName": "Sacred Texts and Interpretations", "objectives": ["Study texts", "Learn interpretation", "Analyze meaning"], "duration": 40, "resources": ["Sacred texts", "Interpretation guides"], "assessmentMethod": "Text analysis"},
+    {"weekNumber": 4, "topicName": "Religious Rituals and Practices", "objectives": ["Understand rituals", "Study practices", "Analyze significance"], "duration": 40, "resources": ["Ritual guides", "Practice materials"], "assessmentMethod": "Ritual study"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Religious Leaders and Movements", "objectives": ["Study leaders", "Learn movements", "Analyze influence"], "duration": 40, "resources": ["Leader guides", "Movement materials"], "assessmentMethod": "Leader study"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Religion and Society", "objectives": ["Understand role", "Study impact", "Analyze society"], "duration": 40, "resources": ["Society guides", "Impact materials"], "assessmentMethod": "Society analysis"},
+    {"weekNumber": 9, "topicName": "Interfaith Dialogue and Tolerance", "objectives": ["Learn dialogue", "Study tolerance", "Build understanding"], "duration": 40, "resources": ["Dialogue guides", "Tolerance materials"], "assessmentMethod": "Dialogue project"},
+    {"weekNumber": 10, "topicName": "Religion and Contemporary Issues", "objectives": ["Understand issues", "Study challenges", "Learn responses"], "duration": 40, "resources": ["Issue guides", "Challenge materials"], "assessmentMethod": "Issue analysis"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "subjectName": "Agricultural Science",
+  "subjectCode": "AG-SS3",
+  "level": "Senior Secondary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Crop Production and Management", "objectives": ["Study crop science", "Learn production", "Analyze factors"], "duration": 40, "resources": ["Crop guides", "Production materials"], "assessmentMethod": "Crop analysis"},
+    {"weekNumber": 2, "topicName": "Soil Science and Fertility", "objectives": ["Understand soil", "Study fertility", "Learn improvement"], "duration": 40, "resources": ["Soil guides", "Fertility materials"], "assessmentMethod": "Soil study"},
+    {"weekNumber": 3, "topicName": "Plant Breeding and Improvement", "objectives": ["Learn breeding", "Study genetics", "Analyze improvement"], "duration": 40, "resources": ["Breeding guides", "Genetics materials"], "assessmentMethod": "Breeding study"},
+    {"weekNumber": 4, "topicName": "Pest and Disease Management", "objectives": ["Understand pests", "Study diseases", "Learn control"], "duration": 40, "resources": ["Pest guides", "Disease materials"], "assessmentMethod": "Pest management"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Livestock Management and Production", "objectives": ["Study livestock", "Learn husbandry", "Analyze production"], "duration": 40, "resources": ["Livestock guides", "Production materials"], "assessmentMethod": "Livestock study"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Agricultural Technology and Mechanization", "objectives": ["Learn technology", "Understand machines", "Study equipment"], "duration": 40, "resources": ["Technology guides", "Machinery materials"], "assessmentMethod": "Technology study"},
+    {"weekNumber": 9, "topicName": "Food Processing and Storage", "objectives": ["Study processing", "Learn preservation", "Analyze methods"], "duration": 40, "resources": ["Processing guides", "Storage materials"], "assessmentMethod": "Processing study"},
+    {"weekNumber": 10, "topicName": "Sustainable and Organic Agriculture", "objectives": ["Understand sustainability", "Learn organic", "Study practices"], "duration": 40, "resources": ["Sustainability guides", "Organic materials"], "assessmentMethod": "Sustainability project"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

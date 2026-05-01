@@ -1,0 +1,22 @@
+{
+  "subjectName": "English Language",
+  "subjectCode": "ENG-SS3",
+  "level": "Senior Secondary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Advanced Grammar and Syntax", "objectives": ["Master advanced grammar", "Understand complex structures", "Apply correctly"], "duration": 40, "resources": ["Grammar guides", "Syntax materials"], "assessmentMethod": "Grammar exercises"},
+    {"weekNumber": 2, "topicName": "Comprehension and Analysis", "objectives": ["Develop comprehension", "Analyze texts", "Extract meaning"], "duration": 40, "resources": ["Reading materials", "Analysis guides"], "assessmentMethod": "Comprehension tasks"},
+    {"weekNumber": 3, "topicName": "Essay Writing and Composition", "objectives": ["Write essays", "Develop arguments", "Structure effectively"], "duration": 40, "resources": ["Essay guides", "Composition materials"], "assessmentMethod": "Essay writing"},
+    {"weekNumber": 4, "topicName": "Literature and Interpretation", "objectives": ["Study literature", "Interpret themes", "Analyze works"], "duration": 40, "resources": ["Literature texts", "Analysis guides"], "assessmentMethod": "Literature analysis"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Vocabulary and Semantic Relations", "objectives": ["Expand vocabulary", "Understand meanings", "Apply usage"], "duration": 40, "resources": ["Vocabulary lists", "Semantic guides"], "assessmentMethod": "Vocabulary tests"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Oral Communication and Presentation", "objectives": ["Develop speaking skills", "Present effectively", "Communicate clearly"], "duration": 40, "resources": ["Speaking guides", "Presentation materials"], "assessmentMethod": "Oral presentation"},
+    {"weekNumber": 9, "topicName": "Report and Formal Writing", "objectives": ["Write reports", "Use formal language", "Follow conventions"], "duration": 40, "resources": ["Report guides", "Formal templates"], "assessmentMethod": "Report writing"},
+    {"weekNumber": 10, "topicName": "Creative and Expressive Writing", "objectives": ["Explore creativity", "Express ideas", "Develop style"], "duration": 40, "resources": ["Creative guides", "Writing examples"], "assessmentMethod": "Creative writing"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

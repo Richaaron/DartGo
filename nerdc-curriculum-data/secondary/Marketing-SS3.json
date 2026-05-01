@@ -1,0 +1,22 @@
+{
+  "subjectName": "Marketing",
+  "subjectCode": "MKT-SS3",
+  "level": "Senior Secondary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Marketing Principles and Concepts", "objectives": ["Understand marketing", "Learn functions", "Study environment"], "duration": 40, "resources": ["Marketing guides", "Concept materials"], "assessmentMethod": "Marketing knowledge"},
+    {"weekNumber": 2, "topicName": "Consumer Behavior and Market Research", "objectives": ["Understand consumers", "Study behavior", "Learn research"], "duration": 40, "resources": ["Consumer guides", "Research materials"], "assessmentMethod": "Behavior analysis"},
+    {"weekNumber": 3, "topicName": "Product Development and Management", "objectives": ["Understand products", "Study lifecycle", "Learn management"], "duration": 40, "resources": ["Product guides", "Lifecycle materials"], "assessmentMethod": "Product analysis"},
+    {"weekNumber": 4, "topicName": "Pricing Strategies", "objectives": ["Understand pricing", "Learn strategies", "Analyze costs"], "duration": 40, "resources": ["Pricing guides", "Strategy materials"], "assessmentMethod": "Pricing exercise"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Distribution and Promotion", "objectives": ["Understand distribution", "Study channels", "Learn promotion"], "duration": 40, "resources": ["Distribution guides", "Promotion materials"], "assessmentMethod": "Distribution analysis"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Digital Marketing and E-Commerce", "objectives": ["Understand digital", "Learn e-commerce", "Study online"], "duration": 40, "resources": ["Digital guides", "E-commerce materials"], "assessmentMethod": "Digital marketing project"},
+    {"weekNumber": 9, "topicName": "Brand Management and Loyalty", "objectives": ["Understand branding", "Study loyalty", "Learn positioning"], "duration": 40, "resources": ["Brand guides", "Loyalty materials"], "assessmentMethod": "Brand analysis"},
+    {"weekNumber": 10, "topicName": "Marketing Planning and Control", "objectives": ["Learn planning", "Study control", "Analyze performance"], "duration": 40, "resources": ["Planning guides", "Control materials"], "assessmentMethod": "Marketing plan"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "subjectName": "Commerce",
+  "subjectCode": "COM-SS3",
+  "level": "Senior Secondary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Business and Commerce Overview", "objectives": ["Understand commerce", "Learn business", "Study activities"], "duration": 40, "resources": ["Commerce guides", "Business materials"], "assessmentMethod": "Commerce knowledge"},
+    {"weekNumber": 2, "topicName": "Trade and Commerce Forms", "objectives": ["Study trade", "Understand commerce", "Learn forms"], "duration": 40, "resources": ["Trade guides", "Commerce materials"], "assessmentMethod": "Trade analysis"},
+    {"weekNumber": 3, "topicName": "Business Organizations and Partnerships", "objectives": ["Understand forms", "Study partnerships", "Learn structures"], "duration": 40, "resources": ["Organization guides", "Partnership materials"], "assessmentMethod": "Organization study"},
+    {"weekNumber": 4, "topicName": "Communication and Commerce", "objectives": ["Study communication", "Learn business correspondence", "Practice writing"], "duration": 40, "resources": ["Communication guides", "Letter materials"], "assessmentMethod": "Communication exercise"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Money and Banking", "objectives": ["Understand money", "Study banking", "Learn services"], "duration": 40, "resources": ["Money guides", "Banking materials"], "assessmentMethod": "Banking study"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Insurance and Risk Management", "objectives": ["Understand insurance", "Study risks", "Learn protection"], "duration": 40, "resources": ["Insurance guides", "Risk materials"], "assessmentMethod": "Insurance analysis"},
+    {"weekNumber": 9, "topicName": "International Trade and Customs", "objectives": ["Understand trade", "Study customs", "Learn procedures"], "duration": 40, "resources": ["Trade guides", "Customs materials"], "assessmentMethod": "Trade study"},
+    {"weekNumber": 10, "topicName": "Commercial Documents and Records", "objectives": ["Study documents", "Understand records", "Learn procedures"], "duration": 40, "resources": ["Document guides", "Record materials"], "assessmentMethod": "Document exercise"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

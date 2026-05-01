@@ -1,0 +1,22 @@
+{
+  "subjectName": "Economics",
+  "subjectCode": "ECON-SS3",
+  "level": "Senior Secondary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Economic Principles and Concepts", "objectives": ["Understand economics", "Learn concepts", "Study foundations"], "duration": 40, "resources": ["Economics guides", "Concept materials"], "assessmentMethod": "Economics knowledge"},
+    {"weekNumber": 2, "topicName": "Supply, Demand and Market Equilibrium", "objectives": ["Understand market", "Study supply-demand", "Analyze equilibrium"], "duration": 40, "resources": ["Market guides", "Demand materials"], "assessmentMethod": "Market analysis"},
+    {"weekNumber": 3, "topicName": "Consumer and Producer Behavior", "objectives": ["Study behavior", "Understand choices", "Analyze decisions"], "duration": 40, "resources": ["Behavior guides", "Choice materials"], "assessmentMethod": "Behavior analysis"},
+    {"weekNumber": 4, "topicName": "Production, Cost and Revenue", "objectives": ["Understand production", "Study costs", "Analyze revenue"], "duration": 40, "resources": ["Production guides", "Cost materials"], "assessmentMethod": "Cost analysis"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Market Structures and Competition", "objectives": ["Understand structures", "Study competition", "Learn monopoly"], "duration": 40, "resources": ["Structure guides", "Competition materials"], "assessmentMethod": "Structure analysis"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Macroeconomics and National Income", "objectives": ["Understand macro", "Study income", "Analyze growth"], "duration": 40, "resources": ["Macro guides", "Income materials"], "assessmentMethod": "Macro analysis"},
+    {"weekNumber": 9, "topicName": "Money, Banking and Financial Systems", "objectives": ["Understand money", "Study banking", "Learn systems"], "duration": 40, "resources": ["Money guides", "Banking materials"], "assessmentMethod": "Financial study"},
+    {"weekNumber": 10, "topicName": "International Trade and Development", "objectives": ["Understand trade", "Study development", "Learn integration"], "duration": 40, "resources": ["Trade guides", "Development materials"], "assessmentMethod": "Trade analysis"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

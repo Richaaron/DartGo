@@ -1,0 +1,22 @@
+{
+  "subjectName": "Accounting",
+  "subjectCode": "ACC-SS3",
+  "level": "Senior Secondary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Accounting Principles and Concepts", "objectives": ["Understand principles", "Learn concepts", "Study foundations"], "duration": 40, "resources": ["Accounting guides", "Principle materials"], "assessmentMethod": "Accounting knowledge"},
+    {"weekNumber": 2, "topicName": "Books of Accounts and Recording", "objectives": ["Learn double-entry", "Record transactions", "Study books"], "duration": 40, "resources": ["Recording guides", "Journal materials"], "assessmentMethod": "Recording exercise"},
+    {"weekNumber": 3, "topicName": "Ledger Accounts and Trial Balance", "objectives": ["Understand ledgers", "Prepare trial balance", "Analyze accounts"], "duration": 40, "resources": ["Ledger guides", "Trial balance materials"], "assessmentMethod": "Ledger problems"},
+    {"weekNumber": 4, "topicName": "Final Accounts and Statements", "objectives": ["Prepare statements", "Understand accounts", "Analyze results"], "duration": 40, "resources": ["Statement guides", "Account materials"], "assessmentMethod": "Statement preparation"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Partnership Accounts", "objectives": ["Study partnerships", "Prepare accounts", "Analyze ratios"], "duration": 40, "resources": ["Partnership guides", "Ratio materials"], "assessmentMethod": "Partnership accounting"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Company Accounts", "objectives": ["Study companies", "Prepare statements", "Learn consolidation"], "duration": 40, "resources": ["Company guides", "Consolidation materials"], "assessmentMethod": "Company accounting"},
+    {"weekNumber": 9, "topicName": "Cost Accounting and Costing", "objectives": ["Understand costs", "Calculate costing", "Analyze expenses"], "duration": 40, "resources": ["Costing guides", "Cost materials"], "assessmentMethod": "Costing exercises"},
+    {"weekNumber": 10, "topicName": "Management Accounting and Analysis", "objectives": ["Learn analysis", "Understand budgets", "Study variance"], "duration": 40, "resources": ["Management guides", "Analysis materials"], "assessmentMethod": "Budget analysis"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

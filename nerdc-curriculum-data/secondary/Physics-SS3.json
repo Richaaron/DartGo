@@ -1,0 +1,22 @@
+{
+  "subjectName": "Physics",
+  "subjectCode": "PHY-SS3",
+  "level": "Senior Secondary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Mechanics and Motion", "objectives": ["Study motion", "Understand forces", "Apply Newton's laws"], "duration": 40, "resources": ["Mechanics guides", "Force materials"], "assessmentMethod": "Mechanics problems"},
+    {"weekNumber": 2, "topicName": "Energy and Work", "objectives": ["Understand energy", "Study work", "Apply conservation"], "duration": 40, "resources": ["Energy guides", "Work materials"], "assessmentMethod": "Energy exercises"},
+    {"weekNumber": 3, "topicName": "Waves and Sound", "objectives": ["Study waves", "Understand sound", "Analyze properties"], "duration": 40, "resources": ["Wave guides", "Sound materials"], "assessmentMethod": "Wave analysis"},
+    {"weekNumber": 4, "topicName": "Thermodynamics", "objectives": ["Understand heat", "Study temperature", "Apply laws"], "duration": 40, "resources": ["Thermodynamics guides", "Heat materials"], "assessmentMethod": "Thermodynamics problems"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Electricity and Magnetism", "objectives": ["Study electricity", "Understand magnetism", "Analyze circuits"], "duration": 40, "resources": ["Electricity guides", "Magnetic materials"], "assessmentMethod": "Circuit analysis"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Light and Optics", "objectives": ["Study light", "Understand optics", "Analyze refraction"], "duration": 40, "resources": ["Optics guides", "Light materials"], "assessmentMethod": "Optics experiments"},
+    {"weekNumber": 9, "topicName": "Modern Physics", "objectives": ["Understand relativity", "Study quanta", "Learn nuclear physics"], "duration": 40, "resources": ["Modern physics guides", "Quantum materials"], "assessmentMethod": "Modern physics study"},
+    {"weekNumber": 10, "topicName": "Physics Applications and Technology", "objectives": ["Learn applications", "Understand technology", "Explore innovations"], "duration": 40, "resources": ["Application guides", "Technology materials"], "assessmentMethod": "Physics project"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

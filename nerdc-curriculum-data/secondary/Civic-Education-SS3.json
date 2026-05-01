@@ -1,0 +1,22 @@
+{
+  "subjectName": "Civic Education",
+  "subjectCode": "CIV-SS3",
+  "level": "Senior Secondary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Nigerian Constitution and Governance", "objectives": ["Understand constitution", "Study structure", "Learn principles"], "duration": 40, "resources": ["Constitution guides", "Governance materials"], "assessmentMethod": "Constitution study"},
+    {"weekNumber": 2, "topicName": "Citizenship and Rights", "objectives": ["Understand citizenship", "Learn rights", "Study duties"], "duration": 40, "resources": ["Rights guides", "Citizenship materials"], "assessmentMethod": "Rights analysis"},
+    {"weekNumber": 3, "topicName": "Democratic Processes and Elections", "objectives": ["Understand democracy", "Study elections", "Learn participation"], "duration": 40, "resources": ["Democracy guides", "Election materials"], "assessmentMethod": "Election study"},
+    {"weekNumber": 4, "topicName": "Law and Justice System", "objectives": ["Understand law", "Study courts", "Learn procedures"], "duration": 40, "resources": ["Law guides", "Justice materials"], "assessmentMethod": "Justice system analysis"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Human Rights and Freedoms", "objectives": ["Understand rights", "Study freedoms", "Learn protection"], "duration": 40, "resources": ["Human rights guides", "Freedom materials"], "assessmentMethod": "Rights project"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Conflict Resolution and Peace", "objectives": ["Understand conflict", "Learn resolution", "Study peace"], "duration": 40, "resources": ["Conflict guides", "Peace materials"], "assessmentMethod": "Conflict analysis"},
+    {"weekNumber": 9, "topicName": "Social Responsibility and Community", "objectives": ["Understand responsibility", "Learn community", "Study development"], "duration": 40, "resources": ["Responsibility guides", "Community materials"], "assessmentMethod": "Community project"},
+    {"weekNumber": 10, "topicName": "International Relations and Global Issues", "objectives": ["Understand diplomacy", "Study global issues", "Learn cooperation"], "duration": 40, "resources": ["International guides", "Global materials"], "assessmentMethod": "Global issues study"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "subjectName": "Mathematics",
+  "subjectCode": "MATH-SS3",
+  "level": "Senior Secondary",
+  "creditUnits": 3,
+  "subjectCategory": "CORE",
+  "topics": [
+    {"weekNumber": 1, "topicName": "Algebra and Polynomials", "objectives": ["Review algebraic concepts", "Work with polynomials", "Solve equations"], "duration": 40, "resources": ["Algebra guides", "Polynomial materials"], "assessmentMethod": "Algebra problems"},
+    {"weekNumber": 2, "topicName": "Trigonometry", "objectives": ["Learn trigonometric ratios", "Apply to triangles", "Solve problems"], "duration": 40, "resources": ["Trigonometry guides", "Angle materials"], "assessmentMethod": "Trigonometry exercises"},
+    {"weekNumber": 3, "topicName": "Logarithms and Exponentials", "objectives": ["Understand logarithms", "Work with exponentials", "Apply concepts"], "duration": 40, "resources": ["Log guides", "Exponential materials"], "assessmentMethod": "Log problems"},
+    {"weekNumber": 4, "topicName": "Calculus Basics", "objectives": ["Learn limits and derivatives", "Understand functions", "Apply calculus"], "duration": 40, "resources": ["Calculus guides", "Function materials"], "assessmentMethod": "Calculus exercises"},
+    {"weekNumber": 5, "topicName": "Midterm Examination", "objectives": ["Assess learning"], "duration": 60, "resources": ["Exam papers"], "assessmentMethod": "Exam"},
+    {"weekNumber": 6, "topicName": "Sequences and Series", "objectives": ["Understand sequences", "Work with series", "Apply formulas"], "duration": 40, "resources": ["Sequence guides", "Series materials"], "assessmentMethod": "Series problems"},
+    {"weekNumber": 7, "topicName": "Midterm Break", "objectives": ["Rest and consolidation"], "duration": 0, "resources": [], "assessmentMethod": "None"},
+    {"weekNumber": 8, "topicName": "Matrices and Determinants", "objectives": ["Learn matrices", "Calculate determinants", "Solve systems"], "duration": 40, "resources": ["Matrix guides", "Determinant materials"], "assessmentMethod": "Matrix exercises"},
+    {"weekNumber": 9, "topicName": "Statistics and Probability", "objectives": ["Understand statistics", "Learn probability", "Analyze data"], "duration": 40, "resources": ["Statistics guides", "Probability materials"], "assessmentMethod": "Statistics project"},
+    {"weekNumber": 10, "topicName": "Coordinate Geometry", "objectives": ["Work with coordinates", "Understand shapes", "Solve problems"], "duration": 40, "resources": ["Geometry guides", "Coordinate materials"], "assessmentMethod": "Geometry exercises"},
+    {"weekNumber": 11, "topicName": "Revision", "objectives": ["Review all topics", "Consolidate knowledge"], "duration": 40, "resources": ["Revision materials"], "assessmentMethod": "Mock exam"},
+    {"weekNumber": 12, "topicName": "Examination", "objectives": ["Final assessment"], "duration": 180, "resources": ["Exam papers"], "assessmentMethod": "Final exam"},
+    {"weekNumber": 13, "topicName": "Closing", "objectives": ["Term closure"], "duration": 0, "resources": [], "assessmentMethod": "None"}
+  ]
+}
