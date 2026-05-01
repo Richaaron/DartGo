@@ -78,8 +78,8 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900 dark:from-slate-950 dark:via-slate-900 dark:to-purple-950 p-4">
-          <div className="max-w-md w-full bg-gradient-to-br from-white to-slate-50 dark:from-slate-800/95 dark:to-slate-900/95 dark:backdrop-blur-md rounded-2xl shadow-2xl p-8 text-center border border-purple-200/50 dark:border-purple-600/30">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-900 via-slate-800 to-purple-900 dark:from-brand-950 dark:via-slate-900 dark:to-purple-950 p-4">
+          <div className="max-w-md w-full bg-gradient-to-br from-white to-brand-50 dark:from-brand-800/95 dark:to-brand-900/95 dark:backdrop-blur-md rounded-2xl shadow-2xl p-8 text-center border border-purple-200/50 dark:border-purple-600/30">
             <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-rose-500 to-rose-600 dark:from-rose-600 dark:to-rose-700 flex items-center justify-center shadow-lg shadow-rose-500/40 animate-pulse">
               <AlertTriangle className="w-10 h-10 text-white" />
             </div>

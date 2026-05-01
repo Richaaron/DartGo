@@ -192,7 +192,7 @@ export default function AdminSchemeUpload() {
             <select
               value={filterLevel}
               onChange={(e) => setFilterLevel(e.target.value as SchoolLevel | 'All')}
-              className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-700/60 border border-gray-100 dark:border-purple-600/50 rounded-xl focus:ring-2 focus:ring-indigo-500 dark:focus:ring-gold-400 outline-none text-sm font-bold text-gray-900 dark:text-gray-50"
+              className="w-full px-4 py-2 bg-gray-50 dark:bg-brand-700/60 border border-gray-100 dark:border-purple-600/50 rounded-xl focus:ring-2 focus:ring-indigo-500 dark:focus:ring-gold-400 outline-none text-sm font-bold text-gray-900 dark:text-gray-50"
             >
               <option value="All">All Levels</option>
               <option value="Pre-Nursery">Pre-Nursery</option>
@@ -206,7 +206,7 @@ export default function AdminSchemeUpload() {
             <select
               value={filterSubject}
               onChange={(e) => setFilterSubject(e.target.value)}
-              className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-700/60 border border-gray-100 dark:border-purple-600/50 rounded-xl focus:ring-2 focus:ring-indigo-500 dark:focus:ring-gold-400 outline-none text-sm font-bold text-gray-900 dark:text-gray-50"
+              className="w-full px-4 py-2 bg-gray-50 dark:bg-brand-700/60 border border-gray-100 dark:border-purple-600/50 rounded-xl focus:ring-2 focus:ring-indigo-500 dark:focus:ring-gold-400 outline-none text-sm font-bold text-gray-900 dark:text-gray-50"
             >
               <option value="All">All Subjects</option>
               {subjects.filter(s => filterLevel === 'All' || s.level === filterLevel).map(s => (
@@ -270,13 +270,13 @@ export default function AdminSchemeUpload() {
                   {subjects.find(s => s.id === scheme.subjectId)?.name || 'Unknown Subject'}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-gray-100 dark:bg-slate-700/60 rounded text-[10px] font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
+                  <span className="px-2 py-1 bg-gray-100 dark:bg-brand-700/60 rounded text-[10px] font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
                     {scheme.classId}
                   </span>
-                  <span className="px-2 py-1 bg-gray-100 dark:bg-slate-700/60 rounded text-[10px] font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
+                  <span className="px-2 py-1 bg-gray-100 dark:bg-brand-700/60 rounded text-[10px] font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
                     Term {scheme.term}
                   </span>
-                  <span className="px-2 py-1 bg-gray-100 dark:bg-slate-700/60 rounded text-[10px] font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
+                  <span className="px-2 py-1 bg-gray-100 dark:bg-brand-700/60 rounded text-[10px] font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
                     {scheme.academicYear}
                   </span>
                 </div>
@@ -303,7 +303,7 @@ export default function AdminSchemeUpload() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white dark:bg-gradient-to-br dark:from-slate-800/95 dark:to-slate-900/95 rounded-[2.5rem] shadow-2xl max-w-2xl w-full p-10 border border-gray-100 dark:border-purple-600/50 overflow-y-auto max-h-[90vh]"
+              className="bg-white dark:bg-gradient-to-br dark:from-brand-800/95 dark:to-brand-900/95 rounded-[2.5rem] shadow-2xl max-w-2xl w-full p-10 border border-gray-100 dark:border-purple-600/50 overflow-y-auto max-h-[90vh]"
               onClick={e => e.stopPropagation()}
             >
               <div className="flex justify-between items-center mb-8">

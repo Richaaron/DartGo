@@ -197,7 +197,7 @@ export default function StudentForm({
   }
 
   return (
-    <div className="p-6 bg-gradient-to-b from-white dark:from-slate-800 to-slate-50 dark:to-slate-900">
+    <div className="p-6 bg-gradient-to-b from-white dark:from-brand-800 to-brand-50 dark:to-brand-900">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h2 className="text-3xl font-black bg-gradient-to-r from-purple-600 to-gold-600 bg-clip-text text-transparent">
@@ -479,7 +479,7 @@ export default function StudentForm({
 
         {/* Subject Selection (Only for New Students) */}
         {!isEditing && filteredSubjects.length > 0 && (
-          <div className="space-y-4 pt-4 border-t-4 border-dashed border-slate-200 dark:border-slate-700">
+          <div className="space-y-4 pt-4 border-t-4 border-dashed border-brand-200 dark:border-brand-700">
             <h3 className="text-xl font-black text-gray-900 dark:text-white uppercase tracking-wider border-l-4 border-purple-500 pl-3 flex items-center gap-2">
               <BookOpen className="text-purple-500" />
               Assign Subjects (Optional)
@@ -517,14 +517,14 @@ export default function StudentForm({
                         className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${
                           selectedSubjects.includes(subject.id)
                             ? 'bg-purple-50 dark:bg-purple-900/20 border-purple-500 shadow-md'
-                            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-purple-300'
+                            : 'bg-white dark:bg-brand-800 border-brand-200 dark:border-brand-700 hover:border-purple-300'
                         }`}
                       >
                         <input
                           type="checkbox"
                           checked={selectedSubjects.includes(subject.id)}
                           onChange={() => toggleSubject(subject.id)}
-                          className="w-5 h-5 text-purple-600 rounded-lg focus:ring-purple-500 border-slate-300"
+                          className="w-5 h-5 text-purple-600 rounded-lg focus:ring-purple-500 border-brand-300"
                         />
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-black text-gray-900 dark:text-white truncate">{subject.name}</p>
@@ -545,7 +545,7 @@ export default function StudentForm({
               <label className="block text-xs font-black text-school-red uppercase tracking-wider mb-1">
                 📱 Parent Portal Username
               </label>
-              <div className="font-mono text-sm bg-white dark:bg-slate-800 p-2 rounded-lg border-2 border-school-blue">
+              <div className="font-mono text-sm bg-white dark:bg-brand-800 p-2 rounded-lg border-2 border-school-blue">
                 {formData.parentUsername}
               </div>
             </div>
@@ -553,7 +553,7 @@ export default function StudentForm({
               <label className="block text-xs font-black text-school-red uppercase tracking-wider mb-1">
                 🔐 Parent Portal Password
               </label>
-              <div className="font-mono text-sm bg-white dark:bg-slate-800 p-2 rounded-lg border-2 border-school-blue">
+              <div className="font-mono text-sm bg-white dark:bg-brand-800 p-2 rounded-lg border-2 border-school-blue">
                 {formData.parentPassword}
               </div>
             </div>

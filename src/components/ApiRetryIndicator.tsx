@@ -58,7 +58,7 @@ const ApiRetryIndicator: React.FC = () => {
           initial={{ opacity: 0, y: 50, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
-          className="fixed bottom-6 right-6 z-[9999] flex items-center gap-4 px-4 py-3 rounded-lg shadow-2xl border bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+          className="fixed bottom-6 right-6 z-[9999] flex items-center gap-4 px-4 py-3 rounded-lg shadow-2xl border bg-white dark:bg-brand-800 border-brand-200 dark:border-brand-700"
         >
           <div className="flex items-center justify-center">
             {retry.status === 'retrying' && (
@@ -73,12 +73,12 @@ const ApiRetryIndicator: React.FC = () => {
           </div>
           
           <div className="flex flex-col min-w-[140px]">
-            <span className="text-sm font-semibold text-slate-900 dark:text-white">
+            <span className="text-sm font-semibold text-brand-900 dark:text-white">
               {retry.status === 'retrying' && `Retrying Request...`}
               {retry.status === 'success' && 'Reconnected Successfully'}
               {retry.status === 'failure' && 'Connection Failed'}
             </span>
-            <span className="text-xs text-slate-500 dark:text-slate-400">
+            <span className="text-xs text-brand-500 dark:text-brand-400">
               {retry.status === 'retrying' 
                 ? `Attempt ${retry.attempt} of ${retry.maxRetries}` 
                 : `Endpoint: ${retry.endpoint}`}
@@ -86,7 +86,7 @@ const ApiRetryIndicator: React.FC = () => {
           </div>
           
           {retry.status === 'retrying' && (
-            <div className="w-12 h-1 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden ml-2">
+            <div className="w-12 h-1 bg-brand-100 dark:bg-brand-700 rounded-full overflow-hidden ml-2">
               <motion.div 
                 className="h-full bg-blue-500"
                 animate={{ x: ["-100%", "100%"] }}
@@ -106,10 +106,10 @@ const ApiRetryIndicator: React.FC = () => {
               </button>
               <button
                 onClick={handleCancel}
-                className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-colors group"
+                className="p-1.5 hover:bg-brand-100 dark:hover:bg-brand-700 rounded-full transition-colors group"
                 title="Cancel Request"
               >
-                <X className="w-4 h-4 text-slate-400 group-hover:text-red-500" />
+                <X className="w-4 h-4 text-brand-400 group-hover:text-red-500" />
               </button>
             </div>
           )}

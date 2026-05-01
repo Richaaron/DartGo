@@ -266,14 +266,14 @@ export default function TeacherManagement() {
                     </span>
                   ))
                 ) : (
-                  <span className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-md text-xs font-bold">
+                  <span className="px-2 py-0.5 bg-brand-100 dark:bg-brand-800 text-brand-500 dark:text-brand-400 rounded-md text-xs font-bold">
                     Form Teacher
                   </span>
                 )}
               </div>
             ),
             profile: (
-              <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden border-2 border-indigo-500/20">
+              <div className="w-10 h-10 rounded-full bg-brand-100 dark:bg-brand-800 flex items-center justify-center overflow-hidden border-2 border-indigo-500/20">
                 {teacher.image ? (
                   <img
                     src={teacher.image}
@@ -281,7 +281,7 @@ export default function TeacherManagement() {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <UserIcon className="w-6 h-6 text-slate-400 dark:text-slate-500" />
+                  <UserIcon className="w-6 h-6 text-brand-400 dark:text-brand-500" />
                 )}
               </div>
             ),

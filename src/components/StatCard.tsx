@@ -13,7 +13,7 @@ const colorConfig = {
     bar: "bg-blue-500",
     iconBg: "bg-blue-50 dark:bg-blue-900/30",
     iconColor: "text-blue-600 dark:text-blue-400",
-    valueColor: "text-slate-900 dark:text-white",
+    valueColor: "text-brand-900 dark:text-white",
     trendUp:
       "bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400",
     trendDown: "bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400",
@@ -22,7 +22,7 @@ const colorConfig = {
     bar: "bg-emerald-500",
     iconBg: "bg-emerald-50 dark:bg-emerald-900/30",
     iconColor: "text-emerald-600 dark:text-emerald-400",
-    valueColor: "text-slate-900 dark:text-white",
+    valueColor: "text-brand-900 dark:text-white",
     trendUp:
       "bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400",
     trendDown: "bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400",
@@ -31,7 +31,7 @@ const colorConfig = {
     bar: "bg-violet-500",
     iconBg: "bg-violet-50 dark:bg-violet-900/30",
     iconColor: "text-violet-600 dark:text-violet-400",
-    valueColor: "text-slate-900 dark:text-white",
+    valueColor: "text-brand-900 dark:text-white",
     trendUp:
       "bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400",
     trendDown: "bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400",
@@ -40,7 +40,7 @@ const colorConfig = {
     bar: "bg-amber-500",
     iconBg: "bg-amber-50 dark:bg-amber-900/30",
     iconColor: "text-amber-600 dark:text-amber-400",
-    valueColor: "text-slate-900 dark:text-white",
+    valueColor: "text-brand-900 dark:text-white",
     trendUp:
       "bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400",
     trendDown: "bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400",
@@ -49,7 +49,7 @@ const colorConfig = {
     bar: "bg-rose-500",
     iconBg: "bg-rose-50 dark:bg-rose-900/30",
     iconColor: "text-rose-600 dark:text-rose-400",
-    valueColor: "text-slate-900 dark:text-white",
+    valueColor: "text-brand-900 dark:text-white",
     trendUp:
       "bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400",
     trendDown: "bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400",
@@ -66,14 +66,14 @@ export default function StatCard({
   const cfg = colorConfig[color];
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-card overflow-hidden flex transition-shadow duration-200 hover:shadow-card-lg">
+    <div className="bg-white dark:bg-brand-800 rounded-xl border border-brand-200 dark:border-brand-700 shadow-card overflow-hidden flex transition-shadow duration-200 hover:shadow-card-lg">
       {/* Left accent bar */}
       <div className={`w-1 flex-shrink-0 ${cfg.bar}`} />
 
       {/* Content */}
       <div className="flex-1 px-5 py-4 flex items-center justify-between gap-4">
         <div className="min-w-0">
-          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 truncate">
+          <p className="text-xs font-semibold text-brand-500 dark:text-brand-400 uppercase tracking-wider mb-1 truncate">
             {label}
           </p>
           <div className="flex items-baseline gap-2 flex-wrap">

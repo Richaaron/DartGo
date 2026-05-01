@@ -66,7 +66,7 @@ export const NotificationBell: React.FC = () => {
       case 'fee_reminder':
         return 'bg-purple-100 dark:bg-purple-600/25 text-purple-800 dark:text-purple-300'
       default:
-        return 'bg-gray-100 dark:bg-slate-700/60 text-gray-800 dark:text-gray-300'
+        return 'bg-gray-100 dark:bg-brand-700/60 text-gray-800 dark:text-gray-300'
     }
   }
 
@@ -86,7 +86,7 @@ export const NotificationBell: React.FC = () => {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700/50 rounded-lg transition-colors"
+        className="relative p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-brand-700/50 rounded-lg transition-colors"
         disabled={isLoading}
       >
         <Bell className={`w-6 h-6 ${isLoading ? 'animate-pulse' : ''}`} />
@@ -98,7 +98,7 @@ export const NotificationBell: React.FC = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-800/95 rounded-lg shadow-lg border border-gray-200 dark:border-purple-600/40 z-50">
+        <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-brand-800/95 rounded-lg shadow-lg border border-gray-200 dark:border-purple-600/40 z-50">
           <div className="p-4 border-b border-gray-200 dark:border-purple-600/30 flex items-center justify-between">
             <h3 className="font-semibold text-gray-900 dark:text-white">Recent Notifications</h3>
             <button
@@ -122,7 +122,7 @@ export const NotificationBell: React.FC = () => {
               notifications.map(notif => (
                 <div
                   key={notif._id}
-                  className={`p-3 border-b border-gray-100 dark:border-slate-700/50 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors ${
+                  className={`p-3 border-b border-gray-100 dark:border-brand-700/50 hover:bg-gray-50 dark:hover:bg-brand-700/50 transition-colors ${
                     notif.status === 'failed' ? 'bg-red-50 dark:bg-red-600/10' : ''
                   }`}
                 >

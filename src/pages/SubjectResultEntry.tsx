@@ -448,7 +448,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {displayResults.map((result, index) => (
-                <tr key={result.id || index} className="hover:bg-slate-50 dark:hover:bg-indigo-900/10 transition-colors">
+                <tr key={result.id || index} className="hover:bg-brand-50 dark:hover:bg-indigo-900/10 transition-colors">
                   <td className="table-cell">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-xs">
@@ -539,7 +539,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
               <button
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-                className="flex items-center gap-1 px-3 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="flex items-center gap-1 px-3 py-2 bg-white dark:bg-brand-800 border border-gray-200 dark:border-brand-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 <ChevronLeft size={16} />
                 Previous
@@ -552,7 +552,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
                     className={`w-8 h-8 rounded-lg font-bold text-sm transition-colors ${
                       page === currentPage
                         ? 'bg-indigo-600 text-white'
-                        : 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700'
+                        : 'bg-white dark:bg-brand-800 border border-gray-200 dark:border-brand-700 hover:bg-gray-50 dark:hover:bg-brand-700'
                     }`}
                   >
                     {page}
@@ -562,7 +562,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
               <button
                 onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
-                className="flex items-center gap-1 px-3 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="flex items-center gap-1 px-3 py-2 bg-white dark:bg-brand-800 border border-gray-200 dark:border-brand-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 Next
                 <ChevronRight size={16} />

@@ -391,7 +391,7 @@ export default function Dashboard() {
               {isFormTeacher && (
                 <Link
                   to="/results"
-                  className="flex-1 md:flex-none px-6 py-4 bg-white dark:bg-slate-900 rounded-2xl border-2 border-dashed border-indigo-500/50 hover:border-indigo-500 transition-all hover:scale-105 group"
+                  className="flex-1 md:flex-none px-6 py-4 bg-white dark:bg-brand-900 rounded-2xl border-2 border-dashed border-indigo-500/50 hover:border-indigo-500 transition-all hover:scale-105 group"
                 >
                   <div className="flex items-center gap-4">
                     <div className="p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl group-hover:bg-indigo-600 group-hover:text-white transition-colors">
@@ -411,7 +411,7 @@ export default function Dashboard() {
               {isSubjectTeacher && (
                 <Link
                   to="/subject-results"
-                  className="flex-1 md:flex-none px-6 py-4 bg-white dark:bg-slate-900 rounded-2xl border-2 border-dashed border-purple-500/50 hover:border-purple-500 transition-all hover:scale-105 group"
+                  className="flex-1 md:flex-none px-6 py-4 bg-white dark:bg-brand-900 rounded-2xl border-2 border-dashed border-purple-500/50 hover:border-purple-500 transition-all hover:scale-105 group"
                 >
                   <div className="flex items-center gap-4">
                     <div className="p-3 bg-purple-50 dark:bg-purple-900/30 rounded-xl group-hover:bg-purple-600 group-hover:text-white transition-colors">

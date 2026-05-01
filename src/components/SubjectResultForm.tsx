@@ -155,7 +155,7 @@ export default function SubjectResultForm({
   }
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border-4 border-dashed border-school-blue dark:border-indigo-500/40 shadow-2xl">
+    <div className="bg-white dark:bg-brand-900 rounded-3xl overflow-hidden border-4 border-dashed border-school-blue dark:border-indigo-500/40 shadow-2xl">
       <div className="p-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-black uppercase tracking-tight">
@@ -229,7 +229,7 @@ export default function SubjectResultForm({
         </div>
 
         {/* Scores Section */}
-        <div className="space-y-4 pt-6 border-t-2 border-dashed border-slate-100 dark:border-slate-800">
+        <div className="space-y-4 pt-6 border-t-2 border-dashed border-brand-100 dark:border-brand-800">
           <div className="flex items-center gap-2 text-school-blue dark:text-indigo-400 font-black uppercase tracking-widest text-sm">
             <TrendingUp size={18} />
             <span>Academic Scores</span>
@@ -325,7 +325,7 @@ export default function SubjectResultForm({
         </div>
 
         {/* Meta Info */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t-2 border-dashed border-slate-100 dark:border-slate-800">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t-2 border-dashed border-brand-100 dark:border-brand-800">
           <div>
             <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
               Recorded By *
@@ -369,7 +369,7 @@ export default function SubjectResultForm({
           <button
             type="button"
             onClick={onCancel}
-            className="px-8 py-4 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full font-black uppercase tracking-widest text-sm hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
+            className="px-8 py-4 bg-brand-100 dark:bg-brand-800 text-brand-600 dark:text-brand-400 rounded-full font-black uppercase tracking-widest text-sm hover:bg-brand-200 dark:hover:bg-brand-700 transition-all"
           >
             Cancel
           </button>

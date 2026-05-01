@@ -605,7 +605,7 @@ export default function StudentManagement() {
                           className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${
                             bulkAssignSubjects.includes(subject.id)
                               ? "bg-school-blue/10 border-school-blue shadow-md"
-                              : "bg-white border-slate-200 hover:border-school-blue/50"
+                              : "bg-white border-brand-200 hover:border-school-blue/50"
                           }`}
                         >
                           <input
@@ -618,7 +618,7 @@ export default function StudentManagement() {
                                   : [...prev, subject.id],
                               );
                             }}
-                            className="w-5 h-5 text-school-blue rounded-lg focus:ring-school-blue border-slate-300"
+                            className="w-5 h-5 text-school-blue rounded-lg focus:ring-school-blue border-brand-300"
                           />
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-black text-gray-900 truncate">
@@ -635,10 +635,10 @@ export default function StudentManagement() {
               )}
             </div>
 
-            <div className="p-6 bg-slate-50 border-t-4 border-dashed border-slate-200 flex gap-3">
+            <div className="p-6 bg-brand-50 border-t-4 border-dashed border-brand-200 flex gap-3">
               <button
                 onClick={() => setShowBulkAssign(false)}
-                className="flex-1 py-3 px-6 bg-white border-2 border-slate-200 text-slate-600 rounded-full font-black hover:bg-slate-100 transition-all uppercase tracking-widest text-sm"
+                className="flex-1 py-3 px-6 bg-white border-2 border-brand-200 text-brand-600 rounded-full font-black hover:bg-brand-100 transition-all uppercase tracking-widest text-sm"
               >
                 Cancel
               </button>

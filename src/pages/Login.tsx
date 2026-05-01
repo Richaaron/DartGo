@@ -110,7 +110,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
   return (
     <div className="min-h-screen flex">
       {/* ── Left Panel ─────────────────────────────── */}
-      <div className="hidden lg:flex lg:w-[45%] xl:w-[40%] bg-slate-900 flex-col items-center justify-center p-12 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-[45%] xl:w-[40%] bg-brand-900 flex-col items-center justify-center p-12 relative overflow-hidden">
         {/* Background pattern */}
         <div
           className="absolute inset-0 opacity-[0.03]"
@@ -134,7 +134,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
             <br />
             Schools
           </h1>
-          <p className="text-slate-400 text-sm font-medium mb-12">
+          <p className="text-brand-400 text-sm font-medium mb-12">
             Result Management System
           </p>
 
@@ -150,20 +150,20 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                 <div className="w-5 h-5 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center flex-shrink-0">
                   <Check className="w-3 h-3 text-blue-400" />
                 </div>
-                <span className="text-slate-300 text-sm">{feature}</span>
+                <span className="text-brand-300 text-sm">{feature}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Bottom copyright */}
-        <p className="absolute bottom-8 text-slate-600 text-xs">
+        <p className="absolute bottom-8 text-brand-600 text-xs">
           © 2025 Folusho Victory Schools
         </p>
       </div>
 
       {/* ── Right Panel ────────────────────────────── */}
-      <div className="flex-1 flex items-center justify-center p-6 bg-slate-50 dark:bg-slate-900">
+      <div className="flex-1 flex items-center justify-center p-6 bg-brand-50 dark:bg-brand-900">
         <div className="w-full max-w-md">
           {/* Mobile logo */}
           <div className="flex items-center gap-3 mb-8 lg:hidden">
@@ -171,10 +171,10 @@ export default function Login({ onLoginSuccess }: LoginProps) {
               <GraduationCap className="w-6 h-6 text-white" />
             </div>
             <div>
-              <p className="font-bold text-slate-900 dark:text-white text-sm">
+              <p className="font-bold text-brand-900 dark:text-white text-sm">
                 Folusho Victory Schools
               </p>
-              <p className="text-xs text-slate-500">Result Management System</p>
+              <p className="text-xs text-brand-500">Result Management System</p>
             </div>
           </div>
 
@@ -188,10 +188,10 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.2 }}
               >
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">
+                <h2 className="text-2xl font-bold text-brand-900 dark:text-white mb-1">
                   Welcome back
                 </h2>
-                <p className="text-slate-500 dark:text-slate-400 mb-8 text-sm">
+                <p className="text-brand-500 dark:text-brand-400 mb-8 text-sm">
                   Select your role to continue
                 </p>
 
@@ -203,7 +203,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.07 }}
                       onClick={() => setLoginType(type.id)}
-                      className="w-full flex items-center gap-4 p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-card-md transition-all duration-150 group text-left"
+                      className="w-full flex items-center gap-4 p-4 bg-white dark:bg-brand-800 border border-brand-200 dark:border-brand-700 rounded-xl hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-card-md transition-all duration-150 group text-left"
                     >
                       <div
                         className={`p-2.5 rounded-lg ${type.iconBg} ${type.color} flex-shrink-0`}
@@ -211,14 +211,14 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                         {type.icon}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-slate-900 dark:text-white text-sm">
+                        <p className="font-semibold text-brand-900 dark:text-white text-sm">
                           {type.label} Login
                         </p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                        <p className="text-xs text-brand-500 dark:text-brand-400 mt-0.5">
                           {type.desc}
                         </p>
                       </div>
-                      <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 flex-shrink-0 transition-colors" />
+                      <ChevronRight className="w-4 h-4 text-brand-400 group-hover:text-brand-600 dark:group-hover:text-brand-300 flex-shrink-0 transition-colors" />
                     </motion.button>
                   ))}
                 </div>
@@ -234,7 +234,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
               >
                 <button
                   onClick={handleBack}
-                  className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 mb-6 transition-colors"
+                  className="flex items-center gap-1.5 text-sm text-brand-500 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-200 mb-6 transition-colors"
                 >
                   <ChevronRight className="w-4 h-4 rotate-180" />
                   Back
@@ -249,10 +249,10 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                       {selectedType.icon}
                     </div>
                     <div>
-                      <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+                      <h2 className="text-xl font-bold text-brand-900 dark:text-white">
                         {selectedType.label} Login
                       </h2>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">
+                      <p className="text-xs text-brand-500 dark:text-brand-400">
                         {selectedType.desc}
                       </p>
                     </div>
@@ -277,13 +277,13 @@ export default function Login({ onLoginSuccess }: LoginProps) {
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                    <label className="block text-sm font-semibold text-brand-700 dark:text-brand-300 mb-1.5">
                       {loginType === "parent"
                         ? "Parent Username"
                         : "Username / Email"}
                     </label>
                     <div className="relative">
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-400" />
                       <input
                         type="text"
                         value={email}
@@ -301,7 +301,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                    <label className="block text-sm font-semibold text-brand-700 dark:text-brand-300 mb-1.5">
                       Password
                     </label>
                     <div className="relative">
@@ -318,7 +318,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
                         disabled={isLoading}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 transition-colors"
                       >
                         {showPassword ? (
                           <EyeOff size={16} />

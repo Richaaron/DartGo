@@ -140,11 +140,11 @@ function AppContent() {
 
   return (
     <div
-      className={`flex flex-col md:flex-row h-screen bg-slate-100 dark:bg-slate-900 transition-colors duration-200 ${isDarkMode ? "dark" : ""}`}
+      className={`flex flex-col md:flex-row h-screen bg-brand-100 dark:bg-brand-900 transition-colors duration-200 ${isDarkMode ? "dark" : ""}`}
     >
       {/* Mobile Header */}
       {isMobile && (
-        <div className="bg-slate-900 border-b border-slate-700/50 text-white px-4 py-3 flex items-center justify-between z-40 shadow-lg">
+        <div className="bg-brand-900 border-b border-brand-700/50 text-white px-4 py-3 flex items-center justify-between z-40 shadow-lg">
           <button
             onClick={() => setShowMobileMenu(!showMobileMenu)}
             className="p-2 hover:bg-gold-500/10 rounded-lg transition-all active:scale-90"
@@ -193,11 +193,11 @@ function AppContent() {
           isMobile
             ? "fixed left-0 top-[60px] bottom-0 w-72 z-30"
             : `${isSidebarOpen ? "w-64" : "w-[72px]"} relative`
-        } bg-slate-900 border-r border-slate-700/30 text-white transition-all duration-300 flex flex-col shadow-xl overflow-y-auto md:overflow-visible`}
+        } bg-brand-900 border-r border-brand-700/30 text-white transition-all duration-300 flex flex-col shadow-xl overflow-y-auto md:overflow-visible`}
       >
         {/* Desktop Logo - Hidden on Mobile */}
         {!isMobile && (
-          <div className="p-5 border-b border-slate-700/50 flex items-center justify-between flex-shrink-0">
+          <div className="p-5 border-b border-brand-700/50 flex items-center justify-between flex-shrink-0">
             {isSidebarOpen && (
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
@@ -219,7 +219,7 @@ function AppContent() {
                   <h1 className="text-sm font-bold text-white truncate">
                     {config?.schoolName?.split(" ")[0] || "FOLUSHO"}
                   </h1>
-                  <p className="text-[10px] text-slate-400 truncate mt-0.5">
+                  <p className="text-[10px] text-brand-400 truncate mt-0.5">
                     {config?.schoolName?.split(" ").slice(1).join(" ") ||
                       "Victory Schools"}
                   </p>
@@ -228,7 +228,7 @@ function AppContent() {
             )}
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="p-1.5 hover:bg-white/10 rounded-lg transition-colors text-slate-400 hover:text-white"
+              className="p-1.5 hover:bg-white/10 rounded-lg transition-colors text-brand-400 hover:text-white"
             >
               {isSidebarOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
@@ -240,9 +240,9 @@ function AppContent() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="px-4 py-4 border-b border-slate-700/50 bg-slate-800/40"
+            className="px-4 py-4 border-b border-brand-700/50 bg-brand-800/40"
           >
-            <p className="text-[10px] uppercase font-medium tracking-wider text-slate-400">
+            <p className="text-[10px] uppercase font-medium tracking-wider text-brand-400">
               Signed In As
             </p>
             <p className="font-semibold text-white truncate text-sm mt-1">
@@ -250,10 +250,10 @@ function AppContent() {
             </p>
             <div className="flex items-center gap-2 mt-1.5">
               <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
-              <p className="text-xs text-slate-300">{userRole}</p>
+              <p className="text-xs text-brand-300">{userRole}</p>
             </div>
             {userRole === "Teacher" && (
-              <p className="text-[10px] text-slate-400 mt-0.5">
+              <p className="text-[10px] text-brand-400 mt-0.5">
                 {teacherRoleLabel}
               </p>
             )}
@@ -265,9 +265,9 @@ function AppContent() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="px-5 py-4 border-b border-slate-700/50 bg-slate-800/40 flex-shrink-0"
+            className="px-5 py-4 border-b border-brand-700/50 bg-brand-800/40 flex-shrink-0"
           >
-            <p className="text-[10px] uppercase font-medium tracking-wider text-slate-400">
+            <p className="text-[10px] uppercase font-medium tracking-wider text-brand-400">
               Signed In As
             </p>
             <p className="font-semibold text-white truncate text-sm mt-1">
@@ -275,10 +275,10 @@ function AppContent() {
             </p>
             <div className="flex items-center gap-2 mt-1.5">
               <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
-              <p className="text-xs text-slate-300">{userRole}</p>
+              <p className="text-xs text-brand-300">{userRole}</p>
             </div>
             {userRole === "Teacher" && (
-              <p className="text-[10px] text-slate-400 mt-0.5">
+              <p className="text-[10px] text-brand-400 mt-0.5">
                 {teacherRoleLabel}
               </p>
             )}
@@ -449,11 +449,11 @@ function AppContent() {
         </nav>
 
         {/* Bottom Section */}
-        <div className="px-3 py-3 border-t border-slate-700/50 space-y-0.5 flex-shrink-0">
+        <div className="px-3 py-3 border-t border-brand-700/50 space-y-0.5 flex-shrink-0">
           {/* Dark Mode Toggle */}
           <button
             onClick={() => setIsDarkMode(!isDarkMode)}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.07] transition-colors duration-150"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-brand-400 hover:text-white hover:bg-white/[0.07] transition-colors duration-150"
           >
             {isDarkMode ? (
               <Sun size={isMobile ? 20 : 18} />
@@ -471,7 +471,7 @@ function AppContent() {
           <div className="relative">
             <button
               onClick={() => setShowLogout(!showLogout)}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-rose-300 hover:bg-rose-500/10 transition-colors duration-150"
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-brand-400 hover:text-rose-300 hover:bg-rose-500/10 transition-colors duration-150"
             >
               <LogOut size={isMobile ? 20 : 18} />
               {(isMobile || isSidebarOpen) && (
@@ -484,7 +484,7 @@ function AppContent() {
                   initial={{ opacity: 0, scale: 0.95, y: 10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                  className="absolute bottom-full mb-2 left-0 right-0 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-50 p-2"
+                  className="absolute bottom-full mb-2 left-0 right-0 bg-brand-800 border border-brand-700 rounded-xl shadow-xl z-50 p-2"
                 >
                   <button
                     onClick={handleLogout}
@@ -497,7 +497,7 @@ function AppContent() {
             </AnimatePresence>
           </div>
           {(isMobile || isSidebarOpen) && (
-            <p className="text-[10px] text-slate-600 mt-3 text-center">
+            <p className="text-[10px] text-brand-600 mt-3 text-center">
               Folusho © 2025
             </p>
           )}
@@ -505,7 +505,7 @@ function AppContent() {
       </motion.aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white">
+      <main className="flex-1 overflow-auto bg-brand-50 dark:bg-brand-900 text-brand-900 dark:text-white">
         <div
           className={`max-w-7xl mx-auto ${isMobile ? "px-4 py-4" : "px-6 py-6 md:px-8 md:py-8"}`}
         >
@@ -714,7 +714,7 @@ function NavLink({ to, icon, label, isOpen }: NavLinkProps) {
         `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors duration-150 text-sm font-medium ${
           isActive
             ? "bg-blue-600 text-white"
-            : "text-slate-300 hover:text-white hover:bg-white/[0.07]"
+            : "text-brand-300 hover:text-white hover:bg-white/[0.07]"
         }`
       }
     >
