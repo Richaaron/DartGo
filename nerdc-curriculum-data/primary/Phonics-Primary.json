@@ -1,0 +1,149 @@
+{
+  "subjectName": "Phonics",
+  "subjectCode": "PHO-PRIMARY6",
+  "level": "Primary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Introduction to Phonics and Sound Awareness",
+      "objectives": [
+        "Understand phonemes and graphemes",
+        "Develop sound awareness",
+        "Learn initial consonant sounds"
+      ],
+      "duration": 40,
+      "resources": ["Sound charts", "Phonics cards", "Audio materials"],
+      "assessmentMethod": "Sound recognition exercise"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Vowel Sounds and Short Vowels",
+      "objectives": [
+        "Learn short vowel sounds (a, e, i, o, u)",
+        "Practice vowel pronunciation",
+        "Apply vowels in simple words"
+      ],
+      "duration": 40,
+      "resources": ["Vowel flashcards", "Picture cards", "Pronunciation guides"],
+      "assessmentMethod": "Vowel sound identification"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Consonant Blends and Digraphs",
+      "objectives": [
+        "Learn initial consonant blends (bl, br, cl, cr, dr, fr, gr, tr)",
+        "Study consonant digraphs (ch, sh, th, wh)",
+        "Practice blending sounds"
+      ],
+      "duration": 40,
+      "resources": ["Blend charts", "Word lists", "Audio recordings"],
+      "assessmentMethod": "Blend identification and pronunciation"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "CVC Words and Word Patterns",
+      "objectives": [
+        "Master consonant-vowel-consonant (CVC) patterns",
+        "Decode simple CVC words",
+        "Build reading fluency with short words"
+      ],
+      "duration": 40,
+      "resources": ["CVC word cards", "Picture books", "Word wheels"],
+      "assessmentMethod": "CVC word reading and writing"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Assessment",
+      "objectives": ["Assess phonics learning"],
+      "duration": 60,
+      "resources": ["Assessment papers", "Audio tests"],
+      "assessmentMethod": "Phonics test"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Long Vowel Sounds and Silent 'e' Rule",
+      "objectives": [
+        "Learn long vowel sounds",
+        "Understand silent 'e' rule",
+        "Apply CVCe pattern in reading"
+      ],
+      "duration": 40,
+      "resources": ["Long vowel charts", "CVCe word cards", "Examples"],
+      "assessmentMethod": "CVCe pattern recognition"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Vowel Teams and Diphthongs",
+      "objectives": [
+        "Learn vowel digraphs (ai, ea, ee, oa, oy, ou)",
+        "Understand diphthongs",
+        "Apply vowel team patterns in reading"
+      ],
+      "duration": 40,
+      "resources": ["Vowel team charts", "Word lists", "Picture cards"],
+      "assessmentMethod": "Vowel team word reading"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "R-Controlled Vowels",
+      "objectives": [
+        "Learn r-controlled vowel patterns (ar, er, ir, or, ur)",
+        "Practice pronunciation",
+        "Apply patterns in real words"
+      ],
+      "duration": 40,
+      "resources": ["R-controlled charts", "Word cards", "Audio samples"],
+      "assessmentMethod": "R-controlled vowel identification"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Sight Words and High-Frequency Words",
+      "objectives": [
+        "Master common sight words",
+        "Learn high-frequency words",
+        "Build reading automaticity"
+      ],
+      "duration": 40,
+      "resources": ["Sight word lists", "Flashcards", "Reading materials"],
+      "assessmentMethod": "Sight word recognition test"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Revision and Consolidation",
+      "objectives": [
+        "Review all phonics patterns",
+        "Practice decoding mixed patterns",
+        "Prepare for final assessment"
+      ],
+      "duration": 40,
+      "resources": ["Revision materials", "Practice worksheets"],
+      "assessmentMethod": "Mock phonics test"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Final Phonics Assessment",
+      "objectives": ["Final evaluation of phonics mastery"],
+      "duration": 180,
+      "resources": ["Assessment papers", "Reading samples"],
+      "assessmentMethod": "Comprehensive phonics exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}

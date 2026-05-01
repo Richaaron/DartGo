@@ -1,6 +1,6 @@
 {
-  "subjectName": "Social Studies",
-  "subjectCode": "SOC-JSS3",
+  "subjectName": "National Values",
+  "subjectCode": "NAT-JSS3",
   "level": "Junior Secondary",
   "creditUnits": 2,
   "subjectCategory": "CORE",
@@ -121,7 +121,7 @@
       "weekNumber": 11,
       "topicName": "Revision",
       "objectives": [
-        "Review all social studies topics",
+        "Review all national values topics",
         "Consolidate knowledge"
       ],
       "duration": 40,

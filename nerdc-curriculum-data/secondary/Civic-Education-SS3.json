@@ -1,0 +1,148 @@
+{
+  "subjectName": "Civic Education",
+  "subjectCode": "CIV-SS3",
+  "level": "Senior Secondary",
+  "creditUnits": 2,
+  "subjectCategory": "CORE",
+  "topics": [
+    {
+      "weekNumber": 1,
+      "topicName": "Citizenship and National Identity",
+      "objectives": [
+        "Understand Nigerian citizenship",
+        "Study national identity and unity",
+        "Learn about national symbols"
+      ],
+      "duration": 40,
+      "resources": ["Citizenship documents", "National symbols guide", "Identity materials"],
+      "assessmentMethod": "Citizenship knowledge test"
+    },
+    {
+      "weekNumber": 2,
+      "topicName": "Rights and Duties of Citizens",
+      "objectives": [
+        "Understand fundamental human rights",
+        "Learn civic duties and responsibilities",
+        "Study constitutional rights"
+      ],
+      "duration": 40,
+      "resources": ["Constitution excerpts", "Rights documents", "Case studies"],
+      "assessmentMethod": "Rights and duties analysis"
+    },
+    {
+      "weekNumber": 3,
+      "topicName": "Democratic Governance and Political Systems",
+      "objectives": [
+        "Understand democratic principles",
+        "Study the three tiers of government",
+        "Learn about separation of powers"
+      ],
+      "duration": 40,
+      "resources": ["Government structure diagrams", "Political system guides", "Process flowcharts"],
+      "assessmentMethod": "Governance structure study"
+    },
+    {
+      "weekNumber": 4,
+      "topicName": "Electoral Processes and Voting",
+      "objectives": [
+        "Understand electoral systems",
+        "Learn voting procedures",
+        "Study election management"
+      ],
+      "duration": 40,
+      "resources": ["Electoral guides", "Voting procedures", "Election data"],
+      "assessmentMethod": "Electoral process quiz"
+    },
+    {
+      "weekNumber": 5,
+      "topicName": "Midterm Examination",
+      "objectives": ["Assess learning"],
+      "duration": 60,
+      "resources": ["Test papers"],
+      "assessmentMethod": "Exam"
+    },
+    {
+      "weekNumber": 6,
+      "topicName": "Rule of Law and Justice System",
+      "objectives": [
+        "Understand the rule of law",
+        "Study the judicial system",
+        "Learn about courts and legal procedures"
+      ],
+      "duration": 40,
+      "resources": ["Legal system diagrams", "Court structure guides", "Justice information"],
+      "assessmentMethod": "Justice system analysis"
+    },
+    {
+      "weekNumber": 7,
+      "topicName": "Midterm Break",
+      "objectives": ["Rest and consolidation"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    },
+    {
+      "weekNumber": 8,
+      "topicName": "Conflict Resolution and Peace Building",
+      "objectives": [
+        "Understand conflict causes and resolution",
+        "Learn peace-building strategies",
+        "Study reconciliation processes"
+      ],
+      "duration": 40,
+      "resources": ["Conflict resolution guides", "Peace-building materials", "Case studies"],
+      "assessmentMethod": "Conflict resolution project"
+    },
+    {
+      "weekNumber": 9,
+      "topicName": "Social Issues and Community Development",
+      "objectives": [
+        "Understand social problems",
+        "Study community development",
+        "Learn about social welfare"
+      ],
+      "duration": 40,
+      "resources": ["Social issue analysis", "Development guides", "Community data"],
+      "assessmentMethod": "Social issue presentation"
+    },
+    {
+      "weekNumber": 10,
+      "topicName": "Environmental Citizenship and Sustainability",
+      "objectives": [
+        "Understand environmental rights and duties",
+        "Learn sustainable development principles",
+        "Study environmental protection"
+      ],
+      "duration": 40,
+      "resources": ["Environmental guides", "Sustainability materials", "Green citizenship info"],
+      "assessmentMethod": "Environmental citizenship project"
+    },
+    {
+      "weekNumber": 11,
+      "topicName": "Revision",
+      "objectives": [
+        "Review all civic education topics",
+        "Consolidate knowledge"
+      ],
+      "duration": 40,
+      "resources": ["Revision materials"],
+      "assessmentMethod": "Mock exam"
+    },
+    {
+      "weekNumber": 12,
+      "topicName": "Examination",
+      "objectives": ["Final assessment"],
+      "duration": 180,
+      "resources": ["Examination papers"],
+      "assessmentMethod": "Final exam"
+    },
+    {
+      "weekNumber": 13,
+      "topicName": "Closing",
+      "objectives": ["Term closure"],
+      "duration": 0,
+      "resources": [],
+      "assessmentMethod": "None"
+    }
+  ]
+}
