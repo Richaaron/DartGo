@@ -4,13 +4,14 @@ import { useState, useEffect, useMemo } from 'react'
 const PRIMARY_CLASSES = ['Nursery 1', 'Nursery 2', 'Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6']
 const SECONDARY_CLASSES = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']
 const ALL_CLASSES = [...PRIMARY_CLASSES, ...SECONDARY_CLASSES]
-import { Plus, Trash2, Search, Download, Send, Mail, AlertCircle, CheckCircle2, Clock, BarChart3, X } from 'lucide-react'
-import { SubjectResult, Student, Subject, ResultsSentTracker } from '../types'
+import { Plus, Trash2, Search, Download, Send, Mail, AlertCircle, CheckCircle2, Clock, BarChart3, X, User, ChevronRight, List } from 'lucide-react'
+import { SubjectResult, Student, Subject, ResultsSentTracker, StudentSubject } from '../types'
 import { useAuthContext } from '../context/AuthContext'
 import SubjectResultForm from '../components/SubjectResultForm'
+import StudentResultEntryView from '../components/StudentResultEntryView'
 import Table from '../components/Table'
 import { formatDate, exportToCSV, calculatePositions, getStudentClassPosition, getPositionSuffix } from '../utils/calculations'
-import { fetchStudents, fetchResults, fetchSubjects, deleteResult, createResult, updateResult } from '../services/api'
+import { fetchStudents, fetchResults, fetchSubjects, deleteResult, createResult, updateResult, fetchStudentSubjects } from '../services/api'
 import apiService from '../services/apiService'
 
 export default function ResultEntry() {
@@ -20,8 +21,11 @@ export default function ResultEntry() {
   const [results, setResults] = useState<SubjectResult[]>([])
   const [students, setStudents] = useState<Student[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
+  const [allStudentSubjects, setAllStudentSubjects] = useState<StudentSubject[]>([])
   const [showForm, setShowForm] = useState(false)
   const [editingResult, setEditingResult] = useState<SubjectResult | null>(null)
+  const [selectedStudentForEntry, setSelectedStudentForEntry] = useState<Student | null>(null)
+  const [viewMode, setViewMode] = useState<'results' | 'students'>('students')
   const [filterTerm, setFilterTerm] = useState('')
   const [selectedTerm, setSelectedTerm] = useState<string>('All')
   const [sending, setSending] = useState<string | null>(null)
@@ -91,19 +95,22 @@ export default function ResultEntry() {
 
   async function loadData() {
     try {
-      const [studentsData, resultsData, subjectsData] = await Promise.all([
+      const [studentsData, resultsData, subjectsData, studentSubjectsData] = await Promise.all([
         fetchStudents().catch(() => []),
         fetchResults().catch(() => []),
-        fetchSubjects().catch(() => [])
+        fetchSubjects().catch(() => []),
+        fetchStudentSubjects().catch(() => [])
       ])
       setStudents(Array.isArray(studentsData) ? studentsData : [])
       setResults(Array.isArray(resultsData) ? resultsData : [])
       setSubjects(Array.isArray(subjectsData) ? subjectsData : [])
+      setAllStudentSubjects(Array.isArray(studentSubjectsData) ? studentSubjectsData : [])
     } catch (error) {
       console.error('Failed to load results data', error)
       setStudents([])
       setResults([])
       setSubjects([])
+      setAllStudentSubjects([])
     }
   }
 
@@ -113,13 +120,15 @@ export default function ResultEntry() {
     Promise.all([
       fetchStudents().catch(() => []),
       fetchResults().catch(() => []),
-      fetchSubjects().catch(() => [])
+      fetchSubjects().catch(() => []),
+      fetchStudentSubjects().catch(() => [])
     ])
-      .then(([studentsData, resultsData, subjectsData]) => {
+      .then(([studentsData, resultsData, subjectsData, studentSubjectsData]) => {
         if (!isMounted) return
         setStudents(Array.isArray(studentsData) ? studentsData : [])
         setResults(Array.isArray(resultsData) ? resultsData : [])
         setSubjects(Array.isArray(subjectsData) ? subjectsData : [])
+        setAllStudentSubjects(Array.isArray(studentSubjectsData) ? studentSubjectsData : [])
       })
       .catch((error) => {
         console.error('Failed to load results data', error)
@@ -625,9 +634,33 @@ export default function ResultEntry() {
 
   
   
+  // Filtered students for the student list view
+  const displayStudents = useMemo(() => {
+    return students.filter(student => {
+      const matchesSearch = !filterTerm || 
+        `${student.firstName} ${student.lastName}`.toLowerCase().includes(filterTerm.toLowerCase()) ||
+        student.registrationNumber.toLowerCase().includes(filterTerm.toLowerCase())
+      
+      const matchesClass = selectedClass === 'All' || student.class === selectedClass
+      
+      return matchesSearch && matchesClass
+    }).sort((a, b) => `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`))
+  }, [students, filterTerm, selectedClass])
+
   return (
     <div className="p-8">
-      {sendMessage && (
+      {selectedStudentForEntry ? (
+        <StudentResultEntryView
+          student={selectedStudentForEntry}
+          subjects={subjects}
+          studentSubjects={allStudentSubjects}
+          existingResults={results}
+          onBack={() => setSelectedStudentForEntry(null)}
+          onResultsSaved={loadData}
+        />
+      ) : (
+        <>
+          {sendMessage && (
         <div
           className={`mb-6 p-4 rounded-lg flex items-center gap-3 ${
             sendMessage.type === 'success'
@@ -651,7 +684,31 @@ export default function ResultEntry() {
           <p className="text-gray-600 dark:text-gray-400 mt-2">{pageDescription}</p>
         </div>
         <div className="flex flex-col gap-3">
-                    <div className="flex gap-4">
+          <div className="flex gap-4 items-center">
+            <div className="flex bg-slate-100 dark:bg-brand-800 p-1 rounded-xl border border-slate-200 dark:border-brand-700">
+              <button
+                onClick={() => setViewMode('students')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-black transition-all ${
+                  viewMode === 'students' 
+                    ? 'bg-white dark:bg-brand-700 text-indigo-600 dark:text-indigo-400 shadow-sm' 
+                    : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                }`}
+              >
+                <User size={18} />
+                STUDENT VIEW
+              </button>
+              <button
+                onClick={() => setViewMode('results')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-black transition-all ${
+                  viewMode === 'results' 
+                    ? 'bg-white dark:bg-brand-700 text-indigo-600 dark:text-indigo-400 shadow-sm' 
+                    : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                }`}
+              >
+                <List size={18} />
+                RESULT LIST
+              </button>
+            </div>
             <button
               onClick={handleExport}
               className="btn-secondary flex items-center gap-2"
@@ -930,98 +987,126 @@ export default function ResultEntry() {
         </div>
       </div>
 
-      {/* Student Selection Controls */}
-      <div className="flex items-center justify-between mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-        <div className="flex items-center gap-3">
-          <input
-            type="checkbox"
-            checked={selectAllMode === 'all'}
-            onChange={handleSelectAll}
-            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-          />
-          <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
-            {selectAllMode === 'all' ? 'All Selected' : selectAllMode === 'none' ? 'None Selected' : `${selectedStudents.size} Selected`}
-          </span>
-          {selectedStudents.size > 0 && (
-            <button
-              onClick={() => {
-                setSelectedStudents(new Set())
-                setSelectAllMode('none')
-              }}
-              className="text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-            >
-              Clear Selection
-            </button>
-          )}
-        </div>
-        <div className="text-xs text-blue-600 dark:text-blue-400">
-          {selectedStudents.size > 0 ? `Ready to send to ${selectedStudents.size} student${selectedStudents.size > 1 ? 's' : ''}` : 'Select students to send results'}
-        </div>
-      </div>
-
-      {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <SubjectResultForm
-              onSubmit={handleSubmitResult}
-              initialData={editingResult || undefined}
-              onCancel={() => setShowForm(false)}
-              isEditing={!!editingResult}
-              students={students}
-              subjects={subjects}
-            />
-          </div>
-        </div>
-      )}
-
-      <div className="card-lg">
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Results Summary</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400">Manage and track student results</p>
-        </div>
-        <Table
-          columns={columns}
-          data={filteredResults.map((result) => ({
-            ...result,
-            actions: (
-              <div className="flex gap-1 items-center">
-                <button
-                  onClick={() => handleSendToParent(result.id)}
-                  disabled={sending === result.id}
-                  className="p-1 text-green-600 hover:bg-green-50 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  title="Send to Parent"
-                >
-                  {sending === result.id ? (
-                    <Mail size={18} className="animate-pulse" />
-                  ) : (
-                    <Send size={18} />
-                  )}
-                </button>
-                <button
-                  onClick={() => {
-                    setEditingResult(result)
-                    setShowForm(true)
-                  }}
-                  className="p-1 text-blue-500 hover:bg-blue-50 rounded transition-colors"
-                  title="Edit"
-                >
-                  <Plus size={18} />
-                </button>
-                <button
-                  onClick={() => handleDeleteResult(result.id)}
-                  className="p-1 text-red-500 hover:bg-red-50 rounded transition-colors"
-                  title="Delete"
-                >
-                  <Trash2 size={18} />
-                </button>
+      {/* Main Content Area */}
+      <div className="space-y-6">
+        {viewMode === 'students' ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {displayStudents.map((student) => (
+              <div 
+                key={student.id} 
+                onClick={() => setSelectedStudentForEntry(student)}
+                className="card-lg hover:border-indigo-500 dark:hover:border-indigo-400 cursor-pointer group transition-all hover:shadow-2xl hover:shadow-indigo-500/10"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-2xl bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-black text-xl group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                    {student.firstName[0]}{student.lastName[0]}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-black text-gray-900 dark:text-white uppercase tracking-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      {student.firstName} {student.lastName}
+                    </h3>
+                    <p className="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">
+                      {student.registrationNumber}
+                    </p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className="px-2 py-0.5 bg-slate-100 dark:bg-brand-800 rounded text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase">
+                        {student.class}
+                      </span>
+                    </div>
+                  </div>
+                  <ChevronRight size={20} className="text-gray-300 group-hover:text-indigo-500 transition-colors" />
+                </div>
               </div>
-            ),
-          }))}
-        />
-        {filteredResults.length === 0 && (
-          <div className="text-center py-8">
-            <p className="text-gray-500">No results found</p>
+            ))}
+            {displayStudents.length === 0 && (
+              <div className="col-span-full py-20 text-center card-lg border-dashed border-2">
+                <User size={48} className="mx-auto text-gray-200 mb-4" />
+                <p className="text-gray-500 font-bold">No students found matching your filters.</p>
+              </div>
+            )}
           </div>
+        ) : (
+          <>
+            {/* Student Selection Controls */}
+            <div className="flex items-center justify-between mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+              <div className="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  checked={selectAllMode === 'all'}
+                  onChange={handleSelectAll}
+                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                />
+                <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
+                  {selectAllMode === 'all' ? 'All Selected' : selectAllMode === 'none' ? 'None Selected' : `${selectedStudents.size} Selected`}
+                </span>
+                {selectedStudents.size > 0 && (
+                  <button
+                    onClick={() => {
+                      setSelectedStudents(new Set())
+                      setSelectAllMode('none')
+                    }}
+                    className="text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                  >
+                    Clear Selection
+                  </button>
+                )}
+              </div>
+              <div className="text-xs text-blue-600 dark:text-blue-400">
+                {selectedStudents.size > 0 ? `Ready to send to ${selectedStudents.size} student${selectedStudents.size > 1 ? 's' : ''}` : 'Select students to send results'}
+              </div>
+            </div>
+
+            <div className="card-lg">
+              <div className="mb-4">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Results Summary</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Manage and track student results</p>
+              </div>
+              <Table
+                columns={columns}
+                data={filteredResults.map((result) => ({
+                  ...result,
+                  actions: (
+                    <div className="flex gap-1 items-center">
+                      <button
+                        onClick={() => handleSendToParent(result.id)}
+                        disabled={sending === result.id}
+                        className="p-1 text-green-600 hover:bg-green-50 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        title="Send to Parent"
+                      >
+                        {sending === result.id ? (
+                          <Mail size={18} className="animate-pulse" />
+                        ) : (
+                          <Send size={18} />
+                        )}
+                      </button>
+                      <button
+                        onClick={() => {
+                          setEditingResult(result)
+                          setShowForm(true)
+                        }}
+                        className="p-1 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                        title="Edit Result"
+                      >
+                        <Plus size={18} />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteResult(result.id)}
+                        className="p-1 text-red-600 hover:bg-red-50 rounded transition-colors"
+                        title="Delete Result"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  ),
+                }))}
+              />
+              {filteredResults.length === 0 && (
+                <div className="text-center py-8">
+                  <p className="text-gray-500">No results found</p>
+                </div>
+              )}
+            </div>
+          </>
         )}
       </div>
 
