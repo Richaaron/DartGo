@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import { X, Save, AlertCircle, TrendingUp, Award, MessageSquare } from 'lucide-react'
-import { SubjectResult, Student, Subject } from '../types'
+import { SubjectResult, Student, Subject, StudentSubject } from '../types'
 import { calculateGrade, calculateGradePoint, calculatePercentage } from '../utils/calculations'
 import { useAuthContext } from '../context/AuthContext'
 
@@ -12,6 +12,7 @@ interface SubjectResultFormProps {
   isEditing?: boolean
   students: Student[]
   subjects: Subject[]
+  studentSubjects?: StudentSubject[]
 }
 
 export default function SubjectResultForm({
@@ -21,6 +22,7 @@ export default function SubjectResultForm({
   isEditing = false,
   students,
   subjects,
+  studentSubjects = [],
 }: SubjectResultFormProps) {
   const { user } = useAuthContext()
   const [formData, setFormData] = useState<Omit<SubjectResult, 'id'> & { id?: string }>(() => {
@@ -49,6 +51,32 @@ export default function SubjectResultForm({
 
     return data
   })
+
+  // Filter students based on subject registration if a subject is selected
+  const filteredStudents = useMemo(() => {
+    if (isEditing || !formData.subjectId || studentSubjects.length === 0) return students
+
+    const registeredStudentIds = new Set(
+      studentSubjects
+        .filter(ss => ss.subjectId === formData.subjectId)
+        .map(ss => ss.studentId)
+    )
+
+    return students.filter(s => registeredStudentIds.has(s.id))
+  }, [students, studentSubjects, formData.subjectId, isEditing])
+
+  // Filter subjects based on student registration if a student is selected
+  const filteredSubjects = useMemo(() => {
+    if (isEditing || !formData.studentId || studentSubjects.length === 0) return subjects
+
+    const registeredSubjectIds = new Set(
+      studentSubjects
+        .filter(ss => ss.studentId === formData.studentId)
+        .map(ss => ss.subjectId)
+    )
+
+    return subjects.filter(s => registeredSubjectIds.has(s.id))
+  }, [subjects, studentSubjects, formData.studentId, isEditing])
 
   // Update totals if initialData is provided
   useEffect(() => {
@@ -192,7 +220,7 @@ export default function SubjectResultForm({
                 disabled={isEditing || !!initialData}
               >
                 <option value="">Select a student...</option>
-                {students.map((student) => (
+                {filteredStudents.map((student) => (
                   <option key={student.id} value={student.id}>
                     {student.firstName} {student.lastName} ({student.registrationNumber}) - {student.class}
                   </option>
@@ -215,7 +243,7 @@ export default function SubjectResultForm({
                 disabled={isEditing || !!initialData}
               >
                 <option value="">Select a subject...</option>
-                {subjects.map((subject) => (
+                {filteredSubjects.map((subject) => (
                   <option key={subject.id} value={subject.id}>
                     {subject.name} ({subject.code})
                   </option>

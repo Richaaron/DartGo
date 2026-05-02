@@ -666,6 +666,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
               isEditing={!!editingResult}
               students={students}
               subjects={isTeacher ? teacherSubjects : subjects}
+              studentSubjects={allStudentSubjects}
             />
           </div>
         </div>
