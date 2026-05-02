@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback, memo, useRef } from 'react'
-import { Plus, Search, AlertCircle, Filter, User, BookOpen, ClipboardList, ChevronLeft, ChevronRight, Grid2X2, List } from 'lucide-react'
+import { Plus, Search, AlertCircle, Filter, User, BookOpen, ClipboardList, ChevronLeft, ChevronRight, LayoutGrid, List } from 'lucide-react'
 import { SubjectResult, Student, Subject, StudentSubject, Teacher } from '../types'
 import SubjectResultForm from '../components/SubjectResultForm'
 import BulkSubjectResultEntry from '../components/BulkSubjectResultEntry'
@@ -383,7 +383,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
             onClick={() => setViewMode('bulk')}
             className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition-all shadow-lg"
           >
-            <Grid2X2 size={18} />
+            <LayoutGrid size={18} />
             Bulk Entry
           </button>
           <button
