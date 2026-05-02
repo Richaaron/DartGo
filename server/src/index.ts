@@ -107,9 +107,21 @@ app.use(helmet())
 app.use(securityHeaders)
 
 console.log('[STARTUP] Configuring CORS...')
-const corsOrigin = envConfig.NODE_ENV === 'development' 
-  ? /^http:\/\/localhost:(5173|5174|5175|5176|5177)$/  // Allow multiple dev ports
-  : envConfig.CORS_ORIGIN
+let corsOrigin: string | RegExp | undefined
+
+if (envConfig.NODE_ENV === 'development') {
+  // Allow multiple dev ports
+  corsOrigin = /^http:\/\/localhost:(5173|5174|5175|5176|5177)$/
+  console.log('[STARTUP] ✓ CORS configured for development (localhost:5173-5177)')
+} else if (envConfig.CORS_ORIGIN) {
+  // Use configured origin in production
+  corsOrigin = envConfig.CORS_ORIGIN
+  console.log(`[STARTUP] ✓ CORS configured for: ${envConfig.CORS_ORIGIN}`)
+} else {
+  // In production without explicit CORS_ORIGIN, try to infer from request
+  console.log('[STARTUP] ⚠️  CORS_ORIGIN not set. Using permissive CORS.')
+  corsOrigin = true // Allow all origins (less secure but enables external access)
+}
 
 app.use(
   cors({

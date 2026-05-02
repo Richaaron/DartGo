@@ -29,7 +29,14 @@ const getPrimaryUrl = () => {
     return cleanUrl.endsWith('/api') ? cleanUrl : `${cleanUrl}/api`
   }
 
-  if (import.meta.env.PROD) return '/api'
+  if (import.meta.env.PROD) {
+    // In production, try to use the current domain's /api endpoint
+    const protocol = window.location.protocol
+    const hostname = window.location.hostname
+    const port = window.location.port ? `:${window.location.port}` : ''
+    return `${protocol}//${hostname}${port}/api`
+  }
+  
   // Fall back to local dev server
   return 'http://localhost:3001/api'
 }
