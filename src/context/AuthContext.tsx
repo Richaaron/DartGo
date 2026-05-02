@@ -62,6 +62,21 @@ const DEVELOPMENT_FALLBACK_USERS = isDevelopment ? [
       assignedClasses: ['SSS2A', 'SSS2B', 'SSS3A'],
     },
   },
+  {
+    loginIds: ['olumide@folusho.com', 'olumide'],
+    password: 'fvs@8581',
+    user: {
+      id: 'dev-teacher-olumide',
+      email: 'olumide@folusho.com',
+      name: 'Olumide',
+      role: 'Teacher' as const,
+      teacherId: 'T003',
+      username: 'olumide',
+      subject: 'English Language',
+      level: 'Secondary' as const,
+      assignedClasses: ['SSS1A', 'SSS1B', 'SSS2A'],
+    },
+  },
 ] : []
 
 interface AuthContextType {

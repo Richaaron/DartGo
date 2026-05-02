@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS public.teachers (
     username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     subject TEXT,
+    teacher_type TEXT DEFAULT 'Form Teacher' CHECK (teacher_type IN ('Form Teacher', 'Subject Teacher', 'Form + Subject Teacher')),
     level TEXT NOT NULL CHECK (level IN ('Pre-Nursery', 'Nursery', 'Primary', 'Secondary')),
     assigned_classes TEXT[] DEFAULT '{}',
     image TEXT,
@@ -266,3 +267,6 @@ ALTER TABLE public.school_config ADD COLUMN IF NOT EXISTS principal_name TEXT;
 ALTER TABLE public.school_config ADD COLUMN IF NOT EXISTS proprietress_name TEXT;
 ALTER TABLE public.school_config ADD COLUMN IF NOT EXISTS school_address TEXT;
 ALTER TABLE public.school_config ADD COLUMN IF NOT EXISTS school_phone TEXT;
+
+-- Migration: Add teacher_type column to teachers table (if not exists)
+ALTER TABLE public.teachers ADD COLUMN IF NOT EXISTS teacher_type TEXT DEFAULT 'Form Teacher' CHECK (teacher_type IN ('Form Teacher', 'Subject Teacher', 'Form + Subject Teacher'));

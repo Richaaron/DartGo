@@ -230,19 +230,65 @@ router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req: Auth
   }
 })
 
-router.put('/:id', authenticate, authorize(['Admin']), async (req, res) => {
+router.put('/:id', authenticate, async (req: AuthRequest, res) => {
   try {
+    const user = req.user
     const dbData = mapToDB(req.body)
+    
+    // Get current student to verify permissions and get original data
+    const { data: currentStudent, error: fetchError } = await supabase
+      .from('students')
+      .select('*')
+      .eq('id', req.params.id)
+      .single()
+    
+    if (fetchError || !currentStudent) {
+      console.error('[STUDENTS] Failed to fetch student:', fetchError)
+      return res.status(404).json({ error: 'Student not found' })
+    }
+    
+    // Permission check: only Admin or the form teacher of the student's class can update
+    if (user?.role === 'Teacher') {
+      const { data: teacher, error: teacherError } = await supabase
+        .from('teachers')
+        .select('assigned_classes, teacher_type')
+        .eq('id', user.id)
+        .single()
+      
+      if (teacherError) {
+        console.error('[STUDENTS] Failed to fetch teacher:', teacherError)
+        return res.status(500).json({ error: 'Failed to verify teacher permissions' })
+      }
+      
+      const teacherType = teacher?.teacher_type as string | undefined
+      const isFormCapableTeacher =
+        !teacherType || teacherType === 'Form Teacher' || teacherType === 'Form + Subject Teacher'
+      
+      if (!isFormCapableTeacher) {
+        console.warn(`[STUDENTS] Teacher ${user.id} is not allowed to update students. Type: ${teacherType}`)
+        return res.status(403).json({ error: 'Only form teachers can update students' })
+      }
+      
+      const studentClass = String(currentStudent.class_id || '').trim()
+      const assignedClassesFromDb = toClassList(teacher?.assigned_classes)
+      const assignedClassesFromSession = toClassList((user as any)?.assignedClasses)
+      const mergedAssignedClasses = [...new Set([...assignedClassesFromDb, ...assignedClassesFromSession])]
+      
+      const canAccessClass = mergedAssignedClasses.some(
+        (assignedClass) => normalizeClassName(assignedClass) === normalizeClassName(studentClass)
+      )
+      
+      if (!canAccessClass) {
+        console.warn(`[STUDENTS] Teacher ${user.id} tried to update student in unassigned class: ${studentClass}`)
+        return res.status(403).json({ error: 'You can only update students in your assigned classes' })
+      }
+    } else if (user?.role !== 'Admin') {
+      return res.status(403).json({ error: 'Insufficient permissions' })
+    }
     
     // Check if password needs to be hashed (if it's different from current DB value and not already hashed)
     if (dbData.parent_password) {
-      const { data: currentStudent } = await supabase
-        .from('students')
-        .select('parent_password')
-        .eq('id', req.params.id)
-        .single()
-      
-      if (currentStudent && dbData.parent_password !== currentStudent.parent_password) {
+      if (dbData.parent_password !== currentStudent.parent_password) {
         dbData.parent_password = await bcrypt.hash(dbData.parent_password, 10)
       }
     }
@@ -263,14 +309,68 @@ router.put('/:id', authenticate, authorize(['Admin']), async (req, res) => {
   }
 })
 
-router.delete('/:id', authenticate, authorize(['Admin']), async (req, res) => {
+router.delete('/:id', authenticate, async (req: AuthRequest, res) => {
   try {
+    const user = req.user
+    
+    // Get the student to verify permissions
+    const { data: student, error: fetchError } = await supabase
+      .from('students')
+      .select('class_id')
+      .eq('id', req.params.id)
+      .single()
+    
+    if (fetchError || !student) {
+      console.error('[STUDENTS] Failed to fetch student:', fetchError)
+      return res.status(404).json({ error: 'Student not found' })
+    }
+    
+    // Permission check: only Admin or the form teacher of the student's class can delete
+    if (user?.role === 'Teacher') {
+      const { data: teacher, error: teacherError } = await supabase
+        .from('teachers')
+        .select('assigned_classes, teacher_type')
+        .eq('id', user.id)
+        .single()
+      
+      if (teacherError) {
+        console.error('[STUDENTS] Failed to fetch teacher:', teacherError)
+        return res.status(500).json({ error: 'Failed to verify teacher permissions' })
+      }
+      
+      const teacherType = teacher?.teacher_type as string | undefined
+      const isFormCapableTeacher =
+        !teacherType || teacherType === 'Form Teacher' || teacherType === 'Form + Subject Teacher'
+      
+      if (!isFormCapableTeacher) {
+        console.warn(`[STUDENTS] Teacher ${user.id} is not allowed to delete students. Type: ${teacherType}`)
+        return res.status(403).json({ error: 'Only form teachers can delete students' })
+      }
+      
+      const studentClass = String(student.class_id || '').trim()
+      const assignedClassesFromDb = toClassList(teacher?.assigned_classes)
+      const assignedClassesFromSession = toClassList((user as any)?.assignedClasses)
+      const mergedAssignedClasses = [...new Set([...assignedClassesFromDb, ...assignedClassesFromSession])]
+      
+      const canAccessClass = mergedAssignedClasses.some(
+        (assignedClass) => normalizeClassName(assignedClass) === normalizeClassName(studentClass)
+      )
+      
+      if (!canAccessClass) {
+        console.warn(`[STUDENTS] Teacher ${user.id} tried to delete student from unassigned class: ${studentClass}`)
+        return res.status(403).json({ error: 'You can only delete students from your assigned classes' })
+      }
+    } else if (user?.role !== 'Admin') {
+      return res.status(403).json({ error: 'Insufficient permissions' })
+    }
+    
     const { error } = await supabase
       .from('students')
       .delete()
       .eq('id', req.params.id)
     
     if (error) throw error
+    console.log(`[STUDENTS] Student ${req.params.id} deleted by ${user?.role} ${user?.id}`)
     res.json({ message: 'Student deleted' })
   } catch (error: any) {
     console.error('[STUDENTS] DELETE /:id error:', error)

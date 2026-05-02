@@ -22,6 +22,7 @@ const mapTeacher = (t: any) => ({
   subject: t.subject || 'Form Teacher',
   assignedSubjects: parseAssignedSubjects(t.subject),
   level: t.level,
+  teacherType: t.teacher_type || 'Form Teacher',
   assignedClasses: t.assigned_classes || [],
   image: t.image,
   createdAt: t.created_at
@@ -38,6 +39,7 @@ const mapToDB = (t: any) => {
       ? t.assignedSubjects.join(', ')
       : (t.subject || ''),
     level: t.level,
+    teacher_type: t.teacherType || 'Form Teacher',
     assigned_classes: t.assignedClasses,
     image: t.image
   }
