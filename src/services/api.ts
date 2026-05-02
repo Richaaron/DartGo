@@ -93,10 +93,15 @@ export async function deleteTeacher(id: string): Promise<void> {
 export async function fetchSubjects(): Promise<Subject[]> {
   try {
     const { data } = await apiService.get('/subjects')
-    return data as Subject[]
-  } catch {
-    return DEV_SUBJECTS
+    // Validate data and use DEFAULT_SUBJECTS if needed
+    if (Array.isArray(data) && data.length > 0) {
+      return data as Subject[]
+    }
+  } catch (error) {
+    console.log('Subjects API call failed, using DEFAULT_SUBJECTS:', error)
   }
+  // Always return fresh DEV_SUBJECTS based on current DEFAULT_SUBJECTS
+  return DEV_SUBJECTS
 }
 
 export async function fetchResults(): Promise<SubjectResult[]> {
