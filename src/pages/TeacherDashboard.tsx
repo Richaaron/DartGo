@@ -36,6 +36,17 @@ export default function TeacherDashboard() {
             .filter(Boolean),
     [teacher],
   );
+
+  // Debug logging
+  useEffect(() => {
+    console.log('[TeacherDashboard] Teacher data:', {
+      name: teacher?.name,
+      assignedClasses: teacher?.assignedClasses,
+      assignedSubjects: teacher?.assignedSubjects,
+      subject: teacher?.subject,
+      computedAssignedSubjects: assignedSubjects,
+    });
+  }, [teacher, assignedSubjects]);
   const [students, setStudents] = useState<Student[]>([]);
   const [results, setResults] = useState<SubjectResult[]>([]);
   const [subjects, setSubjects] = useState<Subject[]>([]);

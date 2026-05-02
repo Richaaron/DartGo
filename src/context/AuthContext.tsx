@@ -70,14 +70,15 @@ const DEVELOPMENT_FALLBACK_USERS = isDevelopment ? [
     user: {
       id: 'dev-teacher-olumide',
       email: 'olumide@folusho.com',
-      name: 'Olumide',
+      name: 'Olumide Faluyi',
       role: 'Teacher' as const,
       teacherId: 'T003',
       username: 'olumide',
-      teacherType: 'Subject Teacher' as const,
+      teacherType: 'Form + Subject Teacher' as const,
       subject: 'English Language',
+      assignedSubjects: ['English Language', 'Literature'],
       level: 'Secondary' as const,
-      assignedClasses: ['SSS1A', 'SSS1B', 'SSS2A'],
+      assignedClasses: ['SSS 1'],
     },
   },
 ] : []
