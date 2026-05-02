@@ -22,8 +22,12 @@ Sentry.init({
 
 function initializeSubjects() {
   const existingSubjects = window.localStorage.getItem('subjects')
-  if (!existingSubjects || JSON.parse(existingSubjects).length === 0) {
+  const subjectsVersion = window.localStorage.getItem('subjectsVersion')
+  
+  // Clear cache and reinitialize if version changed or cache is empty
+  if (!existingSubjects || subjectsVersion !== 'v1' || JSON.parse(existingSubjects || '[]').length !== DEFAULT_SUBJECTS.length) {
     window.localStorage.setItem('subjects', JSON.stringify(DEFAULT_SUBJECTS))
+    window.localStorage.setItem('subjectsVersion', 'v1')
   }
 }
 
