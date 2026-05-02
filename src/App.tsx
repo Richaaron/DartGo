@@ -311,15 +311,13 @@ function AppContent() {
                   isDarkMode={isDarkMode}
                 />
               )}
-              {isSubjectTeacher && (
-                <NavLink
-                  to="/subject-results"
-                  icon={<BookOpen size={isMobile ? 20 : 18} />}
-                  label="Subject Results"
-                  isOpen={isMobile || isSidebarOpen}
-                  isDarkMode={isDarkMode}
-                />
-              )}
+              <NavLink
+                to="/subject-results"
+                icon={<BookOpen size={isMobile ? 20 : 18} />}
+                label="Subject Results"
+                isOpen={isMobile || isSidebarOpen}
+                isDarkMode={isDarkMode}
+              />
               <NavLink
                 to="/attendance"
                 icon={<CheckCircle size={isMobile ? 20 : 18} />}
@@ -535,13 +533,9 @@ function AppContent() {
                   <Route
                     path="/subject-results"
                     element={
-                      isSubjectTeacher ? (
-                        <PageTransition>
-                          <SubjectResultEntry />
-                        </PageTransition>
-                      ) : (
-                        <Navigate to={teacherDefaultRoute} replace />
-                      )
+                      <PageTransition>
+                        <SubjectResultEntry />
+                      </PageTransition>
                     }
                   />
                   <Route
