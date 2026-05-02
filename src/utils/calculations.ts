@@ -165,12 +165,12 @@ export const generateRegistrationNumber = (level: string): string => {
 }
 
 export const generateParentCredentials = (firstName: string, lastName?: string) => {
-  const randomCode = Math.random().toString(36).slice(2, 7).toUpperCase() // 5 random alphanumeric chars
+  const randomCode = Math.random().toString(36).slice(2, 9).toUpperCase() // 7 random alphanumeric chars for uniqueness
   const name = lastName 
     ? `${firstName.toLowerCase()}_${lastName.toLowerCase()}`
     : firstName.toLowerCase().replace(/\s/g, '')
-  const username = `${name}${randomCode.slice(0, 2)}` // Shorter username
-  const password = `Fs${randomCode}` // Fs + 5 chars = 7 chars total (shorter)
+  const username = `${name}${randomCode.slice(0, 4)}` // Use 4 random chars for uniqueness
+  const password = `Fs${randomCode.slice(0, 5)}` // Fs + 5 chars = 7 chars total (shorter)
   return {
     username,
     password,
