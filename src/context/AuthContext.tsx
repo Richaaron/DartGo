@@ -81,6 +81,40 @@ const DEVELOPMENT_FALLBACK_USERS = isDevelopment ? [
       assignedClasses: ['SSS 1'],
     },
   },
+  {
+    loginIds: ['chioma@folusho.com', 'chioma'],
+    password: 'ChiomaPassword123!@#',
+    user: {
+      id: 'dev-teacher-chioma',
+      email: 'chioma@folusho.com',
+      name: 'Chioma Okafor',
+      role: 'Teacher' as const,
+      teacherId: 'T004',
+      username: 'chioma',
+      teacherType: 'Form + Subject Teacher' as const,
+      subject: 'English Language',
+      assignedSubjects: ['English Language'],
+      level: 'Secondary' as const,
+      assignedClasses: ['SSS 2'],
+    },
+  },
+  {
+    loginIds: ['aminat@folusho.com', 'aminat'],
+    password: 'AminatPassword123!@#',
+    user: {
+      id: 'dev-teacher-aminat',
+      email: 'aminat@folusho.com',
+      name: 'Aminat Adeyinka',
+      role: 'Teacher' as const,
+      teacherId: 'T005',
+      username: 'aminat',
+      teacherType: 'Subject Teacher' as const,
+      subject: 'Chemistry',
+      assignedSubjects: ['Chemistry'],
+      level: 'Secondary' as const,
+      assignedClasses: [],
+    },
+  },
 ] : []
 
 interface AuthContextType {
