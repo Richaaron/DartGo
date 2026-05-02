@@ -45,21 +45,45 @@ const StudentResultEntryView = memo(function StudentResultEntryView({
   const [message, setMessage] = useState({ type: '', text: '' })
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  // Filter subjects registered for this student
+  // Filter subjects registered for this student OR subjects that already have results
   const registeredSubjects = useMemo(() => {
-    const studentAssignments = studentSubjects.filter(
-      sa => sa.studentId === student.id && 
-      (sa.term === selectedTerm || selectedTerm === 'All') &&
-      (sa.academicYear === selectedYear || selectedYear === 'All')
+    // 1. Get subjects from registration table
+    const registeredIds = new Set(
+      studentSubjects
+        .filter(sa => 
+          sa.studentId === student.id && 
+          (sa.term === selectedTerm || selectedTerm === 'All' || sa.term === 'All')
+        )
+        .map(sa => sa.subjectId)
     )
 
-    return studentAssignments.map(assignment => {
-      const subject = subjects.find(s => s.id === assignment.subjectId)
+    // 2. Get subjects that already have results recorded
+    const resultSubjectIds = new Set(
+      existingResults
+        .filter(r => 
+          r.studentId === student.id && 
+          (r.term === selectedTerm || selectedTerm === 'All') &&
+          (r.academicYear === selectedYear || selectedYear === 'All')
+        )
+        .map(r => r.subjectId)
+    )
+
+    // Combine both sets of subject IDs
+    const allSubjectIds = new Set([...Array.from(registeredIds), ...Array.from(resultSubjectIds)])
+
+    // If no subjects found via registration or results, show ALL subjects as a fallback
+    // This ensures the teacher can ALWAYS enter results even if registration is missing
+    const finalSubjectIds = allSubjectIds.size > 0 
+      ? Array.from(allSubjectIds) 
+      : subjects.map(s => s.id)
+
+    return finalSubjectIds.map(subjectId => {
+      const subject = subjects.find(s => s.id === subjectId)
       const existingResult = existingResults.find(r => 
         r.studentId === student.id && 
-        r.subjectId === assignment.subjectId &&
+        r.subjectId === subjectId &&
         r.term === selectedTerm &&
-        r.academicYear === selectedYear
+        (r.academicYear === selectedYear || selectedYear === 'All')
       )
 
       if (existingResult) {
@@ -73,11 +97,11 @@ const StudentResultEntryView = memo(function StudentResultEntryView({
       } else {
         return {
           studentId: student.id,
-          subjectId: assignment.subjectId,
+          subjectId: subjectId,
           subjectName: subject?.name || 'Unknown Subject',
           subjectCode: subject?.code || 'N/A',
-          term: selectedTerm,
-          academicYear: selectedYear,
+          term: selectedTerm === 'All' ? 'First' : selectedTerm,
+          academicYear: selectedYear === 'All' ? new Date().getFullYear().toString() : selectedYear,
           firstCA: 0,
           secondCA: 0,
           exam: 0,
