@@ -177,18 +177,23 @@ export default function ResultEntry() {
 
         const matchesTerm = selectedTerm === 'All' || result.term === selectedTerm
 
-        // Role-based filtering (always class-based for teachers)
+        // Role-based filtering
         let matchesRoleRestriction = true
         
         if (teacher) {
-          // Always use class-based view for teachers
-          // Form Teacher: Filter by assigned classes ONLY
-          if (isFormTeacher && teacher.assignedClasses) {
+          // Form Teacher: Filter by assigned classes
+          if (isFormTeacher && !isSubjectTeacher && teacher.assignedClasses) {
             matchesRoleRestriction = teacher.assignedClasses.includes(details.studentClass)
           }
-          // Subject Teacher: Filter by assigned classes ONLY
-          if (isSubjectTeacher && teacher.assignedClasses) {
-            matchesRoleRestriction = teacher.assignedClasses.includes(details.studentClass)
+          // Subject Teacher: Filter by assigned subjects
+          else if (isSubjectTeacher && !isFormTeacher && teacher.assignedSubjects) {
+            matchesRoleRestriction = teacher.assignedSubjects.includes(details.subjectName)
+          }
+          // Form + Subject Teacher: Show results for EITHER role (class-based OR subject-based)
+          else if (isFormTeacher && isSubjectTeacher) {
+            const matchesClass = teacher.assignedClasses?.includes(details.studentClass) || false
+            const matchesSubject = teacher.assignedSubjects?.includes(details.subjectName) || false
+            matchesRoleRestriction = matchesClass || matchesSubject
           }
         }
 
