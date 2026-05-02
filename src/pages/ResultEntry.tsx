@@ -766,16 +766,16 @@ export default function ResultEntry() {
       {/* Subject Breakdown Modal */}
       {showSubjectBreakdown && selectedBreakdownSubject && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-brand-900 rounded-lg shadow-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div className="p-6">
-              <div className="flex justify-between items-center mb-6 pb-4 border-b">
+              <div className="flex justify-between items-center mb-6 pb-4 border-b dark:border-indigo-500/30">
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">{selectedBreakdownSubject.name}</h2>
-                  <p className="text-sm text-gray-600 mt-1">Subject Code: {selectedBreakdownSubject.code}</p>
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{selectedBreakdownSubject.name}</h2>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Subject Code: {selectedBreakdownSubject.code}</p>
                 </div>
                 <button
                   onClick={() => setShowSubjectBreakdown(false)}
-                  className="p-1 hover:bg-gray-100 rounded transition-colors"
+                  className="p-1 hover:bg-gray-100 dark:hover:bg-brand-800 rounded transition-colors dark:text-white"
                 >
                   <X size={24} />
                 </button>
@@ -785,8 +785,8 @@ export default function ResultEntry() {
                 {/* Performance Summary */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div className="card-lg text-center">
-                    <p className="text-gray-600 text-sm">Class Average</p>
-                    <p className="text-3xl font-bold text-blue-600">
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">Class Average</p>
+                    <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                       {filteredResults
                         .filter(r => r.subjectId === selectedBreakdownSubject.id)
                         .length > 0
@@ -800,24 +800,24 @@ export default function ResultEntry() {
                     </p>
                   </div>
                   <div className="card-lg text-center">
-                    <p className="text-gray-600 text-sm">Highest Score</p>
-                    <p className="text-3xl font-bold text-green-600">
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">Highest Score</p>
+                    <p className="text-3xl font-bold text-green-600 dark:text-emerald-400">
                       {filteredResults.filter(r => r.subjectId === selectedBreakdownSubject.id).length > 0
                         ? Math.max(...filteredResults.filter(r => r.subjectId === selectedBreakdownSubject.id).map(r => r.totalScore))
                         : 0}
                     </p>
                   </div>
                   <div className="card-lg text-center">
-                    <p className="text-gray-600 text-sm">Lowest Score</p>
-                    <p className="text-3xl font-bold text-red-600">
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">Lowest Score</p>
+                    <p className="text-3xl font-bold text-red-600 dark:text-rose-400">
                       {filteredResults.filter(r => r.subjectId === selectedBreakdownSubject.id).length > 0
                         ? Math.min(...filteredResults.filter(r => r.subjectId === selectedBreakdownSubject.id).map(r => r.totalScore))
                         : 0}
                     </p>
                   </div>
                   <div className="card-lg text-center">
-                    <p className="text-gray-600 text-sm">Pass Rate</p>
-                    <p className="text-3xl font-bold text-purple-600">
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">Pass Rate</p>
+                    <p className="text-3xl font-bold text-purple-600 dark:text-indigo-400">
                       {filteredResults.filter(r => r.subjectId === selectedBreakdownSubject.id).length > 0
                         ? Math.round(
                             (filteredResults
@@ -833,7 +833,7 @@ export default function ResultEntry() {
 
                 {/* Grade Distribution */}
                 <div className="card-lg">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Grade Distribution</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Grade Distribution</h3>
                   <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
                     {['A', 'B', 'C', 'D', 'E', 'F'].map((grade) => {
                       const count = filteredResults.filter(
@@ -842,10 +842,10 @@ export default function ResultEntry() {
                       const total = filteredResults.filter(r => r.subjectId === selectedBreakdownSubject.id).length
                       const percentage = total > 0 ? ((count / total) * 100).toFixed(1) : 0
                       return (
-                        <div key={grade} className="bg-gray-50 p-3 rounded-lg text-center">
-                          <p className="text-sm font-semibold text-gray-600">Grade {grade}</p>
-                          <p className="text-2xl font-bold text-gray-900">{count}</p>
-                          <p className="text-xs text-gray-500">{percentage}%</p>
+                        <div key={grade} className="bg-gray-50 dark:bg-brand-800 p-3 rounded-lg text-center border dark:border-indigo-500/20">
+                          <p className="text-sm font-semibold text-gray-600 dark:text-gray-400">Grade {grade}</p>
+                          <p className="text-2xl font-bold text-gray-900 dark:text-white">{count}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-500">{percentage}%</p>
                         </div>
                       )
                     })}
@@ -854,7 +854,7 @@ export default function ResultEntry() {
 
                 {/* Top Performers */}
                 <div className="card-lg">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Performers</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Top Performers</h3>
                   <div className="space-y-2">
                     {filteredResults
                       .filter(r => r.subjectId === selectedBreakdownSubject.id)
@@ -863,14 +863,14 @@ export default function ResultEntry() {
                       .map((result, index) => {
                         const student = students.find(s => s.id === result.studentId)
                         return (
-                          <div key={result.id} className="flex justify-between items-center p-3 bg-gray-50 rounded">
+                          <div key={result.id} className="flex justify-between items-center p-3 bg-gray-50 dark:bg-brand-800 rounded border dark:border-indigo-500/20">
                             <div className="flex items-center gap-3">
-                              <span className="font-bold text-lg text-gray-600">#{index + 1}</span>
-                              <span className="font-medium text-gray-900">{student?.firstName} {student?.lastName}</span>
+                              <span className="font-bold text-lg text-gray-600 dark:text-gray-400">#{index + 1}</span>
+                              <span className="font-medium text-gray-900 dark:text-white">{student?.firstName} {student?.lastName}</span>
                             </div>
                             <div className="text-right">
-                              <span className="font-bold text-lg text-green-600">{result.totalScore}%</span>
-                              <span className="ml-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold">{result.grade}</span>
+                              <span className="font-bold text-lg text-green-600 dark:text-emerald-400">{result.totalScore}%</span>
+                              <span className="ml-2 px-3 py-1 bg-green-100 dark:bg-emerald-900/30 text-green-800 dark:text-emerald-400 rounded-full text-sm font-semibold">{result.grade}</span>
                             </div>
                           </div>
                         )
@@ -1140,6 +1140,21 @@ export default function ResultEntry() {
           </p>
         </div>
       </div>
-    </div>
-  )
-}
+
+      {showForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <SubjectResultForm
+              onSubmit={handleSubmitResult}
+              initialData={editingResult || undefined}
+              onCancel={() => setShowForm(false)}
+              isEditing={!!editingResult}
+              students={students}
+              subjects={subjects}
+            />
+          </div>
+        </div>
+      )}
+    </>
+  )}
+</div>
