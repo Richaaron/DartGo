@@ -62,7 +62,8 @@ export default function SubjectResultForm({
         .map(ss => ss.studentId)
     )
 
-    return students.filter(s => registeredStudentIds.has(s.id))
+    const filtered = students.filter(s => registeredStudentIds.has(s.id))
+    return filtered.length > 0 ? filtered : students
   }, [students, studentSubjects, formData.subjectId, isEditing])
 
   // Filter subjects based on student registration if a student is selected
@@ -75,7 +76,8 @@ export default function SubjectResultForm({
         .map(ss => ss.subjectId)
     )
 
-    return subjects.filter(s => registeredSubjectIds.has(s.id))
+    const filtered = subjects.filter(s => registeredSubjectIds.has(s.id))
+    return filtered.length > 0 ? filtered : subjects
   }, [subjects, studentSubjects, formData.studentId, isEditing])
 
   // Update totals if initialData is provided with score data
@@ -221,7 +223,7 @@ export default function SubjectResultForm({
                 value={formData.studentId}
                 onChange={handleChange}
                 className={`input-field ${errors.studentId ? 'border-red-500' : ''}`}
-                disabled={isEditing || !!initialData}
+                disabled={isEditing || (!!initialData && !!initialData.studentId)}
               >
                 <option value="">Select a student...</option>
                 {filteredStudents.map((student) => (
@@ -244,7 +246,7 @@ export default function SubjectResultForm({
                 value={formData.subjectId}
                 onChange={handleChange}
                 className={`input-field ${errors.subjectId ? 'border-red-500' : ''}`}
-                disabled={isEditing || !!initialData}
+                disabled={isEditing || (!!initialData && !!initialData.studentId)}
               >
                 <option value="">Select a subject...</option>
                 {filteredSubjects.map((subject) => (
