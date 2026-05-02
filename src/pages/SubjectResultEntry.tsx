@@ -289,11 +289,15 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
 
   const handleSubmitResult = async (result: SubjectResult | Omit<SubjectResult, 'id'>) => {
     try {
+      // Find the student to get their class
+      const student = students.find(s => s.id === result.studentId)
+      
       // Clean extra fields that might be present from the table display transformation
       // This ensures we only send valid fields to the API
       const cleanResult = {
         studentId: result.studentId,
         subjectId: result.subjectId,
+        classId: student?.class || (result as any).class || '',
         term: result.term,
         academicYear: result.academicYear,
         firstCA: result.firstCA,

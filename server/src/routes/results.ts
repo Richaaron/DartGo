@@ -72,7 +72,7 @@ const mapToDB = (r: any) => {
   return {
     student_id: r.studentId,
     subject_id: r.subjectId,
-    class_id: r.classId,
+    class_id: r.classId || r.class || '',
     term: termInt,
     academic_year: r.academicYear,
     ca1_score: ca1,
