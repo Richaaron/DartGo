@@ -20,12 +20,16 @@ const mapResult = (r: any) => {
   const total = Number(r.total_score || 0)
   const percentage = total  // out of 100 (20+20+60)
 
+  // Map integer term back to string for frontend
+  const termMap: Record<number, string> = { 1: 'First', 2: 'Second', 3: 'Third' }
+  const termString = termMap[Number(r.term)] || r.term
+
   return {
     id: r.id,
     studentId: r.student_id,
     subjectId: r.subject_id,
     classId: r.class_id,
-    term: r.term,
+    term: termString,
     academicYear: r.academic_year,
     // Backend field names
     ca1Score: ca1,
@@ -61,11 +65,15 @@ const mapToDB = (r: any) => {
   const caTotal = ca1 + ca2
   const totalScore = Number(r.totalScore ?? (caTotal + examScore))
 
+  // Map string term to integer for database
+  const termMap: Record<string, number> = { 'First': 1, 'Second': 2, 'Third': 3 }
+  const termInt = termMap[r.term] || (isNaN(Number(r.term)) ? 1 : Number(r.term))
+
   return {
     student_id: r.studentId,
     subject_id: r.subjectId,
     class_id: r.classId,
-    term: r.term,
+    term: termInt,
     academic_year: r.academicYear,
     ca1_score: ca1,
     ca2_score: ca2,
@@ -85,7 +93,13 @@ router.get('/', authenticate, async (req, res) => {
     
     if (studentId) query = query.eq('student_id', studentId)
     if (classId) query = query.eq('class_id', classId)
-    if (term) query = query.eq('term', term)
+    
+    if (term) {
+      const termMap: Record<string, number> = { 'First': 1, 'Second': 2, 'Third': 3 }
+      const termInt = termMap[term as string] || (isNaN(Number(term)) ? null : Number(term))
+      if (termInt !== null) query = query.eq('term', termInt)
+    }
+    
     if (academicYear) query = query.eq('academic_year', academicYear)
 
     const { data, error } = await query
