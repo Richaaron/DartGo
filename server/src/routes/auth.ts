@@ -111,13 +111,14 @@ router.post('/login', authLimiter, async (req, res) => {
 
     // 2. If not found, try 'teachers' table
     if (!foundUser) {
+      // Use quotes around values in .or() to handle special characters like @ in emails
       const { data: teacherData, error: teacherError } = await supabase
         .from('teachers')
         .select('*')
-        .or(`email.eq.${normalizedLoginId},username.eq.${normalizedLoginId},teacher_id.eq.${normalizedLoginId}`)
+        .or(`email.eq."${normalizedLoginId}",username.eq."${normalizedLoginId}",teacher_id.eq."${normalizedLoginId}"`)
         .single()
       
-      if (teacherError && !teacherError.message.includes('JSON object')) {
+      if (teacherError && !teacherError.message.includes('JSON object') && !teacherError.message.includes('0 rows')) {
         console.log(`[AUTH] Teacher table search error: ${teacherError.message}`)
       }
       
@@ -132,21 +133,22 @@ router.post('/login', authLimiter, async (req, res) => {
       const { data: studentData, error: studentError } = await supabase
         .from('students')
         .select('*')
-        .or(`parent_username.eq.${normalizedLoginId},parent_email.eq.${normalizedLoginId}`)
+        .or(`parent_username.eq."${normalizedLoginId}",parent_email.eq."${normalizedLoginId}"`)
         .single()
 
       if (studentData) {
         let isParentValid = false
+        const storedParentPassword = studentData.parent_password || ''
+        
         try {
-          isParentValid = await bcrypt.compare(password, studentData.parent_password)
+          if (storedParentPassword.startsWith('$2')) {
+            isParentValid = await bcrypt.compare(password, storedParentPassword)
+          } else {
+            // Fallback for legacy plain-text passwords
+            isParentValid = password === storedParentPassword
+          }
         } catch (e) {
-          // Fallback for legacy plain-text passwords
-          isParentValid = password === studentData.parent_password
-        }
-
-        // Second fallback: if bcrypt returns false but password is not a hash format
-        if (!isParentValid && studentData.parent_password && !studentData.parent_password.startsWith('$2')) {
-          isParentValid = password === studentData.parent_password
+          isParentValid = password === storedParentPassword
         }
 
         if (isParentValid) {

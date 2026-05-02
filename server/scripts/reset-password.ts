@@ -48,7 +48,19 @@ async function resetPassword(email: string, newPass: string) {
     return;
   }
 
-  console.log('❌ User not found in either table.');
+  // Try students table (for Parent login)
+  const { data: student, error: studentError } = await supabase
+    .from('students')
+    .update({ parent_password: hashedPassword })
+    .or(`parent_email.eq."${email}",parent_username.eq."${email}"`)
+    .select();
+
+  if (student && student.length > 0) {
+    console.log('✅ Updated in students table (Parent password).');
+    return;
+  }
+
+  console.log('❌ User not found in any table (users, teachers, or students).');
 }
 
 // Get arguments from command line
