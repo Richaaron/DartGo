@@ -78,10 +78,14 @@ export default function SubjectResultForm({
     return subjects.filter(s => registeredSubjectIds.has(s.id))
   }, [subjects, studentSubjects, formData.studentId, isEditing])
 
-  // Update totals if initialData is provided
+  // Update totals if initialData is provided with score data
   useEffect(() => {
-    if (initialData) {
-      const totals = calculateTotals(initialData.firstCA, initialData.secondCA, initialData.exam)
+    if (initialData && (initialData.firstCA !== undefined || initialData.secondCA !== undefined || initialData.exam !== undefined)) {
+      const totals = calculateTotals(
+        initialData.firstCA || 0, 
+        initialData.secondCA || 0, 
+        initialData.exam || 0
+      )
       setFormData(prev => ({
         ...prev,
         ...totals

@@ -97,6 +97,7 @@ export const calculateGradePoint = (score: number): number => {
 }
 
 export const calculatePercentage = (score: number, totalScore: number): number => {
+  if (!totalScore || isNaN(score)) return 0
   return (score / totalScore) * 100
 }
 
