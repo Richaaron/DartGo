@@ -1,10 +1,12 @@
 import { useState, useEffect, useMemo, useCallback, memo, useRef } from 'react'
-import { Plus, Search, AlertCircle, Filter, User, BookOpen, ClipboardList, ChevronLeft, ChevronRight, LayoutGrid, List } from 'lucide-react'
+import { Plus, Search, AlertCircle, Filter, User, BookOpen, ClipboardList, ChevronLeft, ChevronRight, LayoutGrid, List, Loader2 } from 'lucide-react'
 import { SubjectResult, Student, Subject, StudentSubject, Teacher } from '../types'
 import SubjectResultForm from '../components/SubjectResultForm'
 import BulkSubjectResultEntry from '../components/BulkSubjectResultEntry'
+import StudentResultEntryView from '../components/StudentResultEntryView'
 import { createResult, updateResult, fetchStudentSubjects } from '../services/api'
 import { useAuthContext } from '../context/AuthContext'
+import { useLocation } from 'react-router-dom'
 
 const PRIMARY_CLASSES = ['Nursery 1', 'Nursery 2', 'Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6']
 const SECONDARY_CLASSES = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']
@@ -19,6 +21,8 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
   const [allStudentSubjects, setAllStudentSubjects] = useState<StudentSubject[]>([])
   const [showForm, setShowForm] = useState(false)
   const [editingResult, setEditingResult] = useState<SubjectResult | null>(null)
+  const [selectedStudentForEntry, setSelectedStudentForEntry] = useState<Student | null>(null)
+  const [viewMode, setViewMode] = useState<'results' | 'students' | 'bulk'>('students')
   const [filterTerm, setFilterTerm] = useState('')
   const [debouncedFilterTerm, setDebouncedFilterTerm] = useState('')
   const [selectedTerm, setSelectedTerm] = useState<string>('All')
@@ -28,7 +32,6 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
   const [message, setMessage] = useState({ type: '', text: '' })
   const [apiError, setApiError] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
-  const [viewMode, setViewMode] = useState<'list' | 'bulk'>('list')
   const searchDebounceTimer = useRef<NodeJS.Timeout | null>(null)
 
   const userRole = user?.role || 'Teacher'
@@ -211,6 +214,19 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
     return items
   }, [allStudentSubjects, results, teacherSubjects, isTeacher, teacher, students])
 
+  // Filtered students for the student list view
+  const displayStudents = useMemo(() => {
+    return students.filter(student => {
+      const matchesSearch = !debouncedFilterTerm || 
+        `${student.firstName} ${student.lastName}`.toLowerCase().includes(debouncedFilterTerm.toLowerCase()) ||
+        student.registrationNumber.toLowerCase().includes(debouncedFilterTerm.toLowerCase())
+      
+      const matchesClass = selectedClass === 'All' || student.class === selectedClass
+      
+      return matchesSearch && matchesClass
+    }).sort((a, b) => `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`))
+  }, [students, debouncedFilterTerm, selectedClass])
+
   // Simple filtering for the combined list - uses debounced filter for performance
   const filteredDisplayData = useMemo(() => {
     const dataToFilter = isTeacher ? offeringStudents : results.map(r => ({ ...r, status: 'Completed' }))
@@ -370,6 +386,21 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
     )
   }
 
+  if (selectedStudentForEntry) {
+    return (
+      <div className="p-8">
+        <StudentResultEntryView
+          student={selectedStudentForEntry}
+          subjects={isTeacher ? teacherSubjects : subjects}
+          studentSubjects={allStudentSubjects}
+          existingResults={results}
+          onBack={() => setSelectedStudentForEntry(null)}
+          onResultsSaved={loadData}
+        />
+      </div>
+    )
+  }
+
   // If bulk mode is selected, show the bulk entry component
   if (viewMode === 'bulk') {
     return (
@@ -384,11 +415,11 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
           </div>
           <div className="flex gap-2">
             <button
-              onClick={() => setViewMode('list')}
+              onClick={() => setViewMode('results')}
               className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-brand-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg font-bold hover:bg-gray-50 dark:hover:bg-brand-700 transition-all"
             >
               <List size={18} />
-              List View
+              Result List
             </button>
           </div>
         </div>
@@ -417,6 +448,30 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
           <p className="text-gray-600 dark:text-gray-400 mt-2 font-medium">Enter CA and Exam scores for automated grading</p>
         </div>
         <div className="flex gap-2 flex-wrap">
+          <div className="flex bg-slate-100 dark:bg-brand-800 p-1 rounded-xl border border-slate-200 dark:border-brand-700">
+            <button
+              onClick={() => setViewMode('students')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-black transition-all ${
+                viewMode === 'students' 
+                  ? 'bg-white dark:bg-brand-700 text-indigo-600 dark:text-indigo-400 shadow-sm' 
+                  : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+              }`}
+            >
+              <User size={18} />
+              STUDENT VIEW
+            </button>
+            <button
+              onClick={() => setViewMode('results')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-black transition-all ${
+                viewMode === 'results' 
+                  ? 'bg-white dark:bg-brand-700 text-indigo-600 dark:text-indigo-400 shadow-sm' 
+                  : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+              }`}
+            >
+              <List size={18} />
+              RESULT LIST
+            </button>
+          </div>
           <button
             onClick={() => setViewMode('bulk')}
             className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition-all shadow-lg"
@@ -517,146 +572,186 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
         </div>
       </div>
 
-      {/* Results Table */}
-      <div className="card-lg">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-200 dark:border-indigo-500/30">
-                <th className="table-header text-left">Student Name</th>
-                <th className="table-header text-left">Class</th>
-                <th className="table-header text-left">Subject</th>
-                <th className="table-header text-left">Status</th>
-                <th className="table-header text-center">1st CA</th>
-                <th className="table-header text-center">2nd CA</th>
-                <th className="table-header text-center">Exam</th>
-                <th className="table-header text-center">Total</th>
-                <th className="table-header text-center">Grade</th>
-                <th className="table-header text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-              {displayResults.map((result, index) => (
-                <tr key={result.id || index} className="hover:bg-brand-50 dark:hover:bg-indigo-900/10 transition-colors">
-                  <td className="table-cell">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-xs">
-                        {result.studentName.split(' ').map((n: string) => n[0]).join('')}
-                      </div>
-                      <div>
-                        <p className="font-bold text-gray-900 dark:text-white">{result.studentName}</p>
-                        <p className="text-[10px] text-gray-400 uppercase tracking-widest">Reg: {students.find(s => s.id === result.studentId)?.registrationNumber || 'N/A'}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="table-cell font-bold">{result.class}</td>
-                  <td className="table-cell">
-                    <span className="px-2 py-1 bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded text-xs font-bold border border-indigo-100 dark:border-indigo-800/50">
-                      {result.subjectName}
-                    </span>
-                  </td>
-                  <td className="table-cell">
-                    <span className={`px-2 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
-                      result.status === 'Completed' 
-                        ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800/50' 
-                        : 'bg-orange-50 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 border border-orange-100 dark:border-orange-800/50'
-                    }`}>
-                      {result.status}
-                    </span>
-                  </td>
-                  <td className="table-cell text-center font-bold">{result.firstCA || 0}</td>
-                  <td className="table-cell text-center font-bold">{result.secondCA || 0}</td>
-                  <td className="table-cell text-center font-bold">{result.exam || 0}</td>
-                  <td className="table-cell text-center font-bold text-indigo-600 dark:text-indigo-400">{result.totalScore || 0}</td>
-                  <td className="table-cell text-center font-black">{result.grade || 'N/A'}</td>
-                  <td className="table-cell">
-                    <div className="flex justify-end gap-2">
-                      {result.status === 'Pending' ? (
-                        <button
-                          onClick={() => {
-                            setEditingResult(result)
-                            setShowForm(true)
-                          }}
-                          className="flex items-center gap-1 px-3 py-1 bg-indigo-600 text-white rounded-lg text-xs font-bold hover:bg-indigo-700 transition-all shadow-sm"
-                        >
-                          <Plus size={14} />
-                          Enter Result
-                        </button>
-                      ) : (
-                        <>
-                          <button
-                            onClick={() => {
-                              setEditingResult(result)
-                              setShowForm(true)
-                            }}
-                            className="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
-                            title="Edit"
-                          >
-                            <ClipboardList size={18} />
-                          </button>
-                          <button
-                            onClick={() => handleDeleteResult(result.id)}
-                            className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors"
-                            title="Delete"
-                          >
-                            <AlertCircle size={18} />
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {displayResults.length === 0 && (
-            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-              No results found. Try adjusting your filters or add some results.
-            </div>
-          )}
-        </div>
-
-        {/* Pagination Controls */}
-        {totalPages > 1 && (
-          <div className="mt-6 flex items-center justify-between">
-            <div className="text-sm text-gray-600 dark:text-gray-400">
-              Showing <span className="font-bold">{Math.min((currentPage - 1) * ITEMS_PER_PAGE + 1, filteredDisplayData.length)}</span> to{' '}
-              <span className="font-bold">{Math.min(currentPage * ITEMS_PER_PAGE, filteredDisplayData.length)}</span> of{' '}
-              <span className="font-bold">{filteredDisplayData.length}</span> results
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                disabled={currentPage === 1}
-                className="flex items-center gap-1 px-3 py-2 bg-white dark:bg-brand-800 border border-gray-200 dark:border-brand-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+      {/* Main Content Area */}
+      <div className="space-y-6">
+        {viewMode === 'students' ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {displayStudents.map((student) => (
+              <div 
+                key={student.id} 
+                onClick={() => setSelectedStudentForEntry(student)}
+                className="card-lg hover:border-indigo-500 dark:hover:border-indigo-400 cursor-pointer group transition-all hover:shadow-2xl hover:shadow-indigo-500/10"
               >
-                <ChevronLeft size={16} />
-                Previous
-              </button>
-              <div className="flex items-center gap-2">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                  <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    className={`w-8 h-8 rounded-lg font-bold text-sm transition-colors ${
-                      page === currentPage
-                        ? 'bg-indigo-600 text-white'
-                        : 'bg-white dark:bg-brand-800 border border-gray-200 dark:border-brand-700 hover:bg-gray-50 dark:hover:bg-brand-700'
-                    }`}
-                  >
-                    {page}
-                  </button>
-                ))}
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-2xl bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-black text-xl group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                    {student.firstName[0]}{student.lastName[0]}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-black text-gray-900 dark:text-white uppercase tracking-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      {student.firstName} {student.lastName}
+                    </h3>
+                    <p className="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">
+                      {student.registrationNumber}
+                    </p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className="px-2 py-0.5 bg-slate-100 dark:bg-brand-800 rounded text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase">
+                        {student.class}
+                      </span>
+                    </div>
+                  </div>
+                  <ChevronRight size={20} className="text-gray-300 group-hover:text-indigo-500 transition-colors" />
+                </div>
               </div>
-              <button
-                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                disabled={currentPage === totalPages}
-                className="flex items-center gap-1 px-3 py-2 bg-white dark:bg-brand-800 border border-gray-200 dark:border-brand-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                Next
-                <ChevronRight size={16} />
-              </button>
+            ))}
+            {displayStudents.length === 0 && (
+              <div className="col-span-full py-20 text-center card-lg border-dashed border-2">
+                <User size={48} className="mx-auto text-gray-200 mb-4" />
+                <p className="text-gray-500 font-bold">No students found matching your filters.</p>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="card-lg">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-gray-200 dark:border-indigo-500/30">
+                    <th className="table-header text-left">Student Name</th>
+                    <th className="table-header text-left">Class</th>
+                    <th className="table-header text-left">Subject</th>
+                    <th className="table-header text-left">Status</th>
+                    <th className="table-header text-center">1st CA</th>
+                    <th className="table-header text-center">2nd CA</th>
+                    <th className="table-header text-center">Exam</th>
+                    <th className="table-header text-center">Total</th>
+                    <th className="table-header text-center">Grade</th>
+                    <th className="table-header text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                  {displayResults.map((result, index) => (
+                    <tr key={result.id || index} className="hover:bg-brand-50 dark:hover:bg-indigo-900/10 transition-colors">
+                      <td className="table-cell">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-xs">
+                            {result.studentName.split(' ').map((n: string) => n[0]).join('')}
+                          </div>
+                          <div>
+                            <p className="font-bold text-gray-900 dark:text-white">{result.studentName}</p>
+                            <p className="text-[10px] text-gray-400 uppercase tracking-widest">Reg: {students.find(s => s.id === result.studentId)?.registrationNumber || 'N/A'}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="table-cell font-bold">{result.class}</td>
+                      <td className="table-cell">
+                        <span className="px-2 py-1 bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded text-xs font-bold border border-indigo-100 dark:border-indigo-800/50">
+                          {result.subjectName}
+                        </span>
+                      </td>
+                      <td className="table-cell">
+                        <span className={`px-2 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
+                          result.status === 'Completed' 
+                            ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800/50' 
+                            : 'bg-orange-50 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 border border-orange-100 dark:border-orange-800/50'
+                        }`}>
+                          {result.status}
+                        </span>
+                      </td>
+                      <td className="table-cell text-center font-bold">{result.firstCA || 0}</td>
+                      <td className="table-cell text-center font-bold">{result.secondCA || 0}</td>
+                      <td className="table-cell text-center font-bold">{result.exam || 0}</td>
+                      <td className="table-cell text-center font-bold text-indigo-600 dark:text-indigo-400">{result.totalScore || 0}</td>
+                      <td className="table-cell text-center font-black">{result.grade || 'N/A'}</td>
+                      <td className="table-cell">
+                        <div className="flex justify-end gap-2">
+                          {result.status === 'Pending' ? (
+                            <button
+                              onClick={() => {
+                                setEditingResult(result)
+                                setShowForm(true)
+                              }}
+                              className="flex items-center gap-1 px-3 py-1 bg-indigo-600 text-white rounded-lg text-xs font-bold hover:bg-indigo-700 transition-all shadow-sm"
+                            >
+                              <Plus size={14} />
+                              Enter Result
+                            </button>
+                          ) : (
+                            <>
+                              <button
+                                onClick={() => {
+                                  setEditingResult(result)
+                                  setShowForm(true)
+                                }}
+                                className="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
+                                title="Edit"
+                              >
+                                <ClipboardList size={18} />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteResult(result.id)}
+                                className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors"
+                                title="Delete"
+                              >
+                                <AlertCircle size={18} />
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {displayResults.length === 0 && (
+                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  No results found. Try adjusting your filters or add some results.
+                </div>
+              )}
             </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="mt-6 flex items-center justify-between">
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  Showing <span className="font-bold">{Math.min((currentPage - 1) * ITEMS_PER_PAGE + 1, filteredDisplayData.length)}</span> to{' '}
+                  <span className="font-bold">{Math.min(currentPage * ITEMS_PER_PAGE, filteredDisplayData.length)}</span> of{' '}
+                  <span className="font-bold">{filteredDisplayData.length}</span> results
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="flex items-center gap-1 px-3 py-2 bg-white dark:bg-brand-800 border border-gray-200 dark:border-brand-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    <ChevronLeft size={16} />
+                    Previous
+                  </button>
+                  <div className="flex items-center gap-2">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                      <button
+                        key={page}
+                        onClick={() => setCurrentPage(page)}
+                        className={`w-8 h-8 rounded-lg font-bold text-sm transition-colors ${
+                          page === currentPage
+                            ? 'bg-indigo-600 text-white'
+                            : 'bg-white dark:bg-brand-800 border border-gray-200 dark:border-brand-700 hover:bg-gray-50 dark:hover:bg-brand-700'
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="flex items-center gap-1 px-3 py-2 bg-white dark:bg-brand-800 border border-gray-200 dark:border-brand-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Next
+                    <ChevronRight size={16} />
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
