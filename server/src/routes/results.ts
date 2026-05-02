@@ -11,43 +11,74 @@ const parseAssignedSubjects = (subjectValue: string | null | undefined) =>
     .filter(Boolean)
 
 // Helper to map DB to camelCase for frontend
-const mapResult = (r: any) => ({
-  id: r.id,
-  studentId: r.student_id,
-  subjectId: r.subject_id,
-  classId: r.class_id,
-  term: r.term,
-  academicYear: r.academic_year,
-  ca1Score: r.ca1_score || 0,
-  ca2Score: r.ca2_score || 0,
-  caScore: r.ca_score || (Number(r.ca1_score || 0) + Number(r.ca2_score || 0)),
-  examScore: r.exam_score || 0,
-  totalScore: r.total_score || 0,
-  grade: r.grade,
-  remark: r.remark,
-  teacherId: r.teacher_id,
-  status: r.status,
-  createdAt: r.created_at,
-  updatedAt: r.updated_at
-})
+// Returns both backend names AND frontend aliases (firstCA, secondCA, exam, remarks)
+// so the SubjectResult type is satisfied after a create/update
+const mapResult = (r: any) => {
+  const ca1 = Number(r.ca1_score || 0)
+  const ca2 = Number(r.ca2_score || 0)
+  const exam = Number(r.exam_score || 0)
+  const total = Number(r.total_score || 0)
+  const percentage = total  // out of 100 (20+20+60)
+
+  return {
+    id: r.id,
+    studentId: r.student_id,
+    subjectId: r.subject_id,
+    classId: r.class_id,
+    term: r.term,
+    academicYear: r.academic_year,
+    // Backend field names
+    ca1Score: ca1,
+    ca2Score: ca2,
+    caScore: ca1 + ca2,
+    examScore: exam,
+    // Frontend-compatible aliases (matches SubjectResult type)
+    firstCA: ca1,
+    secondCA: ca2,
+    exam: exam,
+    totalScore: total,
+    percentage: percentage,
+    grade: r.grade,
+    gradePoint: 0, // calculated client-side
+    remarks: r.remark || '',
+    remark: r.remark || '',
+    teacherId: r.teacher_id,
+    recordedBy: r.teacher_id || '',
+    dateRecorded: r.created_at || '',
+    status: r.status,
+    createdAt: r.created_at,
+    updatedAt: r.updated_at
+  }
+}
 
 // Helper to map frontend camelCase to DB snake_case
-const mapToDB = (r: any) => ({
-  student_id: r.studentId,
-  subject_id: r.subjectId,
-  class_id: r.classId,
-  term: r.term,
-  academic_year: r.academicYear,
-  ca1_score: r.ca1Score || 0,
-  ca2_score: r.ca2Score || 0,
-  ca_score: r.caScore || (Number(r.ca1Score || 0) + Number(r.ca2Score || 0)),
-  exam_score: r.examScore || 0,
-  total_score: r.totalScore || (Number(r.caScore || 0) + Number(r.ca1Score || 0) + Number(r.ca2Score || 0) + Number(r.examScore || 0)),
-  grade: r.grade,
-  remark: r.remark,
-  teacher_id: r.teacherId,
-  status: r.status || 'DRAFT'
-})
+// Supports both frontend field names (firstCA/secondCA/exam/remarks) and
+// backend field names (ca1Score/ca2Score/examScore/remark) for compatibility
+const mapToDB = (r: any) => {
+  // Resolve CA scores — frontend uses firstCA/secondCA, backend uses ca1Score/ca2Score
+  const ca1 = Number(r.firstCA ?? r.ca1Score ?? 0)
+  const ca2 = Number(r.secondCA ?? r.ca2Score ?? 0)
+  const examScore = Number(r.exam ?? r.examScore ?? 0)
+  const caTotal = ca1 + ca2
+  const totalScore = Number(r.totalScore ?? (caTotal + examScore))
+
+  return {
+    student_id: r.studentId,
+    subject_id: r.subjectId,
+    class_id: r.classId,
+    term: r.term,
+    academic_year: r.academicYear,
+    ca1_score: ca1,
+    ca2_score: ca2,
+    ca_score: caTotal,
+    exam_score: examScore,
+    total_score: totalScore,
+    grade: r.grade,
+    remark: r.remark ?? r.remarks ?? '',
+    teacher_id: r.teacherId ?? r.recordedBy,
+    status: r.status || 'DRAFT'
+  }
+}
 
 router.get('/', authenticate, async (req, res) => {
   try {
@@ -108,6 +139,99 @@ router.post('/bulk', authenticate, authorize(['Admin', 'Teacher']), async (req: 
   } catch (error) {
     console.error('[RESULTS] Bulk update error:', error)
     res.status(400).json({ error: 'Failed to save results' })
+  }
+})
+
+// POST / - Create a single result
+router.post('/', authenticate, authorize(['Admin', 'Teacher']), async (req: AuthRequest, res) => {
+  try {
+    const mapped = mapToDB(req.body)
+
+    // For teachers: verify they are allowed to enter result for this subject
+    const user = req.user
+    if (user?.role === 'Teacher') {
+      const { data: teacher } = await supabase
+        .from('teachers')
+        .select('subject, assigned_subjects, teacher_type, assigned_classes')
+        .eq('id', user.id)
+        .single()
+
+      const teacherType = teacher?.teacher_type || ''
+      const isFormTeacher = teacherType === 'Form Teacher' || teacherType === 'Form + Subject Teacher'
+      const isSubjectTeacher = teacherType === 'Subject Teacher' || teacherType === 'Form + Subject Teacher'
+
+      // Subject teachers: only allowed their assigned subjects
+      if (isSubjectTeacher && !isFormTeacher) {
+        const allowedNames = parseAssignedSubjects(teacher?.subject)
+        const assignedArr: string[] = Array.isArray(teacher?.assigned_subjects) ? teacher.assigned_subjects : []
+        const allAllowed = new Set([...allowedNames, ...assignedArr])
+        const { data: allowedSubjects } = await supabase.from('subjects').select('id').in('name', [...allAllowed])
+        const allowedIds = new Set((allowedSubjects || []).map((s: any) => s.id))
+        if (mapped.subject_id && !allowedIds.has(mapped.subject_id)) {
+          return res.status(403).json({ error: 'You can only enter results for your assigned subjects' })
+        }
+      }
+    }
+
+    const { data, error } = await supabase
+      .from('subject_results')
+      .insert(mapped)
+      .select()
+      .single()
+
+    if (error) throw error
+    res.status(201).json(mapResult(data))
+  } catch (error: any) {
+    console.error('[RESULTS] Create error:', error)
+    res.status(400).json({ error: error.message || 'Failed to create result' })
+  }
+})
+
+// PUT /:id - Update a single result
+router.put('/:id', authenticate, authorize(['Admin', 'Teacher']), async (req: AuthRequest, res) => {
+  try {
+    const { id } = req.params
+    const mapped = mapToDB(req.body)
+
+    // Verify result belongs to this teacher's scope (optional extra guard)
+    const { data: existing, error: fetchErr } = await supabase
+      .from('subject_results')
+      .select('id')
+      .eq('id', id)
+      .single()
+
+    if (fetchErr || !existing) {
+      return res.status(404).json({ error: 'Result not found' })
+    }
+
+    const { data, error } = await supabase
+      .from('subject_results')
+      .update(mapped)
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) throw error
+    res.json(mapResult(data))
+  } catch (error: any) {
+    console.error('[RESULTS] Update error:', error)
+    res.status(400).json({ error: error.message || 'Failed to update result' })
+  }
+})
+
+// DELETE /:id - Delete a single result
+router.delete('/:id', authenticate, authorize(['Admin', 'Teacher']), async (req, res) => {
+  try {
+    const { error } = await supabase
+      .from('subject_results')
+      .delete()
+      .eq('id', req.params.id)
+
+    if (error) throw error
+    res.json({ message: 'Result deleted successfully' })
+  } catch (error: any) {
+    console.error('[RESULTS] Delete error:', error)
+    res.status(400).json({ error: error.message || 'Failed to delete result' })
   }
 })
 

@@ -120,6 +120,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
   }, [loadData])
 
   // Get subjects assigned to the teacher
+  // Form teachers with no assigned subjects can see all subjects for their class level
   const teacherSubjects = useMemo(() => {
     if (!isTeacher || !teacher) return subjects
     
@@ -130,9 +131,20 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
       teacher.assignedSubjects.forEach(s => assignedNames.add(s))
     }
 
-    if (assignedNames.size === 0) return []
+    // If the teacher has specific assigned subjects, filter to those
+    if (assignedNames.size > 0) {
+      return subjects.filter(s => assignedNames.has(s.name) || assignedNames.has(s.id))
+    }
 
-    return subjects.filter(s => assignedNames.has(s.name) || assignedNames.has(s.id))
+    // Form teacher with no assigned subjects: show all subjects for their level
+    // This lets them enter results for any subject in their class
+    if (teacher.level) {
+      const filtered = subjects.filter(s => s.level === teacher.level)
+      if (filtered.length > 0) return filtered
+    }
+
+    // Fallback: show all subjects
+    return subjects
   }, [subjects, isTeacher, teacher])
 
   // Filter students offering subjects the teacher teaches

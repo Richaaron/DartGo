@@ -41,6 +41,7 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
 }: BulkSubjectResultEntryProps) {
   const { user } = useAuthContext()
   const [selectedSubjectId, setSelectedSubjectId] = useState<string>('')
+  const [selectedClass, setSelectedClass] = useState<string>('')
   const [selectedTerm, setSelectedTerm] = useState<string>('First')
   const [selectedYear, setSelectedYear] = useState<string>(new Date().getFullYear().toString())
   const [bulkData, setBulkData] = useState<BulkEntryRow[]>([])
@@ -65,9 +66,18 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
     return subjects.filter(s => assignedNames.has(s.name) || assignedNames.has(s.id))
   }, [subjects, isTeacher, teacher])
 
-  // Build bulk entry data when subject is selected
+  // Get all unique classes from students
+  const availableClasses = useMemo(() => {
+    const classSet = new Set<string>()
+    students.forEach(s => {
+      if (s.class) classSet.add(s.class)
+    })
+    return Array.from(classSet).sort()
+  }, [students])
+
+  // Build bulk entry data when subject and class are selected
   const loadBulkData = useCallback(() => {
-    if (!selectedSubjectId) {
+    if (!selectedSubjectId || !selectedClass) {
       setBulkData([])
       return
     }
@@ -75,16 +85,17 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
     const subject = subjects.find(s => s.id === selectedSubjectId)
     if (!subject) return
 
-    // Get all students assigned to this subject
+    // Get all students in the selected class who are assigned to this subject
     const studentAssignments = studentSubjects.filter(
       sa => sa.subjectId === selectedSubjectId && 
       (sa.term === selectedTerm || selectedTerm === 'All') &&
       (sa.academicYear === selectedYear || selectedYear === 'All')
     )
 
-    const rows: BulkEntryRow[] = studentAssignments.map(assignment => {
-      const student = students.find(s => s.id === assignment.studentId)
-      if (!student) return null
+    const rows: BulkEntryRow[] = studentAssignments
+      .map(assignment => {
+        const student = students.find(s => s.id === assignment.studentId)
+        if (!student || student.class !== selectedClass) return null
 
       // Find existing result for this student, subject, term, year
       const existingResult = existingResults.find(r =>
@@ -145,7 +156,7 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
     // Sort by student name
     rows.sort((a, b) => a.studentName.localeCompare(b.studentName))
     setBulkData(rows)
-  }, [selectedSubjectId, selectedTerm, selectedYear, subjects, students, studentSubjects, existingResults, user?.name])
+  }, [selectedSubjectId, selectedClass, selectedTerm, selectedYear, subjects, students, studentSubjects, existingResults, user?.name])
 
   useEffect(() => {
     loadBulkData()
