@@ -30,7 +30,6 @@ const mapResult = (r: any) => {
     // Backend field names
     ca1Score: ca1,
     ca2Score: ca2,
-    caScore: ca1 + ca2,
     examScore: exam,
     // Frontend-compatible aliases (matches SubjectResult type)
     firstCA: ca1,
@@ -70,7 +69,6 @@ const mapToDB = (r: any) => {
     academic_year: r.academicYear,
     ca1_score: ca1,
     ca2_score: ca2,
-    ca_score: caTotal,
     exam_score: examScore,
     total_score: totalScore,
     grade: r.grade,
