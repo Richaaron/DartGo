@@ -25,7 +25,6 @@ function humanizeAction(action: string): { label: string; category: string } {
     teachers: "Teacher",
     results: "Result",
     attendance: "Attendance",
-    "scheme-of-work": "Scheme of Work",
     subjects: "Subject",
     observations: "Observation",
     "student-subjects": "Subject Assignment",
@@ -56,9 +55,7 @@ function humanizeAction(action: string): { label: string; category: string } {
         ? "attendance"
         : resource === "students"
           ? "students"
-          : resource === "scheme-of-work"
-            ? "schemes"
-            : "other";
+          : "other";
 
   return { label: text, category };
 }

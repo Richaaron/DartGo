@@ -1,4 +1,4 @@
-import { Student, Teacher, Subject, SubjectResult, Curriculum, SchemeOfWork, StudentSubject, DEFAULT_SUBJECTS } from '../types'
+import { Student, Teacher, Subject, SubjectResult, Curriculum, StudentSubject, DEFAULT_SUBJECTS } from '../types'
 import apiService from './apiService'
 
 const DEV_SUBJECTS: Subject[] = DEFAULT_SUBJECTS.map((subject) => ({
@@ -162,33 +162,7 @@ export async function deleteCurriculum(id: string): Promise<void> {
   await apiService.delete(`/curriculum/${id}`)
 }
 
-export async function fetchSchemesOfWork(subjectId: string): Promise<SchemeOfWork[]> {
-  const { data } = await apiService.get(`/scheme-of-work/${subjectId}`)
-  return data as SchemeOfWork[]
-}
 
-export async function deleteSchemeOfWork(id: string): Promise<void> {
-  await apiService.delete(`/scheme-of-work/${id}`)
-}
-
-export async function submitSchemeOfWork(id: string): Promise<SchemeOfWork> {
-  const { data: result } = await apiService.post(`/scheme-of-work/${id}/submit`, {})
-  return result as SchemeOfWork
-}
-
-export async function updateSchemeOfWork(id: string, data: Partial<SchemeOfWork>): Promise<SchemeOfWork> {
-  const { data: result } = await apiService.put(`/scheme-of-work/${id}`, data)
-  return result as SchemeOfWork
-}
-
-export async function uploadSchemeOfWorkFile(formData: FormData): Promise<SchemeOfWork> {
-  const { data: result } = await apiService.post('/scheme-of-work/upload', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  })
-  return result as SchemeOfWork
-}
 
 export async function fetchAttendance(params: any = {}): Promise<any[]> {
   const query = new URLSearchParams(params).toString()

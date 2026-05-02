@@ -145,39 +145,7 @@ export interface Curriculum {
   updatedAt: string
 }
 
-export interface Topic {
-  weekNumber: number
-  topic: string
-  duration: number
-  objectives: string[]
-  resources: string[]
-  assessmentMethod: string
-  status: 'PLANNED' | 'IN_PROGRESS' | 'COMPLETED'
-}
 
-export interface SchemeOfWork {
-  id: string
-  teacherId: string
-  subjectId: string
-  classId: string
-  academicYear: string
-  term: number
-  curriculumId: string
-  topics: Topic[]
-  uploadedBy: string
-  uploadedDate: string
-  lastUpdated: string
-  version: number
-  status: 'DRAFT' | 'SUBMITTED' | 'APPROVED' | 'ACTIVE'
-  approvedBy?: string
-  approvalDate?: string
-  notes: string
-  fileUrl?: string
-  fileName?: string
-  fileType?: string
-  createdAt: string
-  updatedAt: string
-}
 
 export const DEFAULT_GRADE_SCALE: GradeScale[] = [
   { minScore: 70, maxScore: 100, grade: 'A', gradePoint: 4.0, description: 'Excellent' },

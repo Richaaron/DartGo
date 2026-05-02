@@ -33,7 +33,6 @@ import configRoutes from './routes/config'
 import observationRoutes from './routes/observations'
 import notificationRoutes from './routes/notifications'
 import curriculumRoutes from './routes/curriculum'
-import schemeOfWorkRoutes from './routes/schemeOfWork'
 import deadlineRoutes from './routes/deadlines'
 import messageRoutes from './routes/messages'
 import activityRoutes from './routes/activities'
@@ -139,7 +138,6 @@ app.use('/api/auth', authRoutes)
 app.use('/api/config', configRoutes)
 app.use('/api/notifications', notificationRoutes)
 app.use('/api/curriculum', curriculumRoutes)
-app.use('/api/scheme-of-work', schemeOfWorkRoutes)
 app.use('/api/observations', observationRoutes)
 app.use('/api/deadlines', deadlineRoutes)
 
