@@ -11,6 +11,7 @@ import {
 import { Student, SchoolLevel } from "../types";
 import StudentForm from "../components/StudentForm";
 import StudentSubjectForm from "../components/StudentSubjectForm";
+import StudentEditor from "../components/StudentEditor";
 import Table from "../components/Table";
 import {
   exportToCSV,
@@ -29,9 +30,11 @@ import {
   deleteStudentSubject,
 } from "../services/api";
 import { useAuthContext } from "../context/AuthContext";
+import { getUserPermissions } from "../utils/rolePermissions";
 
 export default function StudentManagement() {
   const { user } = useAuthContext();
+  const permissions = getUserPermissions(user);
   const isTeacher = user?.role === "Teacher";
   const teacherType = isTeacher ? (user as any)?.teacherType : undefined;
   const isSubjectOnlyTeacher = isTeacher && teacherType === "Subject Teacher";
@@ -50,6 +53,7 @@ export default function StudentManagement() {
   const [selectedClass, setSelectedClass] = useState<string>("All");
   const [showForm, setShowForm] = useState(false);
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
+  const [showAdvancedEditor, setShowAdvancedEditor] = useState(false);
   const [subjects, setSubjects] = useState<any[]>([]);
   const [showSubjectForm, setShowSubjectForm] = useState(false);
   const [selectedStudentForSubjects, setSelectedStudentForSubjects] =
@@ -326,6 +330,63 @@ export default function StudentManagement() {
       handleUpdateStudent(student as Student);
     } else {
       handleAddStudent(student as Omit<Student, "id">, selectedSubjects);
+    }
+  };
+
+  const handleOpenAdvancedEditor = async (student: Student) => {
+    setEditingStudent(student);
+    try {
+      const subjectAssignments = await fetchStudentSubjects(student.id);
+      setStudentSubjects(subjectAssignments);
+    } catch (error) {
+      console.error("Failed to load student subjects", error);
+      setStudentSubjects([]);
+    }
+    setShowAdvancedEditor(true);
+  };
+
+  const handleAdvancedUpdateStudent = async (updatedStudent: Student) => {
+    try {
+      await updateStudent(updatedStudent.id, updatedStudent);
+      await loadStudents();
+      setEditingStudent(null);
+      setShowAdvancedEditor(false);
+    } catch (error: any) {
+      const errorMsg =
+        error.response?.data?.error ||
+        error.message ||
+        "Failed to update student";
+      window.alert(`Error: ${errorMsg}`);
+    }
+  };
+
+  const handleAdvancedUpdateSubjects = async (assignments: any[]) => {
+    try {
+      // Delete old assignments
+      for (const oldSubject of studentSubjects) {
+        try {
+          await deleteStudentSubject(oldSubject.id);
+        } catch (error) {
+          console.error("Failed to delete old subject assignment", error);
+        }
+      }
+
+      // Create new assignments
+      for (const assignment of assignments) {
+        try {
+          await createStudentSubject(assignment);
+        } catch (error) {
+          console.error("Failed to create subject assignment", error);
+        }
+      }
+
+      setShowAdvancedEditor(false);
+      setEditingStudent(null);
+      setStudentSubjects([]);
+      window.alert("Subjects updated successfully!");
+    } catch (error) {
+      window.alert("Failed to update subjects");
+      console.error("Error updating subjects:", error);
     }
   };
 
@@ -654,6 +715,25 @@ export default function StudentManagement() {
         </div>
       )}
 
+      {/* Advanced Student Editor Modal */}
+      {showAdvancedEditor && editingStudent && (
+        <StudentEditor
+          student={editingStudent}
+          subjects={subjects}
+          studentSubjects={studentSubjects}
+          onUpdateStudent={handleAdvancedUpdateStudent}
+          onUpdateSubjects={handleAdvancedUpdateSubjects}
+          onCancel={() => {
+            setShowAdvancedEditor(false);
+            setEditingStudent(null);
+            setStudentSubjects([]);
+          }}
+          allowedClasses={
+            isTeacher && isFormCapableTeacher ? assignedClasses : undefined
+          }
+        />
+      )}
+
       {/* Table */}
       <div className="card-lg">
         <Table
@@ -661,30 +741,28 @@ export default function StudentManagement() {
           data={filteredStudents.map((student) => ({
             ...student,
             actions: (
-              <div className="flex gap-2">
+              <div className="flex gap-1 items-center">
                 <button
-                  onClick={() => handleOpenSubjectAssignment(student)}
-                  className="p-1 text-purple-600 hover:bg-purple-50 rounded transition-colors"
-                  title="Assign subjects"
+                  onClick={() => handleOpenAdvancedEditor(student)}
+                  className="p-2 text-blue-600 hover:bg-blue-50 rounded transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  title="Edit student & manage subjects"
+                  disabled={!permissions.canEditStudent && !permissions.canManageSubjects}
                 >
-                  <BookOpen size={18} />
+                  <Edit2 size={16} />
                 </button>
                 <button
-                  onClick={() => {
-                    setEditingStudent(student);
-                    setShowForm(true);
-                  }}
-                  className="p-1 text-blue-500 hover:bg-blue-50 rounded transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                  title="Edit"
-                  disabled={isTeacher && !isFormCapableTeacher}
+                  onClick={() => handleOpenSubjectAssignment(student)}
+                  className="p-2 text-purple-600 hover:bg-purple-50 rounded transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  title="Manage subjects (quick)"
+                  disabled={!permissions.canAssignSubjectsToStudent}
                 >
-                  <Edit2 size={18} />
+                  <BookOpen size={16} />
                 </button>
                 <button
                   onClick={() => handleDeleteStudent(student.id)}
-                  className="p-1 text-red-500 hover:bg-red-50 rounded transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="p-2 text-red-500 hover:bg-red-50 rounded transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                   title="Delete"
-                  disabled={isTeacher && !isFormCapableTeacher}
+                  disabled={!permissions.canDeleteStudent}
                 >
                   <Trash2 size={18} />
                 </button>

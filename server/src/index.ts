@@ -107,7 +107,7 @@ app.use(helmet())
 app.use(securityHeaders)
 
 console.log('[STARTUP] Configuring CORS...')
-let corsOrigin: string | RegExp | undefined
+let corsOrigin: string | RegExp | boolean | undefined
 
 if (envConfig.NODE_ENV === 'development') {
   // Allow multiple dev ports
