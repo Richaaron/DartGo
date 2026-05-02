@@ -24,7 +24,7 @@ function initializeSubjects() {
   try {
     const existingSubjects = window.localStorage.getItem('subjects')
     const subjectsVersion = window.localStorage.getItem('subjectsVersion')
-    const appVersion = '2.0.0' // Increment this when subjects change
+    const appVersion = '2.0.1' // Increment this when subjects change
     
     // Clear cache if version changed, data is empty, or count doesn't match
     const shouldResetCache = 
@@ -41,7 +41,7 @@ function initializeSubjects() {
     console.error('Error initializing subjects:', error)
     // Force reset on any error
     window.localStorage.setItem('subjects', JSON.stringify(DEFAULT_SUBJECTS))
-    window.localStorage.setItem('subjectsVersion', '2.0.0')
+    window.localStorage.setItem('subjectsVersion', '2.0.1')
   }
 }
 
