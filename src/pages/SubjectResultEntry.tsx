@@ -289,21 +289,43 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
 
   const handleSubmitResult = async (result: SubjectResult | Omit<SubjectResult, 'id'>) => {
     try {
-      if ('id' in result) {
+      // Clean extra fields that might be present from the table display transformation
+      // This ensures we only send valid fields to the API
+      const cleanResult = {
+        studentId: result.studentId,
+        subjectId: result.subjectId,
+        term: result.term,
+        academicYear: result.academicYear,
+        firstCA: result.firstCA,
+        secondCA: result.secondCA,
+        exam: result.exam,
+        totalScore: result.totalScore,
+        percentage: result.percentage,
+        grade: result.grade,
+        gradePoint: result.gradePoint,
+        remarks: result.remarks,
+        dateRecorded: result.dateRecorded || new Date().toISOString().split('T')[0],
+        recordedBy: result.recordedBy,
+      }
+
+      if ('id' in result && result.id && !result.id.startsWith('pending-')) {
         // Update existing result
-        await updateResult(result.id, result)
+        await updateResult(result.id, cleanResult)
       } else {
         // Create new result
-        await createResult(result)
+        await createResult(cleanResult)
       }
       await loadData()
       setShowForm(false)
       setEditingResult(null)
       setMessage({ type: 'success', text: 'Result saved successfully!' })
       setTimeout(() => setMessage({ type: '', text: '' }), 3000)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to save result:', error)
-      setMessage({ type: 'error', text: 'Failed to save result. Please try again.' })
+      setMessage({ 
+        type: 'error', 
+        text: `Failed to save result: ${error.message || 'Please try again.'}` 
+      })
     }
   }
 
@@ -661,9 +683,13 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
           <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
             <SubjectResultForm
               onSubmit={handleSubmitResult}
-              initialData={editingResult || undefined}
+              initialData={editingResult || {
+                term: selectedTerm === 'All' ? 'First' : selectedTerm,
+                subjectId: selectedSubject === 'All' ? '' : selectedSubject,
+                academicYear: new Date().getFullYear().toString()
+              } as any}
               onCancel={handleCancel}
-              isEditing={!!editingResult}
+              isEditing={!!editingResult && !editingResult.id?.startsWith('pending-')}
               students={students}
               subjects={isTeacher ? teacherSubjects : subjects}
               studentSubjects={allStudentSubjects}

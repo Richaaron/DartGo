@@ -131,7 +131,7 @@ export default function SubjectResultForm({
       setFormData((prev) => ({
         ...prev,
         [name]: newValue,
-        totalScore: totals.total,
+        totalScore: totals.totalScore,
         percentage: totals.percentage,
         grade: totals.grade,
         gradePoint: totals.gradePoint,
