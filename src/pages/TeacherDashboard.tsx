@@ -87,18 +87,28 @@ export default function TeacherDashboard() {
     return results.filter((r) => {
       const student = students.find((s) => s.id === r.studentId);
       const subject = subjects.find((sub) => sub.id === r.subjectId);
-      const matchesClass =
-        student && teacher?.assignedClasses?.includes(student.class);
-      const matchesSubject =
-        assignedSubjects.length === 0 ||
-        assignedSubjects.includes(subject?.name);
+      
+      // Form teacher: sees results for assigned classes
+      const isFormTeacher = teacher?.assignedClasses?.length > 0;
+      const matchesAsFormTeacher =
+        isFormTeacher && student && teacher?.assignedClasses?.includes(student.class);
+      
+      // Subject teacher: sees results for assigned subjects
+      const isSubjectTeacher = assignedSubjects.length > 0;
+      const matchesAsSubjectTeacher =
+        isSubjectTeacher && assignedSubjects.includes(subject?.name);
+      
+      // Teacher should see the result if they match either role
+      const matchesTeacherRole = matchesAsFormTeacher || matchesAsSubjectTeacher;
+      
+      // Apply selected filters if user has filtered the view
       const matchesSelectedClass =
         selectedClass === "All" || student?.class === selectedClass;
       const matchesSelectedSubject =
         selectedSubject === "All" || subject?.name === selectedSubject;
+      
       return (
-        matchesClass &&
-        matchesSubject &&
+        matchesTeacherRole &&
         matchesSelectedClass &&
         matchesSelectedSubject
       );
