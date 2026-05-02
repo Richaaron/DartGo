@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo, useCallback, memo, useRef } from 'react'
-import { Plus, Search, AlertCircle, Filter, User, BookOpen, ClipboardList, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Plus, Search, AlertCircle, Filter, User, BookOpen, ClipboardList, ChevronLeft, ChevronRight, Grid2X2, List } from 'lucide-react'
 import { SubjectResult, Student, Subject, StudentSubject, Teacher } from '../types'
 import SubjectResultForm from '../components/SubjectResultForm'
+import BulkSubjectResultEntry from '../components/BulkSubjectResultEntry'
 import { createResult, updateResult, fetchStudentSubjects } from '../services/api'
 import { useAuthContext } from '../context/AuthContext'
 
@@ -27,6 +28,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
   const [message, setMessage] = useState({ type: '', text: '' })
   const [apiError, setApiError] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [viewMode, setViewMode] = useState<'list' | 'bulk'>('list')
   const searchDebounceTimer = useRef<NodeJS.Timeout | null>(null)
 
   const userRole = user?.role || 'Teacher'
@@ -330,6 +332,42 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
     )
   }
 
+  // If bulk mode is selected, show the bulk entry component
+  if (viewMode === 'bulk') {
+    return (
+      <div className="p-8">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+          <div>
+            <h1 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">
+              Subject <span className="text-indigo-600 dark:text-indigo-400">Results</span>
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-2 font-medium">Bulk entry mode - Enter multiple students at once</p>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setViewMode('list')}
+              className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-brand-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg font-bold hover:bg-gray-50 dark:hover:bg-brand-700 transition-all"
+            >
+              <List size={18} />
+              List View
+            </button>
+          </div>
+        </div>
+
+        {/* Bulk Entry Component */}
+        <BulkSubjectResultEntry
+          subjects={subjects}
+          students={students}
+          studentSubjects={allStudentSubjects}
+          existingResults={results}
+          onResultsSaved={loadData}
+          teacherSubjects={teacherSubjects}
+        />
+      </div>
+    )
+  }
+
   return (
     <div className="p-8">
       {/* Header */}
@@ -340,7 +378,14 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2 font-medium">Enter CA and Exam scores for automated grading</p>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-2 flex-wrap">
+          <button
+            onClick={() => setViewMode('bulk')}
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition-all shadow-lg"
+          >
+            <Grid2X2 size={18} />
+            Bulk Entry
+          </button>
           <button
             onClick={() => {
               setEditingResult(null)
@@ -383,11 +428,13 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-2 uppercase tracking-widest">Class</label>
+            <label htmlFor="list-class-filter" className="block text-sm font-black text-school-blue dark:text-school-yellow mb-2 uppercase tracking-widest">Class</label>
             <select
+              id="list-class-filter"
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
               className="input-field"
+              aria-label="Filter by class"
             >
               <option value="All">All Classes</option>
               {ALL_CLASSES.map((className) => (
@@ -398,11 +445,13 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-2 uppercase tracking-widest">Subject</label>
+            <label htmlFor="list-subject-filter" className="block text-sm font-black text-school-blue dark:text-school-yellow mb-2 uppercase tracking-widest">Subject</label>
             <select
+              id="list-subject-filter"
               value={selectedSubject}
               onChange={(e) => setSelectedSubject(e.target.value)}
               className="input-field"
+              aria-label="Filter by subject"
             >
               <option value="All">All {isTeacher ? 'My' : ''} Subjects</option>
               {teacherSubjects.map((subject) => (
@@ -413,11 +462,13 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-2 uppercase tracking-widest">Term</label>
+            <label htmlFor="list-term-filter" className="block text-sm font-black text-school-blue dark:text-school-yellow mb-2 uppercase tracking-widest">Term</label>
             <select
+              id="list-term-filter"
               value={selectedTerm}
               onChange={(e) => setSelectedTerm(e.target.value)}
               className="input-field"
+              aria-label="Filter by term"
             >
               <option value="All">All Terms</option>
               <option value="First">First Term</option>
