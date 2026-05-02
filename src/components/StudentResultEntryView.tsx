@@ -47,35 +47,33 @@ const StudentResultEntryView = memo(function StudentResultEntryView({
 
   // Filter subjects registered for this student OR subjects that already have results
   const registeredSubjects = useMemo(() => {
-    // 1. Get subjects from registration table
+    const isPrimary = student.class.toLowerCase().includes('primary') || student.class.toLowerCase().includes('nursery')
+    const studentLevel = isPrimary ? 'Primary' : 'Secondary'
+
+    // 1. Get subjects from registration table (Ignore term here, as subjects usually span all terms)
     const registeredIds = new Set(
       studentSubjects
-        .filter(sa => 
-          sa.studentId === student.id && 
-          (sa.term === selectedTerm || selectedTerm === 'All' || sa.term === 'All')
-        )
+        .filter(sa => sa.studentId === student.id)
         .map(sa => sa.subjectId)
     )
 
-    // 2. Get subjects that already have results recorded
+    // 2. Get subjects that already have results recorded for this student in ANY term
     const resultSubjectIds = new Set(
       existingResults
-        .filter(r => 
-          r.studentId === student.id && 
-          (r.term === selectedTerm || selectedTerm === 'All') &&
-          (r.academicYear === selectedYear || selectedYear === 'All')
-        )
+        .filter(r => r.studentId === student.id)
         .map(r => r.subjectId)
     )
 
     // Combine both sets of subject IDs
     const allSubjectIds = new Set([...Array.from(registeredIds), ...Array.from(resultSubjectIds)])
 
-    // If no subjects found via registration or results, show ALL subjects as a fallback
-    // This ensures the teacher can ALWAYS enter results even if registration is missing
+    // If no specific subjects found via registration or results, 
+    // show ALL subjects for the student's level (Primary/Secondary) as a fallback
     const finalSubjectIds = allSubjectIds.size > 0 
       ? Array.from(allSubjectIds) 
-      : subjects.map(s => s.id)
+      : subjects
+          .filter(s => s.level === studentLevel)
+          .map(s => s.id)
 
     return finalSubjectIds.map(subjectId => {
       const subject = subjects.find(s => s.id === subjectId)
