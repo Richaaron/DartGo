@@ -173,6 +173,45 @@ export default function ResultEntry() {
     return subjectName
   }
 
+  // Helper function to get appropriate subject level based on class
+  const getSubjectLevelForClass = (className: string): string => {
+    // Map classes to their appropriate subject levels
+    if (className.startsWith('JSS')) {
+      return 'Secondary' // Junior Secondary
+    } else if (className.startsWith('SSS')) {
+      return 'Secondary' // Senior Secondary - will be filtered further
+    } else if (className.startsWith('Primary')) {
+      return 'Primary'
+    } else if (className.startsWith('Nursery')) {
+      return 'Nursery'
+    } else if (className.startsWith('Pre-Nursery')) {
+      return 'Pre-Nursery'
+    }
+    return 'Primary' // Default fallback
+  }
+
+  // Helper function to filter subjects by class level (distinguishes JSS vs SSS)
+  const filterSubjectsByClass = (subjects: Subject[], className: string): Subject[] => {
+    if (className.startsWith('SSS')) {
+      // For Senior Secondary classes, only show Senior Secondary subjects
+      return subjects.filter(s => {
+        // Check if subject is specifically for Senior Secondary
+        // Senior Secondary subjects typically have IDs starting with 'ss-'
+        return s.id.startsWith('ss-') || s.level === 'Secondary'
+      })
+    } else if (className.startsWith('JSS')) {
+      // For Junior Secondary classes, only show Junior Secondary subjects
+      return subjects.filter(s => {
+        // Check if subject is specifically for Junior Secondary
+        // Junior Secondary subjects typically have IDs starting with 'jss-'
+        return s.id.startsWith('jss-') || s.level === 'Secondary'
+      })
+    }
+    // For other levels, filter by level as usual
+    const level = getSubjectLevelForClass(className)
+    return subjects.filter(s => s.level === level)
+  }
+
   const filteredResults = useMemo(() => {
     const getResultDetailsForFilter = (result: SubjectResult) => {
       const student = students.find((s) => s.id === result.studentId)
@@ -199,9 +238,16 @@ export default function ResultEntry() {
         let matchesRoleRestriction = true
         
         if (teacher) {
-          // Form Teacher: Filter by assigned classes
+          // Form Teacher: Filter by assigned classes and appropriate subjects
           if (isFormTeacher && !isSubjectTeacher && teacher.assignedClasses) {
             matchesRoleRestriction = teacher.assignedClasses.includes(details.studentClass)
+            
+            // Additional check: ensure subject is appropriate for the class level
+            if (matchesRoleRestriction) {
+              const classSubjects = filterSubjectsByClass(subjects, details.studentClass)
+              const isSubjectAppropriate = classSubjects.some(s => s.id === result.subjectId)
+              matchesRoleRestriction = isSubjectAppropriate
+            }
           }
           // Subject Teacher: Filter by assigned subjects
           else if (isSubjectTeacher && !isFormTeacher && teacher.assignedSubjects) {
@@ -211,7 +257,15 @@ export default function ResultEntry() {
           else if (isFormTeacher && isSubjectTeacher) {
             const matchesClass = teacher.assignedClasses?.includes(details.studentClass) || false
             const matchesSubject = teacher.assignedSubjects?.includes(mapMathematicsSubject(details.subjectName)) || false
-            matchesRoleRestriction = matchesClass || matchesSubject
+            
+            // Additional check: if showing by class, ensure subject is appropriate for the class level
+            let isClassSubjectAppropriate = true
+            if (matchesClass) {
+              const classSubjects = filterSubjectsByClass(subjects, details.studentClass)
+              isClassSubjectAppropriate = classSubjects.some(s => s.id === result.subjectId)
+            }
+            
+            matchesRoleRestriction = (matchesClass && isClassSubjectAppropriate) || matchesSubject
           }
         }
 
@@ -252,9 +306,18 @@ export default function ResultEntry() {
     if (isSubjectTeacher) {
       return teacher.assignedSubjects || []
     }
-    // For form teachers, show all subjects for their class
+    // For form teachers, show appropriate subjects for their specific class
     if (isFormTeacher && selectedClass !== 'All') {
-      return subjects.filter(s => s.level === teacher.level)
+      return filterSubjectsByClass(subjects, selectedClass)
+    }
+    // For form teachers with 'All' selected, show subjects for their assigned classes
+    if (isFormTeacher && teacher.assignedClasses && teacher.assignedClasses.length > 0) {
+      const allSubjects = new Set<Subject>()
+      teacher.assignedClasses.forEach(className => {
+        const classSubjects = filterSubjectsByClass(subjects, className)
+        classSubjects.forEach(subject => allSubjects.add(subject))
+      })
+      return Array.from(allSubjects)
     }
     return subjects.filter(s => s.level === teacher.level)
   }, [teacher, isSubjectTeacher, isFormTeacher, selectedClass, subjects])
