@@ -164,6 +164,15 @@ export default function ResultEntry() {
     }
   }, [teacher])
 
+  // Helper function to map all Mathematics subjects to unified Mathematics subject
+  const mapMathematicsSubject = (subjectName: string): string => {
+    // Map all Mathematics variations to the unified Mathematics subject
+    if (subjectName && subjectName.toLowerCase().includes('mathematics')) {
+      return 'Mathematics'
+    }
+    return subjectName
+  }
+
   const filteredResults = useMemo(() => {
     const getResultDetailsForFilter = (result: SubjectResult) => {
       const student = students.find((s) => s.id === result.studentId)
@@ -172,7 +181,7 @@ export default function ResultEntry() {
       return {
         ...result,
         studentName: student ? `${student.firstName} ${student.lastName}` : 'Unknown Student',
-        subjectName: subject?.name || 'Unknown Subject',
+        subjectName: mapMathematicsSubject(subject?.name || 'Unknown Subject'),
         studentClass: student?.class || 'Unknown Class',
       }
     }
@@ -196,12 +205,12 @@ export default function ResultEntry() {
           }
           // Subject Teacher: Filter by assigned subjects
           else if (isSubjectTeacher && !isFormTeacher && teacher.assignedSubjects) {
-            matchesRoleRestriction = teacher.assignedSubjects.includes(details.subjectName)
+            matchesRoleRestriction = teacher.assignedSubjects.includes(mapMathematicsSubject(details.subjectName))
           }
           // Form + Subject Teacher: Show results for EITHER role (class-based OR subject-based)
           else if (isFormTeacher && isSubjectTeacher) {
             const matchesClass = teacher.assignedClasses?.includes(details.studentClass) || false
-            const matchesSubject = teacher.assignedSubjects?.includes(details.subjectName) || false
+            const matchesSubject = teacher.assignedSubjects?.includes(mapMathematicsSubject(details.subjectName)) || false
             matchesRoleRestriction = matchesClass || matchesSubject
           }
         }
