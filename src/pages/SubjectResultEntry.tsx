@@ -156,22 +156,25 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
       teacher.assignedSubjects.forEach(s => assignedNames.add(s))
     }
 
-    // If the teacher has specific assigned subjects, filter to those
-    if (assignedNames.size > 0) {
-      return subjects.filter(s => assignedNames.has(s.name) || assignedNames.has(s.id))
-    }
-
-    // Form teacher with no assigned subjects: show subjects for their specific assigned classes
-    // This ensures SS1 teachers only see SSS subjects, not JSS subjects
+    // Get subjects appropriate for the teacher's assigned classes
+    let classAppropriateSubjects: Subject[] = subjects
     if (teacher.assignedClasses && teacher.assignedClasses.length > 0) {
       const allSubjects = new Set<Subject>()
       teacher.assignedClasses.forEach(className => {
         const classSubjects = filterSubjectsByClass(subjects, className)
         classSubjects.forEach(subject => allSubjects.add(subject))
       })
-      const filteredSubjects = Array.from(allSubjects)
-      if (filteredSubjects.length > 0) return filteredSubjects
+      classAppropriateSubjects = Array.from(allSubjects)
     }
+
+    // If the teacher has specific assigned subjects, filter to those BUT only within class-appropriate subjects
+    if (assignedNames.size > 0) {
+      return classAppropriateSubjects.filter(s => assignedNames.has(s.name) || assignedNames.has(s.id))
+    }
+
+    // Form teacher with no assigned subjects: show subjects for their specific assigned classes
+    // This ensures SS1 teachers only see SSS subjects, not JSS subjects
+    if (classAppropriateSubjects.length > 0) return classAppropriateSubjects
 
     // Fallback: show all subjects
     return subjects

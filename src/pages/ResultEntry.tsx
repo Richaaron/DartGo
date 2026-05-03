@@ -297,22 +297,34 @@ export default function ResultEntry() {
 
   const availableSubjects = useMemo(() => {
     if (!teacher) return []
-    if (isSubjectTeacher) {
-      return teacher.assignedSubjects || []
-    }
-    // For form teachers, show appropriate subjects for their specific class
-    if (isFormTeacher && selectedClass !== 'All') {
-      return filterSubjectsByClass(subjects, selectedClass)
-    }
-    // For form teachers with 'All' selected, show subjects for their assigned classes
-    if (isFormTeacher && teacher.assignedClasses && teacher.assignedClasses.length > 0) {
+    
+    // Get subjects appropriate for the teacher's assigned classes
+    let classAppropriateSubjects: Subject[] = subjects
+    if (teacher.assignedClasses && teacher.assignedClasses.length > 0) {
       const allSubjects = new Set<Subject>()
       teacher.assignedClasses.forEach(className => {
         const classSubjects = filterSubjectsByClass(subjects, className)
         classSubjects.forEach(subject => allSubjects.add(subject))
       })
-      return Array.from(allSubjects)
+      classAppropriateSubjects = Array.from(allSubjects)
     }
+    
+    if (isSubjectTeacher) {
+      // For subject teachers, filter assigned subjects but only within class-appropriate subjects
+      const assignedSubjectNames = new Set(teacher.assignedSubjects || [])
+      return classAppropriateSubjects.filter(s => assignedSubjectNames.has(s.name) || assignedSubjectNames.has(s.id))
+    }
+    
+    // For form teachers, show appropriate subjects for their specific class
+    if (isFormTeacher && selectedClass !== 'All') {
+      return filterSubjectsByClass(subjects, selectedClass)
+    }
+    
+    // For form teachers with 'All' selected, show subjects for their assigned classes
+    if (isFormTeacher && classAppropriateSubjects.length > 0) {
+      return classAppropriateSubjects
+    }
+    
     return subjects.filter(s => s.level === teacher.level)
   }, [teacher, isSubjectTeacher, isFormTeacher, selectedClass, subjects])
 
