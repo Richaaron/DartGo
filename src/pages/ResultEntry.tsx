@@ -193,19 +193,13 @@ export default function ResultEntry() {
   // Helper function to filter subjects by class level (distinguishes JSS vs SSS)
   const filterSubjectsByClass = (subjects: Subject[], className: string): Subject[] => {
     if (className.startsWith('SSS')) {
-      // For Senior Secondary classes, only show Senior Secondary subjects
-      return subjects.filter(s => {
-        // Check if subject is specifically for Senior Secondary
-        // Senior Secondary subjects typically have IDs starting with 'ss-'
-        return s.id.startsWith('ss-') || s.level === 'Secondary'
-      })
+      // For Senior Secondary classes, ONLY show Senior Secondary subjects
+      // Senior Secondary subjects have IDs starting with 'ss-'
+      return subjects.filter(s => s.id.startsWith('ss-'))
     } else if (className.startsWith('JSS')) {
-      // For Junior Secondary classes, only show Junior Secondary subjects
-      return subjects.filter(s => {
-        // Check if subject is specifically for Junior Secondary
-        // Junior Secondary subjects typically have IDs starting with 'jss-'
-        return s.id.startsWith('jss-') || s.level === 'Secondary'
-      })
+      // For Junior Secondary classes, ONLY show Junior Secondary subjects
+      // Junior Secondary subjects have IDs starting with 'jss-'
+      return subjects.filter(s => s.id.startsWith('jss-'))
     }
     // For other levels, filter by level as usual
     const level = getSubjectLevelForClass(className)
