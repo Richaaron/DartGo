@@ -122,8 +122,30 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
     loadData()
   }, [loadData])
 
+  // Helper function to filter subjects by class level (distinguishes JSS vs SSS)
+  const filterSubjectsByClass = (subjects: Subject[], className: string): Subject[] => {
+    if (className.startsWith('SSS')) {
+      // For Senior Secondary classes, ONLY show Senior Secondary subjects
+      // Senior Secondary subjects have IDs starting with 'ss-'
+      return subjects.filter(s => s.id.startsWith('ss-'))
+    } else if (className.startsWith('JSS')) {
+      // For Junior Secondary classes, ONLY show Junior Secondary subjects
+      // Junior Secondary subjects have IDs starting with 'jss-'
+      return subjects.filter(s => s.id.startsWith('jss-'))
+    }
+    // For other levels, filter by level as usual
+    if (className.startsWith('Primary')) {
+      return subjects.filter(s => s.level === 'Primary')
+    } else if (className.startsWith('Nursery')) {
+      return subjects.filter(s => s.level === 'Nursery')
+    } else if (className.startsWith('Pre-Nursery')) {
+      return subjects.filter(s => s.level === 'Pre-Nursery')
+    }
+    return subjects.filter(s => s.level === 'Primary') // Default fallback
+  }
+
   // Get subjects assigned to the teacher
-  // Form teachers with no assigned subjects can see all subjects for their class level
+  // Form teachers with no assigned subjects can see all subjects for their specific class
   const teacherSubjects = useMemo(() => {
     if (!isTeacher || !teacher) return subjects
     
@@ -139,11 +161,16 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
       return subjects.filter(s => assignedNames.has(s.name) || assignedNames.has(s.id))
     }
 
-    // Form teacher with no assigned subjects: show all subjects for their level
-    // This lets them enter results for any subject in their class
-    if (teacher.level) {
-      const filtered = subjects.filter(s => s.level === teacher.level)
-      if (filtered.length > 0) return filtered
+    // Form teacher with no assigned subjects: show subjects for their specific assigned classes
+    // This ensures SS1 teachers only see SSS subjects, not JSS subjects
+    if (teacher.assignedClasses && teacher.assignedClasses.length > 0) {
+      const allSubjects = new Set<Subject>()
+      teacher.assignedClasses.forEach(className => {
+        const classSubjects = filterSubjectsByClass(subjects, className)
+        classSubjects.forEach(subject => allSubjects.add(subject))
+      })
+      const filteredSubjects = Array.from(allSubjects)
+      if (filteredSubjects.length > 0) return filteredSubjects
     }
 
     // Fallback: show all subjects
