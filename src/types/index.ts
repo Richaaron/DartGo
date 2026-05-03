@@ -199,7 +199,7 @@ export interface AuthSession {
 
 export const DEFAULT_SUBJECTS: Subject[] = [
   // Pre-Nursery Subjects (8 subjects)
-  { id: 'pre-1', name: 'Mathematics', code: 'MTH', level: 'Pre-Nursery', creditUnits: 1 },
+  { id: 'pre-1', name: 'Mathematics', code: 'MTH', level: 'Primary', creditUnits: 2 },
   { id: 'pre-2', name: 'English Language', code: 'ENG', level: 'Pre-Nursery', creditUnits: 1 },
   { id: 'pre-3', name: 'Social Habits', code: 'SOH', level: 'Pre-Nursery', creditUnits: 1 },
   { id: 'pre-4', name: 'Health Habits', code: 'HHB', level: 'Pre-Nursery', creditUnits: 1 },
@@ -209,7 +209,6 @@ export const DEFAULT_SUBJECTS: Subject[] = [
   { id: 'pre-8', name: 'Identification of Letters', code: 'IOL', level: 'Pre-Nursery', creditUnits: 1 },
   
   // Nursery Subjects (8 subjects)
-  { id: 'nur-1', name: 'Mathematics', code: 'MTH', level: 'Nursery', creditUnits: 2 },
   { id: 'nur-2', name: 'English Language', code: 'ENG', level: 'Nursery', creditUnits: 2 },
   { id: 'nur-3', name: 'Social Habits', code: 'SOH', level: 'Nursery', creditUnits: 2 },
   { id: 'nur-4', name: 'Health Habits', code: 'HHB', level: 'Nursery', creditUnits: 2 },
@@ -218,8 +217,7 @@ export const DEFAULT_SUBJECTS: Subject[] = [
   { id: 'nur-7', name: 'Identification of Numbers', code: 'ION', level: 'Nursery', creditUnits: 2 },
   { id: 'nur-8', name: 'Identification of Letters', code: 'IOL', level: 'Nursery', creditUnits: 2 },
   
-  // Primary Subjects (16 subjects)
-  { id: 'pri-1', name: 'Mathematics', code: 'MTH', level: 'Primary', creditUnits: 2 },
+  // Primary Subjects (15 subjects)
   { id: 'pri-2', name: 'English Language', code: 'ENG', level: 'Primary', creditUnits: 2 },
   { id: 'pri-3', name: 'Basic Science', code: 'BSC', level: 'Primary', creditUnits: 2 },
   { id: 'pri-4', name: 'Basic Technology', code: 'BTE', level: 'Primary', creditUnits: 2 },
@@ -236,8 +234,7 @@ export const DEFAULT_SUBJECTS: Subject[] = [
   { id: 'pri-15', name: 'Phonics', code: 'PHN', level: 'Primary', creditUnits: 2 },
   { id: 'pri-16', name: 'Literature', code: 'LIT', level: 'Primary', creditUnits: 2 },
   
-  // Secondary Subjects - Junior Secondary (13 subjects)
-  { id: 'jss-1', name: 'Mathematics', code: 'MTH', level: 'Secondary', creditUnits: 2 },
+  // Secondary Subjects - Junior Secondary (12 subjects)
   { id: 'jss-2', name: 'English Language', code: 'ENG', level: 'Secondary', creditUnits: 2 },
   { id: 'jss-3', name: 'Basic Science', code: 'BSC', level: 'Secondary', creditUnits: 2 },
   { id: 'jss-4', name: 'Basic Technology', code: 'BTE', level: 'Secondary', creditUnits: 2 },
@@ -251,8 +248,7 @@ export const DEFAULT_SUBJECTS: Subject[] = [
   { id: 'jss-12', name: 'Home Economics', code: 'HEC', level: 'Secondary', creditUnits: 2 },
   { id: 'jss-13', name: 'Religious Studies', code: 'REL', level: 'Secondary', creditUnits: 2 },
   
-  // Secondary Subjects - Senior Secondary (15 subjects)
-  { id: 'ss-1', name: 'Mathematics', code: 'MTH', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
+  // Secondary Subjects - Senior Secondary (14 subjects)
   { id: 'ss-2', name: 'English Language', code: 'ENG', level: 'Secondary', creditUnits: 3, subjectCategory: 'Art' },
   { id: 'ss-3', name: 'Biology', code: 'BIO', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
   { id: 'ss-4', name: 'Chemistry', code: 'CHM', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
