@@ -499,7 +499,7 @@ export default function Dashboard() {
           <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-6 md:mb-8">
             Student Status
           </h2>
-          <div className="h-72 flex items-center justify-center">
+          <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -541,26 +541,27 @@ export default function Dashboard() {
                 />
               </PieChart>
             </ResponsiveContainer>
-            <div className="flex flex-col gap-4 ml-8">
-              {studentStatusData.map((entry, index) => (
-                <div key={entry.name} className="flex items-center gap-3">
-                  <div
-                    className="w-2.5 h-2.5 rounded-full"
-                    style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                  />
-                  <div className="flex flex-col">
-                    <span className="text-[10px] text-gray-400 font-black uppercase tracking-widest leading-none mb-1">
-                      {entry.name}
-                    </span>
-                    <span className="text-sm text-gray-900 dark:text-white font-bold leading-none">
-                      {String(entry.value)}
-                    </span>
-                  </div>
+          </div>
+          <div className="flex flex-wrap justify-center gap-4 mt-4">
+            {studentStatusData.map((entry, index) => (
+              <div key={entry.name} className="flex items-center gap-3">
+                <div
+                  className="w-2.5 h-2.5 rounded-full"
+                  style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                />
+                <div className="flex flex-col">
+                  <span className="text-[10px] text-gray-400 font-black uppercase tracking-widest leading-none mb-1">
+                    {entry.name}
+                  </span>
+                  <span className="text-sm text-gray-900 dark:text-white font-bold leading-none">
+                    {String(entry.value)}
+                  </span>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
+
       </motion.div>
 
       {/* Recent Activity */}

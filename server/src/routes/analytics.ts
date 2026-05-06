@@ -1,11 +1,12 @@
 import express, { Request, Response } from 'express'
-import { authenticate, authorize } from '../middleware/auth'
+import { authorize } from '../middleware/auth'
 import { supabase } from '../config/supabase'
 
 const router = express.Router()
 
 // Get AI-powered insights for all students (Admin/Teacher)
-router.get('/student-insights', authenticate, authorize(['Admin', 'Teacher']), async (req: Request, res: Response) => {
+// Note: authenticate is already applied globally in index.ts for /api/analytics
+router.get('/student-insights', authorize(['Admin', 'Teacher']), async (req: Request, res: Response) => {
   try {
     const { data: students, error: studentError } = await supabase
       .from('students')
@@ -21,11 +22,19 @@ router.get('/student-insights', authenticate, authorize(['Admin', 'Teacher']), a
       .select('*')
 
     if (studentError || resultError || subjectError) {
-      throw (studentError || resultError || subjectError)
+      const err = studentError || resultError || subjectError
+      console.error('[analytics] Supabase query error:', JSON.stringify(err))
+      throw err
     }
 
-    const insights = students?.map(student => {
-      const studentResults = results?.filter(r => r.student_id === (student.registration_number || student.student_id)) || []
+    const insights = (students ?? []).map(student => {
+      // Match results by student_id against all possible student identifier fields
+      const sid = student.id || student.registration_number || student.student_id
+      const studentResults = (results ?? []).filter(r =>
+        r.student_id === sid ||
+        r.student_id === student.registration_number ||
+        r.student_id === student.id
+      )
       
       if (studentResults.length === 0) return null
 
@@ -92,8 +101,12 @@ router.get('/student-insights', authenticate, authorize(['Admin', 'Teacher']), a
     }).filter(i => i !== null) || []
 
     res.json(insights)
-  } catch (error) {
-    res.status(500).json({ message: 'Error generating insights', error })
+  } catch (error: any) {
+    console.error('[analytics] /student-insights error:', error?.message || error)
+    res.status(500).json({
+      message: 'Error generating insights',
+      detail: error?.message || String(error)
+    })
   }
 })
 
