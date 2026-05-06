@@ -22,7 +22,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
   const [showForm, setShowForm] = useState(false)
   const [editingResult, setEditingResult] = useState<SubjectResult | null>(null)
   const [selectedStudentForEntry, setSelectedStudentForEntry] = useState<Student | null>(null)
-  const [viewMode, setViewMode] = useState<'results' | 'students' | 'bulk'>('students')
+  const [viewMode, setViewMode] = useState<'results' | 'students'>('students')
   const [filterTerm, setFilterTerm] = useState('')
   const [debouncedFilterTerm, setDebouncedFilterTerm] = useState('')
   const [selectedTerm, setSelectedTerm] = useState<string>('All')
@@ -431,41 +431,6 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
     )
   }
 
-  // If bulk mode is selected, show the bulk entry component
-  if (viewMode === 'bulk') {
-    return (
-      <div className="p-8">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-          <div>
-            <h1 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">
-              Subject <span className="text-indigo-600 dark:text-indigo-400">Results</span>
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2 font-medium">Bulk entry mode - Enter multiple students at once</p>
-          </div>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setViewMode('results')}
-              className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-brand-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg font-bold hover:bg-gray-50 dark:hover:bg-brand-700 transition-all"
-            >
-              <List size={18} />
-              Result List
-            </button>
-          </div>
-        </div>
-
-        {/* Bulk Entry Component */}
-        <BulkSubjectResultEntry
-          subjects={subjects}
-          students={students}
-          studentSubjects={allStudentSubjects}
-          existingResults={results}
-          onResultsSaved={loadData}
-          teacherSubjects={teacherSubjects}
-        />
-      </div>
-    )
-  }
 
   return (
     <div className="p-8">
@@ -502,13 +467,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
               RESULT LIST
             </button>
           </div>
-          <button
-            onClick={() => setViewMode('bulk')}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition-all shadow-lg"
-          >
-            <LayoutGrid size={18} />
-            Bulk Entry
-          </button>
+
           <button
             onClick={() => {
               setEditingResult(null)
@@ -535,7 +494,8 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
       )}
 
       {/* Filters */}
-      <div className="card-lg mb-8">
+      {viewMode === 'results' && (
+        <div className="card-lg mb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
             <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-2 uppercase tracking-widest">Search</label>
@@ -601,45 +561,19 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
           </div>
         </div>
       </div>
+      )}
 
       {/* Main Content Area */}
       <div className="space-y-6">
         {viewMode === 'students' ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {displayStudents.map((student) => (
-              <div 
-                key={student.id} 
-                onClick={() => setSelectedStudentForEntry(student)}
-                className="card-lg hover:border-indigo-500 dark:hover:border-indigo-400 cursor-pointer group transition-all hover:shadow-2xl hover:shadow-indigo-500/10"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-2xl bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-black text-xl group-hover:bg-indigo-600 group-hover:text-white transition-all">
-                    {student.firstName[0]}{student.lastName[0]}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-black text-gray-900 dark:text-white uppercase tracking-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                      {student.firstName} {student.lastName}
-                    </h3>
-                    <p className="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">
-                      {student.registrationNumber}
-                    </p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <span className="px-2 py-0.5 bg-slate-100 dark:bg-brand-800 rounded text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase">
-                        {student.class}
-                      </span>
-                    </div>
-                  </div>
-                  <ChevronRight size={20} className="text-gray-300 group-hover:text-indigo-500 transition-colors" />
-                </div>
-              </div>
-            ))}
-            {displayStudents.length === 0 && (
-              <div className="col-span-full py-20 text-center card-lg border-dashed border-2">
-                <User size={48} className="mx-auto text-gray-200 mb-4" />
-                <p className="text-gray-500 font-bold">No students found matching your filters.</p>
-              </div>
-            )}
-          </div>
+          <BulkSubjectResultEntry
+            subjects={subjects}
+            students={students}
+            studentSubjects={allStudentSubjects}
+            existingResults={results}
+            onResultsSaved={loadData}
+            teacherSubjects={teacherSubjects}
+          />
         ) : (
           <div className="card-lg">
             <div className="overflow-x-auto">
