@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 export default function PerformanceInsights() {
   const [insights, setInsights] = useState<StudentInsight[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [filter, setFilter] = useState<'all' | 'at-risk' | 'improving'>('all')
 
@@ -16,10 +17,12 @@ export default function PerformanceInsights() {
   const loadInsights = async () => {
     try {
       setLoading(true)
+      setError(false)
       const data = await analyticsService.getStudentInsights()
       setInsights(data)
-    } catch (error) {
-      console.error('Failed to load insights:', error)
+    } catch {
+      // Silently handle — API may not be available yet
+      setError(true)
     } finally {
       setLoading(false)
     }
@@ -74,6 +77,17 @@ export default function PerformanceInsights() {
           <div className="col-span-full py-12 text-center text-gray-500">
             <div className="animate-spin w-8 h-8 border-2 border-purple-600 border-t-transparent rounded-full mx-auto mb-4"></div>
             Analyzing student data...
+          </div>
+        ) : error ? (
+          <div className="col-span-full py-12 text-center text-gray-400">
+            <Brain className="w-10 h-10 mx-auto mb-3 opacity-20" />
+            <p className="text-sm font-medium">Insights unavailable right now.</p>
+            <button
+              onClick={loadInsights}
+              className="mt-3 text-xs text-purple-600 hover:underline"
+            >
+              Try again
+            </button>
           </div>
         ) : filteredInsights.length === 0 ? (
           <div className="col-span-full py-12 text-center text-gray-500">

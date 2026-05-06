@@ -438,11 +438,11 @@ export default function Dashboard() {
         variants={itemVariants}
         className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8"
       >
-        <div className="card-lg overflow-x-auto">
+        <div className="card-lg">
           <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-6 md:mb-8">
             Class Performance
           </h2>
-          <div className="h-64 sm:h-72 min-w-[300px] sm:min-w-full">
+          <div style={{ width: '100%', height: 280 }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={classPerformanceData}>
                 <CartesianGrid
@@ -495,11 +495,11 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="card-lg overflow-x-auto">
+        <div className="card-lg">
           <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-6 md:mb-8">
             Student Status
           </h2>
-          <div className="h-56">
+          <div style={{ width: '100%', height: 224 }}>
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
