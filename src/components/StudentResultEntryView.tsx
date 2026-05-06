@@ -68,8 +68,17 @@ const StudentResultEntryView = memo(function StudentResultEntryView({
     const allSubjectIds = new Set([...Array.from(registeredIds), ...Array.from(resultSubjectIds)])
 
     // Helper to get exact subjects for the class
-    const filterSubjectsByClass = (allSubjects: Subject[], className: string): Subject[] => {
-      if (className.startsWith('SSS')) return allSubjects.filter(s => s.id.startsWith('ss-'))
+    const filterSubjectsByClass = (allSubjects: Subject[], className: string, studentArm?: string): Subject[] => {
+      const isSSSClass = className.toUpperCase().startsWith('SSS')
+      if (isSSSClass) {
+        // SSS students: show General subjects + their arm-specific subjects
+        return allSubjects.filter(s =>
+          s.id.startsWith('ss-') && (
+            s.subjectCategory === 'General' ||
+            (studentArm && s.subjectCategory === studentArm)
+          )
+        )
+      }
       if (className.startsWith('JSS')) return allSubjects.filter(s => s.id.startsWith('jss-'))
       const level = className.startsWith('Primary') ? 'Primary' : className.startsWith('Nursery') ? 'Nursery' : className.startsWith('Pre-Nursery') ? 'Pre-Nursery' : 'Primary'
       return allSubjects.filter(s => s.level === level)
@@ -79,7 +88,7 @@ const StudentResultEntryView = memo(function StudentResultEntryView({
     // show ALL appropriate subjects for the student's specific class
     const finalSubjectIds = allSubjectIds.size > 0 
       ? Array.from(allSubjectIds) 
-      : filterSubjectsByClass(subjects, student.class).map(s => s.id)
+      : filterSubjectsByClass(subjects, student.class, (student as any).arm).map(s => s.id)
 
     return finalSubjectIds.map(subjectId => {
       const subject = subjects.find(s => s.id === subjectId)

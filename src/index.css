@@ -42,7 +42,7 @@ html {
 
 /* Dark mode body */
 .dark body {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d1b4d 50%, #2a2a2a 100%);
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2a 50%, #0a0a0a 100%);
     background-attachment: fixed;
     color: #f8fafc;
 }

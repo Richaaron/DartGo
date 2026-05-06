@@ -59,22 +59,27 @@ const DEFAULT_SUBJECTS = [
   { id: 'jss-12', name: 'Home Economics', code: 'HEC', level: 'Secondary', creditUnits: 2 },
   { id: 'jss-13', name: 'Religious Studies', code: 'REL', level: 'Secondary', creditUnits: 2 },
   
-  // Secondary Subjects - Senior Secondary (15 subjects)
-  { id: 'ss-1', name: 'Mathematics', code: 'MTH', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
-  { id: 'ss-2', name: 'English Language', code: 'ENG', level: 'Secondary', creditUnits: 3, subjectCategory: 'Art' },
-  { id: 'ss-3', name: 'Biology', code: 'BIO', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
-  { id: 'ss-4', name: 'Chemistry', code: 'CHM', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
-  { id: 'ss-5', name: 'Physics', code: 'PHY', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
-  { id: 'ss-6', name: 'Accounting', code: 'ACC', level: 'Secondary', creditUnits: 3, subjectCategory: 'Commercial' },
-  { id: 'ss-7', name: 'Commerce', code: 'COM', level: 'Secondary', creditUnits: 2, subjectCategory: 'Commercial' },
-  { id: 'ss-8', name: 'Government', code: 'GOV', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
-  { id: 'ss-9', name: 'Literature in English', code: 'LIT', level: 'Secondary', creditUnits: 3, subjectCategory: 'Art' },
-  { id: 'ss-10', name: 'Marketing', code: 'MKT', level: 'Secondary', creditUnits: 2, subjectCategory: 'Commercial' },
-  { id: 'ss-11', name: 'Civic Education', code: 'CVE', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
-  { id: 'ss-12', name: 'Economics', code: 'ECO', level: 'Secondary', creditUnits: 3, subjectCategory: 'Commercial' },
-  { id: 'ss-13', name: 'Geography', code: 'GEO', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
-  { id: 'ss-14', name: 'Religious Studies', code: 'RES', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
-  { id: 'ss-15', name: 'I.C.T', code: 'ICT', level: 'Secondary', creditUnits: 2, subjectCategory: 'Science' },
+  // Secondary Subjects - Senior Secondary
+  // General subjects (all SSS students)
+  { id: 'ss-g-1', name: 'Mathematics', code: 'MTH', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
+  { id: 'ss-g-2', name: 'English Language', code: 'ENG', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
+  { id: 'ss-g-3', name: 'Biology', code: 'BIO', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
+  { id: 'ss-g-4', name: 'Civic Education', code: 'CVE', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
+  { id: 'ss-g-5', name: 'Religious Studies', code: 'RES', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
+  { id: 'ss-g-6', name: 'I.C.T', code: 'ICT', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
+  // Science Arm
+  { id: 'ss-sci-1', name: 'Physics', code: 'PHY', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
+  { id: 'ss-sci-2', name: 'Chemistry', code: 'CHM', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
+  { id: 'ss-sci-3', name: 'Geography', code: 'GEO', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
+  // Art Arm
+  { id: 'ss-art-1', name: 'Government', code: 'GOV', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
+  { id: 'ss-art-2', name: 'Literature in English', code: 'LIT', level: 'Secondary', creditUnits: 3, subjectCategory: 'Art' },
+  { id: 'ss-art-3', name: 'Economics', code: 'ECO', level: 'Secondary', creditUnits: 3, subjectCategory: 'Art' },
+  // Commercial Arm
+  { id: 'ss-com-1', name: 'Accounting', code: 'ACC', level: 'Secondary', creditUnits: 3, subjectCategory: 'Commercial' },
+  { id: 'ss-com-2', name: 'Commerce', code: 'COM', level: 'Secondary', creditUnits: 2, subjectCategory: 'Commercial' },
+  { id: 'ss-com-3', name: 'Marketing', code: 'MKT', level: 'Secondary', creditUnits: 2, subjectCategory: 'Commercial' },
+  { id: 'ss-com-4', name: 'Economics', code: 'ECO-C', level: 'Secondary', creditUnits: 3, subjectCategory: 'Commercial' },
 ]
 
 // Helper to map DB to camelCase for frontend
