@@ -24,7 +24,7 @@ router.get('/student-insights', authorize(['Admin', 'Teacher']), async (req: Req
     if (studentError || resultError || subjectError) {
       const err = studentError || resultError || subjectError
       console.error('[analytics] Supabase query error:', JSON.stringify(err))
-      throw err
+      return res.json([])
     }
 
     const insights = (students ?? []).map(student => {
@@ -103,10 +103,7 @@ router.get('/student-insights', authorize(['Admin', 'Teacher']), async (req: Req
     res.json(insights)
   } catch (error: any) {
     console.error('[analytics] /student-insights error:', error?.message || error)
-    res.status(500).json({
-      message: 'Error generating insights',
-      detail: error?.message || String(error)
-    })
+    res.json([]) // Return empty array to prevent client retry loop
   }
 })
 
