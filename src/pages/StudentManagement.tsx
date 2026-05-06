@@ -654,7 +654,7 @@ export default function StudentManagement() {
                     2. Select Arm
                   </label>
                   <p className="text-xs text-gray-500 mb-3 font-medium">
-                    Choose the academic arm for {bulkAssignClass}. General subjects are always included.
+                    9 general subjects are auto-included. Tick additional arm subjects below.
                   </p>
                   <div className="grid grid-cols-3 gap-3">
                     {(['Science', 'Art', 'Commercial'] as const).map((arm) => (
@@ -662,11 +662,11 @@ export default function StudentManagement() {
                         key={arm}
                         onClick={() => {
                           setBulkAssignArm(arm);
-                          // Auto-select general + arm subjects
-                          const autoSelected = subjects
-                            .filter(s => s.id.startsWith('ss-') && (s.subjectCategory === 'General' || s.subjectCategory === arm))
+                          // Auto-select ONLY the 9 General subjects; arm subjects stay unchecked for manual pick
+                          const generalIds = subjects
+                            .filter(s => s.id.startsWith('ss-') && s.subjectCategory === 'General')
                             .map(s => s.id);
-                          setBulkAssignSubjects(autoSelected);
+                          setBulkAssignSubjects(generalIds);
                         }}
                         className={`py-3 px-4 rounded-2xl border-2 font-black text-sm transition-all ${
                           bulkAssignArm === arm
@@ -686,64 +686,91 @@ export default function StudentManagement() {
               {/* Subject list – shown when class selected (and arm selected for SSS) */}
               {bulkAssignClass && (
                 (!bulkAssignClass.toUpperCase().includes('SSS') || bulkAssignArm) && (
-                <div>
-                  <label className="block text-sm font-black text-school-blue mb-2 uppercase tracking-widest">
-                    {bulkAssignClass.toUpperCase().includes('SSS') ? '3. Confirm Subjects' : '2. Select Subjects'}
-                  </label>
-                  <p className="text-xs text-gray-500 mb-4 font-medium">
-                    {bulkAssignClass.toUpperCase().includes('SSS')
-                      ? `General subjects + ${bulkAssignArm} arm subjects for ${bulkAssignClass}.`
-                      : `Select the subjects to be assigned to all students in ${bulkAssignClass}.`}
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {subjects
-                      .filter((s) => {
-                        if (!s) return false;
-                        const isSSSClass = bulkAssignClass.toUpperCase().includes('SSS');
-                        if (isSSSClass) {
-                          // For SSS: show General + selected arm subjects only
-                          return s.id.startsWith('ss-') && (
-                            s.subjectCategory === 'General' || s.subjectCategory === bulkAssignArm
-                          );
-                        }
-                        // For JSS / Primary: match student level
-                        const classLevel = students.find(
-                          (student) => student && student.class === bulkAssignClass,
-                        )?.level;
-                        return classLevel && s.level === classLevel && !s.id.startsWith('ss-');
-                      })
-                      .map((subject) => (
-                        <label
-                          key={subject.id}
-                          className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${
-                            bulkAssignSubjects.includes(subject.id)
-                              ? "bg-school-blue/10 border-school-blue shadow-md"
-                              : "bg-white border-brand-200 hover:border-school-blue/50"
-                          }`}
-                        >
-                          <input
-                            type="checkbox"
-                            checked={bulkAssignSubjects.includes(subject.id)}
-                            onChange={() => {
-                              setBulkAssignSubjects((prev) =>
-                                prev.includes(subject.id)
-                                  ? prev.filter((id) => id !== subject.id)
-                                  : [...prev, subject.id],
-                              );
-                            }}
-                            className="w-5 h-5 text-school-blue rounded-lg focus:ring-school-blue border-brand-300"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-black text-gray-900 truncate">
-                              {subject.name}
-                            </p>
-                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                              {subject.code} &bull; {subject.subjectCategory || 'General'}
-                            </p>
-                          </div>
-                        </label>
-                      ))}
+                <div className="space-y-5">
+
+                  {/* === General subjects (SSS only) – locked in, shown as read-only === */}
+                  {bulkAssignClass.toUpperCase().includes('SSS') && (
+                    <div>
+                      <p className="text-xs font-black text-emerald-600 uppercase tracking-widest mb-2">
+                        ✓ General Subjects (9) — Auto-included
+                      </p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {subjects
+                          .filter(s => s.id.startsWith('ss-') && s.subjectCategory === 'General')
+                          .map(subject => (
+                            <div
+                              key={subject.id}
+                              className="flex items-center gap-3 p-3 rounded-2xl border-2 bg-emerald-50 border-emerald-200"
+                            >
+                              <span className="w-5 h-5 flex items-center justify-center rounded bg-emerald-500 text-white text-xs font-black">✓</span>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-black text-gray-900 truncate">{subject.name}</p>
+                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{subject.code}</p>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* === Arm subjects – manually tick to add === */}
+                  <div>
+                    <label className="block text-sm font-black text-school-blue mb-2 uppercase tracking-widest">
+                      {bulkAssignClass.toUpperCase().includes('SSS')
+                        ? `3. Add ${bulkAssignArm} Arm Subjects (manual)`
+                        : '2. Select Subjects'}
+                    </label>
+                    <p className="text-xs text-gray-500 mb-3 font-medium">
+                      {bulkAssignClass.toUpperCase().includes('SSS')
+                        ? `Tick the ${bulkAssignArm} arm subjects you want to add for ${bulkAssignClass}.`
+                        : `Select subjects to assign to all students in ${bulkAssignClass}.`}
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {subjects
+                        .filter((s) => {
+                          if (!s) return false;
+                          const isSSSClass = bulkAssignClass.toUpperCase().includes('SSS');
+                          if (isSSSClass) {
+                            // Show ONLY the arm-specific subjects here (General already shown above)
+                            return s.id.startsWith('ss-') && s.subjectCategory === bulkAssignArm;
+                          }
+                          const classLevel = students.find(
+                            (student) => student && student.class === bulkAssignClass,
+                          )?.level;
+                          return classLevel && s.level === classLevel && !s.id.startsWith('ss-');
+                        })
+                        .map((subject) => (
+                          <label
+                            key={subject.id}
+                            className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${
+                              bulkAssignSubjects.includes(subject.id)
+                                ? "bg-school-blue/10 border-school-blue shadow-md"
+                                : "bg-white border-brand-200 hover:border-school-blue/50"
+                            }`}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={bulkAssignSubjects.includes(subject.id)}
+                              onChange={() => {
+                                setBulkAssignSubjects((prev) =>
+                                  prev.includes(subject.id)
+                                    ? prev.filter((id) => id !== subject.id)
+                                    : [...prev, subject.id],
+                                );
+                              }}
+                              className="w-5 h-5 text-school-blue rounded-lg focus:ring-school-blue border-brand-300"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-black text-gray-900 truncate">{subject.name}</p>
+                              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                                {subject.code} &bull; {subject.subjectCategory}
+                              </p>
+                            </div>
+                          </label>
+                        ))}
+                    </div>
                   </div>
+
                 </div>
                 )
               )}
