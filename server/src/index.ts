@@ -26,6 +26,7 @@ import { errorHandler, notFoundHandler } from './middleware/errorHandler'
 import studentRoutes from './routes/students'
 import teacherRoutes from './routes/teachers'
 import subjectRoutes from './routes/subjects'
+import studentSubjectsRoutes from './routes/student-subjects'
 import resultRoutes from './routes/results'
 import authRoutes from './routes/auth'
 import attendanceRoutes from './routes/attendance'
@@ -164,6 +165,7 @@ app.use('/api/attendance', authenticate, activityLogger, attendanceRoutes)
 app.use('/api/students', authenticate, activityLogger, studentRoutes)
 app.use('/api/teachers', authenticate, activityLogger, teacherRoutes)
 app.use('/api/subjects', authenticate, activityLogger, subjectRoutes)
+app.use('/api/student-subjects', authenticate, activityLogger, studentSubjectsRoutes)
 
 // Email notification endpoint
 app.post('/api/send-results-email', authenticate, async (req, res) => {
