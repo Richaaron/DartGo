@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import { X, Upload, User as UserIcon, BookOpen, Search } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { Student, Subject } from '../types'
 import { generateParentCredentials } from '../utils/calculations'
 
@@ -198,43 +199,64 @@ export default function StudentForm({
   }
 
   return (
-    <div className="p-6 bg-gradient-to-b from-white dark:from-brand-800 to-brand-50 dark:to-brand-900">
+    <motion.div 
+      className="p-6 bg-gradient-to-br from-royal-gold-50 via-white to-royal-purple-50 dark:bg-gradient-to-br dark:from-royal-black-900 dark:via-royal-purple-900/10 dark:to-royal-black-900"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h2 className="text-3xl font-black bg-gradient-to-r from-purple-600 to-gold-600 bg-clip-text text-transparent">
-            {isEditing ? '✏️ Edit Student' : '➕ Add New Student'}
-          </h2>
+          <motion.h2 
+            className="text-3xl font-black bg-gradient-to-r from-royal-purple-600 to-royal-gold-500 bg-clip-text text-transparent"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            {isEditing ? 'Edit Student' : 'Add New Student'}
+          </motion.h2>
           <p className="text-gray-600 dark:text-gray-400 text-sm mt-1 font-medium">
             {isEditing ? 'Update student information' : 'Register a new student in the system'}
           </p>
         </div>
-        <button
+        <motion.button
           onClick={onCancel}
-          className="p-2 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-all hover:scale-110"
+          className="p-2 hover:bg-royal-purple-100 dark:hover:bg-royal-purple-900/30 rounded-lg transition-colors"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <X size={24} className="text-red-600" />
-        </button>
+          <X size={24} className="text-royal-purple-600 dark:text-royal-gold-400" />
+        </motion.button>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <motion.form onSubmit={handleSubmit} className="space-y-6">
         {/* Profile Image Section */}
-        <div className="flex flex-col items-center mb-8 p-6 bg-gradient-to-br from-school-yellow/20 dark:from-school-blue/20 to-school-pink/10 dark:to-school-green/10 rounded-3xl border-4 border-dashed border-school-blue dark:border-school-yellow shadow-lg">
-          <div className="relative w-36 h-36 mb-4 group">
-            <div className="w-full h-full rounded-full bg-gradient-to-br from-school-yellow/30 dark:from-school-blue/30 to-school-orange/20 dark:to-school-green/20 flex items-center justify-center overflow-hidden border-4 border-school-yellow dark:border-school-yellow group-hover:border-school-red transition-all shadow-lg animate-bounce-slow">
+        <motion.div 
+          className="flex flex-col items-center mb-8"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1 }}
+        >
+          <motion.div 
+            className="relative w-32 h-32 mb-4 group"
+            whileHover={{ scale: 1.05 }}
+          >
+            <div className="w-full h-full rounded-full bg-gradient-to-br from-royal-gold-100 to-royal-purple-100 dark:from-royal-purple-900/50 dark:to-royal-gold-900/30 flex items-center justify-center overflow-hidden border-4 border-royal-gold-300 dark:border-royal-purple-600 group-hover:border-royal-purple-500 transition-colors shadow-lg">
               {formData.image ? (
                 <img src={formData.image} alt="Profile" className="w-full h-full object-cover" />
               ) : (
-                <UserIcon className="w-20 h-20 text-school-red dark:text-school-yellow animate-pulse-bright" />
+                <UserIcon className="w-16 h-16 text-royal-purple-300 dark:text-royal-gold-400" />
               )}
             </div>
-            <button
+            <motion.button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="absolute bottom-0 right-0 p-3 bg-gradient-to-br from-school-red to-school-pink text-white rounded-full hover:scale-125 transition-all shadow-lg hover:shadow-school-red/50 animate-bounce-slow hover:animate-none"
+              className="absolute bottom-0 right-0 p-2 bg-gradient-to-r from-royal-purple-600 to-royal-purple-700 text-white rounded-full hover:from-royal-purple-700 hover:to-royal-purple-800 transition-all shadow-lg"
               title="Upload Photo"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <Upload size={18} />
-            </button>
+              <Upload size={16} />
+            </motion.button>
             <input
               type="file"
               ref={fileInputRef}
@@ -242,17 +264,24 @@ export default function StudentForm({
               accept="image/*"
               className="hidden"
             />
-          </div>
-          <p className="text-xs font-black text-school-blue dark:text-school-yellow uppercase tracking-widest">📸 Click to upload photo</p>
-        </div>
+          </motion.div>
+          <p className="text-xs text-royal-purple-600 dark:text-royal-gold-400 font-semibold">Upload profile photo</p>
+        </motion.div>
 
         {/* Personal Information */}
-        <div className="space-y-4">
-          <h3 className="text-xl font-black text-gray-900 dark:text-white uppercase tracking-wider border-l-4 border-school-red pl-3 animate-cartoon-bounce">👤 Personal Information</h3>
+        <motion.div 
+          className="space-y-4"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <h3 className="text-sm font-black text-royal-purple-600 dark:text-royal-gold-400 uppercase tracking-widest">
+            Personal Information
+          </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
+              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
                 First Name *
               </label>
               <input
@@ -260,15 +289,15 @@ export default function StudentForm({
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
-                className={`input-field ${errors.firstName ? 'border-school-red' : ''}`}
+                className={`input-field border-2 ${errors.firstName ? 'border-red-500' : 'border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500'}`}
               />
               {errors.firstName && (
-                <p className="text-school-red text-sm mt-1 font-black animate-shake">{errors.firstName}</p>
+                <p className="text-red-500 text-sm mt-1 font-semibold">{errors.firstName}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
+              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
                 Last Name *
               </label>
               <input
@@ -276,17 +305,17 @@ export default function StudentForm({
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
-                className={`input-field ${errors.lastName ? 'border-school-red' : ''}`}
+                className={`input-field border-2 ${errors.lastName ? 'border-red-500' : 'border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500'}`}
               />
               {errors.lastName && (
-                <p className="text-school-red text-sm mt-1 font-black animate-shake">{errors.lastName}</p>
+                <p className="text-red-500 text-sm mt-1 font-semibold">{errors.lastName}</p>
               )}
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
+              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
                 Date of Birth *
               </label>
               <input
@@ -294,37 +323,44 @@ export default function StudentForm({
                 name="dateOfBirth"
                 value={formData.dateOfBirth}
                 onChange={handleChange}
-                className={`input-field ${errors.dateOfBirth ? 'border-school-red' : ''}`}
+                className={`input-field border-2 ${errors.dateOfBirth ? 'border-red-500' : 'border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500'}`}
               />
               {errors.dateOfBirth && (
-                <p className="text-school-red text-sm mt-1 font-black animate-shake">{errors.dateOfBirth}</p>
+                <p className="text-red-500 text-sm mt-1 font-semibold">{errors.dateOfBirth}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
+              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
                 Gender
               </label>
               <select
                 name="gender"
                 value={formData.gender}
                 onChange={handleChange}
-                className="input-field"
+                className="input-field border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"
               >
-                <option value="Male">👦 Male</option>
-                <option value="Female">👧 Female</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
               </select>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Parent Information */}
-        <div className="space-y-4 border-t-4 border-school-yellow pt-4">
-          <h3 className="text-lg font-black text-gray-900 dark:text-white uppercase tracking-wider border-l-4 border-school-green pl-3 animate-cartoon-bounce">👨‍👩‍👧 Parent/Guardian Information</h3>
+        <motion.div 
+          className="space-y-4 border-t-2 border-royal-gold-200 dark:border-royal-purple-700/50 pt-6"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <h3 className="text-sm font-black text-royal-purple-600 dark:text-royal-gold-400 uppercase tracking-widest">
+            Parent/Guardian Information
+          </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
+              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
                 Parent/Guardian Name *
               </label>
               <input
@@ -332,15 +368,15 @@ export default function StudentForm({
                 name="parentName"
                 value={formData.parentName}
                 onChange={handleChange}
-                className={`input-field ${errors.parentName ? 'border-school-red' : ''}`}
+                className={`input-field border-2 ${errors.parentName ? 'border-red-500' : 'border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500'}`}
               />
               {errors.parentName && (
-                <p className="text-school-red text-sm mt-1 font-black animate-shake">{errors.parentName}</p>
+                <p className="text-red-500 text-sm mt-1 font-semibold">{errors.parentName}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
+              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
                 Parent/Guardian Phone *
               </label>
               <input
@@ -348,16 +384,16 @@ export default function StudentForm({
                 name="parentPhone"
                 value={formData.parentPhone}
                 onChange={handleChange}
-                className={`input-field ${errors.parentPhone ? 'border-school-red' : ''}`}
+                className={`input-field border-2 ${errors.parentPhone ? 'border-red-500' : 'border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500'}`}
               />
               {errors.parentPhone && (
-                <p className="text-school-red text-sm mt-1 font-black animate-shake">{errors.parentPhone}</p>
+                <p className="text-red-500 text-sm mt-1 font-semibold">{errors.parentPhone}</p>
               )}
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
               Parent Email (Optional)
             </label>
             <input
@@ -366,22 +402,29 @@ export default function StudentForm({
               value={formData.parentEmail}
               onChange={handleChange}
               placeholder="parent@example.com (Optional)"
-              className={`input-field ${errors.parentEmail ? 'border-red-500' : ''}`}
+              className={`input-field border-2 ${errors.parentEmail ? 'border-red-500' : 'border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500'}`}
             />
             {errors.parentEmail && (
-              <p className="text-red-500 text-sm mt-1">{errors.parentEmail}</p>
+              <p className="text-red-500 text-sm mt-1 font-semibold">{errors.parentEmail}</p>
             )}
           </div>
-        </div>
+        </motion.div>
 
         {/* School Information */}
-        <div className="space-y-4 border-t-4 border-school-yellow pt-4">
-          <h3 className="text-lg font-black text-gray-900 dark:text-white uppercase tracking-wider border-l-4 border-school-purple pl-3 animate-cartoon-bounce">🏫 School Information</h3>
+        <motion.div 
+          className="space-y-4 border-t-2 border-royal-gold-200 dark:border-royal-purple-700/50 pt-6"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <h3 className="text-sm font-black text-royal-purple-600 dark:text-royal-gold-400 uppercase tracking-widest">
+            School Information
+          </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
-                📝 Registration Number
+              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
+                Registration Number
               </label>
               <input
                 type="text"
@@ -389,20 +432,20 @@ export default function StudentForm({
                 value={formData.registrationNumber}
                 onChange={handleChange}
                 placeholder="Auto-generated"
-                className="input-field bg-school-yellow/10 dark:bg-school-blue/10"
+                className="input-field border-2 border-royal-gold-200 dark:border-royal-purple-700/50 bg-royal-black-50 dark:bg-royal-purple-900/20"
                 disabled
               />
             </div>
 
             <div>
-              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
-                📚 Level
+              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
+                Level
               </label>
               <select
                 name="level"
                 value={formData.level}
                 onChange={handleChange}
-                className="input-field"
+                className="input-field border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"
               >
                 <option value="Pre-Nursery">Pre-Nursery</option>
                 <option value="Nursery">Nursery</option>
@@ -412,15 +455,15 @@ export default function StudentForm({
             </div>
 
             <div>
-              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
-                🎓 Class *
+              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
+                Class *
               </label>
               {allowedClasses.length > 0 ? (
                 <select
                   name="class"
                   value={formData.class}
                   onChange={handleChange}
-                  className={`input-field ${errors.class ? 'border-school-red' : ''}`}
+                  className={`input-field border-2 ${errors.class ? 'border-red-500' : 'border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500'}`}
                   disabled={lockClass}
                 >
                   <option value="">Select class</option>
@@ -437,52 +480,57 @@ export default function StudentForm({
                   value={formData.class}
                   onChange={handleChange}
                   placeholder="e.g., Primary 1"
-                  className={`input-field ${errors.class ? 'border-school-red' : ''}`}
+                  className={`input-field border-2 ${errors.class ? 'border-red-500' : 'border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500'}`}
                 />
               )}
               {errors.class && (
-                <p className="text-school-red text-sm mt-1 font-black animate-shake">{errors.class}</p>
+                <p className="text-red-500 text-sm mt-1 font-semibold">{errors.class}</p>
               )}
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
-                📅 Enrollment Date
+              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
+                Enrollment Date
               </label>
               <input
                 type="date"
                 name="enrollmentDate"
                 value={formData.enrollmentDate}
                 onChange={handleChange}
-                className="input-field"
+                className="input-field border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-1">
-                ✨ Status
+              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
+                Status
               </label>
               <select
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
-                className="input-field"
+                className="input-field border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"
               >
-                <option value="Active">✅ Active</option>
-                <option value="Inactive">⏸️ Inactive</option>
-                <option value="Suspended">🚫 Suspended</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+                <option value="Suspended">Suspended</option>
               </select>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Subject Selection (Only for New Students) */}
         {!isEditing && filteredSubjects.length > 0 && (
-          <div className="space-y-4 pt-4 border-t-4 border-dashed border-brand-200 dark:border-brand-700">
-            <h3 className="text-xl font-black text-gray-900 dark:text-white uppercase tracking-wider border-l-4 border-purple-500 pl-3 flex items-center gap-2">
-              <BookOpen className="text-purple-500" />
+          <motion.div 
+            className="space-y-4 pt-6 border-t-2 border-royal-gold-200 dark:border-royal-purple-700/50"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <h3 className="text-sm font-black text-royal-purple-600 dark:text-royal-gold-400 uppercase tracking-widest flex items-center gap-2">
+              <BookOpen size={16} className="text-royal-purple-500" />
               Assign Subjects (Optional)
             </h3>
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -495,9 +543,9 @@ export default function StudentForm({
                   placeholder="Search subjects..."
                   value={subjectSearchTerm}
                   onChange={(e) => setSubjectSearchTerm(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 text-sm border-2 border-brand-200 dark:border-brand-700 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-brand-800"
+                  className="input-field pl-9 border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500 w-full"
                 />
-                <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-royal-purple-400 dark:text-royal-gold-400" />
               </div>
             </div>
             
@@ -528,29 +576,29 @@ export default function StudentForm({
 
               return sortedCategories.map(category => (
                 <div key={category} className="space-y-3">
-                  <h4 className="text-sm font-black text-school-blue dark:text-school-yellow uppercase tracking-widest flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-school-red animate-pulse"></span>
+                  <h4 className="text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 uppercase tracking-widest flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-royal-gold-500"></span>
                     {category} {isSSSStudent ? 'Stream' : 'Subjects'}
                   </h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {subjectsByCategory[category].map(subject => (
                       <label
                         key={subject.id}
-                        className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${
+                        className={`flex items-start gap-3 p-3 rounded-lg cursor-pointer transition-all border-2 shadow-sm ${
                           selectedSubjects.includes(subject.id)
-                            ? 'bg-purple-50 dark:bg-purple-900/20 border-purple-500 shadow-md'
-                            : 'bg-white dark:bg-brand-800 border-brand-200 dark:border-brand-700 hover:border-purple-300'
+                            ? 'bg-royal-purple-50 dark:bg-royal-purple-900/30 border-royal-purple-500'
+                            : 'bg-white dark:bg-royal-black-800 border-royal-gold-200 dark:border-royal-purple-700/50 hover:border-royal-purple-500'
                         }`}
                       >
                         <input
                           type="checkbox"
                           checked={selectedSubjects.includes(subject.id)}
                           onChange={() => toggleSubject(subject.id)}
-                          className="w-5 h-5 text-purple-600 rounded-lg focus:ring-purple-500 border-brand-300"
+                          className="mt-1 w-4 h-4 text-royal-purple-600 border-royal-gold-300 rounded focus:ring-royal-purple-500 cursor-pointer"
                         />
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-black text-gray-900 dark:text-white truncate">{subject.name}</p>
-                          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{subject.code}</p>
+                          <p className="font-bold text-royal-purple-900 dark:text-white text-sm truncate">{subject.name}</p>
+                          <p className="text-xs text-royal-purple-600 dark:text-royal-gold-400 font-semibold uppercase tracking-widest">{subject.code}</p>
                         </div>
                       </label>
                     ))}
@@ -558,47 +606,64 @@ export default function StudentForm({
                 </div>
               ))
             })()}
-          </div>
+          </motion.div>
         )}
 
         {formData.parentUsername && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 bg-gradient-to-br from-school-yellow/20 to-school-orange/10 p-4 rounded-2xl border-2 border-dashed border-school-yellow">
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 bg-gradient-to-r from-royal-gold-50 to-royal-purple-50 dark:from-royal-gold-900/20 dark:to-royal-purple-900/20 border-2 border-dashed border-royal-gold-400 dark:border-royal-purple-600/50 rounded-lg p-4"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
             <div>
-              <label className="block text-xs font-black text-school-red uppercase tracking-wider mb-1">
-                📱 Parent Portal Username
+              <label className="block text-xs font-bold text-royal-purple-700 dark:text-royal-gold-300 uppercase tracking-widest mb-1">
+                Parent Portal Username
               </label>
-              <div className="font-mono text-sm bg-white dark:bg-brand-800 p-2 rounded-lg border-2 border-school-blue">
+              <div className="font-mono text-sm bg-white dark:bg-royal-black-800 p-2 rounded-lg border border-royal-gold-200 dark:border-royal-purple-700/50">
                 {formData.parentUsername}
               </div>
             </div>
             <div>
-              <label className="block text-xs font-black text-school-red uppercase tracking-wider mb-1">
-                🔐 Parent Portal Password
+              <label className="block text-xs font-bold text-royal-purple-700 dark:text-royal-gold-300 uppercase tracking-widest mb-1">
+                Parent Portal Password
               </label>
-              <div className="font-mono text-sm bg-white dark:bg-brand-800 p-2 rounded-lg border-2 border-school-blue">
+              <div className="font-mono text-sm bg-white dark:bg-royal-black-800 p-2 rounded-lg border border-royal-gold-200 dark:border-royal-purple-700/50">
                 {formData.parentPassword}
               </div>
             </div>
-            <p className="text-xs text-school-blue dark:text-school-yellow col-span-2 mt-2 font-black">
-              ✨ Share these auto-generated credentials with the parent to allow them to view their child's results.
+            <p className="text-xs text-royal-purple-600 dark:text-royal-gold-400 col-span-2 mt-2 font-medium">
+              Share these auto-generated credentials with the parent to allow them to view their child's results.
             </p>
-          </div>
+          </motion.div>
         )}
 
         {/* Form Actions */}
-        <div className="flex gap-4 pt-4 border-t-4 border-school-yellow">
-          <button type="submit" className="btn-primary animate-pulse-bright hover:animate-none">
-            {isEditing ? '✏️ Update Student' : '➕ Add Student'}
-          </button>
-          <button
+        <motion.div 
+          className="flex justify-end gap-4 mt-8 pt-6 border-t-2 border-royal-gold-200 dark:border-royal-purple-700/50"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+        >
+          <motion.button
             type="button"
             onClick={onCancel}
-            className="btn-secondary hover:scale-105"
+            className="px-6 py-2 border-2 border-royal-gold-300 dark:border-royal-purple-600 text-royal-purple-700 dark:text-royal-gold-300 rounded-lg hover:bg-royal-gold-50 dark:hover:bg-royal-purple-900/30 transition-colors font-bold"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
-            ❌ Cancel
-          </button>
-        </div>
-      </form>
-    </div>
+            Cancel
+          </motion.button>
+          <motion.button
+            type="submit"
+            className="px-8 py-2 bg-gradient-to-r from-royal-purple-600 to-royal-purple-700 text-white rounded-lg hover:from-royal-purple-700 hover:to-royal-purple-800 transition-all font-bold shadow-lg shadow-royal-purple-500/30"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            {isEditing ? 'Save Changes' : 'Create Student'}
+          </motion.button>
+        </motion.div>
+      </motion.form>
+    </motion.div>
   )
 }
