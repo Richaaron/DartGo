@@ -318,13 +318,6 @@ function AppContent() {
                 isOpen={isMobile || isSidebarOpen}
                 isDarkMode={isDarkMode}
               />
-              <NavLink
-                to="/attendance"
-                icon={<CheckCircle size={isMobile ? 20 : 18} />}
-                label="Attendance"
-                isOpen={isMobile || isSidebarOpen}
-                isDarkMode={isDarkMode}
-              />
             </>
           ) : userRole === "Parent" ? (
             <>
@@ -376,45 +369,6 @@ function AppContent() {
                 isOpen={isMobile || isSidebarOpen}
                 isDarkMode={isDarkMode}
               />
-              <NavLink
-                to="/attendance"
-                icon={<CheckCircle size={isMobile ? 20 : 18} />}
-                label="Attendance"
-                isOpen={isMobile || isSidebarOpen}
-                isDarkMode={isDarkMode}
-              />
-              <NavLink
-                to="/reports"
-                icon={<BarChart3 size={isMobile ? 20 : 18} />}
-                label="Reports"
-                isOpen={isMobile || isSidebarOpen}
-                isDarkMode={isDarkMode}
-              />
-              <NavLink
-                to="/notifications"
-                icon={<Bell size={isMobile ? 20 : 18} />}
-                label="Notifications"
-                isOpen={isMobile || isSidebarOpen}
-                isDarkMode={isDarkMode}
-              />
-              {userRole === "Admin" && (
-                <NavLink
-                  to="/messages"
-                  icon={<MessageSquare size={isMobile ? 20 : 18} />}
-                  label="Messages"
-                  isOpen={isMobile || isSidebarOpen}
-                  isDarkMode={isDarkMode}
-                />
-              )}
-              {userRole === "Admin" && (
-                <NavLink
-                  to="/deadlines"
-                  icon={<Timer size={isMobile ? 20 : 18} />}
-                  label="Deadlines"
-                  isOpen={isMobile || isSidebarOpen}
-                  isDarkMode={isDarkMode}
-                />
-              )}
               {userRole === "Admin" && (
                 <NavLink
                   to="/activity-log"
