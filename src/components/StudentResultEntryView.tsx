@@ -67,13 +67,19 @@ const StudentResultEntryView = memo(function StudentResultEntryView({
     // Combine both sets of subject IDs
     const allSubjectIds = new Set([...Array.from(registeredIds), ...Array.from(resultSubjectIds)])
 
+    // Helper to get exact subjects for the class
+    const filterSubjectsByClass = (allSubjects: Subject[], className: string): Subject[] => {
+      if (className.startsWith('SSS')) return allSubjects.filter(s => s.id.startsWith('ss-'))
+      if (className.startsWith('JSS')) return allSubjects.filter(s => s.id.startsWith('jss-'))
+      const level = className.startsWith('Primary') ? 'Primary' : className.startsWith('Nursery') ? 'Nursery' : className.startsWith('Pre-Nursery') ? 'Pre-Nursery' : 'Primary'
+      return allSubjects.filter(s => s.level === level)
+    }
+
     // If no specific subjects found via registration or results, 
-    // show ALL subjects for the student's level (Primary/Secondary) as a fallback
+    // show ALL appropriate subjects for the student's specific class
     const finalSubjectIds = allSubjectIds.size > 0 
       ? Array.from(allSubjectIds) 
-      : subjects
-          .filter(s => s.level === studentLevel)
-          .map(s => s.id)
+      : filterSubjectsByClass(subjects, student.class).map(s => s.id)
 
     return finalSubjectIds.map(subjectId => {
       const subject = subjects.find(s => s.id === subjectId)
