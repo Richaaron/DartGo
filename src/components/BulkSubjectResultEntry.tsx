@@ -68,28 +68,16 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
 
   // Get all unique classes from students
   const availableClasses = useMemo(() => {
-    // If a subject is selected, only show classes that have students registered for it
-    if (selectedSubjectId) {
-      const classSet = new Set<string>()
-      studentSubjects
-        .filter(sa => sa.subjectId === selectedSubjectId)
-        .forEach(sa => {
-          const student = students.find(s => s.id === sa.studentId)
-          if (student && student.class) classSet.add(student.class)
-        })
-      return Array.from(classSet).sort()
-    }
-
     const classSet = new Set<string>()
     students.forEach(s => {
       if (s.class) classSet.add(s.class)
     })
     return Array.from(classSet).sort()
-  }, [students, selectedSubjectId, studentSubjects])
+  }, [students])
 
   // Build bulk entry data when subject and class are selected
   const loadBulkData = useCallback(() => {
-    if (!selectedSubjectId) {
+    if (!selectedSubjectId || !selectedClass) {
       setBulkData([])
       return
     }
@@ -97,7 +85,7 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
     const subject = subjects.find(s => s.id === selectedSubjectId)
     if (!subject) return
 
-    // Get all students assigned to this subject
+    // Get all students in the selected class who are assigned to this subject
     const studentAssignments = studentSubjects.filter(
       sa => sa.subjectId === selectedSubjectId && 
       (sa.term === selectedTerm || selectedTerm === 'All') &&
@@ -107,12 +95,7 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
     const rows: BulkEntryRow[] = studentAssignments
       .map(assignment => {
         const student = students.find(s => s.id === assignment.studentId)
-        if (!student) return null
-        
-        // Filter by class if selected
-        if (selectedClass && selectedClass !== 'All' && student.class !== selectedClass) {
-          return null
-        }
+        if (!student || student.class !== selectedClass) return null
 
       // Find existing result for this student, subject, term, year
       const existingResult = existingResults.find(r =>
@@ -331,7 +314,7 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
 
       {/* Selection Controls */}
       <div className="card-lg space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label htmlFor="bulk-subject-select" className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
               Subject *
@@ -344,30 +327,14 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
               aria-label="Select a subject"
             >
               <option value="">Select a subject...</option>
-              {availableSubjects.map((subject) => (
-                <option key={subject.id} value={subject.id}>
-                  {subject.name} ({subject.code})
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="bulk-class-select" className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
-              Class
-            </label>
-            <select
-              id="bulk-class-select"
-              value={selectedClass}
-              onChange={(e) => setSelectedClass(e.target.value)}
-              className="input-field"
-              aria-label="Select class"
-            >
-              <option value="All">All Classes</option>
-              {availableClasses.map((className) => (
-                <option key={className} value={className}>
-                  {className}
-                </option>
-              ))}
+              {availableSubjects.map((subject) => {
+                const levelLabel = subject.id.startsWith('jss-') ? 'JSS' : subject.id.startsWith('ss-') ? 'SSS' : subject.level;
+                return (
+                  <option key={subject.id} value={subject.id}>
+                    {subject.name} ({levelLabel})
+                  </option>
+                );
+              })}
             </select>
           </div>
           <div>

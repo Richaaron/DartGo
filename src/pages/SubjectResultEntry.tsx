@@ -537,11 +537,14 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
               aria-label="Filter by subject"
             >
               <option value="All">All {isTeacher ? 'My' : ''} Subjects</option>
-              {teacherSubjects.map((subject) => (
-                <option key={subject.id} value={subject.id}>
-                  {subject.name} ({subject.code})
-                </option>
-              ))}
+              {teacherSubjects.map((subject) => {
+                const levelLabel = subject.id.startsWith('jss-') ? 'JSS' : subject.id.startsWith('ss-') ? 'SSS' : subject.level;
+                return (
+                  <option key={subject.id} value={subject.id}>
+                    {subject.name} ({levelLabel})
+                  </option>
+                );
+              })}
             </select>
           </div>
           <div>

@@ -114,11 +114,16 @@ export default function TeacherForm({
     loadOptions();
   }, []);
 
-  const levelSubjects = useMemo(
-    () =>
-      availableSubjects.filter((subject) => subject.level === formData.level),
-    [availableSubjects, formData.level],
-  );
+  const levelSubjects = useMemo(() => {
+    const filtered = availableSubjects.filter((subject) => subject.level === formData.level);
+    const unique = new Map();
+    filtered.forEach(s => {
+      if (!unique.has(s.name)) {
+        unique.set(s.name, s);
+      }
+    });
+    return Array.from(unique.values());
+  }, [availableSubjects, formData.level]);
 
   const levelClasses = useMemo(() => {
     const preferredClasses = LEVEL_CLASS_MAP[formData.level] || [];
