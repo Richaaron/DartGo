@@ -256,17 +256,16 @@ export const DEFAULT_SUBJECTS: Subject[] = [
   { id: 'ss-g-4', name: 'Civic Education', code: 'CVE', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
   { id: 'ss-g-5', name: 'Religious Studies', code: 'RES', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
   { id: 'ss-g-6', name: 'I.C.T', code: 'ICT', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
+  { id: 'ss-g-7', name: 'Geography', code: 'GEO', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
+  { id: 'ss-g-8', name: 'Economics', code: 'ECO', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
+  { id: 'ss-g-9', name: 'Marketing', code: 'MKT', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
   // SSS Science Arm Core Subjects
   { id: 'ss-sci-1', name: 'Physics', code: 'PHY', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
   { id: 'ss-sci-2', name: 'Chemistry', code: 'CHM', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
-  { id: 'ss-sci-3', name: 'Geography', code: 'GEO', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
   // SSS Art Arm Core Subjects
   { id: 'ss-art-1', name: 'Government', code: 'GOV', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
   { id: 'ss-art-2', name: 'Literature in English', code: 'LIT', level: 'Secondary', creditUnits: 3, subjectCategory: 'Art' },
-  { id: 'ss-art-3', name: 'Economics', code: 'ECO', level: 'Secondary', creditUnits: 3, subjectCategory: 'Art' },
   // SSS Commercial Arm Core Subjects
   { id: 'ss-com-1', name: 'Accounting', code: 'ACC', level: 'Secondary', creditUnits: 3, subjectCategory: 'Commercial' },
   { id: 'ss-com-2', name: 'Commerce', code: 'COM', level: 'Secondary', creditUnits: 2, subjectCategory: 'Commercial' },
-  { id: 'ss-com-3', name: 'Marketing', code: 'MKT', level: 'Secondary', creditUnits: 2, subjectCategory: 'Commercial' },
-  { id: 'ss-com-4', name: 'Economics', code: 'ECO-C', level: 'Secondary', creditUnits: 3, subjectCategory: 'Commercial' },
 ]
