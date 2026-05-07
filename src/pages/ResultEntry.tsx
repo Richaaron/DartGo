@@ -245,16 +245,16 @@ export default function ResultEntry() {
     try {
       setIsGeneratingPDF(true)
       
-      // Wait a bit for the DOM to be fully ready/rendered
-      await new Promise(resolve => setTimeout(resolve, 500))
+      // Wait a bit for the DOM to be fully ready/rendered (increased for reliability)
+      await new Promise(resolve => setTimeout(resolve, 1500))
 
       const canvas = await html2canvas(printContent, {
         scale: 2,
         useCORS: true,
         allowTaint: true,
-        logging: true,
+        logging: false,
         backgroundColor: '#ffffff',
-        windowWidth: 800 // Consistent width for rendering
+        windowWidth: 1000 // Match the container width
       })
 
       const imgData = canvas.toDataURL('image/jpeg', 1.0)
@@ -1360,11 +1360,10 @@ export default function ResultEntry() {
               <div 
                 style={{ 
                   position: 'absolute', 
-                  left: '-9999px', 
-                  top: '0',
-                  visibility: 'hidden',
-                  height: '0',
-                  overflow: 'hidden'
+                  left: '-10000px', 
+                  top: '-10000px',
+                  width: '1000px',
+                  zIndex: -9999
                 }}
               >
                 <div id="print-area-hidden">
