@@ -21,12 +21,8 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({
   config,
   classTeacher
 }, ref) => {
-  const overallAverage = results.length > 0
-    ? Math.round((results.reduce((sum, r) => sum + r.percentage, 0) / results.length) * 10) / 10
-    : 0
-
-  const totalPoints = results.reduce((sum, r) => sum + r.gradePoint, 0)
-  const gpa = results.length > 0 ? (totalPoints / results.length).toFixed(2) : "0.00"
+  const grandTotal = results.reduce((sum, r) => sum + r.totalScore, 0)
+  const averageScore = results.length > 0 ? (grandTotal / results.length).toFixed(1) : "0.0"
 
   const renderRating = (val: number) => {
     return (
@@ -92,8 +88,8 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({
               Excellence in Learning & Character
             </p>
             <p className="text-xs text-gray-400 font-bold mt-2 uppercase tracking-widest">
-              {config?.schoolAddress || "123 Victory Lane, Lagos, Nigeria"}{" "}
-              | {config?.schoolPhone || "+234 800 000 0000"}
+              {config?.schoolAddress || "Nigeria"}{" "}
+              | {config?.schoolPhone || ""}
             </p>
           </div>
         </div>
@@ -242,16 +238,16 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({
       {/* Summary Metrics */}
       <div className="grid grid-cols-3 gap-8 mb-16">
         <div className="p-8 bg-indigo-50/50 rounded-[1.5rem] border-2 border-indigo-100/50 text-center">
-          <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-2">Enrolled Units</p>
-          <p className="text-4xl font-black text-indigo-900 tracking-tighter">{results.length}</p>
+          <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-2">Grand Total</p>
+          <p className="text-4xl font-black text-indigo-900 tracking-tighter">{grandTotal}</p>
         </div>
         <div className="p-8 bg-emerald-50/50 rounded-[1.5rem] border-2 border-emerald-100/50 text-center">
-          <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-2">Mean Percentage</p>
-          <p className="text-4xl font-black text-emerald-900 tracking-tighter">{overallAverage}%</p>
+          <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-2">Average Score</p>
+          <p className="text-4xl font-black text-emerald-900 tracking-tighter">{averageScore}</p>
         </div>
         <div className="p-8 bg-violet-50/50 rounded-[1.5rem] border-2 border-violet-100/50 text-center">
-          <p className="text-[10px] font-black text-violet-400 uppercase tracking-widest mb-2">Scholastic Index (GPA)</p>
-          <p className="text-4xl font-black text-violet-900 tracking-tighter">{gpa}</p>
+          <p className="text-[10px] font-black text-violet-400 uppercase tracking-widest mb-2">Class Position</p>
+          <p className="text-4xl font-black text-violet-900 tracking-tighter">{classPositionText || "N/A"}</p>
         </div>
       </div>
 
