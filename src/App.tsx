@@ -318,6 +318,15 @@ function AppContent() {
                 isOpen={isMobile || isSidebarOpen}
                 isDarkMode={isDarkMode}
               />
+              {isFormTeacher && (
+                <NavLink
+                  to="/reports"
+                  icon={<FileText size={isMobile ? 20 : 18} />}
+                  label="Reports Vault"
+                  isOpen={isMobile || isSidebarOpen}
+                  isDarkMode={isDarkMode}
+                />
+              )}
             </>
           ) : userRole === "Parent" ? (
             <>
