@@ -448,7 +448,7 @@ function AppContent() {
       </motion.aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto bg-royal-purple-50 dark:bg-royal-black-950 text-royal-black-900 dark:text-white">
+      <main className="flex-1 overflow-auto bg-slate-900 dark:bg-royal-black-950 text-white dark:text-white">
         <div
           className={`max-w-7xl mx-auto ${isMobile ? "px-4 py-4" : "px-6 py-6 md:px-8 md:py-8"}`}
         >
