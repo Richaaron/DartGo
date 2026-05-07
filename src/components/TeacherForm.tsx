@@ -116,13 +116,24 @@ export default function TeacherForm({
 
   const levelSubjects = useMemo(() => {
     const filtered = availableSubjects.filter((subject) => subject.level === formData.level);
-    const unique = new Map();
+    if (formData.level !== 'Secondary') {
+      // Non-secondary: deduplicate by name (no sub-levels)
+      const unique = new Map();
+      filtered.forEach(s => { if (!unique.has(s.name)) unique.set(s.name, s); });
+      return Array.from(unique.values());
+    }
+    // Secondary: keep JSS (no subjectCategory) and SSS (has subjectCategory) as separate items
+    // Deduplicate within each tier
+    const jssMap = new Map<string, Subject>();
+    const sssMap = new Map<string, Subject>();
     filtered.forEach(s => {
-      if (!unique.has(s.name)) {
-        unique.set(s.name, s);
+      if (s.subjectCategory) {
+        if (!sssMap.has(s.name)) sssMap.set(s.name, { ...s, name: `${s.name} (SSS)` });
+      } else {
+        if (!jssMap.has(s.name)) jssMap.set(s.name, { ...s, name: `${s.name} (JSS)` });
       }
     });
-    return Array.from(unique.values());
+    return [...Array.from(jssMap.values()), ...Array.from(sssMap.values())];
   }, [availableSubjects, formData.level]);
 
   const levelClasses = useMemo(() => {
