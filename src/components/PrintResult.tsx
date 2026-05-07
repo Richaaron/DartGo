@@ -22,7 +22,39 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({
   classTeacher
 }, ref) => {
   const grandTotal = results.reduce((sum, r) => sum + r.totalScore, 0)
-  const averageScore = results.length > 0 ? (grandTotal / results.length).toFixed(1) : "0.0"
+  const averageScore = results.length > 0 ? (grandTotal / results.length) : 0
+  const formattedAverage = averageScore.toFixed(1)
+
+  const getAutomatedComments = (score: number) => {
+    let teacher = "No qualitative feedback provided for this session."
+    let principal = "Academic performance under review."
+
+    if (score >= 80) {
+      teacher = "An excellent performance. You have demonstrated a high level of academic proficiency. Keep it up."
+      principal = "A brilliant result. Very impressive. Keep striving for the peak."
+    } else if (score >= 70) {
+      teacher = "A very good result. You are a diligent student. Maintain the standard."
+      principal = "A commendable performance. You have a great potential for excellence."
+    } else if (score >= 60) {
+      teacher = "Good performance, but there is still room for improvement. Focus more on your weak areas."
+      principal = "A good result overall. With more dedication, you can achieve a higher grade."
+    } else if (score >= 50) {
+      teacher = "A fair performance. You need to be more serious and work harder in the coming term."
+      principal = "An average performance. You are encouraged to put in more effort to improve your standing."
+    } else if (score >= 40) {
+      teacher = "A weak result. You must devote more time to your studies to avoid failure."
+      principal = "A below-average performance. Significant improvement is needed to move forward."
+    } else if (score > 0) {
+      teacher = "Poor performance. You need to put in extra effort and seek help in all subjects."
+      principal = "A disappointing result. You must be more focused and disciplined in your academic work."
+    }
+
+    return { teacher, principal }
+  }
+
+  const autoComments = getAutomatedComments(averageScore)
+  const finalTeacherComment = observation?.teacherComment || autoComments.teacher
+  const finalPrincipalComment = observation?.principalComment || autoComments.principal
 
   const renderRating = (val: number) => {
     return (
@@ -243,7 +275,7 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({
         </div>
         <div className="p-8 bg-emerald-50/50 rounded-[1.5rem] border-2 border-emerald-100/50 text-center">
           <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-2">Average Score</p>
-          <p className="text-4xl font-black text-emerald-900 tracking-tighter">{averageScore}</p>
+          <p className="text-4xl font-black text-emerald-900 tracking-tighter">{formattedAverage}</p>
         </div>
         <div className="p-8 bg-violet-50/50 rounded-[1.5rem] border-2 border-violet-100/50 text-center">
           <p className="text-[10px] font-black text-violet-400 uppercase tracking-widest mb-2">Class Position</p>
@@ -256,15 +288,15 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({
         <div className="bg-gray-50/50 p-8 rounded-[1.5rem] border-l-8 border-indigo-600">
           <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest mb-4">Class Teacher Evaluation</p>
           <p className="text-gray-900 italic font-bold text-lg leading-relaxed">
-            "{observation?.teacherComment || "No qualitative feedback provided for this session."}"
+            "{finalTeacherComment}"
           </p>
         </div>
         <div className="bg-gray-50/50 p-8 rounded-[1.5rem] border-l-8 border-gray-900">
           <p className="text-[10px] font-black text-gray-900 uppercase tracking-widest mb-4">
-            {config?.principalName ? `${config.principalName} — Principal's Remarks` : "Principal's Remarks"}
+            {config?.principalName || "Solomon Benjamin"} — Principal's Remarks
           </p>
           <p className="text-gray-900 italic font-bold text-lg leading-relaxed">
-            "{observation?.principalComment || "Official remarks pending authorization."}"
+            "{finalPrincipalComment}"
           </p>
         </div>
       </div>
