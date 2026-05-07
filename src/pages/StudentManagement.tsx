@@ -668,13 +668,12 @@ export default function StudentManagement() {
                             .map(s => s.id);
                           setBulkAssignSubjects(armIds);
                         }}
-                        className={`py-3 px-4 rounded-2xl border-2 font-black text-sm transition-all ${
-                          bulkAssignArm === arm
+                        className={`py-3 px-4 rounded-2xl border-2 font-black text-sm transition-all ${bulkAssignArm === arm
                             ? arm === 'Science' ? 'bg-blue-600 text-white border-blue-600' :
                               arm === 'Art' ? 'bg-purple-600 text-white border-purple-600' :
-                              'bg-amber-600 text-white border-amber-600'
+                                'bg-amber-600 text-white border-amber-600'
                             : 'bg-white border-brand-200 text-gray-700 hover:border-school-blue/50'
-                        }`}
+                          }`}
                       >
                         {arm}
                       </button>
@@ -686,142 +685,139 @@ export default function StudentManagement() {
               {/* Subject list – shown when class selected (and arm selected for SSS) */}
               {bulkAssignClass && (
                 (!bulkAssignClass.toUpperCase().includes('SSS') || bulkAssignArm) && (
-                <div className="space-y-5">
+                  <div className="space-y-5">
 
-                  {/* === Arm subjects (SSS only) – auto-checked, can uncheck === */}
-                  {bulkAssignClass.toUpperCase().includes('SSS') && (
-                    <div>
-                      <p className="text-xs font-black text-blue-600 uppercase tracking-widest mb-2">
-                        ✓ {bulkAssignArm} Arm Subjects — Auto-included (uncheck to remove)
-                      </p>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        {subjects
-                          .filter(s => s.id.startsWith('ss-') && s.subjectCategory === bulkAssignArm)
-                          .map(subject => (
-                            <label
-                              key={subject.id}
-                              className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${
-                                bulkAssignSubjects.includes(subject.id)
-                                  ? 'bg-blue-50 border-blue-400 shadow-sm'
-                                  : 'bg-white border-gray-200 opacity-60'
-                              }`}
-                            >
-                              <input
-                                type="checkbox"
-                                checked={bulkAssignSubjects.includes(subject.id)}
-                                onChange={() => {
-                                  setBulkAssignSubjects(prev =>
-                                    prev.includes(subject.id)
-                                      ? prev.filter(id => id !== subject.id)
-                                      : [...prev, subject.id]
-                                  );
-                                }}
-                                className="w-5 h-5 text-blue-600 rounded-lg focus:ring-blue-500 border-gray-300"
-                              />
-                              <div className="flex-1 min-w-0">
-                                <p className="text-sm font-black text-gray-900 truncate">{subject.name}</p>
-                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{subject.code}</p>
-                              </div>
-                            </label>
-                          ))}
+                    {/* === Arm subjects (SSS only) – auto-checked, can uncheck === */}
+                    {bulkAssignClass.toUpperCase().includes('SSS') && (
+                      <div>
+                        <p className="text-xs font-black text-blue-600 uppercase tracking-widest mb-2">
+                          ✓ {bulkAssignArm} Arm Subjects — Auto-included (uncheck to remove)
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {subjects
+                            .filter(s => s.id.startsWith('ss-') && s.subjectCategory === bulkAssignArm)
+                            .map(subject => (
+                              <label
+                                key={subject.id}
+                                className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${bulkAssignSubjects.includes(subject.id)
+                                    ? 'bg-blue-50 border-blue-400 shadow-sm'
+                                    : 'bg-white border-gray-200 opacity-60'
+                                  }`}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={bulkAssignSubjects.includes(subject.id)}
+                                  onChange={() => {
+                                    setBulkAssignSubjects(prev =>
+                                      prev.includes(subject.id)
+                                        ? prev.filter(id => id !== subject.id)
+                                        : [...prev, subject.id]
+                                    );
+                                  }}
+                                  className="w-5 h-5 text-blue-600 rounded-lg focus:ring-blue-500 border-gray-300"
+                                />
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-black text-gray-900 truncate">{subject.name}</p>
+                                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{subject.code}</p>
+                                </div>
+                              </label>
+                            ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  {/* === General subjects (SSS only) – unchecked, manual pick === */}
-                  {bulkAssignClass.toUpperCase().includes('SSS') && (
-                    <div>
-                      <label className="block text-sm font-black text-school-blue mb-2 uppercase tracking-widest">
-                        3. Add General Subjects (manual)
-                      </label>
-                      <p className="text-xs text-gray-500 mb-3 font-medium">
-                        Tick any of the 9 general subjects you also want to assign.
-                      </p>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        {subjects
-                          .filter(s => s.id.startsWith('ss-') && s.subjectCategory === 'General')
-                          .map(subject => (
-                            <label
-                              key={subject.id}
-                              className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${
-                                bulkAssignSubjects.includes(subject.id)
-                                  ? 'bg-school-blue/10 border-school-blue shadow-md'
-                                  : 'bg-white border-brand-200 hover:border-school-blue/50'
-                              }`}
-                            >
-                              <input
-                                type="checkbox"
-                                checked={bulkAssignSubjects.includes(subject.id)}
-                                onChange={() => {
-                                  setBulkAssignSubjects(prev =>
-                                    prev.includes(subject.id)
-                                      ? prev.filter(id => id !== subject.id)
-                                      : [...prev, subject.id]
-                                  );
-                                }}
-                                className="w-5 h-5 text-school-blue rounded-lg focus:ring-school-blue border-brand-300"
-                              />
-                              <div className="flex-1 min-w-0">
-                                <p className="text-sm font-black text-gray-900 truncate">{subject.name}</p>
-                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{subject.code}</p>
-                              </div>
-                            </label>
-                          ))}
+                    {/* === General subjects (SSS only) – unchecked, manual pick === */}
+                    {bulkAssignClass.toUpperCase().includes('SSS') && (
+                      <div>
+                        <label className="block text-sm font-black text-school-blue mb-2 uppercase tracking-widest">
+                          3. Add General Subjects (manual)
+                        </label>
+                        <p className="text-xs text-gray-500 mb-3 font-medium">
+                          Tick any of the 9 general subjects you also want to assign.
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {subjects
+                            .filter(s => s.id.startsWith('ss-') && s.subjectCategory === 'General')
+                            .map(subject => (
+                              <label
+                                key={subject.id}
+                                className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${bulkAssignSubjects.includes(subject.id)
+                                    ? 'bg-school-blue/10 border-school-blue shadow-md'
+                                    : 'bg-white border-brand-200 hover:border-school-blue/50'
+                                  }`}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={bulkAssignSubjects.includes(subject.id)}
+                                  onChange={() => {
+                                    setBulkAssignSubjects(prev =>
+                                      prev.includes(subject.id)
+                                        ? prev.filter(id => id !== subject.id)
+                                        : [...prev, subject.id]
+                                    );
+                                  }}
+                                  className="w-5 h-5 text-school-blue rounded-lg focus:ring-school-blue border-brand-300"
+                                />
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-black text-gray-900 truncate">{subject.name}</p>
+                                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{subject.code}</p>
+                                </div>
+                              </label>
+                            ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
-                  {/* === Non-SSS classes (JSS / Primary) \u2013 standard subject picker === */}
-                  {!bulkAssignClass.toUpperCase().includes('SSS') && (
-                    <div>
-                      <label className="block text-sm font-black text-school-blue mb-2 uppercase tracking-widest">
-                        2. Select Subjects
-                      </label>
-                      <p className="text-xs text-gray-500 mb-3 font-medium">
-                        Select subjects to assign to all students in {bulkAssignClass}.
-                      </p>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        {subjects
-                          .filter((s) => {
-                            if (!s) return false;
-                            const classLevel = students.find(
-                              (student) => student && student.class === bulkAssignClass,
-                            )?.level;
-                            return classLevel && s.level === classLevel && !s.id.startsWith('ss-');
-                          })
-                          .map((subject) => (
-                            <label
-                              key={subject.id}
-                              className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${
-                                bulkAssignSubjects.includes(subject.id)
-                                  ? "bg-school-blue/10 border-school-blue shadow-md"
-                                  : "bg-white border-brand-200 hover:border-school-blue/50"
-                              }`}
-                            >
-                              <input
-                                type="checkbox"
-                                checked={bulkAssignSubjects.includes(subject.id)}
-                                onChange={() => {
-                                  setBulkAssignSubjects((prev) =>
-                                    prev.includes(subject.id)
-                                      ? prev.filter((id) => id !== subject.id)
-                                      : [...prev, subject.id],
-                                  );
-                                }}
-                                className="w-5 h-5 text-school-blue rounded-lg focus:ring-school-blue border-brand-300"
-                              />
-                              <div className="flex-1 min-w-0">
-                                <p className="text-sm font-black text-gray-900 truncate">{subject.name}</p>
-                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                                  {subject.code}
-                                </p>
-                              </div>
-                            </label>
-                          ))}
+                    )}
+                    {/* === Non-SSS classes (JSS / Primary) \u2013 standard subject picker === */}
+                    {!bulkAssignClass.toUpperCase().includes('SSS') && (
+                      <div>
+                        <label className="block text-sm font-black text-school-blue mb-2 uppercase tracking-widest">
+                          2. Select Subjects
+                        </label>
+                        <p className="text-xs text-gray-500 mb-3 font-medium">
+                          Select subjects to assign to all students in {bulkAssignClass}.
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {subjects
+                            .filter((s) => {
+                              if (!s) return false;
+                              const classLevel = students.find(
+                                (student) => student && student.class === bulkAssignClass,
+                              )?.level;
+                              return classLevel && s.level === classLevel && !s.id.startsWith('ss-');
+                            })
+                            .map((subject) => (
+                              <label
+                                key={subject.id}
+                                className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${bulkAssignSubjects.includes(subject.id)
+                                    ? "bg-school-blue/10 border-school-blue shadow-md"
+                                    : "bg-white border-brand-200 hover:border-school-blue/50"
+                                  }`}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={bulkAssignSubjects.includes(subject.id)}
+                                  onChange={() => {
+                                    setBulkAssignSubjects((prev) =>
+                                      prev.includes(subject.id)
+                                        ? prev.filter((id) => id !== subject.id)
+                                        : [...prev, subject.id],
+                                    );
+                                  }}
+                                  className="w-5 h-5 text-school-blue rounded-lg focus:ring-school-blue border-brand-300"
+                                />
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-black text-gray-900 truncate">{subject.name}</p>
+                                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                                    {subject.code}
+                                  </p>
+                                </div>
+                              </label>
+                            ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                </div>
+                  </div>
                 )
               )}
             </div>
@@ -864,66 +860,104 @@ export default function StudentManagement() {
         />
       )}
 
-      {/* Table */}
-      <div className="card-lg">
-        <Table
-          columns={columns}
-          data={filteredStudents.map((student) => ({
-            ...student,
-            actions: (
-              <div className="flex gap-1 items-center">
-                <button
-                  onClick={() => handleOpenAdvancedEditor(student)}
-                  className="p-2 text-blue-600 hover:bg-blue-50 rounded transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                  title="Edit student & manage subjects"
-                  disabled={!permissions.canEditStudent && !permissions.canManageSubjects}
-                >
-                  <Edit2 size={16} />
-                </button>
-                <button
-                  onClick={() => handleOpenSubjectAssignment(student)}
-                  className="p-2 text-purple-600 hover:bg-purple-50 rounded transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                  title="Manage subjects (quick)"
-                  disabled={!permissions.canAssignSubjectsToStudent}
-                >
-                  <BookOpen size={16} />
-                </button>
-                <button
-                  onClick={() => handleDeleteStudent(student.id)}
-                  className="p-2 text-red-500 hover:bg-red-50 rounded transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                  title="Delete"
-                  disabled={!permissions.canDeleteStudent}
-                >
-                  <Trash2 size={18} />
-                </button>
+      {/* Table Replacement: Scholar Card Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {filteredStudents.length > 0 ? (
+          filteredStudents.map((student) => (
+            <div
+              key={student.id}
+              className="professional-card p-6 group hover:bg-brand-900/60 transition-all duration-300 relative overflow-hidden"
+            >
+              {/* Status Badge */}
+              <div className="absolute top-4 right-4">
+                <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest ${student.status === 'Active' ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-500 border border-rose-500/20'
+                  }`}>
+                  {student.status}
+                </span>
               </div>
-            ),
-          }))}
-        />
-        {filteredStudents.length === 0 && (
-          <div className="text-center py-8">
-            <p className="text-gray-500">No students found</p>
+
+              <div className="flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-2xl bg-indigo-600/20 flex items-center justify-center text-indigo-400 font-black text-2xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                  {student.firstName[0]}{student.lastName[0]}
+                </div>
+                <h3 className="text-white font-black uppercase tracking-tight text-lg mb-1">{student.firstName} {student.lastName}</h3>
+                <p className="text-indigo-400 text-[10px] font-black uppercase tracking-[0.2em] mb-4">{student.registrationNumber}</p>
+
+                <div className="w-full flex justify-center gap-2 mb-6">
+                  <span className="px-3 py-1 bg-brand-800 rounded-lg text-[10px] font-black text-gray-400 uppercase tracking-widest border border-brand-700">
+                    {student.class}
+                  </span>
+                  <span className="px-3 py-1 bg-brand-800 rounded-lg text-[10px] font-black text-gray-400 uppercase tracking-widest border border-brand-700">
+                    {student.level}
+                  </span>
+                </div>
+
+                <div className="w-full grid grid-cols-3 gap-2 pt-4 border-t border-indigo-500/10">
+                  <button
+                    onClick={() => handleOpenAdvancedEditor(student)}
+                    disabled={!permissions.canEditStudent && !permissions.canManageSubjects}
+                    className="p-2 bg-indigo-600/10 text-indigo-400 hover:bg-indigo-600 hover:text-white rounded-xl transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                    title="Edit Profile"
+                  >
+                    <Edit2 size={16} className="mx-auto" />
+                  </button>
+                  <button
+                    onClick={() => handleOpenSubjectAssignment(student)}
+                    disabled={!permissions.canAssignSubjectsToStudent}
+                    className="p-2 bg-emerald-600/10 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded-xl transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                    title="Assign Subjects"
+                  >
+                    <BookOpen size={16} className="mx-auto" />
+                  </button>
+                  <button
+                    onClick={() => handleDeleteStudent(student.id)}
+                    disabled={!permissions.canDeleteStudent}
+                    className="p-2 bg-rose-600/10 text-rose-400 hover:bg-rose-600 hover:text-white rounded-xl transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                    title="Delete Scholar"
+                  >
+                    <Trash2 size={16} className="mx-auto" />
+                  </button>
+                </div>
+
+                {/* Parent Credentials */}
+                <div className="mt-4 pt-4 border-t border-indigo-500/5 w-full">
+                  <div className="flex flex-col gap-1 text-[10px]">
+                    <div className="flex justify-between">
+                      <span className="text-gray-500 font-bold uppercase tracking-widest">Username</span>
+                      <span className="text-gray-300 font-black">{student.parentUsername || 'N/A'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-500 font-bold uppercase tracking-widest">Password</span>
+                      <span className="text-gray-300 font-black">{student.parentPassword || 'N/A'}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="col-span-full py-20 text-center card-lg border-brand-800/40">
+            <Search size={48} className="mx-auto text-brand-700/50 mb-4" />
+            <p className="text-brand-400 font-bold uppercase tracking-widest">No scholars found matching your filters.</p>
           </div>
         )}
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-        <div className="card-lg text-center">
-          <p className="text-gray-600 text-sm">Total Students</p>
-          <p className="text-3xl font-bold text-gray-900">
-            {filteredStudents.length}
-          </p>
+      {/* Stats Section */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+        <div className="card-lg bg-indigo-50/50 dark:bg-indigo-900/10 text-center border-indigo-500/20">
+          <p className="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.2em] mb-2">Total Scholars</p>
+          <p className="text-3xl font-black text-gray-900 dark:text-white">{filteredStudents.length}</p>
         </div>
-        <div className="card-lg text-center">
-          <p className="text-gray-600 text-sm">Active Students</p>
-          <p className="text-3xl font-bold text-green-600">
+        <div className="card-lg bg-emerald-50/50 dark:bg-emerald-900/10 text-center border-emerald-500/20">
+          <p className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.2em] mb-2">Active</p>
+          <p className="text-3xl font-black text-emerald-600 dark:text-emerald-400">
             {filteredStudents.filter((s) => s.status === "Active").length}
           </p>
         </div>
-        <div className="card-lg text-center">
-          <p className="text-gray-600 text-sm">Inactive Students</p>
-          <p className="text-3xl font-bold text-red-600">
+        <div className="card-lg bg-rose-50/50 dark:bg-rose-900/10 text-center border-rose-500/20">
+          <p className="text-[10px] font-black text-rose-600 dark:text-rose-400 uppercase tracking-[0.2em] mb-2">Inactive</p>
+          <p className="text-3xl font-black text-rose-600 dark:text-rose-400">
             {filteredStudents.filter((s) => s.status !== "Active").length}
           </p>
         </div>

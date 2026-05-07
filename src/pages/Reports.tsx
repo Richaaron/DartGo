@@ -895,61 +895,57 @@ export default function Reports() {
 
       <motion.div
         variants={itemVariants}
-        className="card-lg p-0 overflow-hidden border-none shadow-xl"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
       >
-        <table className="w-full">
-          <thead>
-            <tr>
-              <th className="table-header">Scholar Identity</th>
-              <th className="table-header">Registry ID</th>
-              <th className="table-header">Classification</th>
-              <th className="table-header text-center">Efficiency (Avg)</th>
-              <th className="table-header text-center">Units</th>
-              <th className="table-header text-right">Repository Access</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-50 dark:divide-gray-800/50">
-            {studentPerformanceData.map((student) => (
-              <tr
-                key={student.id}
-                className="group hover:bg-indigo-50/30 dark:hover:bg-indigo-500/5 transition-all duration-300"
-              >
-                <td className="table-cell font-black text-gray-900 dark:text-white">
+        {studentPerformanceData.length > 0 ? (
+          studentPerformanceData.map((student) => (
+            <motion.div
+              key={student.id}
+              variants={itemVariants}
+              onClick={() => {
+                setSelectedStudentId(student.id);
+                setReportType("report-card");
+              }}
+              className="professional-card p-6 cursor-pointer group hover:bg-brand-900/60 transition-all duration-300"
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-2xl bg-indigo-600/20 flex items-center justify-center text-indigo-400 font-black text-2xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                  {student.firstName[0]}{student.lastName[0]}
+                </div>
+                <h3 className="text-white font-black uppercase tracking-tight text-lg mb-1">
                   {student.firstName} {student.lastName}
-                </td>
-                <td className="table-cell font-bold text-gray-400 dark:text-gray-500">
-                  {student.registrationNumber}
-                </td>
-                <td className="table-cell">
-                  <span className="px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-gray-800 text-[10px] font-black text-gray-600 dark:text-gray-400 uppercase tracking-widest">
-                    {student.class}
+                </h3>
+                <p className="text-indigo-400 text-xs font-bold uppercase tracking-widest mb-4">
+                  {student.class}
+                </p>
+                
+                <div className="w-full pt-4 border-t border-indigo-500/10 grid grid-cols-2 gap-4">
+                  <div className="text-left">
+                    <p className="text-[10px] text-gray-500 uppercase font-black">Efficiency</p>
+                    <p className={`text-lg font-black ${student.avgScore >= 50 ? 'text-emerald-500' : 'text-rose-500'}`}>
+                      {student.avgScore}%
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[10px] text-gray-500 uppercase font-black">Units</p>
+                    <p className="text-lg font-black text-white">{student.subjectsCount}</p>
+                  </div>
+                </div>
+
+                <div className="w-full mt-4 flex justify-center">
+                  <span className="px-4 py-2 bg-indigo-600/10 text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white rounded-xl text-[10px] font-black uppercase tracking-widest border border-indigo-500/20 transition-all">
+                    Open Record
                   </span>
-                </td>
-                <td className="table-cell text-center">
-                  <span
-                    className={`text-sm font-black ${student.avgScore >= 60 ? "text-emerald-500" : "text-rose-500"}`}
-                  >
-                    {student.avgScore}%
-                  </span>
-                </td>
-                <td className="table-cell text-center font-bold text-gray-400">
-                  {student.subjectsCount}
-                </td>
-                <td className="table-cell text-right">
-                  <button
-                    onClick={() => {
-                      setSelectedStudentId(student.id);
-                      setReportType("report-card");
-                    }}
-                    className="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-black text-[10px] uppercase tracking-[0.2em] hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-500 dark:hover:text-white px-4 py-2 rounded-xl transition-all shadow-sm active:scale-95"
-                  >
-                    <FileText size={14} /> Open Record
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                </div>
+              </div>
+            </motion.div>
+          ))
+        ) : (
+          <div className="col-span-full py-20 text-center card-lg border-brand-800/40">
+            <Search size={48} className="mx-auto text-brand-700/50 mb-4" />
+            <p className="text-brand-400 font-bold uppercase tracking-widest">No scholars found matching your query.</p>
+          </div>
+        )}
       </motion.div>
     </motion.div>
   );

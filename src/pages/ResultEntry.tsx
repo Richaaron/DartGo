@@ -13,6 +13,10 @@ import Table from '../components/Table'
 import { formatDate, exportToCSV, calculatePositions, getStudentClassPosition, getPositionSuffix } from '../utils/calculations'
 import { fetchStudents, fetchResults, fetchSubjects, deleteResult, createResult, updateResult, fetchStudentSubjects } from '../services/api'
 import apiService from '../services/apiService'
+import PrintResult from '../components/PrintResult'
+import { Printer, Loader2, ChevronLeft } from 'lucide-react'
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
 
 export default function ResultEntry() {
   const { user } = useAuthContext()
@@ -30,6 +34,8 @@ export default function ResultEntry() {
   const [selectedTerm, setSelectedTerm] = useState<string>('All')
   const [sending, setSending] = useState<string | null>(null)
   const [sendMessage, setSendMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+  const [selectedStudentResults, setSelectedStudentResults] = useState<string | null>(null)
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
   
   // New state for bulk sending and tracking
   const [resultsSentTracker, setResultsSentTracker] = useState<ResultsSentTracker[]>([])
@@ -98,6 +104,105 @@ export default function ResultEntry() {
     (!teacher?.teacherType && hasAssignedClasses)
   const isSubjectTeacher = teacher?.teacherType === 'Subject Teacher' || teacher?.teacherType === 'Form + Subject Teacher' ||
     (!teacher?.teacherType && hasAssignedSubjects)
+
+  const studentResultsSummary = useMemo(() => {
+    const summary: Record<string, { student: Student; count: number; lastTerm: string }> = {}
+    
+    results.forEach(r => {
+      if (!summary[r.studentId]) {
+        const student = students.find(s => s.id === r.studentId)
+        if (student) {
+          summary[r.studentId] = { student, count: 0, lastTerm: r.term }
+        }
+      }
+      if (summary[r.studentId]) {
+        summary[r.studentId].count++
+      }
+    })
+
+    return Object.values(summary).sort((a, b) => 
+      `${a.student.firstName} ${a.student.lastName}`.localeCompare(`${b.student.firstName} ${b.student.lastName}`)
+    )
+  }, [results, students])
+
+  const singleStudentResults = useMemo(() => {
+    if (!selectedStudentResults) return null
+    const student = students.find(s => s.id === selectedStudentResults)
+    if (!student) return null
+    
+    const studentResults = results.filter(r => r.studentId === selectedStudentResults)
+    const classPos = getStudentClassPosition(
+      results,
+      student.id,
+      studentResults[0]?.term || 'First',
+      studentResults[0]?.academicYear || new Date().getFullYear().toString()
+    )
+
+    return {
+      student,
+      results: studentResults,
+      classPositionText: classPos.positionText
+    }
+  }, [selectedStudentResults, students, results])
+
+  const handlePrint = () => {
+    const printContent = document.getElementById('print-area-hidden')
+    if (!printContent) return
+    
+    const windowToPrint = window.open('', '', 'width=900,height=900')
+    if (!windowToPrint) {
+      window.alert('Please allow popups to print the result.')
+      return
+    }
+    
+    windowToPrint.document.write(`
+      <html>
+        <head>
+          <title>Print Result - ${singleStudentResults?.student?.firstName} ${singleStudentResults?.student?.lastName}</title>
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+            body { font-family: 'Inter', sans-serif; padding: 20px; }
+          </style>
+        </head>
+        <body>
+          ${printContent.innerHTML}
+        </body>
+      </html>
+    `)
+    windowToPrint.document.close()
+    windowToPrint.focus()
+    windowToPrint.print()
+    windowToPrint.close()
+  }
+
+  const handleDownloadPDF = async () => {
+    const printContent = document.getElementById('print-area-hidden')
+    if (!printContent) return
+
+    try {
+      setIsGeneratingPDF(true)
+      const canvas = await html2canvas(printContent, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff'
+      })
+
+      const imgData = canvas.toDataURL('image/png')
+      const pdf = new jsPDF('p', 'mm', 'a4')
+      const imgProps = pdf.getImageProperties(imgData)
+      const pdfWidth = pdf.internal.pageSize.getWidth()
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
+      pdf.save(`${singleStudentResults?.student?.firstName}_${singleStudentResults?.student?.lastName}_Result_Card.pdf`)
+    } catch (error) {
+      console.error('Failed to generate PDF:', error)
+      window.alert('Failed to generate PDF. Please try printing instead.')
+    } finally {
+      setIsGeneratingPDF(false)
+    }
+  }
 
   async function loadData() {
     try {
@@ -1109,36 +1214,83 @@ export default function ResultEntry() {
               </div>
             )}
           </div>
+        ) : !selectedStudentResults ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {studentResultsSummary.length > 0 ? (
+              studentResultsSummary.filter(s => {
+                const matchesSearch = !filterTerm || 
+                  `${s.student.firstName} ${s.student.lastName} ${s.student.registrationNumber}`.toLowerCase().includes(filterTerm.toLowerCase())
+                const matchesClass = selectedClass === 'All' || s.student.class === selectedClass
+                return matchesSearch && matchesClass
+              }).map(summary => (
+                <div 
+                  key={summary.student.id}
+                  onClick={() => setSelectedStudentResults(summary.student.id)}
+                  className="professional-card p-6 cursor-pointer group hover:bg-brand-900/60 transition-all duration-300"
+                >
+                  <div className="flex flex-col items-center text-center">
+                    <div className="w-16 h-16 rounded-2xl bg-indigo-600/20 flex items-center justify-center text-indigo-400 font-black text-2xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                      {summary.student.firstName[0]}{summary.student.lastName[0]}
+                    </div>
+                    <h3 className="text-white font-black uppercase tracking-tight text-lg mb-1">{summary.student.firstName} {summary.student.lastName}</h3>
+                    <p className="text-indigo-400 text-xs font-bold uppercase tracking-widest mb-4">{summary.student.class}</p>
+                    
+                    <div className="w-full pt-4 border-t border-indigo-500/10 flex justify-between items-center">
+                      <div className="text-left">
+                        <p className="text-[10px] text-gray-500 uppercase font-black">Records</p>
+                        <p className="text-white font-black">{summary.count}</p>
+                      </div>
+                      <div className="px-3 py-1 bg-amber-500/10 text-amber-500 rounded-full text-[10px] font-black uppercase tracking-widest border border-amber-500/20">
+                        View Results
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="col-span-full py-20 text-center card-lg border-brand-800/40">
+                <User size={48} className="mx-auto text-brand-700/50 mb-4" />
+                <p className="text-brand-400 font-bold uppercase tracking-widest">No results found matching your filters.</p>
+              </div>
+            )}
+          </div>
         ) : (
           <>
-            {/* Student Selection Controls */}
-            <div className="flex items-center justify-between mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-              <div className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  checked={selectAllMode === 'all'}
-                  onChange={handleSelectAll}
-                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                />
-                <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
-                  {selectAllMode === 'all' ? 'All Selected' : selectAllMode === 'none' ? 'None Selected' : `${selectedStudents.size} Selected`}
-                </span>
-                {selectedStudents.size > 0 && (
-                  <button
-                    onClick={() => {
-                      setSelectedStudents(new Set())
-                      setSelectAllMode('none')
-                    }}
-                    className="text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-                  >
-                    Clear Selection
+            <div className="flex items-center justify-between mb-4">
+              <button
+                onClick={() => setSelectedStudentResults(null)}
+                className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-black hover:underline transition-all hover:-translate-x-1"
+              >
+                <ChevronLeft size={20} />
+                BACK TO STUDENTS
+              </button>
+              
+              {singleStudentResults && (
+                <div className="flex gap-3">
+                  <button onClick={handlePrint} className="btn-purple flex items-center gap-2 py-2 text-xs">
+                    <Printer size={16} /> PRINT REPORT
                   </button>
-                )}
-              </div>
-              <div className="text-xs text-blue-600 dark:text-blue-400">
-                {selectedStudents.size > 0 ? `Ready to send to ${selectedStudents.size} student${selectedStudents.size > 1 ? 's' : ''}` : 'Select students to send results'}
-              </div>
+                  <button onClick={handleDownloadPDF} disabled={isGeneratingPDF} className="btn-gold flex items-center gap-2 py-2 text-xs">
+                    {isGeneratingPDF ? <Loader2 className="animate-spin" size={16} /> : <Download size={16} />}
+                    {isGeneratingPDF ? 'GENERATING...' : 'DOWNLOAD PDF'}
+                  </button>
+                </div>
+              )}
             </div>
+
+            {/* Hidden Print Content */}
+            {singleStudentResults && (
+              <div className="hidden">
+                <div id="print-area-hidden">
+                  <PrintResult 
+                    child={singleStudentResults.student!} 
+                    results={singleStudentResults.results} 
+                    subjects={subjects}
+                    classPositionText={singleStudentResults.classPositionText}
+                  />
+                </div>
+              </div>
+            )}
 
             <div className="card-lg">
               <div className="mb-4">
@@ -1147,8 +1299,15 @@ export default function ResultEntry() {
               </div>
               <Table
                 columns={columns}
-                data={filteredResults.map((result) => ({
+                data={filteredResults.filter(r => !selectedStudentResults || r.studentId === selectedStudentResults).map((result) => ({
                   ...result,
+                  studentName: students.find((s) => s.id === result.studentId)
+                    ? `${students.find((s) => s.id === result.studentId)?.firstName} ${
+                        students.find((s) => s.id === result.studentId)?.lastName
+                      }`
+                    : 'Unknown Student',
+                  subjectName: subjects.find((s) => s.id === result.subjectId)?.name || 'Unknown Subject',
+                  positionText: result.position ? getPositionSuffix(result.position) : 'N/A',
                   actions: (
                     <div className="flex gap-1 items-center">
                       <button
@@ -1184,7 +1343,7 @@ export default function ResultEntry() {
                   ),
                 }))}
               />
-              {filteredResults.length === 0 && (
+              {filteredResults.filter(r => !selectedStudentResults || r.studentId === selectedStudentResults).length === 0 && (
                 <div className="text-center py-8">
                   <p className="text-gray-500">No results found</p>
                 </div>
