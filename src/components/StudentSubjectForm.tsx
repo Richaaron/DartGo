@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { X, Plus, Trash2, Search } from 'lucide-react'
+import { X, Plus, Search } from 'lucide-react'
 import { StudentSubject, Subject, Student } from '../types'
 
 interface StudentSubjectFormProps {
@@ -24,34 +24,39 @@ export default function StudentSubjectForm({
   const [notes, setNotes] = useState<string>('')
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  // Filter subjects by student level
-  const isSSSStudent = 
-    student.level === 'Secondary' && 
+  const isSecondary = student.level === 'Secondary'
+  const isSSSStudent =
+    isSecondary &&
     (student.class.toUpperCase().startsWith('SSS') || student.class.toUpperCase().startsWith('SS'))
-  
-  const availableSubjects = subjects.filter(s => s.level === student.level)
 
-  // Initialize selected subjects from current assignments
+  const availableSubjects = subjects.filter(s => s.level === student.level)
+  const MIN_SUBJECTS = isSecondary ? 9 : 0
+  const MAX_SUBJECTS = isSecondary ? 11 : Infinity
+
   useEffect(() => {
     const currentSubjectIds = currentSubjects.map(cs => cs.subjectId)
     setSelectedSubjects(currentSubjectIds)
   }, [currentSubjects])
 
   const toggleSubject = (subjectId: string) => {
-    setSelectedSubjects(prev =>
-      prev.includes(subjectId)
-        ? prev.filter(id => id !== subjectId)
-        : [...prev, subjectId]
-    )
+    setSelectedSubjects(prev => {
+      if (prev.includes(subjectId)) return prev.filter(id => id !== subjectId)
+      if (isSecondary && prev.length >= MAX_SUBJECTS) return prev
+      return [...prev, subjectId]
+    })
   }
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
-
     if (selectedSubjects.length === 0) {
       newErrors.subjects = 'At least one subject must be selected'
     }
-
+    if (isSecondary && selectedSubjects.length < MIN_SUBJECTS) {
+      newErrors.subjects = `Secondary students must select at least ${MIN_SUBJECTS} subjects (currently ${selectedSubjects.length})`
+    }
+    if (isSecondary && selectedSubjects.length > MAX_SUBJECTS) {
+      newErrors.subjects = `Secondary students can select at most ${MAX_SUBJECTS} subjects`
+    }
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -77,63 +82,51 @@ export default function StudentSubjectForm({
     }
   }
 
-  // Sort categories
   const categoryOrder = ['Science', 'Art', 'Commercial', 'General']
-  const subjectsByCategory = availableSubjects.reduce((acc, subject) => {
-    const category = isSSSStudent ? (subject.subjectCategory || 'General') : 'General'
-    if (!acc[category]) {
-      acc[category] = []
-    }
-    acc[category].push(subject)
-    return acc
-  }, {} as Record<string, Subject[]>)
-
-  // Sort by category order
-  const sortedCategories = Object.keys(subjectsByCategory).sort(
-    (a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b)
-  )
 
   return (
-    <div className="p-6 bg-white">
-      <div className="flex justify-between items-center mb-6 pb-4 border-b">
+    <div className="p-6 bg-slate-800 text-white">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6 pb-4 border-b border-slate-600">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Assign Subjects</h2>
-          <p className="text-sm text-gray-600 mt-1">
+          <h2 className="text-2xl font-bold text-white">Manage Subjects</h2>
+          <p className="text-sm text-slate-300 mt-1">
             {student.firstName} {student.lastName} ({student.registrationNumber})
           </p>
-          <p className="text-xs text-gray-500">{student.level} - {student.class}</p>
+          <p className="text-xs text-slate-400">{student.level} · {student.class}</p>
+          {isSecondary && (
+            <p className="text-xs text-royal-gold-400 mt-1 font-semibold">
+              Min {MIN_SUBJECTS} – Max {MAX_SUBJECTS} subjects required
+            </p>
+          )}
         </div>
         <button
           onClick={onCancel}
-          className="p-1 hover:bg-gray-100 rounded transition-colors"
+          className="p-1.5 hover:bg-slate-700 rounded-lg transition-colors text-slate-400 hover:text-white"
         >
-          <X size={24} />
+          <X size={22} />
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-5">
         {/* Academic Period */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Academic Year *
-            </label>
+            <label className="block text-sm font-semibold text-slate-300 mb-1.5">Academic Year *</label>
             <input
               type="text"
               value={academicYear}
               onChange={(e) => setAcademicYear(e.target.value)}
-              placeholder="e.g., 2024"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="e.g., 2026"
+              className="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white placeholder-slate-400 rounded-lg focus:ring-2 focus:ring-royal-gold-400 focus:border-transparent outline-none"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Term *
-            </label>
+            <label className="block text-sm font-semibold text-slate-300 mb-1.5">Term *</label>
             <select
               value={term}
               onChange={(e) => setTerm(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:ring-2 focus:ring-royal-gold-400 focus:border-transparent outline-none"
             >
               <option value="First">First Term</option>
               <option value="Second">Second Term</option>
@@ -144,110 +137,128 @@ export default function StudentSubjectForm({
 
         {/* Notes */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Notes (Optional)
-          </label>
+          <label className="block text-sm font-semibold text-slate-300 mb-1.5">Notes (Optional)</label>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder="Add any additional notes..."
-            rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+            placeholder="Add any notes about subject assignment..."
+            rows={2}
+            className="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white placeholder-slate-400 rounded-lg focus:ring-2 focus:ring-royal-gold-400 focus:border-transparent outline-none resize-none"
           />
         </div>
 
-        {/* Subjects by Category */}
-        <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        {/* Subject Selection */}
+        <div>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-3">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                {isSSSStudent ? 'Choose Stream' : 'Select Subjects'} - {selectedSubjects.length} subject{selectedSubjects.length !== 1 ? 's' : ''} selected
+              <h3 className="text-base font-bold text-white">
+                Select Subjects
+                <span className={`ml-2 text-sm font-semibold ${
+                  selectedSubjects.length > MAX_SUBJECTS ? 'text-red-400' :
+                  isSecondary && selectedSubjects.length < MIN_SUBJECTS ? 'text-orange-400' :
+                  'text-emerald-400'
+                }`}>
+                  ({selectedSubjects.length} selected)
+                </span>
               </h3>
-              <p className="text-xs text-gray-600 mb-2">
-                {isSSSStudent ? 'SSS students must select subjects from one of the three streams' : 'Assign relevant subjects to the student for result tracking'}
-              </p>
+              {isSecondary && (
+                <div className="w-48 bg-slate-700 rounded-full h-1.5 mt-1.5">
+                  <div
+                    className={`h-1.5 rounded-full transition-all ${
+                      selectedSubjects.length > MAX_SUBJECTS ? 'bg-red-500' :
+                      selectedSubjects.length >= MIN_SUBJECTS ? 'bg-emerald-500' : 'bg-orange-500'
+                    }`}
+                    style={{ width: `${Math.min((selectedSubjects.length / MAX_SUBJECTS) * 100, 100)}%` }}
+                  />
+                </div>
+              )}
             </div>
-            <div className="relative w-full sm:w-64">
+            <div className="relative w-full sm:w-56">
+              <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
               <input
                 type="text"
                 placeholder="Search subjects..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-9 pr-4 py-2 text-sm bg-slate-700 border border-slate-600 text-white placeholder-slate-400 rounded-lg focus:ring-2 focus:ring-royal-gold-400 outline-none"
               />
-              <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
             </div>
           </div>
+
           {errors.subjects && (
-            <p className="text-red-500 text-sm mt-1">{errors.subjects}</p>
+            <p className="text-red-400 text-sm mb-3 font-medium">{errors.subjects}</p>
           )}
 
           {(() => {
-            const searchedSubjects = availableSubjects.filter(s => 
+            const searched = availableSubjects.filter(s =>
               s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
               s.code.toLowerCase().includes(searchTerm.toLowerCase())
             )
-
-            const subjectsByCategory = searchedSubjects.reduce((acc, subject) => {
-              const category = isSSSStudent ? (subject.subjectCategory || 'General') : 'General'
-              if (!acc[category]) {
-                acc[category] = []
-              }
-              acc[category].push(subject)
+            const byCategory = searched.reduce((acc, subject) => {
+              const cat = isSSSStudent ? (subject.subjectCategory || 'General') : 'General'
+              if (!acc[cat]) acc[cat] = []
+              acc[cat].push(subject)
               return acc
             }, {} as Record<string, Subject[]>)
 
-            const sortedCategories = Object.keys(subjectsByCategory).sort(
+            const sortedCats = Object.keys(byCategory).sort(
               (a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b)
             )
 
-            return sortedCategories.map((category) => {
-              const categorySubjects = subjectsByCategory[category]
-              return (
-                <div key={category} className="border-2 border-blue-300 rounded-lg p-4 bg-gradient-to-br from-blue-50 to-white">
-                  <h4 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
-                    <span className="px-3 py-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full text-xs font-semibold">
-                      {category} {isSSSStudent ? 'Stream' : 'Subjects'}
-                    </span>
-                    <span className="text-gray-600 font-medium">({categorySubjects.length} subjects)</span>
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                    {categorySubjects.map(subject => (
+            return sortedCats.map(category => (
+              <div key={category} className="mb-4 border border-slate-600 rounded-xl p-4 bg-slate-700/50">
+                <h4 className="text-xs font-black text-royal-gold-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                  <span className="px-2 py-0.5 bg-royal-gold-500/20 border border-royal-gold-400/30 rounded-full">
+                    {category} {isSSSStudent ? 'Stream' : 'Subjects'}
+                  </span>
+                  <span className="text-slate-500 font-medium normal-case">({byCategory[category].length})</span>
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                  {byCategory[category].map(subject => {
+                    const isSelected = selectedSubjects.includes(subject.id)
+                    const isDisabled = !isSelected && isSecondary && selectedSubjects.length >= MAX_SUBJECTS
+                    return (
                       <label
                         key={subject.id}
-                        className="flex items-start gap-3 p-3 bg-white hover:bg-blue-50 rounded-lg cursor-pointer transition-colors border border-gray-200 hover:border-blue-300 shadow-sm"
+                        className={`flex items-start gap-3 p-3 rounded-lg transition-all border ${
+                          isSelected
+                            ? 'bg-royal-purple-600/30 border-royal-purple-400/60 cursor-pointer'
+                            : isDisabled
+                            ? 'bg-slate-800/50 border-slate-700 opacity-50 cursor-not-allowed'
+                            : 'bg-slate-800/50 border-slate-600 hover:border-royal-gold-400/50 hover:bg-slate-700 cursor-pointer'
+                        }`}
                       >
                         <input
                           type="checkbox"
-                          checked={selectedSubjects.includes(subject.id)}
+                          checked={isSelected}
+                          disabled={isDisabled}
                           onChange={() => toggleSubject(subject.id)}
-                          className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                          className="mt-0.5 w-4 h-4 accent-purple-500 border-slate-500 rounded"
                         />
                         <div className="flex-1 min-w-0">
-                          <p className="font-medium text-gray-900 text-sm">{subject.name}</p>
-                          <p className="text-xs text-gray-500">{subject.code}</p>
-                          {subject.description && (
-                            <p className="text-xs text-gray-600 mt-1 line-clamp-2">{subject.description}</p>
-                          )}
+                          <p className="font-semibold text-white text-sm">{subject.name}</p>
+                          <p className="text-xs text-slate-400">{subject.code}</p>
                         </div>
                       </label>
-                    ))}
-                  </div>
+                    )
+                  })}
                 </div>
-              )
-            })
+              </div>
+            ))
           })()}
         </div>
 
-        {/* Selected Summary */}
+        {/* Selected summary */}
         {selectedSubjects.length > 0 && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <p className="text-sm font-semibold text-blue-900 mb-2">Selected Subjects ({selectedSubjects.length}):</p>
+          <div className="bg-royal-purple-900/30 border border-royal-purple-600/40 rounded-lg p-4">
+            <p className="text-sm font-bold text-royal-gold-300 mb-2">
+              Selected ({selectedSubjects.length}):
+            </p>
             <div className="flex flex-wrap gap-2">
               {selectedSubjects.map(subjectId => {
                 const subject = availableSubjects.find(s => s.id === subjectId)
                 return subject ? (
-                  <span key={subjectId} className="px-3 py-1 bg-blue-200 text-blue-800 rounded-full text-sm font-medium">
+                  <span key={subjectId} className="px-3 py-1 bg-royal-purple-600/40 text-royal-purple-200 border border-royal-purple-500/30 rounded-full text-xs font-semibold">
                     {subject.name}
                   </span>
                 ) : null
@@ -257,20 +268,18 @@ export default function StudentSubjectForm({
         )}
 
         {/* Actions */}
-        <div className="flex gap-3 pt-4 border-t">
+        <div className="flex gap-3 pt-4 border-t border-slate-600">
           <button
             type="submit"
-            className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-royal-purple-500 to-royal-purple-600 hover:from-royal-purple-600 hover:to-royal-purple-700 text-white rounded-lg font-bold transition-all shadow-lg"
           >
-            <span className="flex items-center justify-center gap-2">
-              <Plus size={18} />
-              Assign Subjects
-            </span>
+            <Plus size={18} />
+            Assign Subjects
           </button>
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-medium transition-colors"
+            className="px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white border border-slate-600 rounded-lg font-semibold transition-colors"
           >
             Cancel
           </button>
