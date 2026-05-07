@@ -147,45 +147,69 @@ export default function ResultEntry() {
 
   const handlePrint = () => {
     const printContent = document.getElementById('print-area-hidden')
-    if (!printContent) return
+    if (!printContent) {
+      window.alert('Print content not ready. Please try again.')
+      return
+    }
     
-    const windowToPrint = window.open('', '', 'width=900,height=900')
+    const windowToPrint = window.open('', '_blank', 'width=900,height=900')
     if (!windowToPrint) {
       window.alert('Please allow popups to print the result.')
       return
     }
     
+    // Copy computed styles or use a reliable stylesheet
     windowToPrint.document.write(`
       <html>
         <head>
-          <title>Print Result - ${singleStudentResults?.student?.firstName} ${singleStudentResults?.student?.lastName}</title>
+          <title>Print Result</title>
           <style>
             @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-            body { font-family: 'Inter', sans-serif; padding: 20px; }
+            body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+            @media print {
+              body { margin: 0; }
+              .print-container { width: 100%; }
+            }
           </style>
         </head>
         <body>
-          ${printContent.innerHTML}
+          <div class="print-container">
+            ${printContent.innerHTML}
+          </div>
+          <script>
+            window.onload = function() {
+              setTimeout(() => {
+                window.print();
+                window.close();
+              }, 500);
+            };
+          </script>
         </body>
       </html>
     `)
     windowToPrint.document.close()
-    windowToPrint.focus()
-    windowToPrint.print()
-    windowToPrint.close()
   }
 
   const handleDownloadPDF = async () => {
     const printContent = document.getElementById('print-area-hidden')
-    if (!printContent) return
+    if (!printContent) {
+      window.alert('Content not found. Please try again.')
+      return
+    }
 
     try {
       setIsGeneratingPDF(true)
+      
+      // Wait a bit for the DOM to be fully ready/rendered
+      await new Promise(resolve => setTimeout(resolve, 500))
+
       const canvas = await html2canvas(printContent, {
         scale: 2,
         useCORS: true,
-        logging: false,
-        backgroundColor: '#ffffff'
+        allowTaint: true,
+        logging: true,
+        backgroundColor: '#ffffff',
+        windowWidth: 800 // Consistent width for rendering
       })
 
       const imgData = canvas.toDataURL('image/jpeg', 1.0)
@@ -198,7 +222,7 @@ export default function ResultEntry() {
       pdf.save(`${singleStudentResults?.student?.firstName}_${singleStudentResults?.student?.lastName}_Result_Card.pdf`)
     } catch (error) {
       console.error('Failed to generate PDF:', error)
-      window.alert('Failed to generate PDF. Please try printing instead.')
+      window.alert('Failed to generate PDF. This can happen if the content is too large or images fail to load. Please try printing instead.')
     } finally {
       setIsGeneratingPDF(false)
     }
@@ -1278,9 +1302,18 @@ export default function ResultEntry() {
               )}
             </div>
 
-            {/* Hidden Print Content */}
+            {/* Hidden Print Content Area (Off-screen but in DOM for html2canvas) */}
             {singleStudentResults && (
-              <div className="hidden">
+              <div 
+                style={{ 
+                  position: 'absolute', 
+                  left: '-9999px', 
+                  top: '0',
+                  visibility: 'hidden',
+                  height: '0',
+                  overflow: 'hidden'
+                }}
+              >
                 <div id="print-area-hidden">
                   <PrintResult 
                     child={singleStudentResults.student!} 
