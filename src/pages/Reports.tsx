@@ -45,7 +45,8 @@ const itemVariants = {
 export default function Reports() {
   const { user } = useAuthContext();
   const userRole = user?.role || "Student";
-  const assignedClasses = (user as any)?.assignedClasses || [];
+  const userAssignedClasses = (user as any)?.assignedClasses;
+  const assignedClasses = Array.isArray(userAssignedClasses) ? userAssignedClasses : [];
 
   const [students, setStudents] = useState<Student[]>([]);
   const [teachers, setTeachers] = useState<any[]>([]);
@@ -95,11 +96,11 @@ export default function Reports() {
           fetchConfig(),
           fetchTeachers(),
         ]);
-        setStudents(studentsData);
-        setTeachers(teachersData);
-        setResults(resultsData);
-        setSubjects(subjectsData);
-        setObservations(observationsData);
+        setStudents(studentsData || []);
+        setTeachers(teachersData || []);
+        setResults(resultsData || []);
+        setSubjects(subjectsData || []);
+        setObservations(observationsData || []);
         setConfig(configData);
       } catch (error: any) {
         console.error("Failed to load report data", error);
@@ -200,11 +201,11 @@ export default function Reports() {
       })
       .filter(
         (s) =>
-          s.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          s.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          s.registrationNumber.toLowerCase().includes(searchTerm.toLowerCase()),
+          (s.firstName || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (s.lastName || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (s.registrationNumber || "").toLowerCase().includes(searchTerm.toLowerCase()),
       );
-  }, [students, results, searchTerm]);
+  }, [students, results, searchTerm, userRole, assignedClasses]);
 
   const handlePrint = () => {
     window.print();
@@ -1089,7 +1090,7 @@ export default function Reports() {
                         return { id: student.id, total, avg };
                       }).sort((a, b) => b.avg - a.avg);
 
-                      return classStudents.sort((a, b) => a.lastName.localeCompare(b.lastName)).map(student => {
+                      return [...classStudents].sort((a, b) => (a.lastName || "").localeCompare(b.lastName || "")).map(student => {
                         const studentPerformance = performance.find(p => p.id === student.id);
                         const position = performance.findIndex(p => p.id === student.id) + 1;
                         const suffix = (pos: number) => {
