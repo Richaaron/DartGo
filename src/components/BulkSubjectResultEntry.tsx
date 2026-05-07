@@ -77,6 +77,32 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
     return Array.from(classSet).sort()
   }, [students])
 
+  // Determine which classes to show in the Class dropdown:
+  // - Pure Form Teachers: only their assignedClasses (they manage specific classes)
+  // - Subject Teachers / Form+Subject Teachers: all classes at their level
+  //   (they teach their subject across every class, not just one)
+  // - Admins: all classes
+  const classesForDropdown = useMemo(() => {
+    if (!isTeacher || !teacher) return availableClasses
+
+    const isPureFormTeacher = teacher.teacherType === 'Form Teacher'
+
+    if (isPureFormTeacher && teacher.assignedClasses && teacher.assignedClasses.length > 0) {
+      return teacher.assignedClasses
+    }
+
+    // Subject teachers (or Form+Subject): filter availableClasses to teacher's school level
+    if (teacher.level === 'Secondary') {
+      return availableClasses.filter(cls => cls.startsWith('JSS') || cls.startsWith('SSS'))
+    } else if (teacher.level === 'Primary') {
+      return availableClasses.filter(cls => cls.startsWith('Primary'))
+    } else if (teacher.level === 'Nursery' || teacher.level === 'Pre-Nursery') {
+      return availableClasses.filter(cls => cls.startsWith('Nursery') || cls.startsWith('Pre-Nursery'))
+    }
+
+    return availableClasses
+  }, [isTeacher, teacher, availableClasses])
+
   // Build bulk entry data when subject and class are selected.
   // Strategy:
   //   1. First try to use the student_subjects join table (explicit enrollments).
@@ -198,9 +224,15 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
     loadBulkData()
   }, [loadBulkData])
 
-  // Auto-select class if the teacher only has one assigned class
+  // Auto-select class only for pure Form Teachers who have exactly one assigned class
   useEffect(() => {
-    if (isTeacher && teacher?.assignedClasses && teacher.assignedClasses.length === 1 && !selectedClass) {
+    if (
+      isTeacher &&
+      teacher?.teacherType === 'Form Teacher' &&
+      teacher?.assignedClasses &&
+      teacher.assignedClasses.length === 1 &&
+      !selectedClass
+    ) {
       setSelectedClass(teacher.assignedClasses[0])
     }
   }, [isTeacher, teacher, selectedClass])
@@ -392,11 +424,7 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
               aria-label="Select a class"
             >
               <option value="">Select a class...</option>
-              {/* For teachers, show only their assigned classes; for admins show all */}
-              {(isTeacher && teacher?.assignedClasses && teacher.assignedClasses.length > 0
-                ? teacher.assignedClasses
-                : availableClasses
-              ).map((cls) => (
+              {classesForDropdown.map((cls) => (
                 <option key={cls} value={cls}>{cls}</option>
               ))}
             </select>

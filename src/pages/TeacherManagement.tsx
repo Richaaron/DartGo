@@ -145,7 +145,7 @@ export default function TeacherManagement() {
       Email: teacher.email,
       Subjects: getTeacherSubjects(teacher).join(", "),
       Level: teacher.level,
-      Classes: teacher.assignedClasses.join(", "),
+      Classes: (teacher.assignedClasses || []).join(", "),
     }));
     exportToCSV(dataToExport, "teachers_report");
   };

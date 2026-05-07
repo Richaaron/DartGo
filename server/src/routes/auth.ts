@@ -212,7 +212,7 @@ router.post('/login', authLimiter, async (req, res) => {
           subject: foundUser.subject,
           assignedSubjects: parseAssignedSubjects(foundUser.subject),
           level: foundUser.level,
-          assignedClasses: foundUser.assigned_classes,
+          assignedClasses: Array.isArray(foundUser.assigned_classes) ? foundUser.assigned_classes : [],
         },
       })
     }
@@ -266,7 +266,7 @@ router.post('/refresh', authenticate, async (req: AuthRequest, res) => {
         subject: (user as any).subject,
         assignedSubjects: parseAssignedSubjects((user as any).subject),
         level: (user as any).level,
-        assignedClasses: (user as any).assignedClasses,
+        assignedClasses: Array.isArray((user as any).assignedClasses) ? (user as any).assignedClasses : [],
       },
     })
   } catch (error) {

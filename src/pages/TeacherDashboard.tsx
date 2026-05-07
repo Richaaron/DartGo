@@ -211,7 +211,7 @@ export default function TeacherDashboard() {
           | Level: {teacher.level}
         </p>
         <div className="mt-3 text-sm text-gray-600 dark:text-gray-400">
-          <p>Assigned Classes: {teacher.assignedClasses.join(", ")}</p>
+          <p>Assigned Classes: {(teacher.assignedClasses || []).join(", ")}</p>
         </div>
       </div>
 

@@ -90,8 +90,14 @@ export default function ResultEntry() {
   }
 
   // Determine if current user is form teacher or subject teacher
-  const isFormTeacher = teacher?.teacherType === 'Form Teacher' || teacher?.teacherType === 'Form + Subject Teacher'
-  const isSubjectTeacher = teacher?.teacherType === 'Subject Teacher' || teacher?.teacherType === 'Form + Subject Teacher'
+  // Match App.tsx logic: fallback to checking assignedClasses/assignedSubjects when teacherType is null
+  const hasAssignedClasses = Array.isArray(teacher?.assignedClasses) && teacher.assignedClasses.length > 0
+  const hasAssignedSubjects = (Array.isArray(teacher?.assignedSubjects) && teacher.assignedSubjects.length > 0) ||
+    (typeof teacher?.subject === 'string' && teacher.subject.trim().length > 0)
+  const isFormTeacher = teacher?.teacherType === 'Form Teacher' || teacher?.teacherType === 'Form + Subject Teacher' ||
+    (!teacher?.teacherType && hasAssignedClasses)
+  const isSubjectTeacher = teacher?.teacherType === 'Subject Teacher' || teacher?.teacherType === 'Form + Subject Teacher' ||
+    (!teacher?.teacherType && hasAssignedSubjects)
 
   async function loadData() {
     try {
