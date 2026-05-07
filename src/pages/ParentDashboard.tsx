@@ -85,10 +85,11 @@ export default function ParentDashboard() {
         <head>
           <title>Print Result - ${child?.firstName} ${child?.lastName}</title>
           <style>
-            body { font-family: Arial, sans-serif; padding: 20px; }
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+            body { font-family: 'Inter', sans-serif; padding: 20px; }
             table { width: 100%; border-collapse: collapse; }
-            th, td { border: 1px solid #000; padding: 8px; text-align: center; }
-            th { background-color: #f0f0f0; }
+            th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: center; }
+            th { background-color: #0f172a; color: #ffffff; text-transform: uppercase; font-size: 10px; letter-spacing: 0.1em; }
           </style>
         </head>
         <body>

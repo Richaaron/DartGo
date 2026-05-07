@@ -23,71 +23,103 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({ child, resul
   }
 
   const getRemark = (percentage: number): string => {
-    if (percentage >= 70) return 'Excellent'
-    if (percentage >= 65) return 'Very Good'
-    if (percentage >= 55) return 'Credit'
-    if (percentage >= 50) return 'Fair'
-    if (percentage >= 45) return 'Weak Pass'
-    return 'Fail'
+    if (percentage >= 70) return 'EXCELLENT'
+    if (percentage >= 65) return 'VERY GOOD'
+    if (percentage >= 55) return 'CREDIT'
+    if (percentage >= 50) return 'FAIR'
+    if (percentage >= 45) return 'WEAK PASS'
+    return 'FAIL'
   }
 
   return (
-    <div ref={ref} className="bg-white p-6" style={{ fontFamily: 'Arial, sans-serif', color: '#000' }}>
-      {/* School Header */}
-      <div className="text-center mb-6 border-b-2 border-black pb-4">
-        <h1 className="text-2xl font-bold uppercase tracking-wider">Folusho Victory Schools</h1>
-        <p className="text-sm mt-1">Academic Report Card</p>
+    <div ref={ref} className="bg-white p-10 max-w-[800px] mx-auto shadow-2xl border-t-[12px] border-slate-900 relative overflow-hidden" style={{ fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif", color: '#1e293b' }}>
+      {/* Background Watermark */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none select-none rotate-[-30deg]">
+        <h1 className="text-[120px] font-black uppercase text-slate-900 whitespace-nowrap">AUTHENTIC</h1>
       </div>
 
-      {/* Student Info */}
-      <div className="mb-6">
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div>
-            <p><span className="font-semibold">Name:</span> {child.firstName} {child.lastName}</p>
-            <p><span className="font-semibold">Reg. No:</span> {child.registrationNumber}</p>
-            <p><span className="font-semibold">Class:</span> {child.class}</p>
+      {/* School Header */}
+      <div className="flex justify-between items-start mb-10 pb-6 border-b-2 border-slate-100">
+        <div className="flex items-center gap-5">
+          <div className="w-24 h-24 bg-slate-900 rounded-2xl flex items-center justify-center text-amber-500 shadow-xl border-2 border-amber-500/20">
+            <svg viewBox="0 0 24 24" className="w-16 h-16 fill-current" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L1 7l11 5 11-5-11-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+            </svg>
           </div>
           <div>
-            <p><span className="font-semibold">Term:</span> {results[0]?.term || '1st Term'}</p>
-            <p><span className="font-semibold">Academic Year:</span> {results[0]?.academicYear || '2024/2025'}</p>
-            {classPositionText && (
-              <p><span className="font-semibold">Class Position:</span> {classPositionText}</p>
-            )}
-            <p><span className="font-semibold">Average Score:</span> {overallAverage.toFixed(1)}%</p>
+            <h1 className="text-3xl font-black uppercase tracking-tight text-slate-900 leading-none">Folusho Victory Schools</h1>
+            <p className="text-amber-600 font-bold tracking-[0.2em] mt-1 text-sm uppercase italic">Excellence & Integrity</p>
+            <div className="flex gap-3 mt-3 text-[10px] text-slate-500 font-medium">
+              <span className="flex items-center gap-1"><div className="w-1 h-1 bg-amber-500 rounded-full" /> ABUJA, NIGERIA</span>
+              <span className="flex items-center gap-1"><div className="w-1 h-1 bg-amber-500 rounded-full" /> +234 800 000 0000</span>
+              <span className="flex items-center gap-1"><div className="w-1 h-1 bg-amber-500 rounded-full" /> INFO@FOLUSHO.COM</span>
+            </div>
           </div>
+        </div>
+        <div className="text-right">
+          <div className="inline-block px-4 py-2 bg-slate-900 text-amber-500 rounded-lg text-xs font-black uppercase tracking-widest shadow-lg">
+            Report Card
+          </div>
+          <p className="text-[10px] text-slate-400 mt-2 font-bold uppercase tracking-widest">Serial No: FVS-{Math.floor(100000 + Math.random() * 900000)}</p>
         </div>
       </div>
 
-      {/* Results Table */}
-      <div className="mb-6">
-        <table className="w-full border-collapse border border-black text-sm">
+      {/* Student Data Cards */}
+      <div className="grid grid-cols-3 gap-6 mb-10">
+        <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 shadow-sm">
+          <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest mb-1">Student Information</p>
+          <h2 className="text-lg font-black text-slate-900 leading-tight uppercase">{child.firstName} {child.lastName}</h2>
+          <p className="text-xs text-slate-500 font-semibold mt-1">Reg: <span className="text-slate-700">{child.registrationNumber}</span></p>
+        </div>
+        <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 shadow-sm">
+          <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest mb-1">Academic Context</p>
+          <p className="text-sm font-black text-slate-900 uppercase">{child.class}</p>
+          <p className="text-xs text-slate-500 font-semibold mt-1">Term: <span className="text-slate-700 uppercase">{results[0]?.term || '1st'} Term</span></p>
+          <p className="text-xs text-slate-500 font-semibold italic">{results[0]?.academicYear || '2024/2025'}</p>
+        </div>
+        <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-xl flex flex-col justify-center">
+          <p className="text-[9px] text-amber-500/60 font-black uppercase tracking-widest mb-1">Overall Performance</p>
+          <div className="flex items-baseline gap-2">
+            <span className="text-2xl font-black text-white leading-none">{overallAverage.toFixed(1)}%</span>
+            <span className="text-xs text-amber-500 font-black uppercase tracking-tighter">Average</span>
+          </div>
+          {classPositionText && (
+            <p className="text-[10px] text-white/70 font-bold uppercase mt-1">Rank: <span className="text-amber-400">{classPositionText}</span></p>
+          )}
+        </div>
+      </div>
+
+      {/* Main Results Table */}
+      <div className="mb-10 overflow-hidden rounded-2xl border border-slate-200 shadow-lg">
+        <table className="w-full border-collapse text-xs">
           <thead>
-            <tr className="bg-gray-200">
-              <th className="border border-black p-2 text-left">Subject</th>
-              <th className="border border-black p-2 text-center">1st CA</th>
-              <th className="border border-black p-2 text-center">2nd CA</th>
-              <th className="border border-black p-2 text-center">Exam</th>
-              <th className="border border-black p-2 text-center">Total</th>
-              <th className="border border-black p-2 text-center">%</th>
-              <th className="border border-black p-2 text-center">Grade</th>
-              <th className="border border-black p-2 text-center">Pos.</th>
-              <th className="border border-black p-2 text-center">Remark</th>
+            <tr className="bg-slate-900 text-white uppercase tracking-widest text-[10px] font-black">
+              <th className="p-4 text-left border-r border-slate-800">Subject Description</th>
+              <th className="p-4 text-center border-r border-slate-800">1st CA</th>
+              <th className="p-4 text-center border-r border-slate-800">2nd CA</th>
+              <th className="p-4 text-center border-r border-slate-800">Exam</th>
+              <th className="p-4 text-center border-r border-slate-800">Total</th>
+              <th className="p-4 text-center border-r border-slate-800">Grade</th>
+              <th className="p-4 text-center border-r border-slate-800">Rank</th>
+              <th className="p-4 text-center">Outcome</th>
             </tr>
           </thead>
-          <tbody>
-            {results.map((result) => {
+          <tbody className="font-semibold text-slate-700">
+            {results.map((result, idx) => {
               const subject = subjects.find((s) => s.id === result.subjectId)
+              const grade = getGradeFromScore(result.percentage)
+              const isFailing = grade === 'F'
+              
               return (
-                <tr key={result.id}>
-                  <td className="border border-black p-2">{subject?.name || 'N/A'}</td>
-                  <td className="border border-black p-2 text-center">{result.firstCA}</td>
-                  <td className="border border-black p-2 text-center">{result.secondCA}</td>
-                  <td className="border border-black p-2 text-center">{result.exam}</td>
-                  <td className="border border-black p-2 text-center">{result.totalScore}</td>
-                  <td className="border border-black p-2 text-center">{result.percentage.toFixed(1)}%</td>
-                  <td className="border border-black p-2 text-center">{getGradeFromScore(result.percentage)}</td>
-                  <td className="border border-black p-2 text-center font-medium whitespace-nowrap">{result.positionText || 'N/A'}</td>
-                  <td className="border border-black p-2 text-center">{getRemark(result.percentage)}</td>
+                <tr key={result.id} className={`${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'} border-b border-slate-100 transition-colors hover:bg-amber-50/30`}>
+                  <td className="p-4 text-slate-900 font-black uppercase border-r border-slate-100">{subject?.name || 'N/A'}</td>
+                  <td className="p-4 text-center border-r border-slate-100 font-bold text-slate-600">{result.firstCA}</td>
+                  <td className="p-4 text-center border-r border-slate-100 font-bold text-slate-600">{result.secondCA}</td>
+                  <td className="p-4 text-center border-r border-slate-100 font-bold text-slate-600">{result.exam}</td>
+                  <td className="p-4 text-center border-r border-slate-100 font-black text-slate-900">{result.totalScore}</td>
+                  <td className={`p-4 text-center border-r border-slate-100 font-black ${isFailing ? 'text-red-600' : 'text-slate-900'}`}>{grade}</td>
+                  <td className="p-4 text-center border-r border-slate-100 text-[9px] font-black uppercase text-amber-600 whitespace-nowrap">{result.positionText || 'N/A'}</td>
+                  <td className={`p-4 text-center text-[9px] font-black uppercase tracking-tighter ${isFailing ? 'text-red-500' : 'text-emerald-600'}`}>{getRemark(result.percentage)}</td>
                 </tr>
               )
             })}
@@ -95,26 +127,69 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({ child, resul
         </table>
       </div>
 
-      {/* Grading Scale */}
-      <div className="mb-6 text-sm">
-        <h3 className="font-semibold mb-2">Grading Scale:</h3>
-        <div className="flex flex-wrap gap-4">
-          <span>A (70-100%) Excellent</span>
-          <span>B (65-69%) Very Good</span>
-          <span>C (55-64%) Credit</span>
-          <span>D (50-54%) Fair</span>
-          <span>E (45-49%) Weak Pass</span>
-          <span>F (0-44%) Fail</span>
+      {/* Bottom Sections: Grading & Signatures */}
+      <div className="grid grid-cols-2 gap-10">
+        {/* Grading Key */}
+        <div>
+          <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 flex items-center gap-2">
+            <div className="w-4 h-[2px] bg-amber-500" /> Grading Key
+          </h3>
+          <div className="grid grid-cols-3 gap-2">
+            {[
+              { g: 'A', r: '70-100', d: 'Excellent' },
+              { g: 'B', r: '65-69', d: 'V. Good' },
+              { g: 'C', r: '55-64', d: 'Credit' },
+              { g: 'D', r: '50-54', d: 'Fair' },
+              { g: 'E', r: '45-49', d: 'Pass' },
+              { g: 'F', r: '0-44', d: 'Fail' },
+            ].map((key) => (
+              <div key={key.g} className="bg-slate-50 border border-slate-100 p-2 rounded-lg text-center">
+                <span className="block text-xs font-black text-slate-900 leading-none">{key.g}</span>
+                <span className="block text-[8px] text-slate-500 font-bold mt-1 leading-none">{key.r}%</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Authenticity Signatures */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="text-center relative">
+            <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest mb-1">Form Teacher</p>
+            <div className="h-16 flex items-center justify-center">
+              <img src="/assets/teacher_signature.png" alt="Teacher Signature" className="max-h-full max-w-full mix-blend-multiply opacity-90" />
+            </div>
+            <div className="border-t border-slate-300 w-full mt-1" />
+            <p className="text-[8px] font-black uppercase text-slate-900 mt-1">Authorized Official</p>
+          </div>
+          <div className="text-center relative">
+            <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest mb-1">Principal</p>
+            <div className="h-16 flex items-center justify-center">
+              <img src="/assets/principal_signature.png" alt="Principal Signature" className="max-h-full max-w-full mix-blend-multiply opacity-90" />
+            </div>
+            <div className="border-t border-slate-300 w-full mt-1" />
+            <p className="text-[8px] font-black uppercase text-slate-900 mt-1">Stamp & Seal</p>
+            
+            {/* Stamp Circle */}
+            <div className="absolute top-2 right-2 w-14 h-14 border-4 border-red-600/30 rounded-full flex items-center justify-center rotate-[-15deg] pointer-events-none">
+              <div className="text-[8px] font-black text-red-600/40 uppercase text-center leading-none">Folusho<br/>Approved</div>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Footer */}
-      <div className="text-center text-xs text-gray-600 border-t-2 border-black pt-4">
-        <p>Generated by Folusho Reporting System</p>
+      <div className="mt-12 text-center">
+        <p className="text-[8px] font-black uppercase tracking-[0.5em] text-slate-300">Folusho Reporting System • Secure Academic Document • 2024</p>
+        <div className="mt-2 flex justify-center gap-1">
+          {[...Array(50)].map((_, i) => (
+            <div key={i} className={`h-[2px] w-[2px] rounded-full ${i % 2 === 0 ? 'bg-amber-500' : 'bg-slate-200'}`} />
+          ))}
+        </div>
       </div>
     </div>
   )
 })
+
 
 
 PrintResult.displayName = 'PrintResult'
