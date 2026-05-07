@@ -204,6 +204,18 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
     //   load all active students in the selected class directly.
     //   This handles schools where students are NOT individually enrolled
     //   into subjects via the student_subjects table.
+    
+    // Level Validation: Prevent JSS subjects in SSS classes and vice-versa
+    const isSSSClass = selectedClass.startsWith('SSS')
+    const isJSSClass = selectedClass.startsWith('JSS')
+    const isSSSSubject = selectedSubjectId.startsWith('ss-')
+    const isJSSSubject = selectedSubjectId.startsWith('jss-')
+    
+    if ((isSSSClass && isJSSSubject) || (isJSSClass && isSSSSubject)) {
+      setBulkData([])
+      return
+    }
+
     const classStudents = students.filter(
       s => s.class === selectedClass && s.status !== 'Inactive'
     )
