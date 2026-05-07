@@ -151,16 +151,13 @@ router.get('/', authenticate, async (req, res) => {
     if (error) throw error
     
     if (data && data.length > 0) {
-      return res.json(data.map(s => ({
-        id: s.id,
-        code: s.code,
-        name: s.name,
-        level: s.level,
-        subjectCategory: s.subject_category || s.category, // Handle both naming conventions
-        description: s.description,
-        topics: s.topics || [],
-        creditUnits: s.credit_units || s.creditUnits || 2
-      })))
+      return res.json(data.map(s => {
+        const mapped = mapSubject(s);
+        return {
+          ...mapped,
+          subjectCategory: mapped.category // For frontend compatibility
+        };
+      }))
     }
     
     // Fallback if DB is empty

@@ -270,26 +270,26 @@ export const DEFAULT_SUBJECTS: Subject[] = [
   ]),
   
   // Senior Secondary (Science, Art, Commerce, General)
-  // General (Core)
-  { id: 'ss-g-1', name: 'Mathematics', code: 'MTH', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
-  { id: 'ss-g-2', name: 'English Language', code: 'ENG', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
-  { id: 'ss-g-3', name: 'Biology', code: 'BIO', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
-  { id: 'ss-g-4', name: 'Geography', code: 'GEO', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
-  { id: 'ss-g-5', name: 'Agricultural Science', code: 'AGS', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
-  { id: 'ss-g-6', name: 'Civic Education', code: 'CVE', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
-  { id: 'ss-g-7', name: 'Marketing', code: 'MKT', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
-  { id: 'ss-g-8', name: 'ICT', code: 'ICT', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
-  { id: 'ss-g-9', name: 'Economics', code: 'ECO', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
+  // General
+  { id: 'ss-g-1', name: 'Mathematics', code: 'SSS-MTH', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
+  { id: 'ss-g-2', name: 'English Language', code: 'SSS-ENG', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
+  { id: 'ss-g-3', name: 'Biology', code: 'SSS-BIO', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
+  { id: 'ss-g-4', name: 'Geography', code: 'SSS-GEO', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
+  { id: 'ss-g-5', name: 'Agricultural Science', code: 'SSS-AGS', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
+  { id: 'ss-g-6', name: 'Civic Education', code: 'SSS-CVE', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
+  { id: 'ss-g-7', name: 'Marketing', code: 'SSS-MKT', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
+  { id: 'ss-g-8', name: 'ICT', code: 'SSS-ICT', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
+  { id: 'ss-g-9', name: 'Economics', code: 'SSS-ECO', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
   
   // Science
-  { id: 'ss-sci-1', name: 'Chemistry', code: 'CHM', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
-  { id: 'ss-sci-2', name: 'Physics', code: 'PHY', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
+  { id: 'ss-sci-1', name: 'Chemistry', code: 'SSS-CHM', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
+  { id: 'ss-sci-2', name: 'Physics', code: 'SSS-PHY', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
   
   // Art
-  { id: 'ss-art-1', name: 'Government', code: 'GOV', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
-  { id: 'ss-art-2', name: 'Literature In English', code: 'LIT', level: 'Secondary', creditUnits: 3, subjectCategory: 'Art' },
+  { id: 'ss-art-1', name: 'Government', code: 'SSS-GOV', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
+  { id: 'ss-art-2', name: 'Literature In English', code: 'SSS-LIT', level: 'Secondary', creditUnits: 3, subjectCategory: 'Art' },
   
   // Commerce
-  { id: 'ss-com-1', name: 'Accounting', code: 'ACC', level: 'Secondary', creditUnits: 3, subjectCategory: 'Commercial' },
-  { id: 'ss-com-2', name: 'Commerce', code: 'COM', level: 'Secondary', creditUnits: 2, subjectCategory: 'Commercial' },
+  { id: 'ss-com-1', name: 'Accounting', code: 'SSS-ACC', level: 'Secondary', creditUnits: 3, subjectCategory: 'Commercial' },
+  { id: 'ss-com-2', name: 'Commerce', code: 'SSS-COM', level: 'Secondary', creditUnits: 2, subjectCategory: 'Commercial' },
 ]

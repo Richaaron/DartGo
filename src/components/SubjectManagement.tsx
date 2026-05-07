@@ -231,8 +231,8 @@ export default function SubjectManagement({
                 {sortedCategories.map((category) => (
                   <div key={category}>
                     {isSSSStudent && (
-                      <h4 className="text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">
-                        {category}
+                      <h4 className="text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider border-l-4 border-purple-500 pl-2 py-1 bg-purple-50 rounded-r">
+                        {category === 'General' ? 'General Subjects' : `${category} Stream`}
                       </h4>
                     )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
