@@ -60,7 +60,20 @@ export default function StudentForm({
   }, [defaultClass, isEditing])
 
   // Filter subjects based on student level
-  const filteredSubjects = (Array.isArray(availableSubjects) ? availableSubjects : []).filter(s => s && s.level === formData.level)
+  const filteredSubjects = (Array.isArray(availableSubjects) ? availableSubjects : []).filter(s => {
+    if (!s || s.level !== formData.level) return false
+    
+    // For Secondary level, further distinguish between JSS and SSS
+    if (formData.level === 'Secondary') {
+      const isSSS = formData.class.toUpperCase().startsWith('SSS') || formData.class.toUpperCase().startsWith('SS')
+      const isJSS = formData.class.toUpperCase().startsWith('JSS')
+      
+      if (isSSS) return s.id.startsWith('ss-')
+      if (isJSS) return s.id.startsWith('jss-')
+    }
+    
+    return true
+  })
 
   const toggleSubject = (subjectId: string) => {
     setSelectedSubjects(prev =>

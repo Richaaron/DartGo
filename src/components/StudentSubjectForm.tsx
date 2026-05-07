@@ -24,12 +24,21 @@ export default function StudentSubjectForm({
   const [notes, setNotes] = useState<string>('')
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  const isSecondary = student.level === 'Secondary'
-  const isSSSStudent =
+  const isJSSStudent =
     isSecondary &&
-    (student.class.toUpperCase().startsWith('SSS') || student.class.toUpperCase().startsWith('SS'))
+    student.class.toUpperCase().startsWith('JSS')
 
-  const availableSubjects = subjects.filter(s => s.level === student.level)
+  const availableSubjects = subjects.filter(s => {
+    if (s.level !== student.level) return false
+    
+    // For Secondary level, further distinguish between JSS and SSS
+    if (isSecondary) {
+      if (isSSSStudent) return s.id.startsWith('ss-')
+      if (isJSSStudent) return s.id.startsWith('jss-')
+    }
+    
+    return true
+  })
   const MIN_SUBJECTS = isSecondary ? 9 : 0
   const MAX_SUBJECTS = isSecondary ? 11 : Infinity
 
