@@ -369,6 +369,15 @@ function AppContent() {
                 isOpen={isMobile || isSidebarOpen}
                 isDarkMode={isDarkMode}
               />
+              {(userRole === "Admin" || isFormTeacher) && (
+                <NavLink
+                  to="/reports"
+                  icon={<FileText size={isMobile ? 20 : 18} />}
+                  label="Reports Vault"
+                  isOpen={isMobile || isSidebarOpen}
+                  isDarkMode={isDarkMode}
+                />
+              )}
               {userRole === "Admin" && (
                 <NavLink
                   to="/activity-log"
@@ -498,6 +507,18 @@ function AppContent() {
                       <PageTransition>
                         <Attendance />
                       </PageTransition>
+                    }
+                  />
+                  <Route
+                    path="/reports"
+                    element={
+                      isFormTeacher ? (
+                        <PageTransition>
+                          <Reports />
+                        </PageTransition>
+                      ) : (
+                        <Navigate to={teacherDefaultRoute} replace />
+                      )
                     }
                   />
                   <Route

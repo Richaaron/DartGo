@@ -23,6 +23,8 @@ import {
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
+import { useAuthContext } from "../context/AuthContext";
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -41,6 +43,10 @@ const itemVariants = {
 };
 
 export default function Reports() {
+  const { user } = useAuthContext();
+  const userRole = user?.role || "Student";
+  const assignedClasses = (user as any)?.assignedClasses || [];
+
   const [students, setStudents] = useState<Student[]>([]);
   const [teachers, setTeachers] = useState<any[]>([]);
   const [results, setResults] = useState<SubjectResult[]>([]);
@@ -171,7 +177,11 @@ export default function Reports() {
       {} as Record<string, SubjectResult[]>,
     );
 
-    return students
+    const filteredStudents = userRole === "Admin" 
+      ? students 
+      : students.filter(s => assignedClasses.includes(s.class));
+
+    return filteredStudents
       .map((student) => {
         const sResults = resultsByStudent[student.id] || [];
         const avgScore =
@@ -937,11 +947,18 @@ export default function Reports() {
               className="input-field pl-4 border-2 border-indigo-100 dark:border-indigo-900/30 focus:border-indigo-500"
             >
               <option value="">Select Class...</option>
-              {[...new Set(students.map((s) => s.class))].sort().map((className) => (
-                <option key={className} value={className}>
-                  {className}
-                </option>
-              ))}
+              {(() => {
+                const uniqueClasses = [...new Set(students.map((s) => s.class))].sort();
+                const filteredClasses = userRole === "Admin" 
+                  ? uniqueClasses 
+                  : uniqueClasses.filter(c => assignedClasses.includes(c));
+                
+                return filteredClasses.map((className) => (
+                  <option key={className} value={className}>
+                    {className}
+                  </option>
+                ));
+              })()}
             </select>
           </div>
         )}
