@@ -89,11 +89,11 @@ router.post(
         { name: string; email: string; actions: any[] }
       > = {};
       activities.forEach((a: any) => {
-        const id = a.user_id || a.user_name;
+        const id = a.user_id || "Unknown";
         if (!byTeacher[id]) {
           byTeacher[id] = {
-            name: a.user_name || "Unknown",
-            email: a.user_email || "",
+            name: a.user_name || a.user_id || "Unknown",
+            email: a.user_email || a.user_id || "",
             actions: [],
           };
         }

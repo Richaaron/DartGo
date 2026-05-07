@@ -41,15 +41,17 @@ export const activityLogger = async (
       const entityId = urlParts[3] || "none";
 
       // Save to Supabase activities table
-      await supabase.from("activities").insert({
+      const { error: insertError } = await supabase.from("activities").insert({
         user_id: req.user.id || req.user.email,
-        user_name: req.user.name || req.user.email,
-        role: req.user.role,
         action,
         entity_type: entityType,
         entity_id: entityId,
         details,
       });
+
+      if (insertError) {
+        console.error("[ACTIVITY] Insert failed:", insertError.message);
+      }
 
       // Send real-time email alert to admin for any Teacher action
       if (req.user.role === "Teacher") {
