@@ -559,7 +559,7 @@ export default function StudentManagement() {
               onCancel={() => setShowForm(false)}
               isEditing={!!editingStudent}
               allowedClasses={
-                isTeacher && isFormCapableTeacher ? assignedClasses : undefined
+                !isTeacher ? availableClassesForLevel : undefined
               }
               defaultClass={
                 isTeacher && isFormCapableTeacher && selectedClass !== "All"
@@ -855,7 +855,7 @@ export default function StudentManagement() {
             setStudentSubjects([]);
           }}
           allowedClasses={
-            isTeacher && isFormCapableTeacher ? assignedClasses : undefined
+            !isTeacher ? availableClassesForLevel : undefined
           }
         />
       )}
