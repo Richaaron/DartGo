@@ -5,6 +5,13 @@ import { calculateGrade, calculateGradePoint, calculatePercentage } from '../uti
 import { useAuthContext } from '../context/AuthContext'
 import { createResult, updateResult } from '../services/api'
 
+const ALL_STANDARD_CLASSES = [
+  'Pre-Nursery', 'Nursery 1', 'Nursery 2',
+  'Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5',
+  'JSS 1', 'JSS 2', 'JSS 3',
+  'SSS 1', 'SSS 2', 'SSS 3',
+]
+
 interface BulkEntryRow extends Partial<SubjectResult> {
   studentId: string
   studentName: string
@@ -83,7 +90,11 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
   //   (they teach their subject across every class, not just one)
   // - Admins: all classes
   const classesForDropdown = useMemo(() => {
-    if (!isTeacher || !teacher) return availableClasses
+    // Admins: show ALL predefined classes (merged with any student-derived classes)
+    if (!isTeacher || !teacher) {
+      const merged = new Set([...ALL_STANDARD_CLASSES, ...availableClasses])
+      return Array.from(merged)
+    }
 
     const isPureFormTeacher = teacher.teacherType === 'Form Teacher'
 
