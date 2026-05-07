@@ -28,6 +28,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
   const [editingResult, setEditingResult] = useState<SubjectResult | null>(null)
   const [selectedStudentForEntry, setSelectedStudentForEntry] = useState<Student | null>(null)
   const [viewMode, setViewMode] = useState<'results' | 'students'>('students')
+  const [selectedStudentResults, setSelectedStudentResults] = useState<string | null>(null)
   const [filterTerm, setFilterTerm] = useState('')
   const [debouncedFilterTerm, setDebouncedFilterTerm] = useState('')
   const [selectedTerm, setSelectedTerm] = useState<string>('All')
@@ -251,6 +252,27 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
     return items
   }, [allStudentSubjects, results, teacherSubjects, isTeacher, teacher, students])
 
+  // NEW: Group results by student for the Card View
+  const studentResultsSummary = useMemo(() => {
+    const summary: Record<string, { student: Student; count: number; lastTerm: string }> = {}
+    
+    results.forEach(r => {
+      if (!summary[r.studentId]) {
+        const student = students.find(s => s.id === r.studentId)
+        if (student) {
+          summary[r.studentId] = { student, count: 0, lastTerm: r.term }
+        }
+      }
+      if (summary[r.studentId]) {
+        summary[r.studentId].count++
+      }
+    })
+
+    return Object.values(summary).sort((a, b) => 
+      `${a.student.firstName} ${a.student.lastName}`.localeCompare(`${b.student.firstName} ${b.student.lastName}`)
+    )
+  }, [results, students])
+
   // Filtered students for the student list view
   const displayStudents = useMemo(() => {
     return students.filter(student => {
@@ -266,7 +288,12 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
 
   // Simple filtering for the combined list - uses debounced filter for performance
   const filteredDisplayData = useMemo(() => {
-    const dataToFilter = isTeacher ? offeringStudents : results.map(r => ({ ...r, status: 'Completed' }))
+    let dataToFilter = isTeacher ? offeringStudents : results.map(r => ({ ...r, status: 'Completed' }))
+
+    // If a student is selected via card, filter strictly to them
+    if (selectedStudentResults) {
+      dataToFilter = dataToFilter.filter(r => r.studentId === selectedStudentResults)
+    }
 
     const filtered = dataToFilter.filter(item => {
       const student = students.find(s => s.id === item.studentId)
@@ -686,39 +713,72 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
             onResultsSaved={loadData}
             teacherSubjects={teacherSubjects}
           />
-        ) : (
-          <div className="card-lg">
-            {/* Action Bar for Single Student */}
-            {singleStudentResults && (
-              <div className="mb-6 p-4 bg-indigo-600/10 border border-indigo-500/20 rounded-xl flex items-center justify-between animate-scaleIn">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center text-white font-black">
-                    {singleStudentResults.student?.firstName[0]}{singleStudentResults.student?.lastName[0]}
-                  </div>
-                  <div>
-                    <h3 className="text-white font-black uppercase tracking-tight">Report for {singleStudentResults.student?.firstName} {singleStudentResults.student?.lastName}</h3>
-                    <p className="text-indigo-300 text-xs font-bold uppercase tracking-widest">{singleStudentResults.results.length} Subjects Recorded</p>
+        ) : !selectedStudentResults ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {studentResultsSummary.length > 0 ? (
+              studentResultsSummary.filter(s => {
+                const matchesSearch = !debouncedFilterTerm || 
+                  `${s.student.firstName} ${s.student.lastName} ${s.student.registrationNumber}`.toLowerCase().includes(debouncedFilterTerm.toLowerCase())
+                const matchesClass = selectedClass === 'All' || s.student.class === selectedClass
+                return matchesSearch && matchesClass
+              }).map(summary => (
+                <div 
+                  key={summary.student.id}
+                  onClick={() => setSelectedStudentResults(summary.student.id)}
+                  className="professional-card p-6 cursor-pointer group hover:bg-brand-900/60 transition-all duration-300"
+                >
+                  <div className="flex flex-col items-center text-center">
+                    <div className="w-16 h-16 rounded-2xl bg-indigo-600/20 flex items-center justify-center text-indigo-400 font-black text-2xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                      {summary.student.firstName[0]}{summary.student.lastName[0]}
+                    </div>
+                    <h3 className="text-white font-black uppercase tracking-tight text-lg mb-1">{summary.student.firstName} {summary.student.lastName}</h3>
+                    <p className="text-indigo-400 text-xs font-bold uppercase tracking-widest mb-4">{summary.student.class}</p>
+                    
+                    <div className="w-full pt-4 border-t border-indigo-500/10 flex justify-between items-center">
+                      <div className="text-left">
+                        <p className="text-[10px] text-gray-500 uppercase font-black">Records</p>
+                        <p className="text-white font-black">{summary.count}</p>
+                      </div>
+                      <div className="px-3 py-1 bg-amber-500/10 text-amber-500 rounded-full text-[10px] font-black uppercase tracking-widest border border-amber-500/20">
+                        View Results
+                      </div>
+                    </div>
                   </div>
                 </div>
+              ))
+            ) : (
+              <div className="col-span-full py-20 text-center card-lg">
+                <div className="w-20 h-20 bg-brand-900/40 rounded-full flex items-center justify-center mx-auto mb-4 border border-brand-800">
+                  <User className="text-brand-400" size={40} />
+                </div>
+                <h3 className="text-white text-xl font-bold">No results found</h3>
+                <p className="text-gray-500 mt-2">Try adjusting your filters or record some new results.</p>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="card-lg">
+            <div className="mb-6 flex items-center justify-between">
+              <button
+                onClick={() => setSelectedStudentResults(null)}
+                className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold hover:underline transition-all hover:-translate-x-1"
+              >
+                <ChevronLeft size={20} />
+                Back to All Students
+              </button>
+              
+              {singleStudentResults && (
                 <div className="flex gap-3">
-                  <button
-                    onClick={handlePrint}
-                    className="btn-purple flex items-center gap-2 py-2"
-                  >
-                    <Printer size={16} />
-                    Print
+                  <button onClick={handlePrint} className="btn-purple flex items-center gap-2 py-2 text-xs">
+                    <Printer size={14} /> Print Report
                   </button>
-                  <button
-                    onClick={handleDownloadPDF}
-                    disabled={isGeneratingPDF}
-                    className="btn-gold flex items-center gap-2 py-2"
-                  >
-                    {isGeneratingPDF ? <Loader2 className="animate-spin" size={16} /> : <Download size={16} />}
+                  <button onClick={handleDownloadPDF} disabled={isGeneratingPDF} className="btn-gold flex items-center gap-2 py-2 text-xs">
+                    {isGeneratingPDF ? <Loader2 className="animate-spin" size={14} /> : <Download size={14} />}
                     {isGeneratingPDF ? 'Generating...' : 'Download PDF'}
                   </button>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
 
             {/* Hidden Print Content */}
             {singleStudentResults && (
@@ -728,7 +788,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
                     child={singleStudentResults.student!} 
                     results={singleStudentResults.results} 
                     subjects={subjects}
-                    classPositionText={getPositionSuffix(1) /* Placeholder or actual calculation */}
+                    classPositionText={singleStudentResults.classPositionText}
                   />
                 </div>
               </div>
