@@ -268,7 +268,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
   const filteredDisplayData = useMemo(() => {
     const dataToFilter = isTeacher ? offeringStudents : results.map(r => ({ ...r, status: 'Completed' }))
 
-    return dataToFilter.filter(item => {
+    const filtered = dataToFilter.filter(item => {
       const student = students.find(s => s.id === item.studentId)
       if (!student) return false
 
@@ -285,6 +285,20 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
       const matchesSubject = selectedSubject === 'All' || item.subjectId === selectedSubject
 
       return matchesSearch && matchesTerm && matchesClass && matchesSubject
+    })
+
+    // Sort by student name then by subject name to ensure grouping works
+    return filtered.sort((a, b) => {
+      const studentA = students.find(s => s.id === a.studentId)
+      const studentB = students.find(s => s.id === b.studentId)
+      const nameA = studentA ? `${studentA.firstName} ${studentA.lastName}` : ''
+      const nameB = studentB ? `${studentB.firstName} ${studentB.lastName}` : ''
+      
+      if (nameA !== nameB) return nameA.localeCompare(nameB)
+      
+      const subjectA = subjects.find(s => s.id === a.subjectId)?.name || ''
+      const subjectB = subjects.find(s => s.id === b.subjectId)?.name || ''
+      return subjectA.localeCompare(subjectB)
     })
   }, [offeringStudents, results, students, subjects, debouncedFilterTerm, selectedTerm, selectedClass, selectedSubject, isTeacher])
 
