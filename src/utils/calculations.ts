@@ -9,11 +9,11 @@ const getGradeScale = (score: number) => {
 /**
  * Get position suffix (1st, 2nd, 3rd, 4th, etc.)
  */
-export const getPositionSuffix = (position: number): string => {
-  if (position === 1) return '1st'
-  if (position === 2) return '2nd'
-  if (position === 3) return '3rd'
-  return `${position}th`
+export const getPositionSuffix = (pos: number): string => {
+  if (pos % 10 === 1 && pos % 100 !== 11) return `${pos}st`;
+  if (pos % 10 === 2 && pos % 100 !== 12) return `${pos}nd`;
+  if (pos % 10 === 3 && pos % 100 !== 13) return `${pos}rd`;
+  return `${pos}th`;
 }
 
 /**
@@ -68,17 +68,20 @@ export const getStudentClassPosition = (
   }
 
   // Get unique students by average score
-  const studentAverages = new Map<string, number>()
+  const studentStats = new Map<string, { total: number; count: number }>()
   termResults.forEach(result => {
-    const current = studentAverages.get(result.studentId) || 0
-    const avg = (current + result.percentage) / (result.studentId === Array.from(studentAverages.keys()).find(k => k === result.studentId) ? 2 : 1)
-    studentAverages.set(result.studentId, avg)
+    const current = studentStats.get(result.studentId) || { total: 0, count: 0 }
+    studentStats.set(result.studentId, {
+      total: current.total + result.percentage,
+      count: current.count + 1
+    })
   })
 
-  // Sort students by average
-  const sortedStudents = Array.from(studentAverages.entries())
-    .sort((a, b) => b[1] - a[1])
-    .map(entry => entry[0])
+  // Calculate averages and sort
+  const sortedStudents = Array.from(studentStats.entries())
+    .map(([id, stats]) => ({ id, avg: stats.total / stats.count }))
+    .sort((a, b) => b.avg - a.avg)
+    .map(entry => entry.id)
 
   const position = sortedStudents.indexOf(studentId) + 1
   const totalStudents = sortedStudents.length
@@ -304,4 +307,3 @@ export const isPassingGrade = (grade: string): boolean => {
 export const isMeritGrade = (grade: string): boolean => {
   return ['A', 'B'].includes(grade)
 }
-
