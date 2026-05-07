@@ -207,6 +207,40 @@ export default function Reports() {
       );
   }, [students, results, searchTerm, userRole, assignedClasses]);
 
+  const broadsheetData = useMemo(() => {
+    if (reportType !== "broadsheet" || !selectedClass) return null;
+
+    const classStudents = students.filter(s => s.class === selectedClass);
+    const classStudentIds = new Set(classStudents.map(s => s.id));
+    
+    // Filter results for students in this class
+    const classResults = results.filter(r => r && r.studentId && classStudentIds.has(r.studentId));
+    
+    // Find unique subjects taken by these students
+    const classSubjectIds = [...new Set(classResults.map(r => r.subjectId))];
+    const classSubjects = subjects.filter(s => classSubjectIds.includes(s.id));
+
+    // Calculate performance for ranking
+    const performance = classStudents.map(student => {
+      const sResults = classResults.filter(r => r.studentId === student.id);
+      const total = sResults.reduce((sum, r) => sum + (r.totalScore || 0), 0);
+      const avg = sResults.length > 0 ? total / sResults.length : 0;
+      return { id: student.id, total, avg };
+    }).sort((a, b) => b.avg - a.avg);
+
+    // Sorted students for display
+    const sortedStudents = [...classStudents].sort((a, b) => 
+      (a.lastName || "").localeCompare(b.lastName || "")
+    );
+
+    return {
+      students: sortedStudents,
+      subjects: classSubjects,
+      performance,
+      results: classResults
+    };
+  }, [reportType, selectedClass, students, results, subjects]);
+
   const handlePrint = () => {
     window.print();
   };
@@ -1026,7 +1060,7 @@ export default function Reports() {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white dark:bg-royal-black-900 rounded-[2.5rem] shadow-2xl border border-gray-100 dark:border-gray-800 p-8 overflow-hidden"
         >
-          {selectedClass ? (
+          {broadsheetData ? (
             <div className="space-y-8">
               <div className="flex justify-between items-center pb-6 border-b border-gray-100 dark:border-gray-800">
                 <div>
@@ -1051,87 +1085,67 @@ export default function Reports() {
                       <th className="p-4 text-left sticky left-0 z-30 bg-gray-900 border-r border-gray-800 min-w-[200px]">
                         Student Name
                       </th>
-                      {(() => {
-                        const classStudents = students.filter(s => s.class === selectedClass);
-                        const classSubjectIds = [...new Set(results.filter(r => classStudents.some(s => s.id === r.studentId)).map(r => r.subjectId))];
-                        const classSubjects = subjects.filter(s => classSubjectIds.includes(s.id));
-                        
-                        return classSubjects.map(sub => (
-                          <th key={sub.id} className="p-0 border-r border-gray-800 min-w-[300px]" colSpan={5}>
-                            <div className="p-2 border-b border-gray-800 font-black uppercase tracking-widest text-center truncate">
-                              {sub.name}
-                            </div>
-                            <div className="grid grid-cols-5 text-[8px] font-black uppercase">
-                              <div className="p-1 border-r border-gray-800">1st CA</div>
-                              <div className="p-1 border-r border-gray-800">2nd CA</div>
-                              <div className="p-1 border-r border-gray-800">Exam</div>
-                              <div className="p-1 border-r border-gray-800 text-royal-gold-400">Total</div>
-                              <div className="p-1">Grd</div>
-                            </div>
-                          </th>
-                        ));
-                      })()}
+                      {broadsheetData.subjects.map(sub => (
+                        <th key={sub.id} className="p-0 border-r border-gray-800 min-w-[300px]" colSpan={5}>
+                          <div className="p-2 border-b border-gray-800 font-black uppercase tracking-widest text-center truncate">
+                            {sub.name}
+                          </div>
+                          <div className="grid grid-cols-5 text-[8px] font-black uppercase">
+                            <div className="p-1 border-r border-gray-800">1st CA</div>
+                            <div className="p-1 border-r border-gray-800">2nd CA</div>
+                            <div className="p-1 border-r border-gray-800">Exam</div>
+                            <div className="p-1 border-r border-gray-800 text-royal-gold-400">Total</div>
+                            <div className="p-1">Grd</div>
+                          </div>
+                        </th>
+                      ))}
                       <th className="p-4 bg-indigo-900 min-w-[80px]">Grand Total</th>
                       <th className="p-4 bg-emerald-900 min-w-[80px]">Avg</th>
                       <th className="p-4 bg-violet-900 min-w-[80px]">Pos</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
-                    {(() => {
-                      const classStudents = students.filter(s => s.class === selectedClass);
-                      const classSubjectIds = [...new Set(results.filter(r => classStudents.some(s => s.id === r.studentId)).map(r => r.subjectId))];
-                      const classSubjects = subjects.filter(s => classSubjectIds.includes(s.id));
+                    {broadsheetData.students.map(student => {
+                      const studentPerformance = broadsheetData.performance.find(p => p.id === student.id);
+                      const position = broadsheetData.performance.findIndex(p => p.id === student.id) + 1;
+                      const suffix = (pos: number) => {
+                        if (pos % 10 === 1 && pos % 100 !== 11) return "st";
+                        if (pos % 10 === 2 && pos % 100 !== 12) return "nd";
+                        if (pos % 10 === 3 && pos % 100 !== 13) return "rd";
+                        return "th";
+                      };
 
-                      // Calculate performance for ranking
-                      const performance = classStudents.map(student => {
-                        const sResults = results.filter(r => r.studentId === student.id);
-                        const total = sResults.reduce((sum, r) => sum + r.totalScore, 0);
-                        const avg = sResults.length > 0 ? total / sResults.length : 0;
-                        return { id: student.id, total, avg };
-                      }).sort((a, b) => b.avg - a.avg);
-
-                      return [...classStudents].sort((a, b) => (a.lastName || "").localeCompare(b.lastName || "")).map(student => {
-                        const studentPerformance = performance.find(p => p.id === student.id);
-                        const position = performance.findIndex(p => p.id === student.id) + 1;
-                        const suffix = (pos: number) => {
-                          if (pos % 10 === 1 && pos % 100 !== 11) return "st";
-                          if (pos % 10 === 2 && pos % 100 !== 12) return "nd";
-                          if (pos % 10 === 3 && pos % 100 !== 13) return "rd";
-                          return "th";
-                        };
-
-                        return (
-                          <tr key={student.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                            <td className="p-4 font-black text-gray-900 dark:text-white sticky left-0 z-10 bg-white dark:bg-royal-black-900 border-r border-gray-100 dark:border-gray-800 uppercase tracking-tighter">
-                              {student.lastName}, {student.firstName}
-                            </td>
-                            {classSubjects.map(sub => {
-                              const res = results.find(r => r.studentId === student.id && r.subjectId === sub.id);
-                              return (
-                                <td key={sub.id} className="p-0 border-r border-gray-100 dark:border-gray-800" colSpan={5}>
-                                  <div className="grid grid-cols-5 text-center font-bold h-full">
-                                    <div className="p-2 border-r border-gray-100 dark:border-gray-800 text-gray-500">{res?.firstCA ?? '-'}</div>
-                                    <div className="p-2 border-r border-gray-100 dark:border-gray-800 text-gray-500">{res?.secondCA ?? '-'}</div>
-                                    <div className="p-2 border-r border-gray-100 dark:border-gray-800 text-gray-500">{res?.examScore ?? '-'}</div>
-                                    <div className="p-2 border-r border-gray-100 dark:border-gray-800 bg-royal-gold-50/50 dark:bg-royal-gold-900/10 text-royal-gold-600 dark:text-royal-gold-400 font-black">{res?.totalScore ?? '-'}</div>
-                                    <div className="p-2 font-black text-indigo-600 dark:text-indigo-400">{res?.grade ?? '-'}</div>
-                                  </div>
-                                </td>
-                              );
-                            })}
-                            <td className="p-4 text-center font-black bg-indigo-50/30 dark:bg-indigo-900/10 text-indigo-700 dark:text-indigo-400">
-                              {studentPerformance?.total ?? 0}
-                            </td>
-                            <td className="p-4 text-center font-black bg-emerald-50/30 dark:bg-emerald-900/10 text-emerald-700 dark:text-emerald-400">
-                              {studentPerformance?.avg.toFixed(1) ?? "0.0"}
-                            </td>
-                            <td className="p-4 text-center font-black bg-violet-50/30 dark:bg-violet-900/10 text-violet-700 dark:text-violet-400">
-                              {position}{suffix(position)}
-                            </td>
-                          </tr>
-                        );
-                      });
-                    })()}
+                      return (
+                        <tr key={student.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                          <td className="p-4 font-black text-gray-900 dark:text-white sticky left-0 z-10 bg-white dark:bg-royal-black-900 border-r border-gray-100 dark:border-gray-800 uppercase tracking-tighter">
+                            {student.lastName}, {student.firstName}
+                          </td>
+                          {broadsheetData.subjects.map(sub => {
+                            const res = broadsheetData.results.find(r => r.studentId === student.id && r.subjectId === sub.id);
+                            return (
+                              <td key={sub.id} className="p-0 border-r border-gray-100 dark:border-gray-800" colSpan={5}>
+                                <div className="grid grid-cols-5 text-center font-bold h-full">
+                                  <div className="p-2 border-r border-gray-100 dark:border-gray-800 text-gray-500">{res?.firstCA ?? '-'}</div>
+                                  <div className="p-2 border-r border-gray-100 dark:border-gray-800 text-gray-500">{res?.secondCA ?? '-'}</div>
+                                  <div className="p-2 border-r border-gray-100 dark:border-gray-800 text-gray-500">{res?.examScore ?? '-'}</div>
+                                  <div className="p-2 border-r border-gray-100 dark:border-gray-800 bg-royal-gold-50/50 dark:bg-royal-gold-900/10 text-royal-gold-600 dark:text-royal-gold-400 font-black">{res?.totalScore ?? '-'}</div>
+                                  <div className="p-2 font-black text-indigo-600 dark:text-indigo-400">{res?.grade ?? '-'}</div>
+                                </div>
+                              </td>
+                            );
+                          })}
+                          <td className="p-4 text-center font-black bg-indigo-50/30 dark:bg-indigo-900/10 text-indigo-700 dark:text-indigo-400">
+                            {studentPerformance?.total ?? 0}
+                          </td>
+                          <td className="p-4 text-center font-black bg-emerald-50/30 dark:bg-emerald-900/10 text-emerald-700 dark:text-emerald-400">
+                            {studentPerformance?.avg.toFixed(1) ?? "0.0"}
+                          </td>
+                          <td className="p-4 text-center font-black bg-violet-50/30 dark:bg-violet-900/10 text-violet-700 dark:text-violet-400">
+                            {position}{suffix(position)}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
