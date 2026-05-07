@@ -168,7 +168,7 @@ export default function TeacherManagement() {
     >
       {/* Header */}
       <motion.div 
-        className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8"
+        className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -190,13 +190,13 @@ export default function TeacherManagement() {
           </motion.p>
         </div>
         <motion.div 
-          className="flex gap-4"
+          className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
         >
           <motion.button
             onClick={handleExport}
-            className="btn-secondary flex items-center gap-2"
+            className="btn-secondary flex items-center justify-center gap-2 flex-1 sm:flex-initial"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -208,7 +208,7 @@ export default function TeacherManagement() {
               setEditingTeacher(null);
               setShowForm(true);
             }}
-            className="btn-primary flex items-center gap-2"
+            className="btn-primary flex items-center justify-center gap-2 flex-1 sm:flex-initial"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >

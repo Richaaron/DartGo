@@ -294,6 +294,7 @@ function AppContent() {
                 label="Squads"
                 isOpen={isMobile || isSidebarOpen}
                 isDarkMode={isDarkMode}
+                onClick={() => setShowMobileMenu(false)}
               />
               <NavLink
                 to="/students"
@@ -301,6 +302,7 @@ function AppContent() {
                 label="Champions"
                 isOpen={isMobile || isSidebarOpen}
                 isDarkMode={isDarkMode}
+                onClick={() => setShowMobileMenu(false)}
               />
               {isFormTeacher && (
                 <NavLink
@@ -309,6 +311,7 @@ function AppContent() {
                   label="Class Results"
                   isOpen={isMobile || isSidebarOpen}
                   isDarkMode={isDarkMode}
+                  onClick={() => setShowMobileMenu(false)}
                 />
               )}
               <NavLink
@@ -317,6 +320,7 @@ function AppContent() {
                 label="Subject Results"
                 isOpen={isMobile || isSidebarOpen}
                 isDarkMode={isDarkMode}
+                onClick={() => setShowMobileMenu(false)}
               />
               {isFormTeacher && (
                 <NavLink
@@ -325,6 +329,7 @@ function AppContent() {
                   label="Reports Vault"
                   isOpen={isMobile || isSidebarOpen}
                   isDarkMode={isDarkMode}
+                  onClick={() => setShowMobileMenu(false)}
                 />
               )}
             </>
@@ -336,6 +341,7 @@ function AppContent() {
                 label="My Child's Progress"
                 isOpen={isMobile || isSidebarOpen}
                 isDarkMode={isDarkMode}
+                onClick={() => setShowMobileMenu(false)}
               />
             </>
           ) : (
@@ -346,6 +352,7 @@ function AppContent() {
                 label="Overview"
                 isOpen={isMobile || isSidebarOpen}
                 isDarkMode={isDarkMode}
+                onClick={() => setShowMobileMenu(false)}
               />
               <NavLink
                 to="/students"
@@ -353,6 +360,7 @@ function AppContent() {
                 label="Champions"
                 isOpen={isMobile || isSidebarOpen}
                 isDarkMode={isDarkMode}
+                onClick={() => setShowMobileMenu(false)}
               />
               {userRole === "Admin" && (
                 <NavLink
@@ -361,6 +369,7 @@ function AppContent() {
                   label="Squads"
                   isOpen={isMobile || isSidebarOpen}
                   isDarkMode={isDarkMode}
+                  onClick={() => setShowMobileMenu(false)}
                 />
               )}
 
@@ -370,6 +379,7 @@ function AppContent() {
                 label="Results"
                 isOpen={isMobile || isSidebarOpen}
                 isDarkMode={isDarkMode}
+                onClick={() => setShowMobileMenu(false)}
               />
               <NavLink
                 to="/subject-results"
@@ -377,6 +387,7 @@ function AppContent() {
                 label="Subject Results"
                 isOpen={isMobile || isSidebarOpen}
                 isDarkMode={isDarkMode}
+                onClick={() => setShowMobileMenu(false)}
               />
               {(userRole === "Admin" || isFormTeacher) && (
                 <NavLink
@@ -385,6 +396,7 @@ function AppContent() {
                   label="Reports Vault"
                   isOpen={isMobile || isSidebarOpen}
                   isDarkMode={isDarkMode}
+                  onClick={() => setShowMobileMenu(false)}
                 />
               )}
               {userRole === "Admin" && (
@@ -394,6 +406,7 @@ function AppContent() {
                   label="Activity Log"
                   isOpen={isMobile || isSidebarOpen}
                   isDarkMode={isDarkMode}
+                  onClick={() => setShowMobileMenu(false)}
                 />
               )}
               {userRole === "Admin" && (
@@ -403,6 +416,7 @@ function AppContent() {
                   label="Settings"
                   isOpen={isMobile || isSidebarOpen}
                   isDarkMode={isDarkMode}
+                  onClick={() => setShowMobileMenu(false)}
                 />
               )}
             </>
@@ -668,10 +682,11 @@ interface NavLinkProps {
   isDarkMode?: boolean;
 }
 
-function NavLink({ to, icon, label, isOpen }: NavLinkProps) {
+function NavLink({ to, icon, label, isOpen, onClick }: NavLinkProps & { onClick?: () => void }) {
   return (
     <RRNavLink
       to={to}
+      onClick={onClick}
       className={({ isActive }: { isActive: boolean }) =>
         `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 text-sm font-medium ${
           isActive

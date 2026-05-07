@@ -453,10 +453,10 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
                     <th className="px-4 py-3 text-left text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
                       Student Name
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
+                    <th className="px-4 py-3 text-left text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest hidden-mobile">
                       Reg. No.
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
+                    <th className="px-4 py-3 text-left text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest hidden-mobile">
                       Class
                     </th>
                     <th className="px-4 py-3 text-center text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
@@ -493,10 +493,10 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
                           <p className="text-[10px] text-gray-400 font-normal">{row.registrationNumber}</p>
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-sm font-bold text-gray-600 dark:text-gray-400">
+                      <td className="px-4 py-3 text-sm font-bold text-gray-600 dark:text-gray-400 hidden-mobile">
                         {row.registrationNumber}
                       </td>
-                      <td className="px-4 py-3 text-sm font-bold text-gray-600 dark:text-gray-400">
+                      <td className="px-4 py-3 text-sm font-bold text-gray-600 dark:text-gray-400 hidden-mobile">
                         {row.class}
                       </td>
                       <td className="px-4 py-3">

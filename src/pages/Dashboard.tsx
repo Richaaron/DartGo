@@ -309,7 +309,7 @@ export default function Dashboard() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="p-8 space-y-10"
+      className="p-4 md:p-8 space-y-6 md:space-y-10"
     >
       {/* Header */}
       <motion.div
