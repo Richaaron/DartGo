@@ -60,6 +60,7 @@ export default function Reports() {
     "overview",
   );
   const [selectedClass, setSelectedClass] = useState<string>("");
+  const [classFilter, setClassFilter] = useState<string>("");
   const [selectedStudentId, setSelectedStudentId] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
   const [isEditingObservation, setIsEditingObservation] = useState(false);
@@ -179,9 +180,13 @@ export default function Reports() {
       {} as Record<string, SubjectResult[]>,
     );
 
-    const filteredStudents = userRole === "Admin" 
+    let filteredStudents = userRole === "Admin" 
       ? students 
       : students.filter(s => assignedClasses.includes(s.class));
+
+    if (classFilter) {
+      filteredStudents = filteredStudents.filter(s => s.class === classFilter);
+    }
 
     return filteredStudents
       .map((student) => {
@@ -206,7 +211,7 @@ export default function Reports() {
           (s.lastName || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
           (s.registrationNumber || "").toLowerCase().includes(searchTerm.toLowerCase()),
       );
-  }, [students, results, searchTerm, userRole, assignedClasses]);
+  }, [students, results, searchTerm, userRole, assignedClasses, classFilter]);
 
   const broadsheetData = useMemo(() => {
     if (reportType !== "broadsheet" || !selectedClass) return null;
@@ -944,45 +949,50 @@ export default function Reports() {
         variants={itemVariants}
         className="flex flex-col sm:flex-row gap-4 items-center justify-between"
       >
-        <div className="bg-gray-100 dark:bg-royal-black-800 p-1.5 rounded-2xl flex gap-2 w-full sm:w-auto overflow-x-auto no-scrollbar shadow-inner">
-          <button
-            onClick={() => {
-              setReportType("overview");
-              setSelectedStudentId("");
-            }}
-            className={`px-6 py-2.5 rounded-xl text-sm font-black uppercase tracking-widest transition-all duration-300 ${reportType === "overview" ? "bg-white dark:bg-royal-purple-600 text-royal-purple-600 dark:text-white shadow-xl scale-105" : "text-gray-500 hover:text-gray-900 dark:hover:text-white"}`}
-          >
-            Overview
-          </button>
-          <button
-            onClick={() => {
-              setReportType("report-card");
-              if (!selectedStudentId && studentPerformanceData.length > 0) {
-                // Keep overview if no student selected yet
+        <div className="flex flex-col sm:flex-row gap-4 items-center">
+          <div className="bg-gray-100 dark:bg-royal-black-800 p-1.5 rounded-2xl flex gap-2 w-full sm:w-auto overflow-x-auto no-scrollbar shadow-inner">
+            <button
+              onClick={() => {
                 setReportType("overview");
-                window.alert("Please select a student from the overview grid first.");
-              }
-            }}
-            className={`px-6 py-2.5 rounded-xl text-sm font-black uppercase tracking-widest transition-all duration-300 ${reportType === "report-card" ? "bg-white dark:bg-royal-purple-600 text-royal-purple-600 dark:text-white shadow-xl scale-105" : "text-gray-500 hover:text-gray-900 dark:hover:text-white"}`}
-          >
-            Report Cards
-          </button>
-          <button
-            onClick={() => setReportType("broadsheet")}
-            className={`px-6 py-2.5 rounded-xl text-sm font-black uppercase tracking-widest transition-all duration-300 ${reportType === "broadsheet" ? "bg-white dark:bg-royal-purple-600 text-royal-purple-600 dark:text-white shadow-xl scale-105" : "text-gray-500 hover:text-gray-900 dark:hover:text-white"}`}
-          >
-            Broadsheet
-          </button>
-        </div>
+                setSelectedStudentId("");
+              }}
+              className={`px-6 py-2.5 rounded-xl text-sm font-black uppercase tracking-widest transition-all duration-300 ${reportType === "overview" ? "bg-white dark:bg-royal-purple-600 text-royal-purple-600 dark:text-white shadow-xl scale-105" : "text-gray-500 hover:text-gray-900 dark:hover:text-white"}`}
+            >
+              Overview
+            </button>
+            <button
+              onClick={() => {
+                setReportType("report-card");
+                if (!selectedStudentId && studentPerformanceData.length > 0) {
+                  setReportType("overview");
+                  window.alert("Please select a student from the overview grid first.");
+                }
+              }}
+              className={`px-6 py-2.5 rounded-xl text-sm font-black uppercase tracking-widest transition-all duration-300 ${reportType === "report-card" ? "bg-white dark:bg-royal-purple-600 text-royal-purple-600 dark:text-white shadow-xl scale-105" : "text-gray-500 hover:text-gray-900 dark:hover:text-white"}`}
+            >
+              Report Cards
+            </button>
+            <button
+              onClick={() => setReportType("broadsheet")}
+              className={`px-6 py-2.5 rounded-xl text-sm font-black uppercase tracking-widest transition-all duration-300 ${reportType === "broadsheet" ? "bg-white dark:bg-royal-purple-600 text-royal-purple-600 dark:text-white shadow-xl scale-105" : "text-gray-500 hover:text-gray-900 dark:hover:text-white"}`}
+            >
+              Broadsheet
+            </button>
+          </div>
 
-        {reportType === "broadsheet" && (
           <div className="relative w-full sm:w-64">
             <select
-              value={selectedClass}
-              onChange={(e) => setSelectedClass(e.target.value)}
+              value={reportType === "broadsheet" ? selectedClass : classFilter}
+              onChange={(e) => {
+                if (reportType === "broadsheet") {
+                  setSelectedClass(e.target.value);
+                } else {
+                  setClassFilter(e.target.value);
+                }
+              }}
               className="input-field pl-4 border-2 border-indigo-100 dark:border-indigo-900/30 focus:border-indigo-500"
             >
-              <option value="">Select Class...</option>
+              <option value="">{reportType === "broadsheet" ? "Select Class for Broadsheet..." : "Filter Overview by Class..."}</option>
               {(() => {
                 const uniqueClasses = [...new Set(students.map((s) => s.class))].sort();
                 const filteredClasses = userRole === "Admin" 
@@ -997,7 +1007,7 @@ export default function Reports() {
               })()}
             </select>
           </div>
-        )}
+        </div>
       </motion.div>
 
       {reportType === "overview" ? (
