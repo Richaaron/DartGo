@@ -223,6 +223,66 @@
     }
 }
 
+/* ── Print Styles ───────────────────────────── */
+@media print {
+    aside, nav, .print\:hidden, button, .no-print {
+        display: none !important;
+    }
+    
+    main {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: white !important;
+        color: black !important;
+        overflow: visible !important;
+    }
+
+    body {
+        background: white !important;
+        color: black !important;
+    }
+
+    .card, .card-lg, .professional-card, .bg-white, .bg-gray-50 {
+        box-shadow: none !important;
+        border: 1px solid #eee !important;
+        background: white !important;
+        color: black !important;
+    }
+
+    /* Preserve colors for tables and headers */
+    .bg-gray-900 {
+        background-color: #111 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .bg-indigo-600, .bg-indigo-900, .bg-emerald-900, .bg-violet-900 {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    table {
+        border-collapse: collapse !important;
+        width: 100% !important;
+    }
+
+    th, td {
+        border: 1px solid #ddd !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .sticky {
+        position: static !important;
+    }
+
+    @page {
+        margin: 1cm;
+        size: landscape;
+    }
+}
+
 /* ── Fade-in page transition ─────────────────────── */
 @keyframes fadeIn {
     from {

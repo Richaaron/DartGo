@@ -48,9 +48,10 @@ export default function Reports() {
   const [observations, setObservations] = useState<any[]>([]);
   const [config, setConfig] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [reportType, setReportType] = useState<"overview" | "report-card">(
+  const [reportType, setReportType] = useState<"overview" | "report-card" | "broadsheet">(
     "overview",
   );
+  const [selectedClass, setSelectedClass] = useState<string>("");
   const [selectedStudentId, setSelectedStudentId] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
   const [isEditingObservation, setIsEditingObservation] = useState(false);
@@ -895,58 +896,237 @@ export default function Reports() {
 
       <motion.div
         variants={itemVariants}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        className="flex flex-col sm:flex-row gap-4 items-center justify-between"
       >
-        {studentPerformanceData.length > 0 ? (
-          studentPerformanceData.map((student) => (
-            <motion.div
-              key={student.id}
-              variants={itemVariants}
-              onClick={() => {
-                setSelectedStudentId(student.id);
-                setReportType("report-card");
-              }}
-              className="professional-card p-6 cursor-pointer group hover:bg-brand-900/60 transition-all duration-300"
-            >
-              <div className="flex flex-col items-center text-center">
-                <div className="w-16 h-16 rounded-2xl bg-indigo-600/20 flex items-center justify-center text-indigo-400 font-black text-2xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
-                  {student.firstName[0]}{student.lastName[0]}
-                </div>
-                <h3 className="text-white font-black uppercase tracking-tight text-lg mb-1">
-                  {student.firstName} {student.lastName}
-                </h3>
-                <p className="text-indigo-400 text-xs font-bold uppercase tracking-widest mb-4">
-                  {student.class}
-                </p>
-                
-                <div className="w-full pt-4 border-t border-indigo-500/10 grid grid-cols-2 gap-4">
-                  <div className="text-left">
-                    <p className="text-[10px] text-gray-500 uppercase font-black">Efficiency</p>
-                    <p className={`text-lg font-black ${student.avgScore >= 50 ? 'text-emerald-500' : 'text-rose-500'}`}>
-                      {student.avgScore}%
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-[10px] text-gray-500 uppercase font-black">Units</p>
-                    <p className="text-lg font-black text-white">{student.subjectsCount}</p>
-                  </div>
-                </div>
+        <div className="bg-gray-100 dark:bg-royal-black-800 p-1.5 rounded-2xl flex gap-2 w-full sm:w-auto overflow-x-auto no-scrollbar shadow-inner">
+          <button
+            onClick={() => {
+              setReportType("overview");
+              setSelectedStudentId("");
+            }}
+            className={`px-6 py-2.5 rounded-xl text-sm font-black uppercase tracking-widest transition-all duration-300 ${reportType === "overview" ? "bg-white dark:bg-royal-purple-600 text-royal-purple-600 dark:text-white shadow-xl scale-105" : "text-gray-500 hover:text-gray-900 dark:hover:text-white"}`}
+          >
+            Overview
+          </button>
+          <button
+            onClick={() => {
+              setReportType("report-card");
+              if (!selectedStudentId && studentPerformanceData.length > 0) {
+                // Keep overview if no student selected yet
+                setReportType("overview");
+                window.alert("Please select a student from the overview grid first.");
+              }
+            }}
+            className={`px-6 py-2.5 rounded-xl text-sm font-black uppercase tracking-widest transition-all duration-300 ${reportType === "report-card" ? "bg-white dark:bg-royal-purple-600 text-royal-purple-600 dark:text-white shadow-xl scale-105" : "text-gray-500 hover:text-gray-900 dark:hover:text-white"}`}
+          >
+            Report Cards
+          </button>
+          <button
+            onClick={() => setReportType("broadsheet")}
+            className={`px-6 py-2.5 rounded-xl text-sm font-black uppercase tracking-widest transition-all duration-300 ${reportType === "broadsheet" ? "bg-white dark:bg-royal-purple-600 text-royal-purple-600 dark:text-white shadow-xl scale-105" : "text-gray-500 hover:text-gray-900 dark:hover:text-white"}`}
+          >
+            Broadsheet
+          </button>
+        </div>
 
-                <div className="w-full mt-4 flex justify-center">
-                  <span className="px-4 py-2 bg-indigo-600/10 text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white rounded-xl text-[10px] font-black uppercase tracking-widest border border-indigo-500/20 transition-all">
-                    Open Record
-                  </span>
-                </div>
-              </div>
-            </motion.div>
-          ))
-        ) : (
-          <div className="col-span-full py-20 text-center card-lg border-brand-800/40">
-            <Search size={48} className="mx-auto text-brand-700/50 mb-4" />
-            <p className="text-brand-400 font-bold uppercase tracking-widest">No scholars found matching your query.</p>
+        {reportType === "broadsheet" && (
+          <div className="relative w-full sm:w-64">
+            <select
+              value={selectedClass}
+              onChange={(e) => setSelectedClass(e.target.value)}
+              className="input-field pl-4 border-2 border-indigo-100 dark:border-indigo-900/30 focus:border-indigo-500"
+            >
+              <option value="">Select Class...</option>
+              {[...new Set(students.map((s) => s.class))].sort().map((className) => (
+                <option key={className} value={className}>
+                  {className}
+                </option>
+              ))}
+            </select>
           </div>
         )}
       </motion.div>
+
+      {reportType === "overview" ? (
+        <motion.div
+          variants={itemVariants}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        >
+          {studentPerformanceData.length > 0 ? (
+            studentPerformanceData.map((student) => (
+              <motion.div
+                key={student.id}
+                variants={itemVariants}
+                onClick={() => {
+                  setSelectedStudentId(student.id);
+                  setReportType("report-card");
+                }}
+                className="professional-card p-6 cursor-pointer group hover:bg-brand-900/60 transition-all duration-300"
+              >
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-16 h-16 rounded-2xl bg-indigo-600/20 flex items-center justify-center text-indigo-400 font-black text-2xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                    {student.firstName[0]}{student.lastName[0]}
+                  </div>
+                  <h3 className="text-white font-black uppercase tracking-tight text-lg mb-1">
+                    {student.firstName} {student.lastName}
+                  </h3>
+                  <p className="text-indigo-400 text-xs font-bold uppercase tracking-widest mb-4">
+                    {student.class}
+                  </p>
+                  
+                  <div className="w-full pt-4 border-t border-indigo-500/10 grid grid-cols-2 gap-4">
+                    <div className="text-left">
+                      <p className="text-[10px] text-gray-500 uppercase font-black">Efficiency</p>
+                      <p className={`text-lg font-black ${student.avgScore >= 50 ? 'text-emerald-500' : 'text-rose-500'}`}>
+                        {student.avgScore}%
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[10px] text-gray-500 uppercase font-black">Units</p>
+                      <p className="text-lg font-black text-white">{student.subjectsCount}</p>
+                    </div>
+                  </div>
+
+                  <div className="w-full mt-4 flex justify-center">
+                    <span className="px-4 py-2 bg-indigo-600/10 text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white rounded-xl text-[10px] font-black uppercase tracking-widest border border-indigo-500/20 transition-all">
+                      Open Record
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            ))
+          ) : (
+            <div className="col-span-full py-20 text-center card-lg border-brand-800/40">
+              <Search size={48} className="mx-auto text-brand-700/50 mb-4" />
+              <p className="text-brand-400 font-bold uppercase tracking-widest">No scholars found matching your query.</p>
+            </div>
+          )}
+        </motion.div>
+      ) : reportType === "broadsheet" ? (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white dark:bg-royal-black-900 rounded-[2.5rem] shadow-2xl border border-gray-100 dark:border-gray-800 p-8 overflow-hidden"
+        >
+          {selectedClass ? (
+            <div className="space-y-8">
+              <div className="flex justify-between items-center pb-6 border-b border-gray-100 dark:border-gray-800">
+                <div>
+                  <h2 className="text-2xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">
+                    {selectedClass} Academic Broadsheet
+                  </h2>
+                  <p className="text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mt-1">
+                    Term: {config?.currentTerm || "2nd Term"} | Session: {config?.currentAcademicYear || "2023/2024"}
+                  </p>
+                </div>
+                <div className="flex gap-4">
+                  <button onClick={() => window.print()} className="btn-primary text-xs flex items-center gap-2">
+                    <Printer size={16} /> Print Broadsheet
+                  </button>
+                </div>
+              </div>
+
+              <div className="overflow-x-auto relative rounded-2xl border border-gray-100 dark:border-gray-800 shadow-inner">
+                <table className="w-full border-collapse text-xs">
+                  <thead className="sticky top-0 z-20">
+                    <tr className="bg-gray-900 text-white">
+                      <th className="p-4 text-left sticky left-0 z-30 bg-gray-900 border-r border-gray-800 min-w-[200px]">
+                        Student Name
+                      </th>
+                      {(() => {
+                        const classStudents = students.filter(s => s.class === selectedClass);
+                        const classSubjectIds = [...new Set(results.filter(r => classStudents.some(s => s.id === r.studentId)).map(r => r.subjectId))];
+                        const classSubjects = subjects.filter(s => classSubjectIds.includes(s.id));
+                        
+                        return classSubjects.map(sub => (
+                          <th key={sub.id} className="p-0 border-r border-gray-800 min-w-[300px]" colSpan={5}>
+                            <div className="p-2 border-b border-gray-800 font-black uppercase tracking-widest text-center truncate">
+                              {sub.name}
+                            </div>
+                            <div className="grid grid-cols-5 text-[8px] font-black uppercase">
+                              <div className="p-1 border-r border-gray-800">1st CA</div>
+                              <div className="p-1 border-r border-gray-800">2nd CA</div>
+                              <div className="p-1 border-r border-gray-800">Exam</div>
+                              <div className="p-1 border-r border-gray-800 text-royal-gold-400">Total</div>
+                              <div className="p-1">Grd</div>
+                            </div>
+                          </th>
+                        ));
+                      })()}
+                      <th className="p-4 bg-indigo-900 min-w-[80px]">Grand Total</th>
+                      <th className="p-4 bg-emerald-900 min-w-[80px]">Avg</th>
+                      <th className="p-4 bg-violet-900 min-w-[80px]">Pos</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+                    {(() => {
+                      const classStudents = students.filter(s => s.class === selectedClass);
+                      const classSubjectIds = [...new Set(results.filter(r => classStudents.some(s => s.id === r.studentId)).map(r => r.subjectId))];
+                      const classSubjects = subjects.filter(s => classSubjectIds.includes(s.id));
+
+                      // Calculate performance for ranking
+                      const performance = classStudents.map(student => {
+                        const sResults = results.filter(r => r.studentId === student.id);
+                        const total = sResults.reduce((sum, r) => sum + r.totalScore, 0);
+                        const avg = sResults.length > 0 ? total / sResults.length : 0;
+                        return { id: student.id, total, avg };
+                      }).sort((a, b) => b.avg - a.avg);
+
+                      return classStudents.sort((a, b) => a.lastName.localeCompare(b.lastName)).map(student => {
+                        const studentPerformance = performance.find(p => p.id === student.id);
+                        const position = performance.findIndex(p => p.id === student.id) + 1;
+                        const suffix = (pos: number) => {
+                          if (pos % 10 === 1 && pos % 100 !== 11) return "st";
+                          if (pos % 10 === 2 && pos % 100 !== 12) return "nd";
+                          if (pos % 10 === 3 && pos % 100 !== 13) return "rd";
+                          return "th";
+                        };
+
+                        return (
+                          <tr key={student.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                            <td className="p-4 font-black text-gray-900 dark:text-white sticky left-0 z-10 bg-white dark:bg-royal-black-900 border-r border-gray-100 dark:border-gray-800 uppercase tracking-tighter">
+                              {student.lastName}, {student.firstName}
+                            </td>
+                            {classSubjects.map(sub => {
+                              const res = results.find(r => r.studentId === student.id && r.subjectId === sub.id);
+                              return (
+                                <td key={sub.id} className="p-0 border-r border-gray-100 dark:border-gray-800" colSpan={5}>
+                                  <div className="grid grid-cols-5 text-center font-bold h-full">
+                                    <div className="p-2 border-r border-gray-100 dark:border-gray-800 text-gray-500">{res?.firstCA ?? '-'}</div>
+                                    <div className="p-2 border-r border-gray-100 dark:border-gray-800 text-gray-500">{res?.secondCA ?? '-'}</div>
+                                    <div className="p-2 border-r border-gray-100 dark:border-gray-800 text-gray-500">{res?.examScore ?? '-'}</div>
+                                    <div className="p-2 border-r border-gray-100 dark:border-gray-800 bg-royal-gold-50/50 dark:bg-royal-gold-900/10 text-royal-gold-600 dark:text-royal-gold-400 font-black">{res?.totalScore ?? '-'}</div>
+                                    <div className="p-2 font-black text-indigo-600 dark:text-indigo-400">{res?.grade ?? '-'}</div>
+                                  </div>
+                                </td>
+                              );
+                            })}
+                            <td className="p-4 text-center font-black bg-indigo-50/30 dark:bg-indigo-900/10 text-indigo-700 dark:text-indigo-400">
+                              {studentPerformance?.total ?? 0}
+                            </td>
+                            <td className="p-4 text-center font-black bg-emerald-50/30 dark:bg-emerald-900/10 text-emerald-700 dark:text-emerald-400">
+                              {studentPerformance?.avg.toFixed(1) ?? "0.0"}
+                            </td>
+                            <td className="p-4 text-center font-black bg-violet-50/30 dark:bg-violet-900/10 text-violet-700 dark:text-violet-400">
+                              {position}{suffix(position)}
+                            </td>
+                          </tr>
+                        );
+                      });
+                    })()}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ) : (
+            <div className="py-20 text-center">
+              <BookOpen size={48} className="mx-auto text-gray-300 mb-4 animate-bounce" />
+              <p className="text-gray-500 font-black uppercase tracking-widest">Select a class to generate the Broadsheet</p>
+            </div>
+          )}
+        </motion.div>
+      ) : null}
+
     </motion.div>
   );
 }
