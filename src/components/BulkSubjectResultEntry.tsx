@@ -82,29 +82,43 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
   //   (they teach their subject across every class, not just one)
   // - Admins: all classes
   const classesForDropdown = useMemo(() => {
-    // Admins: show ALL predefined classes (merged with any student-derived classes)
+    // 1. Determine base classes based on user role and level
+    let baseClasses: string[] = []
+    
     if (!isTeacher || !teacher) {
-      const merged = new Set([...ALL_STANDARD_CLASSES, ...availableClasses])
-      return Array.from(merged)
+      baseClasses = Array.from(new Set([...ALL_STANDARD_CLASSES, ...availableClasses]))
+    } else {
+      const isPureFormTeacher = teacher.teacherType === 'Form Teacher'
+      if (isPureFormTeacher && teacher.assignedClasses && teacher.assignedClasses.length > 0) {
+        baseClasses = teacher.assignedClasses
+      } else if (teacher.level === 'Secondary') {
+        baseClasses = availableClasses.filter(cls => cls.startsWith('JSS') || cls.startsWith('SSS'))
+      } else if (teacher.level === 'Primary') {
+        baseClasses = availableClasses.filter(cls => cls.startsWith('Primary'))
+      } else if (teacher.level === 'Nursery' || teacher.level === 'Pre-Nursery') {
+        baseClasses = availableClasses.filter(cls => cls.startsWith('Nursery') || cls.startsWith('Pre-Nursery'))
+      } else {
+        baseClasses = availableClasses
+      }
     }
 
-    const isPureFormTeacher = teacher.teacherType === 'Form Teacher'
-
-    if (isPureFormTeacher && teacher.assignedClasses && teacher.assignedClasses.length > 0) {
-      return teacher.assignedClasses
+    // 2. Further filter baseClasses based on selected subject if applicable
+    if (selectedSubjectId) {
+      const subject = subjects.find(s => s.id === selectedSubjectId)
+      if (subject) {
+        const isJSSSubject = subject.id.startsWith('jss-') || subject.name.includes('JSS')
+        const isSSSSubject = subject.id.startsWith('ss-') || subject.name.includes('SSS')
+        
+        if (isJSSSubject) {
+          return baseClasses.filter(cls => cls.startsWith('JSS'))
+        } else if (isSSSSubject) {
+          return baseClasses.filter(cls => cls.startsWith('SSS'))
+        }
+      }
     }
 
-    // Subject teachers (or Form+Subject): filter availableClasses to teacher's school level
-    if (teacher.level === 'Secondary') {
-      return availableClasses.filter(cls => cls.startsWith('JSS') || cls.startsWith('SSS'))
-    } else if (teacher.level === 'Primary') {
-      return availableClasses.filter(cls => cls.startsWith('Primary'))
-    } else if (teacher.level === 'Nursery' || teacher.level === 'Pre-Nursery') {
-      return availableClasses.filter(cls => cls.startsWith('Nursery') || cls.startsWith('Pre-Nursery'))
-    }
-
-    return availableClasses
-  }, [isTeacher, teacher, availableClasses])
+    return baseClasses
+  }, [isTeacher, teacher, availableClasses, selectedSubjectId, subjects])
 
   // Build bulk entry data when subject and class are selected.
   // Strategy:
