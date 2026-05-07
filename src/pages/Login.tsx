@@ -200,7 +200,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
       </div>
 
       {/* ── Right Panel ────────────────────────────── */}
-      <div className="flex-1 flex items-center justify-center p-6 bg-gradient-to-br from-royal-gold-50 via-white to-royal-purple-50 dark:bg-gradient-to-br dark:from-royal-black-900 dark:via-royal-purple-900/20 dark:to-royal-black-900">
+      <div className="flex-1 flex items-center justify-center p-6 bg-gradient-to-br from-slate-900 via-royal-black-900 to-royal-purple-900/40 dark:bg-gradient-to-br dark:from-royal-black-900 dark:via-royal-purple-900/20 dark:to-royal-black-900">
         <motion.div 
           className="w-full max-w-md"
           initial={{ opacity: 0 }}
@@ -251,7 +251,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                       whileTap={{ scale: 0.98 }}
                       transition={{ delay: i * 0.08 }}
                       onClick={() => setLoginType(type.id)}
-                      className="w-full flex items-center gap-4 p-4 bg-white dark:bg-royal-black-800 border-2 border-royal-gold-200 dark:border-royal-purple-700/50 rounded-xl hover:border-royal-purple-400 dark:hover:border-royal-gold-500 hover:shadow-xl transition-all duration-200 group text-left"
+                      className="w-full flex items-center gap-4 p-4 bg-slate-800 dark:bg-royal-black-800 border-2 border-royal-gold-400/30 dark:border-royal-purple-700/50 rounded-xl hover:border-royal-gold-500 dark:hover:border-royal-gold-500 hover:shadow-xl hover:shadow-royal-gold-500/10 transition-all duration-200 group text-left"
                     >
                       <motion.div
                         className={`p-3 rounded-lg ${type.iconBg} ${type.color} flex-shrink-0`}
@@ -261,7 +261,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                         {type.icon}
                       </motion.div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-bold text-royal-purple-900 dark:text-white text-base">
+                        <p className="font-bold text-white dark:text-white text-base">
                           {type.label}
                         </p>
                         <p className="text-xs text-royal-purple-600 dark:text-royal-gold-400 mt-0.5 font-medium">
