@@ -4,6 +4,7 @@ import StatCard from '../components/StatCard'
 import Table from '../components/Table'
 import PrintResult from '../components/PrintResult'
 import { useAuthContext } from '../context/AuthContext'
+import { getStudentClassPosition } from '../utils/calculations'
 import { Student, SubjectResult, Subject, Parent } from '../types'
 import { fetchStudents, fetchResults, fetchSubjects } from '../services/api'
 import html2canvas from 'html2canvas'
@@ -54,12 +55,20 @@ export default function ParentDashboard() {
       ? Math.round((childResults.reduce((sum, r) => sum + r.percentage, 0) / totalResults) * 100) / 100
       : 0
 
+    const classPos = getStudentClassPosition(
+      subjectResults,
+      parent.studentId,
+      childResults[0]?.term || 'First',
+      childResults[0]?.academicYear || new Date().getFullYear().toString()
+    )
+
     return {
       totalSubjects: [...new Set(childResults.map(r => r.subjectId))].length,
       totalAssessments: totalResults,
       averageScore: avgScore,
+      classPositionText: classPos.positionText
     }
-  }, [childResults])
+  }, [childResults, subjectResults, parent.studentId])
 
   const handlePrint = () => {
     const printContent = printRef.current
@@ -239,11 +248,11 @@ export default function ParentDashboard() {
             <Table columns={columns} data={tableData} />
             {/* Hidden Print-Only Content */}
             <div className="hidden print:block">
-              <PrintResult ref={printRef} child={child} results={childResults} subjects={subjects} />
+              <PrintResult ref={printRef} child={child} results={childResults} subjects={subjects} classPositionText={stats.classPositionText} />
             </div>
             {/* Always visible for PDF generation */}
             <div ref={printRef} className="hidden">
-              <PrintResult child={child} results={childResults} subjects={subjects} />
+              <PrintResult child={child} results={childResults} subjects={subjects} classPositionText={stats.classPositionText} />
             </div>
           </>
         ) : (

@@ -640,7 +640,7 @@ export default function ResultEntry() {
             return {
               ...result,
               position: positionData.position,
-              positionText: getPositionSuffix(positionData.position)
+              positionText: positionData.positionText
             }
           })
 

@@ -38,7 +38,7 @@ export const calculatePositions = (results: SubjectResult[], studentId?: string)
     return {
       ...result,
       position,
-      positionText: getPositionSuffix(position),
+      positionText: `${getPositionSuffix(position)} out of ${results.length}`,
     }
   })
 
@@ -81,10 +81,11 @@ export const getStudentClassPosition = (
     .map(entry => entry[0])
 
   const position = sortedStudents.indexOf(studentId) + 1
+  const totalStudents = sortedStudents.length
   return {
     position,
-    positionText: position > 0 ? getPositionSuffix(position) : 'N/A',
-    totalStudents: sortedStudents.length,
+    positionText: position > 0 ? `${getPositionSuffix(position)} out of ${totalStudents}` : 'N/A',
+    totalStudents,
   }
 }
 

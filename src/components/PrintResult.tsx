@@ -5,9 +5,10 @@ interface PrintResultProps {
   child: Student
   results: SubjectResult[]
   subjects: Subject[]
+  classPositionText?: string
 }
 
-const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({ child, results, subjects }, ref) => {
+const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({ child, results, subjects, classPositionText }, ref) => {
   const overallAverage = results.length > 0
     ? Math.round((results.reduce((sum, r) => sum + r.percentage, 0) / results.length) * 100) / 100
     : 0
@@ -47,8 +48,11 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({ child, resul
             <p><span className="font-semibold">Class:</span> {child.class}</p>
           </div>
           <div>
-            <p><span className="font-semibold">Term:</span> 1st Term</p>
-            <p><span className="font-semibold">Academic Year:</span> 2024/2025</p>
+            <p><span className="font-semibold">Term:</span> {results[0]?.term || '1st Term'}</p>
+            <p><span className="font-semibold">Academic Year:</span> {results[0]?.academicYear || '2024/2025'}</p>
+            {classPositionText && (
+              <p><span className="font-semibold">Class Position:</span> {classPositionText}</p>
+            )}
             <p><span className="font-semibold">Average Score:</span> {overallAverage.toFixed(1)}%</p>
           </div>
         </div>
@@ -66,6 +70,7 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({ child, resul
               <th className="border border-black p-2 text-center">Total</th>
               <th className="border border-black p-2 text-center">%</th>
               <th className="border border-black p-2 text-center">Grade</th>
+              <th className="border border-black p-2 text-center">Pos.</th>
               <th className="border border-black p-2 text-center">Remark</th>
             </tr>
           </thead>
@@ -81,6 +86,7 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({ child, resul
                   <td className="border border-black p-2 text-center">{result.totalScore}</td>
                   <td className="border border-black p-2 text-center">{result.percentage.toFixed(1)}%</td>
                   <td className="border border-black p-2 text-center">{getGradeFromScore(result.percentage)}</td>
+                  <td className="border border-black p-2 text-center font-medium whitespace-nowrap">{result.positionText || 'N/A'}</td>
                   <td className="border border-black p-2 text-center">{getRemark(result.percentage)}</td>
                 </tr>
               )
@@ -109,6 +115,7 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({ child, resul
     </div>
   )
 })
+
 
 PrintResult.displayName = 'PrintResult'
 

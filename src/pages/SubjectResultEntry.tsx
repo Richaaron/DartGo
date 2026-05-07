@@ -7,6 +7,7 @@ import StudentResultEntryView from '../components/StudentResultEntryView'
 import { createResult, updateResult, fetchStudentSubjects } from '../services/api'
 import { useAuthContext } from '../context/AuthContext'
 import { useLocation } from 'react-router-dom'
+import { getPositionSuffix } from '../utils/calculations'
 
 const PRIMARY_CLASSES = ['Nursery 1', 'Nursery 2', 'Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6']
 const SECONDARY_CLASSES = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']
@@ -292,7 +293,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
         studentName: student ? `${student.firstName} ${student.lastName}` : 'Unknown Student',
         class: student ? student.class : 'Unknown Class',
         subjectName: subject ? subject.name : 'Unknown Subject',
-        positionText: item.position ? `${item.position}th` : 'N/A'
+        positionText: item.position ? getPositionSuffix(item.position) : 'N/A'
       }
     })
     
