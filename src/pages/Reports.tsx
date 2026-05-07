@@ -8,6 +8,7 @@ import {
   Star,
   GraduationCap,
   Download,
+  BookOpen,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Student, SubjectResult, Subject } from "../types";
