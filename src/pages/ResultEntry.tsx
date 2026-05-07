@@ -167,23 +167,52 @@ export default function ResultEntry() {
       return
     }
     
-    const windowToPrint = window.open('', '_blank', 'width=900,height=900')
+    const windowToPrint = window.open('', '_blank', 'width=1100,height=900')
     if (!windowToPrint) {
       window.alert('Please allow popups to print the result.')
       return
     }
     
-    // Copy computed styles or use a reliable stylesheet
+    // Copy all stylesheets from the current window
+    const styles = Array.from(document.querySelectorAll('link[rel="stylesheet"], style'))
+      .map(style => style.outerHTML)
+      .join('\n');
+
     windowToPrint.document.write(`
       <html>
         <head>
-          <title>Print Result</title>
+          <title>Folusho Victory Schools - Report Card</title>
+          ${styles}
+          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
           <style>
-            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-            body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
             @media print {
-              body { margin: 0; }
-              .print-container { width: 100%; }
+              body { 
+                margin: 0 !important; 
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact !important; 
+                print-color-adjust: exact !important;
+              }
+              @page {
+                size: A4;
+                margin: 0;
+              }
+              .print-container {
+                width: 210mm;
+                min-height: 297mm;
+                margin: 0 auto;
+                background: white !important;
+              }
+            }
+            body {
+              background: #f1f5f9;
+              display: flex;
+              justify-content: center;
+              padding: 20px;
+            }
+            .print-container {
+              background: white;
+              width: 1000px;
+              box-shadow: 0 0 40px rgba(0,0,0,0.1);
             }
           </style>
         </head>
@@ -193,16 +222,17 @@ export default function ResultEntry() {
           </div>
           <script>
             window.onload = function() {
+              // Wait for fonts and CSS to fully settle
               setTimeout(() => {
                 window.print();
-                window.close();
-              }, 500);
+                // window.close(); 
+              }, 1000);
             };
           </script>
         </body>
       </html>
-    `)
-    windowToPrint.document.close()
+    `);
+    windowToPrint.document.close();
   }
 
   const handleDownloadPDF = async () => {

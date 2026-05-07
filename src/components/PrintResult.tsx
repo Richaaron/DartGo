@@ -289,9 +289,9 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({
 
         <div className="text-center">
           <div className="h-16 mb-1 flex items-end justify-center overflow-hidden pb-1">
-            {config?.principalName ? (
+            {config?.principalName || "Solomon Benjamin" ? (
               <span style={{ fontFamily: "'Dancing Script', cursive", fontSize: "2rem", fontWeight: 700, color: "#1e3a8a" }}>
-                {config.principalName}
+                {config?.principalName || "Solomon Benjamin"}
               </span>
             ) : <span className="text-[9px] text-gray-300 uppercase tracking-widest border border-dashed border-gray-200 rounded px-3 py-2 select-none">Not set</span>}
           </div>
@@ -301,9 +301,9 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({
 
         <div className="text-center">
           <div className="h-16 mb-1 flex items-end justify-center overflow-hidden pb-1">
-            {config?.proprietressName ? (
+            {config?.proprietressName || "Olushola Faluyi" ? (
               <span style={{ fontFamily: "'Dancing Script', cursive", fontSize: "2rem", fontWeight: 700, color: "#1e3a8a" }}>
-                {config.proprietressName}
+                {config?.proprietressName || "Olushola Faluyi"}
               </span>
             ) : <span className="text-[9px] text-gray-300 uppercase tracking-widest border border-dashed border-gray-200 rounded px-3 py-2 select-none">Not set</span>}
           </div>
