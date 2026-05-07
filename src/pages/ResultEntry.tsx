@@ -188,13 +188,13 @@ export default function ResultEntry() {
         backgroundColor: '#ffffff'
       })
 
-      const imgData = canvas.toDataURL('image/png')
+      const imgData = canvas.toDataURL('image/jpeg', 1.0)
       const pdf = new jsPDF('p', 'mm', 'a4')
       const imgProps = pdf.getImageProperties(imgData)
       const pdfWidth = pdf.internal.pageSize.getWidth()
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
 
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
+      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight)
       pdf.save(`${singleStudentResults?.student?.firstName}_${singleStudentResults?.student?.lastName}_Result_Card.pdf`)
     } catch (error) {
       console.error('Failed to generate PDF:', error)
