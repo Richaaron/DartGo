@@ -102,10 +102,32 @@ const mapToDB = (s: any) => ({
 
 router.get('/', authenticate, async (req, res) => {
   try {
-    // Return the new subjects directly instead of from Supabase
+    const { data, error } = await supabase
+      .from('subjects')
+      .select('*')
+      .order('name', { ascending: true })
+    
+    if (error) throw error
+    
+    if (data && data.length > 0) {
+      return res.json(data.map(s => ({
+        id: s.id,
+        code: s.code,
+        name: s.name,
+        level: s.level,
+        subjectCategory: s.subject_category || s.category, // Handle both naming conventions
+        description: s.description,
+        topics: s.topics || [],
+        creditUnits: s.credit_units || s.creditUnits || 2
+      })))
+    }
+    
+    // Fallback if DB is empty
     res.json(DEFAULT_SUBJECTS)
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch subjects' })
+    console.error('[SUBJECTS] Fetch error:', error)
+    // Even on error, return defaults to keep UI working
+    res.json(DEFAULT_SUBJECTS)
   }
 })
 
