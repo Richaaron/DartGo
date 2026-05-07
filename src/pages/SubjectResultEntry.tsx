@@ -382,7 +382,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
       
       return {
         ...item,
-        studentName: student ? \`\${student.firstName} \${student.lastName}\` : 'Unknown Student',
+        studentName: student ? `${student.firstName} ${student.lastName}` : 'Unknown Student',
         class: student ? student.class : 'Unknown Class',
         subjectName: subject ? subject.name : 'Unknown Subject',
         positionText: item.position ? getPositionSuffix(item.position) : 'N/A',
