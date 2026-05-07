@@ -1,196 +1,323 @@
 import { forwardRef } from 'react'
 import { Student, SubjectResult, Subject } from '../types'
+import { GraduationCap } from 'lucide-react'
 
 interface PrintResultProps {
   child: Student
   results: SubjectResult[]
   subjects: Subject[]
   classPositionText?: string
+  observation?: any
+  config?: any
+  classTeacher?: any
 }
 
-const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({ child, results, subjects, classPositionText }, ref) => {
+const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({ 
+  child, 
+  results, 
+  subjects, 
+  classPositionText,
+  observation,
+  config,
+  classTeacher
+}, ref) => {
   const overallAverage = results.length > 0
-    ? Math.round((results.reduce((sum, r) => sum + r.percentage, 0) / results.length) * 100) / 100
+    ? Math.round((results.reduce((sum, r) => sum + r.percentage, 0) / results.length) * 10) / 10
     : 0
 
-  const getGradeFromScore = (percentage: number): string => {
-    if (percentage >= 70) return 'A'
-    if (percentage >= 65) return 'B'
-    if (percentage >= 55) return 'C'
-    if (percentage >= 50) return 'D'
-    if (percentage >= 45) return 'E'
-    return 'F'
-  }
+  const totalPoints = results.reduce((sum, r) => sum + r.gradePoint, 0)
+  const gpa = results.length > 0 ? (totalPoints / results.length).toFixed(2) : "0.00"
 
-  const getRemark = (percentage: number): string => {
-    if (percentage >= 70) return 'EXCELLENT'
-    if (percentage >= 65) return 'VERY GOOD'
-    if (percentage >= 55) return 'CREDIT'
-    if (percentage >= 50) return 'FAIR'
-    if (percentage >= 45) return 'WEAK PASS'
-    return 'FAIL'
-  }
+  const renderRating = (val: number) => {
+    return (
+      <div className="flex gap-1">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div
+            key={i}
+            className={`w-4 h-4 rounded-full border-2 ${
+              i <= val
+                ? "bg-indigo-600 border-indigo-600 shadow-sm"
+                : "bg-transparent border-gray-200"
+            }`}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  const affectiveDomain = observation?.affectiveDomain || {
+    punctuality: 3,
+    neatness: 3,
+    honesty: 3,
+    leadership: 3,
+    cooperation: 3,
+    selfControl: 3,
+  };
+
+  const psychomotorSkills = observation?.psychomotorSkills || {
+    handwriting: 3,
+    sports: 3,
+    arts: 3,
+    fluency: 3,
+  };
 
   return (
-    <div ref={ref} className="bg-white p-10 max-w-[800px] mx-auto shadow-2xl border-t-[12px] border-slate-900 relative overflow-hidden" style={{ fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif", color: '#1e293b' }}>
-      {/* Background Watermark */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none select-none rotate-[-30deg]">
-        <h1 className="text-[120px] font-black uppercase text-slate-900 whitespace-nowrap">AUTHENTIC</h1>
-      </div>
+    <div 
+      ref={ref} 
+      className="bg-white p-12 max-w-[1000px] mx-auto relative overflow-hidden" 
+      style={{ fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif", color: '#1e293b' }}
+    >
+      {/* Background Decoration */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50 opacity-20 rounded-full -mt-32 -mr-32 blur-3xl"></div>
 
       {/* School Header */}
-      <div className="flex justify-between items-start mb-10 pb-6 border-b-2 border-slate-100">
-        <div className="flex items-center gap-5">
-          <div className="w-24 h-24 bg-slate-900 rounded-2xl flex items-center justify-center text-amber-500 shadow-xl border-2 border-amber-500/20">
-            <svg viewBox="0 0 24 24" className="w-16 h-16 fill-current" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2L1 7l11 5 11-5-11-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-            </svg>
-          </div>
-          <div>
-            <h1 className="text-3xl font-black uppercase tracking-tight text-slate-900 leading-none">Folusho Victory Schools</h1>
-            <p className="text-amber-600 font-bold tracking-[0.2em] mt-1 text-sm uppercase italic">Excellence & Integrity</p>
-            <div className="flex gap-3 mt-3 text-[10px] text-slate-500 font-medium">
-              <span className="flex items-center gap-1"><div className="w-1 h-1 bg-amber-500 rounded-full" /> ABUJA, NIGERIA</span>
-              <span className="flex items-center gap-1"><div className="w-1 h-1 bg-amber-500 rounded-full" /> +234 800 000 0000</span>
-              <span className="flex items-center gap-1"><div className="w-1 h-1 bg-amber-500 rounded-full" /> INFO@FOLUSHO.COM</span>
+      <div className="text-center border-b-4 border-indigo-600 pb-10 mb-10 flex items-center justify-between relative z-10">
+        <div className="flex items-center gap-8">
+          {config?.schoolLogo ? (
+            <img
+              src={config.schoolLogo}
+              alt="Logo"
+              className="w-24 h-24 object-contain shadow-lg rounded-2xl p-2 bg-white"
+            />
+          ) : (
+            <div className="w-24 h-24 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-xl">
+              <GraduationCap size={48} />
             </div>
+          )}
+          <div className="text-left">
+            <h1 className="text-4xl font-black text-gray-900 tracking-tighter uppercase mb-1">
+              {config?.schoolName || "FOLUSHO VICTORY SCHOOLS"}
+            </h1>
+            <p className="text-indigo-600 font-black text-xs uppercase tracking-[0.3em]">
+              Excellence in Learning & Character
+            </p>
+            <p className="text-xs text-gray-400 font-bold mt-2 uppercase tracking-widest">
+              {config?.schoolAddress || "123 Victory Lane, Lagos, Nigeria"}{" "}
+              | {config?.schoolPhone || "+234 800 000 0000"}
+            </p>
           </div>
         </div>
         <div className="text-right">
-          <div className="inline-block px-4 py-2 bg-slate-900 text-amber-500 rounded-lg text-xs font-black uppercase tracking-widest shadow-lg">
-            Report Card
+          <div className="bg-gray-900 text-white px-6 py-3 rounded-2xl shadow-xl inline-block">
+            <p className="text-[10px] font-black uppercase tracking-widest opacity-50 mb-0.5">
+              Report Status
+            </p>
+            <p className="text-sm font-black uppercase tracking-tighter">
+              Official Document
+            </p>
           </div>
-          <p className="text-[10px] text-slate-400 mt-2 font-bold uppercase tracking-widest">Serial No: FVS-{Math.floor(100000 + Math.random() * 900000)}</p>
         </div>
       </div>
 
-      {/* Student Data Cards */}
-      <div className="grid grid-cols-3 gap-6 mb-10">
-        <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 shadow-sm">
-          <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest mb-1">Student Information</p>
-          <h2 className="text-lg font-black text-slate-900 leading-tight uppercase">{child.firstName} {child.lastName}</h2>
-          <p className="text-xs text-slate-500 font-semibold mt-1">Reg: <span className="text-slate-700">{child.registrationNumber}</span></p>
-        </div>
-        <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 shadow-sm">
-          <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest mb-1">Academic Context</p>
-          <p className="text-sm font-black text-slate-900 uppercase">{child.class}</p>
-          <p className="text-xs text-slate-500 font-semibold mt-1">Term: <span className="text-slate-700 uppercase">{results[0]?.term || '1st'} Term</span></p>
-          <p className="text-xs text-slate-500 font-semibold italic">{results[0]?.academicYear || '2024/2025'}</p>
-        </div>
-        <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-xl flex flex-col justify-center">
-          <p className="text-[9px] text-amber-500/60 font-black uppercase tracking-widest mb-1">Overall Performance</p>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-black text-white leading-none">{overallAverage.toFixed(1)}%</span>
-            <span className="text-xs text-amber-500 font-black uppercase tracking-tighter">Average</span>
+      {/* Student Info Card */}
+      <div className="grid grid-cols-2 gap-10 mb-12 bg-gray-50/80 p-8 rounded-[1.5rem] border border-gray-100">
+        <div className="space-y-4">
+          <div>
+            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
+              Full Name
+            </p>
+            <p className="text-xl font-black text-gray-900 uppercase tracking-tight">
+              {child.firstName} {child.lastName}
+            </p>
           </div>
-          {classPositionText && (
-            <p className="text-[10px] text-white/70 font-bold uppercase mt-1">Rank: <span className="text-amber-400">{classPositionText}</span></p>
-          )}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
+                ID Number
+              </p>
+              <p className="text-sm font-black text-gray-900">
+                {child.registrationNumber}
+              </p>
+            </div>
+            <div>
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
+                Classification
+              </p>
+              <p className="text-sm font-black text-gray-900">
+                {child.class}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="space-y-4 text-right">
+          <div>
+            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
+              Academic Level
+            </p>
+            <p className="text-xl font-black text-gray-900 uppercase tracking-tight">
+              {child.level}
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
+                Term
+              </p>
+              <p className="text-sm font-black text-indigo-600 uppercase tracking-widest">
+                {results[0]?.term || config?.currentTerm || "1st"} Term
+              </p>
+            </div>
+            <div>
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
+                Session
+              </p>
+              <p className="text-sm font-black text-gray-900 uppercase tracking-widest">
+                {results[0]?.academicYear || config?.currentAcademicYear || "2023/2024"}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Main Results Table */}
-      <div className="mb-10 overflow-hidden rounded-2xl border border-slate-200 shadow-lg">
-        <table className="w-full border-collapse text-xs">
+      {/* Results Table */}
+      <div className="rounded-[1.5rem] overflow-hidden border-2 border-gray-100 mb-12 shadow-sm">
+        <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-slate-900 text-white uppercase tracking-widest text-[10px] font-black">
-              <th className="p-4 text-left border-r border-slate-800">Subject Description</th>
-              <th className="p-4 text-center border-r border-slate-800">1st CA</th>
-              <th className="p-4 text-center border-r border-slate-800">2nd CA</th>
-              <th className="p-4 text-center border-r border-slate-800">Exam</th>
-              <th className="p-4 text-center border-r border-slate-800">Total</th>
-              <th className="p-4 text-center border-r border-slate-800">Grade</th>
-              <th className="p-4 text-center border-r border-slate-800">Rank</th>
-              <th className="p-4 text-center">Outcome</th>
+            <tr className="bg-gray-900 text-white">
+              <th className="p-5 text-left text-[10px] font-black uppercase tracking-widest">Subject</th>
+              <th className="p-5 text-center text-[10px] font-black uppercase tracking-widest">CA 1 (20)</th>
+              <th className="p-5 text-center text-[10px] font-black uppercase tracking-widest">CA 2 (20)</th>
+              <th className="p-5 text-center text-[10px] font-black uppercase tracking-widest">Exam (60)</th>
+              <th className="p-5 text-center text-[10px] font-black uppercase tracking-widest">Total</th>
+              <th className="p-5 text-center text-[10px] font-black uppercase tracking-widest">Grade</th>
+              <th className="p-5 text-left text-[10px] font-black uppercase tracking-widest">Remark</th>
             </tr>
           </thead>
-          <tbody className="font-semibold text-slate-700">
-            {results.map((result, idx) => {
-              const subject = subjects.find((s) => s.id === result.subjectId)
-              const grade = getGradeFromScore(result.percentage)
-              const isFailing = grade === 'F'
-              
+          <tbody className="divide-y divide-gray-100">
+            {results.map((r) => {
+              const subject = subjects.find((s) => s.id === r.subjectId);
               return (
-                <tr key={result.id} className={`${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'} border-b border-slate-100 transition-colors hover:bg-amber-50/30`}>
-                  <td className="p-4 text-slate-900 font-black uppercase border-r border-slate-100">{subject?.name || 'N/A'}</td>
-                  <td className="p-4 text-center border-r border-slate-100 font-bold text-slate-600">{result.firstCA}</td>
-                  <td className="p-4 text-center border-r border-slate-100 font-bold text-slate-600">{result.secondCA}</td>
-                  <td className="p-4 text-center border-r border-slate-100 font-bold text-slate-600">{result.exam}</td>
-                  <td className="p-4 text-center border-r border-slate-100 font-black text-slate-900">{result.totalScore}</td>
-                  <td className={`p-4 text-center border-r border-slate-100 font-black ${isFailing ? 'text-red-600' : 'text-slate-900'}`}>{grade}</td>
-                  <td className="p-4 text-center border-r border-slate-100 text-[9px] font-black uppercase text-amber-600 whitespace-nowrap">{result.positionText || 'N/A'}</td>
-                  <td className={`p-4 text-center text-[9px] font-black uppercase tracking-tighter ${isFailing ? 'text-red-500' : 'text-emerald-600'}`}>{getRemark(result.percentage)}</td>
+                <tr key={r.id} className="hover:bg-gray-50/50 transition-colors">
+                  <td className="p-5 font-black text-gray-900 text-sm tracking-tight">{subject?.name || "Unknown"}</td>
+                  <td className="p-5 text-center font-bold text-gray-600">{r.firstCA}</td>
+                  <td className="p-5 text-center font-bold text-gray-600">{r.secondCA}</td>
+                  <td className="p-5 text-center font-bold text-gray-600">{r.exam}</td>
+                  <td className="p-5 text-center font-black text-gray-900">{r.totalScore}</td>
+                  <td className="p-5 text-center">
+                    <span className={`px-3 py-1 rounded-lg font-black text-xs ${
+                      ["A", "B"].includes(r.grade) ? "bg-emerald-100 text-emerald-700" : 
+                      r.grade === "C" ? "bg-amber-100 text-amber-700" : "bg-rose-100 text-rose-700"
+                    }`}>
+                      {r.grade}
+                    </span>
+                  </td>
+                  <td className="p-5 text-xs font-bold italic text-gray-500">{r.remarks}</td>
                 </tr>
-              )
+              );
             })}
           </tbody>
         </table>
       </div>
 
-      {/* Bottom Sections: Grading & Signatures */}
-      <div className="grid grid-cols-2 gap-10">
-        {/* Grading Key */}
-        <div>
-          <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 flex items-center gap-2">
-            <div className="w-4 h-[2px] bg-amber-500" /> Grading Key
-          </h3>
-          <div className="grid grid-cols-3 gap-2">
-            {[
-              { g: 'A', r: '70-100', d: 'Excellent' },
-              { g: 'B', r: '65-69', d: 'V. Good' },
-              { g: 'C', r: '55-64', d: 'Credit' },
-              { g: 'D', r: '50-54', d: 'Fair' },
-              { g: 'E', r: '45-49', d: 'Pass' },
-              { g: 'F', r: '0-44', d: 'Fail' },
-            ].map((key) => (
-              <div key={key.g} className="bg-slate-50 border border-slate-100 p-2 rounded-lg text-center">
-                <span className="block text-xs font-black text-slate-900 leading-none">{key.g}</span>
-                <span className="block text-[8px] text-slate-500 font-bold mt-1 leading-none">{key.r}%</span>
+      {/* Behavioral and Psychomotor Sections */}
+      <div className="grid grid-cols-2 gap-16 mb-16">
+        <div className="space-y-6">
+          <h3 className="font-black text-indigo-600 text-[10px] uppercase tracking-[0.3em] pb-3 border-b-2 border-indigo-50">Affective Domain</h3>
+          <div className="space-y-4">
+            {Object.entries(affectiveDomain).map(([key, val]: [string, any]) => (
+              <div key={key} className="flex justify-between items-center group">
+                <span className="text-xs text-gray-500 font-black tracking-widest group-hover:text-gray-900 transition-colors capitalize">
+                  {key.replace(/([A-Z])/g, " $1")}
+                </span>
+                {renderRating(val)}
               </div>
             ))}
           </div>
         </div>
-
-        {/* Authenticity Signatures */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="text-center relative">
-            <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest mb-1">Form Teacher</p>
-            <div className="h-16 flex items-center justify-center">
-              <img src="/assets/teacher_signature.png" alt="Teacher Signature" className="max-h-full max-w-full mix-blend-multiply opacity-90" />
-            </div>
-            <div className="border-t border-slate-300 w-full mt-1" />
-            <p className="text-[8px] font-black uppercase text-slate-900 mt-1">Authorized Official</p>
-          </div>
-          <div className="text-center relative">
-            <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest mb-1">Principal</p>
-            <div className="h-16 flex items-center justify-center">
-              <img src="/assets/principal_signature.png" alt="Principal Signature" className="max-h-full max-w-full mix-blend-multiply opacity-90" />
-            </div>
-            <div className="border-t border-slate-300 w-full mt-1" />
-            <p className="text-[8px] font-black uppercase text-slate-900 mt-1">Stamp & Seal</p>
-            
-            {/* Stamp Circle */}
-            <div className="absolute top-2 right-2 w-14 h-14 border-4 border-red-600/30 rounded-full flex items-center justify-center rotate-[-15deg] pointer-events-none">
-              <div className="text-[8px] font-black text-red-600/40 uppercase text-center leading-none">Folusho<br/>Approved</div>
-            </div>
+        <div className="space-y-6">
+          <h3 className="font-black text-indigo-600 text-[10px] uppercase tracking-[0.3em] pb-3 border-b-2 border-indigo-50">Psychomotor Skills</h3>
+          <div className="space-y-4">
+            {Object.entries(psychomotorSkills).map(([key, val]: [string, any]) => (
+              <div key={key} className="flex justify-between items-center group">
+                <span className="text-xs text-gray-500 font-black tracking-widest group-hover:text-gray-900 transition-colors capitalize">
+                  {key}
+                </span>
+                {renderRating(val)}
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Footer */}
+      {/* Summary Metrics */}
+      <div className="grid grid-cols-3 gap-8 mb-16">
+        <div className="p-8 bg-indigo-50/50 rounded-[1.5rem] border-2 border-indigo-100/50 text-center">
+          <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-2">Enrolled Units</p>
+          <p className="text-4xl font-black text-indigo-900 tracking-tighter">{results.length}</p>
+        </div>
+        <div className="p-8 bg-emerald-50/50 rounded-[1.5rem] border-2 border-emerald-100/50 text-center">
+          <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-2">Mean Percentage</p>
+          <p className="text-4xl font-black text-emerald-900 tracking-tighter">{overallAverage}%</p>
+        </div>
+        <div className="p-8 bg-violet-50/50 rounded-[1.5rem] border-2 border-violet-100/50 text-center">
+          <p className="text-[10px] font-black text-violet-400 uppercase tracking-widest mb-2">Scholastic Index (GPA)</p>
+          <p className="text-4xl font-black text-violet-900 tracking-tighter">{gpa}</p>
+        </div>
+      </div>
+
+      {/* Narratives */}
+      <div className="space-y-8 mb-20">
+        <div className="bg-gray-50/50 p-8 rounded-[1.5rem] border-l-8 border-indigo-600">
+          <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest mb-4">Class Teacher Evaluation</p>
+          <p className="text-gray-900 italic font-bold text-lg leading-relaxed">
+            "{observation?.teacherComment || "No qualitative feedback provided for this session."}"
+          </p>
+        </div>
+        <div className="bg-gray-50/50 p-8 rounded-[1.5rem] border-l-8 border-gray-900">
+          <p className="text-[10px] font-black text-gray-900 uppercase tracking-widest mb-4">
+            {config?.principalName ? `${config.principalName} — Principal's Remarks` : "Principal's Remarks"}
+          </p>
+          <p className="text-gray-900 italic font-bold text-lg leading-relaxed">
+            "{observation?.principalComment || "Official remarks pending authorization."}"
+          </p>
+        </div>
+      </div>
+
+      {/* Signatures */}
+      <div className="grid grid-cols-3 gap-8 pt-10 mt-4 border-t-2 border-gray-100">
+        <div className="text-center">
+          <div className="h-16 mb-1 flex items-end justify-center overflow-hidden pb-1">
+            {classTeacher ? (
+              <span style={{ fontFamily: "'Dancing Script', cursive", fontSize: "2rem", fontWeight: 700, color: "#1e3a8a" }}>
+                {classTeacher.name}
+              </span>
+            ) : <span className="text-[9px] text-gray-300 uppercase tracking-widest border border-dashed border-gray-200 rounded px-3 py-2 select-none">Sign here</span>}
+          </div>
+          <div className="h-px bg-gray-400 mb-2 w-full" />
+          <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Class Teacher</p>
+        </div>
+
+        <div className="text-center">
+          <div className="h-16 mb-1 flex items-end justify-center overflow-hidden pb-1">
+            {config?.principalName ? (
+              <span style={{ fontFamily: "'Dancing Script', cursive", fontSize: "2rem", fontWeight: 700, color: "#1e3a8a" }}>
+                {config.principalName}
+              </span>
+            ) : <span className="text-[9px] text-gray-300 uppercase tracking-widest border border-dashed border-gray-200 rounded px-3 py-2 select-none">Not set</span>}
+          </div>
+          <div className="h-px bg-gray-400 mb-2 w-full" />
+          <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Principal</p>
+        </div>
+
+        <div className="text-center">
+          <div className="h-16 mb-1 flex items-end justify-center overflow-hidden pb-1">
+            {config?.proprietressName ? (
+              <span style={{ fontFamily: "'Dancing Script', cursive", fontSize: "2rem", fontWeight: 700, color: "#1e3a8a" }}>
+                {config.proprietressName}
+              </span>
+            ) : <span className="text-[9px] text-gray-300 uppercase tracking-widest border border-dashed border-gray-200 rounded px-3 py-2 select-none">Not set</span>}
+          </div>
+          <div className="h-px bg-gray-400 mb-2 w-full" />
+          <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Proprietress</p>
+        </div>
+      </div>
+
       <div className="mt-12 text-center">
         <p className="text-[8px] font-black uppercase tracking-[0.5em] text-slate-300">Folusho Reporting System • Secure Academic Document • 2024</p>
-        <div className="mt-2 flex justify-center gap-1">
-          {[...Array(50)].map((_, i) => (
-            <div key={i} className={`h-[2px] w-[2px] rounded-full ${i % 2 === 0 ? 'bg-amber-500' : 'bg-slate-200'}`} />
-          ))}
-        </div>
       </div>
     </div>
   )
 })
-
-
 
 PrintResult.displayName = 'PrintResult'
 

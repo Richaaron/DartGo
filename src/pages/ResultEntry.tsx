@@ -11,7 +11,7 @@ import SubjectResultForm from '../components/SubjectResultForm'
 import StudentResultEntryView from '../components/StudentResultEntryView'
 import Table from '../components/Table'
 import { formatDate, exportToCSV, calculatePositions, getStudentClassPosition, getPositionSuffix } from '../utils/calculations'
-import { fetchStudents, fetchResults, fetchSubjects, deleteResult, createResult, updateResult, fetchStudentSubjects } from '../services/api'
+import { fetchStudents, fetchResults, fetchSubjects, deleteResult, createResult, updateResult, fetchStudentSubjects, fetchObservations, fetchConfig, fetchTeachers } from '../services/api'
 import apiService from '../services/apiService'
 import PrintResult from '../components/PrintResult'
 import { Printer, Loader2, ChevronLeft } from 'lucide-react'
@@ -40,6 +40,9 @@ export default function ResultEntry() {
   // New state for bulk sending and tracking
   const [resultsSentTracker, setResultsSentTracker] = useState<ResultsSentTracker[]>([])
   const [isBulkSending, setIsBulkSending] = useState(false)
+  const [observations, setObservations] = useState<any[]>([])
+  const [config, setConfig] = useState<any>(null)
+  const [teachers, setTeachers] = useState<any[]>([])
   
   // State for class-based control (teachers always use class view)
   const [selectedClass, setSelectedClass] = useState<string>('All')
@@ -138,12 +141,24 @@ export default function ResultEntry() {
       studentResults[0]?.academicYear || new Date().getFullYear().toString()
     )
 
+    const observation = observations.find(o => 
+      o.studentId === selectedStudentResults && 
+      (o.term === (studentResults[0]?.term || 'First') || o.term === (studentResults[0]?.term || 'First Term'))
+    )
+    
+    const classTeacher = teachers.find(t => 
+      Array.isArray(t.assignedClasses) && t.assignedClasses.includes(student.class)
+    )
+
     return {
       student,
       results: studentResults,
-      classPositionText: classPos.positionText
+      classPositionText: classPos.positionText,
+      observation,
+      config,
+      classTeacher
     }
-  }, [selectedStudentResults, students, results])
+  }, [selectedStudentResults, students, results, observations, config, teachers])
 
   const handlePrint = () => {
     const printContent = document.getElementById('print-area-hidden')
@@ -230,22 +245,30 @@ export default function ResultEntry() {
 
   async function loadData() {
     try {
-      const [studentsData, resultsData, subjectsData, studentSubjectsData] = await Promise.all([
+      const [studentsData, resultsData, subjectsData, studentSubjectsData, observationsData, configData, teachersData] = await Promise.all([
         fetchStudents().catch(() => []),
         fetchResults().catch(() => []),
         fetchSubjects().catch(() => []),
-        fetchStudentSubjects().catch(() => [])
+        fetchStudentSubjects().catch(() => []),
+        fetchObservations().catch(() => []),
+        fetchConfig().catch(() => null),
+        fetchTeachers().catch(() => [])
       ])
       setStudents(Array.isArray(studentsData) ? studentsData : [])
       setResults(Array.isArray(resultsData) ? resultsData : [])
       setSubjects(Array.isArray(subjectsData) ? subjectsData : [])
       setAllStudentSubjects(Array.isArray(studentSubjectsData) ? studentSubjectsData : [])
+      setObservations(Array.isArray(observationsData) ? observationsData : [])
+      setConfig(configData)
+      setTeachers(Array.isArray(teachersData) ? teachersData : [])
     } catch (error) {
       console.error('Failed to load results data', error)
       setStudents([])
       setResults([])
       setSubjects([])
       setAllStudentSubjects([])
+      setObservations([])
+      setTeachers([])
     }
   }
 
@@ -1320,6 +1343,9 @@ export default function ResultEntry() {
                     results={singleStudentResults.results} 
                     subjects={subjects}
                     classPositionText={singleStudentResults.classPositionText}
+                    observation={singleStudentResults.observation}
+                    config={singleStudentResults.config}
+                    classTeacher={singleStudentResults.classTeacher}
                   />
                 </div>
               </div>
