@@ -25,14 +25,14 @@
 
 /* ── Cards ───────────────────────────────────── */
 .card {
-    @apply bg-white dark:bg-slate-800 rounded-xl border border-royal-gold-200/30 dark:border-royal-purple-700/30
+    @apply bg-slate-800 dark:bg-slate-900 rounded-xl border border-royal-gold-400/20 dark:border-royal-purple-700/30
          shadow-lg p-4 transition-all duration-300
          hover:shadow-xl hover:border-royal-gold-400/50 dark:hover:border-royal-purple-500/50
          hover:translate-y-[-2px];
 }
 
 .card-lg {
-    @apply bg-white dark:bg-slate-800 rounded-xl border border-royal-gold-200/30 dark:border-royal-purple-700/30
+    @apply bg-slate-800 dark:bg-slate-900 rounded-xl border border-royal-gold-400/20 dark:border-royal-purple-700/30
          shadow-lg p-6 transition-all duration-300
          hover:shadow-xl hover:border-royal-gold-400/50 dark:hover:border-royal-purple-500/50
          hover:translate-y-[-2px];
