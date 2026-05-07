@@ -7,67 +7,88 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 
 const UNIQUE_SUBJECTS = [
   // Pre-Nursery & Nursery
-  { name: 'Mathematics', code: 'MTH', level: 'Pre-Nursery', credit_units: 1, subject_category: 'CORE' },
-  { name: 'English', code: 'ENG', level: 'Pre-Nursery', credit_units: 1, subject_category: 'CORE' },
-  { name: 'Social Habits', code: 'SOH', level: 'Pre-Nursery', credit_units: 1, subject_category: 'CORE' },
-  { name: 'Health Habits', code: 'HHB', level: 'Pre-Nursery', credit_units: 1, subject_category: 'CORE' },
-  { name: 'Rhymes', code: 'RHM', level: 'Pre-Nursery', credit_units: 1, subject_category: 'CORE' },
-  { name: 'Primary Science', code: 'PSC', level: 'Pre-Nursery', credit_units: 1, subject_category: 'CORE' },
-  { name: 'Phonics', code: 'PHN', level: 'Pre-Nursery', credit_units: 1, subject_category: 'CORE' },
-
-  { name: 'Mathematics', code: 'NUR-MTH', level: 'Nursery', credit_units: 1, subject_category: 'CORE' },
-  { name: 'English', code: 'NUR-ENG', level: 'Nursery', credit_units: 1, subject_category: 'CORE' },
-  { name: 'Social Habits', code: 'NUR-SOH', level: 'Nursery', credit_units: 1, subject_category: 'CORE' },
-  { name: 'Health Habits', code: 'NUR-HHB', level: 'Nursery', credit_units: 1, subject_category: 'CORE' },
-  { name: 'Rhymes', code: 'NUR-RHM', level: 'Nursery', credit_units: 1, subject_category: 'CORE' },
-  { name: 'Primary Science', code: 'NUR-PSC', level: 'Nursery', credit_units: 1, subject_category: 'CORE' },
-  { name: 'Phonics', code: 'NUR-PHN', level: 'Nursery', credit_units: 1, subject_category: 'CORE' },
+  ...['Pre-Nursery', 'Nursery'].flatMap(level => {
+    const prefix = level === 'Pre-Nursery' ? 'PN' : 'NUR';
+    return [
+      { name: 'Mathematics', code: `${prefix}-MTH`, level, credit_units: 1, subject_category: 'CORE' },
+      { name: 'English', code: `${prefix}-ENG`, level, credit_units: 1, subject_category: 'CORE' },
+      { name: 'Social Habits', code: `${prefix}-SOH`, level, credit_units: 1, subject_category: 'CORE' },
+      { name: 'Health Habits', code: `${prefix}-HHB`, level, credit_units: 1, subject_category: 'CORE' },
+      { name: 'Rhymes', code: `${prefix}-RHM`, level, credit_units: 1, subject_category: 'CORE' },
+      { name: 'Primary Science', code: `${prefix}-PSC`, level, credit_units: 1, subject_category: 'CORE' },
+      { name: 'Phonics', code: `${prefix}-PHN`, level, credit_units: 1, subject_category: 'CORE' },
+    ]
+  }),
   
   // Primary
-  { name: 'Mathematics', code: 'PRI-MTH', level: 'Primary', credit_units: 2, subject_category: 'CORE' },
-  { name: 'English', code: 'PRI-ENG', level: 'Primary', credit_units: 2, subject_category: 'CORE' },
-  { name: 'Social Habits', code: 'PRI-SOH', level: 'Primary', credit_units: 2, subject_category: 'CORE' },
-  { name: 'Health Habits', code: 'PRI-HHB', level: 'Primary', credit_units: 2, subject_category: 'CORE' },
-  { name: 'Rhymes', code: 'PRI-RHM', level: 'Primary', credit_units: 2, subject_category: 'CORE' },
-  { name: 'Primary Science', code: 'PRI-PSC', level: 'Primary', credit_units: 2, subject_category: 'CORE' },
-  { name: 'Phonics', code: 'PRI-PHN', level: 'Primary', credit_units: 2, subject_category: 'CORE' },
-  { name: 'Writing', code: 'PRI-WRT', level: 'Primary', credit_units: 2, subject_category: 'CORE' },
-  { name: 'Creative Arts', code: 'PRI-CAR', level: 'Primary', credit_units: 2, subject_category: 'CORE' },
-  { name: 'Verbal Reasoning', code: 'PRI-VRR', level: 'Primary', credit_units: 2, subject_category: 'CORE' },
-  { name: 'Quantitative Reasoning', code: 'PRI-QTR', level: 'Primary', credit_units: 2, subject_category: 'CORE' },
-  { name: 'Agricultural Science', code: 'PRI-AGS', level: 'Primary', credit_units: 2, subject_category: 'CORE' },
+  ...['Primary'].flatMap(level => {
+    const prefix = 'PRI';
+    return [
+      { name: 'Mathematics', code: `${prefix}-MTH`, level, credit_units: 2, subject_category: 'CORE' },
+      { name: 'English Language', code: `${prefix}-ENG`, level, credit_units: 2, subject_category: 'CORE' },
+      { name: 'National Values', code: `${prefix}-NVL`, level, credit_units: 2, subject_category: 'CORE' },
+      { name: 'Basic Technology', code: `${prefix}-BTE`, level, credit_units: 2, subject_category: 'CORE' },
+      { name: 'Basic Science', code: `${prefix}-BSC`, level, credit_units: 2, subject_category: 'CORE' },
+      { name: 'Physical & Health Education', code: `${prefix}-PHE`, level, credit_units: 2, subject_category: 'CORE' },
+      { name: 'Computer studies', code: `${prefix}-CST`, level, credit_units: 2, subject_category: 'CORE' },
+      { name: 'Religious studies', code: `${prefix}-REL`, level, credit_units: 2, subject_category: 'CORE' },
+      { name: 'Phonics', code: `${prefix}-PHN`, level, credit_units: 2, subject_category: 'CORE' },
+      { name: 'Home Economics', code: `${prefix}-HEC`, level, credit_units: 2, subject_category: 'CORE' },
+      { name: 'Literature', code: `${prefix}-LIT`, level, credit_units: 2, subject_category: 'CORE' },
+      { name: 'Vocational Aptitude', code: `${prefix}-VAP`, level, credit_units: 2, subject_category: 'CORE' },
+      { name: 'Writing', code: `${prefix}-WRT`, level, credit_units: 2, subject_category: 'CORE' }, // UI filters this for P4-6
+      { name: 'Creative Arts', code: `${prefix}-CAR`, level, credit_units: 2, subject_category: 'CORE' },
+      { name: 'Verbal Reasoning', code: `${prefix}-VRR`, level, credit_units: 2, subject_category: 'CORE' },
+      { name: 'Quantitative Reasoning', code: `${prefix}-QTR`, level, credit_units: 2, subject_category: 'CORE' },
+      { name: 'Agricultural Science', code: `${prefix}-AGS`, level, credit_units: 2, subject_category: 'CORE' },
+    ]
+  }),
   
   // Secondary (JSS)
-  { name: 'Mathematics', code: 'JSS-MTH', level: 'Secondary', credit_units: 2, subject_category: null },
-  { name: 'English Language', code: 'JSS-ENG', level: 'Secondary', credit_units: 2, subject_category: null },
-  { name: 'Basic Technology', code: 'JSS-BTE', level: 'Secondary', credit_units: 2, subject_category: null },
-  { name: 'Basic Science', code: 'JSS-BSC', level: 'Secondary', credit_units: 2, subject_category: null },
-  { name: 'Computer Studies', code: 'JSS-CST', level: 'Secondary', credit_units: 2, subject_category: null },
-  { name: 'Religious Studies', code: 'JSS-REL', level: 'Secondary', credit_units: 2, subject_category: null },
-  { name: 'Physical & Health Education', code: 'JSS-PHE', level: 'Secondary', credit_units: 2, subject_category: null },
-  { name: 'Fine Arts', code: 'JSS-FAA', level: 'Secondary', credit_units: 2, subject_category: null },
-  { name: 'Business Studies', code: 'JSS-BUS', level: 'Secondary', credit_units: 2, subject_category: null },
-  { name: 'National Values', code: 'JSS-NVL', level: 'Secondary', credit_units: 2, subject_category: null },
-  { name: 'Agricultural Science', code: 'JSS-AGS', level: 'Secondary', credit_units: 2, subject_category: null },
-  { name: 'Home Economics', code: 'JSS-HEC', level: 'Secondary', credit_units: 2, subject_category: null },
-  { name: 'Hausa', code: 'JSS-HAU', level: 'Secondary', credit_units: 2, subject_category: null },
+  ...['Secondary'].flatMap(level => {
+    const prefix = 'JSS';
+    return [
+      { name: 'Mathematics', code: `${prefix}-MTH`, level, credit_units: 2, subject_category: null },
+      { name: 'English Language', code: `${prefix}-ENG`, level, credit_units: 2, subject_category: null },
+      { name: 'Basic Technology', code: `${prefix}-BTE`, level, credit_units: 2, subject_category: null },
+      { name: 'Basic Science', code: `${prefix}-BSC`, level, credit_units: 2, subject_category: null },
+      { name: 'Computer Studies', code: `${prefix}-CST`, level, credit_units: 2, subject_category: null },
+      { name: 'Religious Studies', code: `${prefix}-REL`, level, credit_units: 2, subject_category: null },
+      { name: 'Physical & Health Education', code: `${prefix}-PHE`, level, credit_units: 2, subject_category: null },
+      { name: 'Fine Arts', code: `${prefix}-FAA`, level, credit_units: 2, subject_category: null },
+      { name: 'Business Studies', code: `${prefix}-BUS`, level, credit_units: 2, subject_category: null },
+      { name: 'National Values', code: `${prefix}-NVL`, level, credit_units: 2, subject_category: null },
+      { name: 'Agricultural science', code: `${prefix}-AGS`, level, credit_units: 2, subject_category: null },
+      { name: 'Home Economics', code: `${prefix}-HEC`, level, credit_units: 2, subject_category: null },
+      { name: 'Hausa', code: `${prefix}-HAU`, level, credit_units: 2, subject_category: null },
+    ]
+  }),
 
   // Secondary (SSS)
-  { name: 'Mathematics', code: 'SSS-MTH', level: 'Secondary', credit_units: 3, subject_category: 'CORE' },
-  { name: 'English Language', code: 'SSS-ENG', level: 'Secondary', credit_units: 3, subject_category: 'CORE' },
-  { name: 'Biology', code: 'SSS-BIO', level: 'Secondary', credit_units: 3, subject_category: 'CORE' },
-  { name: 'Geography', code: 'SSS-GEO', level: 'Secondary', credit_units: 3, subject_category: 'CORE' },
-  { name: 'Agricultural Science', code: 'SSS-AGS', level: 'Secondary', credit_units: 3, subject_category: 'CORE' },
-  { name: 'Civic Education', code: 'SSS-CVE', level: 'Secondary', credit_units: 2, subject_category: 'CORE' },
-  { name: 'Marketing', code: 'SSS-MKT', level: 'Secondary', credit_units: 2, subject_category: 'CORE' },
-  { name: 'ICT', code: 'SSS-ICT', level: 'Secondary', credit_units: 2, subject_category: 'CORE' },
-  { name: 'Economics', code: 'SSS-ECO', level: 'Secondary', credit_units: 3, subject_category: 'CORE' },
-  { name: 'Chemistry', code: 'SSS-CHM', level: 'Secondary', credit_units: 3, subject_category: 'CORE' },
-  { name: 'Physics', code: 'SSS-PHY', level: 'Secondary', credit_units: 3, subject_category: 'CORE' },
-  { name: 'Government', code: 'SSS-GOV', level: 'Secondary', credit_units: 2, subject_category: 'ELECTIVE' },
-  { name: 'Literature In English', code: 'SSS-LIT', level: 'Secondary', credit_units: 3, subject_category: 'ELECTIVE' },
-  { name: 'Accounting', code: 'SSS-ACC', level: 'Secondary', credit_units: 3, subject_category: 'VOCATIONAL' },
-  { name: 'Commerce', code: 'SSS-COM', level: 'Secondary', credit_units: 2, subject_category: 'VOCATIONAL' },
+  ...['Secondary'].flatMap(level => {
+    const prefix = 'SSS';
+    return [
+      // General
+      { name: 'Mathematics', code: `${prefix}-MTH`, level, credit_units: 3, subject_category: 'CORE' },
+      { name: 'English Language', code: `${prefix}-ENG`, level, credit_units: 3, subject_category: 'CORE' },
+      { name: 'Biology', code: `${prefix}-BIO`, level, credit_units: 3, subject_category: 'CORE' },
+      { name: 'Geography', code: `${prefix}-GEO`, level, credit_units: 3, subject_category: 'CORE' },
+      { name: 'Agricultural Science', code: `${prefix}-AGS`, level, credit_units: 3, subject_category: 'CORE' },
+      { name: 'Civic Education', code: `${prefix}-CVE`, level, credit_units: 2, subject_category: 'CORE' },
+      { name: 'Marketing', code: `${prefix}-MKT`, level, credit_units: 2, subject_category: 'CORE' },
+      { name: 'ICT', code: `${prefix}-ICT`, level, credit_units: 2, subject_category: 'CORE' },
+      { name: 'Economics', code: `${prefix}-ECO`, level, credit_units: 3, subject_category: 'CORE' },
+      // Science
+      { name: 'Chemistry', code: `${prefix}-CHM`, level, credit_units: 3, subject_category: 'CORE' },
+      { name: 'Physics', code: `${prefix}-PHY`, level, credit_units: 3, subject_category: 'CORE' },
+      // Art
+      { name: 'Government', code: `${prefix}-GOV`, level, credit_units: 2, subject_category: 'ELECTIVE' },
+      { name: 'Literature In English', code: `${prefix}-LIT`, level, credit_units: 3, subject_category: 'ELECTIVE' },
+      // Commerce
+      { name: 'Accounting', code: `${prefix}-ACC`, level, credit_units: 3, subject_category: 'VOCATIONAL' },
+      { name: 'Commerce', code: `${prefix}-COM`, level, credit_units: 2, subject_category: 'VOCATIONAL' },
+    ]
+  }),
 ]
 
 async function sync() {
