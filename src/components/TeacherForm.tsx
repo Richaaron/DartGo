@@ -127,10 +127,16 @@ export default function TeacherForm({
     const jssMap = new Map<string, Subject>();
     const sssMap = new Map<string, Subject>();
     filtered.forEach(s => {
-      if (s.subjectCategory) {
+      const isSSS = s.code?.toUpperCase().startsWith('SSS');
+      const isJSS = s.code?.toUpperCase().startsWith('JSS');
+      
+      if (isSSS) {
         if (!sssMap.has(s.name)) sssMap.set(s.name, { ...s, name: `${s.name} (SSS)` });
-      } else {
+      } else if (isJSS) {
         if (!jssMap.has(s.name)) jssMap.set(s.name, { ...s, name: `${s.name} (JSS)` });
+      } else {
+        // Fallback for older data or other secondary tiers
+        if (!sssMap.has(s.name)) sssMap.set(s.name, { ...s, name: s.name });
       }
     });
     return [...Array.from(jssMap.values()), ...Array.from(sssMap.values())];
