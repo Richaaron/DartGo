@@ -259,6 +259,7 @@ export const DEFAULT_SUBJECTS: Subject[] = [
   { id: 'ss-g-7', name: 'Geography', code: 'GEO', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
   { id: 'ss-g-8', name: 'Economics', code: 'ECO', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
   { id: 'ss-g-9', name: 'Marketing', code: 'MKT', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
+  { id: 'ss-g-10', name: 'Agricultural Science', code: 'AGS', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
   // SSS Science Arm Core Subjects
   { id: 'ss-sci-1', name: 'Physics', code: 'PHY', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
   { id: 'ss-sci-2', name: 'Chemistry', code: 'CHM', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
