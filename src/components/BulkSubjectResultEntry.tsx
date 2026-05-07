@@ -64,16 +64,8 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
   // level and assigned subjects by the parent page), otherwise fall back to all subjects.
   const availableSubjects = useMemo(() => {
     if (teacherSubjects && teacherSubjects.length > 0) return teacherSubjects
-    if (!isTeacher || !teacher) return subjects
-
-    const assignedNames = new Set<string>()
-    if (teacher.subject) assignedNames.add(teacher.subject)
-    if (teacher.assignedSubjects) {
-      teacher.assignedSubjects.forEach(s => assignedNames.add(s))
-    }
-
-    return subjects.filter(s => assignedNames.has(s.name) || assignedNames.has(s.id))
-  }, [subjects, teacherSubjects, isTeacher, teacher])
+    return subjects
+  }, [subjects, teacherSubjects])
 
   // Get all unique classes from students
   const availableClasses = useMemo(() => {
