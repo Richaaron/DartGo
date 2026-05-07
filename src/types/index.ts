@@ -237,6 +237,7 @@ export const DEFAULT_SUBJECTS: Subject[] = [
   { id: 'pri-16', name: 'Literature', code: 'LIT', level: 'Primary', creditUnits: 2 },
   
   // Secondary Subjects - Junior Secondary (12 subjects)
+  { id: 'jss-1', name: 'Mathematics', code: 'MTH', level: 'Secondary', creditUnits: 2 },
   { id: 'jss-2', name: 'English Language', code: 'ENG', level: 'Secondary', creditUnits: 2 },
   { id: 'jss-3', name: 'Basic Science', code: 'BSC', level: 'Secondary', creditUnits: 2 },
   { id: 'jss-4', name: 'Basic Technology', code: 'BTE', level: 'Secondary', creditUnits: 2 },

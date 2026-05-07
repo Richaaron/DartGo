@@ -65,11 +65,11 @@ export default function StudentForm({
     
     // For Secondary level, further distinguish between JSS and SSS
     if (formData.level === 'Secondary') {
-      const isSSS = formData.class.toUpperCase().startsWith('SSS') || formData.class.toUpperCase().startsWith('SS')
-      const isJSS = formData.class.toUpperCase().startsWith('JSS')
+      const isSSSStudent = formData.class.toUpperCase().startsWith('SSS') || formData.class.toUpperCase().startsWith('SS')
+      const isJSSStudent = formData.class.toUpperCase().startsWith('JSS')
       
-      if (isSSS) return s.id.startsWith('ss-')
-      if (isJSS) return s.id.startsWith('jss-')
+      if (isSSSStudent) return s.id.startsWith('ss-') || s.code.toUpperCase().includes('SSS') || s.code.toUpperCase().startsWith('SS')
+      if (isJSSStudent) return s.id.startsWith('jss-') || s.code.toUpperCase().includes('JSS')
     }
     
     return true
