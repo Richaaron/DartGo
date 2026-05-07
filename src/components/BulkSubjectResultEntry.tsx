@@ -53,10 +53,12 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
   const isTeacher = userRole === 'Teacher'
   const teacher = isTeacher ? (user as Teacher) : null
 
-  // Get teacher's subjects if available
+  // Use teacherSubjects prop when provided (already correctly scoped to the teacher's
+  // level and assigned subjects by the parent page), otherwise fall back to all subjects.
   const availableSubjects = useMemo(() => {
+    if (teacherSubjects && teacherSubjects.length > 0) return teacherSubjects
     if (!isTeacher || !teacher) return subjects
-    
+
     const assignedNames = new Set<string>()
     if (teacher.subject) assignedNames.add(teacher.subject)
     if (teacher.assignedSubjects) {
@@ -64,7 +66,7 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
     }
 
     return subjects.filter(s => assignedNames.has(s.name) || assignedNames.has(s.id))
-  }, [subjects, isTeacher, teacher])
+  }, [subjects, teacherSubjects, isTeacher, teacher])
 
   // Get all unique classes from students
   const availableClasses = useMemo(() => {
@@ -75,7 +77,13 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
     return Array.from(classSet).sort()
   }, [students])
 
-  // Build bulk entry data when subject and class are selected
+  // Build bulk entry data when subject and class are selected.
+  // Strategy:
+  //   1. First try to use the student_subjects join table (explicit enrollments).
+  //   2. If that table is empty for this subject (common for secondary schools that
+  //      haven't manually enrolled students per subject), fall back to ALL active
+  //      students in the selected class — every student in the class is assumed to
+  //      take every subject offered at their level.
   const loadBulkData = useCallback(() => {
     if (!selectedSubjectId || !selectedClass) {
       setBulkData([])
@@ -85,26 +93,7 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
     const subject = subjects.find(s => s.id === selectedSubjectId)
     if (!subject) return
 
-    // Get all students in the selected class who are assigned to this subject
-    const studentAssignments = studentSubjects.filter(
-      sa => sa.subjectId === selectedSubjectId && 
-      (sa.term === selectedTerm || selectedTerm === 'All') &&
-      (sa.academicYear === selectedYear || selectedYear === 'All')
-    )
-
-    const rows: BulkEntryRow[] = studentAssignments
-      .map(assignment => {
-        const student = students.find(s => s.id === assignment.studentId)
-        if (!student || student.class !== selectedClass) return null
-
-      // Find existing result for this student, subject, term, year
-      const existingResult = existingResults.find(r =>
-        r.studentId === assignment.studentId &&
-        r.subjectId === selectedSubjectId &&
-        r.term === assignment.term &&
-        r.academicYear === assignment.academicYear
-      )
-
+    const buildRow = (student: any, existingResult: any): BulkEntryRow => {
       if (existingResult) {
         return {
           id: existingResult.id,
@@ -128,39 +117,93 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
           isNew: false,
           isDirty: false,
         }
-      } else {
-        return {
-          studentId: student.id,
-          studentName: `${student.firstName} ${student.lastName}`,
-          registrationNumber: student.registrationNumber,
-          class: student.class,
-          firstCA: 0,
-          secondCA: 0,
-          exam: 0,
-          totalScore: 0,
-          percentage: 0,
-          grade: 'N/A',
-          gradePoint: 0,
-          remarks: '',
-          subjectId: selectedSubjectId,
-          term: selectedTerm,
-          academicYear: selectedYear,
-          dateRecorded: new Date().toISOString().split('T')[0],
-          recordedBy: user?.name || '',
-          isNew: true,
-          isDirty: false,
-        }
       }
-    }).filter((row): row is BulkEntryRow => row !== null)
+      return {
+        studentId: student.id,
+        studentName: `${student.firstName} ${student.lastName}`,
+        registrationNumber: student.registrationNumber,
+        class: student.class,
+        firstCA: 0,
+        secondCA: 0,
+        exam: 0,
+        totalScore: 0,
+        percentage: 0,
+        grade: 'N/A',
+        gradePoint: 0,
+        remarks: '',
+        subjectId: selectedSubjectId,
+        term: selectedTerm,
+        academicYear: selectedYear,
+        dateRecorded: new Date().toISOString().split('T')[0],
+        recordedBy: user?.name || '',
+        isNew: true,
+        isDirty: false,
+      }
+    }
 
-    // Sort by student name
-    rows.sort((a, b) => a.studentName.localeCompare(b.studentName))
-    setBulkData(rows)
+    // --- Strategy 1: use student_subjects join table ---
+    const studentAssignments = studentSubjects.filter(
+      sa =>
+        sa.subjectId === selectedSubjectId &&
+        (sa.term === selectedTerm || selectedTerm === 'All') &&
+        (sa.academicYear === selectedYear || selectedYear === 'All')
+    )
+
+    // Narrow to the selected class
+    const assignmentRows: BulkEntryRow[] = studentAssignments
+      .map(assignment => {
+        const student = students.find(s => s.id === assignment.studentId)
+        if (!student || student.class !== selectedClass) return null
+        const existingResult = existingResults.find(
+          r =>
+            r.studentId === assignment.studentId &&
+            r.subjectId === selectedSubjectId &&
+            r.term === assignment.term &&
+            r.academicYear === assignment.academicYear
+        )
+        return buildRow(student, existingResult)
+      })
+      .filter((row): row is BulkEntryRow => row !== null)
+
+    if (assignmentRows.length > 0) {
+      assignmentRows.sort((a, b) => a.studentName.localeCompare(b.studentName))
+      setBulkData(assignmentRows)
+      return
+    }
+
+    // --- Strategy 2 (fallback): no join-table entries found —
+    //   load all active students in the selected class directly.
+    //   This handles schools where students are NOT individually enrolled
+    //   into subjects via the student_subjects table.
+    const classStudents = students.filter(
+      s => s.class === selectedClass && s.status !== 'Inactive'
+    )
+
+    const fallbackRows: BulkEntryRow[] = classStudents.map(student => {
+      const existingResult = existingResults.find(
+        r =>
+          r.studentId === student.id &&
+          r.subjectId === selectedSubjectId &&
+          r.term === selectedTerm &&
+          r.academicYear === selectedYear
+      )
+      return buildRow(student, existingResult)
+    })
+
+    fallbackRows.sort((a, b) => a.studentName.localeCompare(b.studentName))
+    setBulkData(fallbackRows)
   }, [selectedSubjectId, selectedClass, selectedTerm, selectedYear, subjects, students, studentSubjects, existingResults, user?.name])
 
   useEffect(() => {
     loadBulkData()
   }, [loadBulkData])
+
+  // Auto-select class if the teacher only has one assigned class
+  useEffect(() => {
+    if (isTeacher && teacher?.assignedClasses && teacher.assignedClasses.length === 1 && !selectedClass) {
+      setSelectedClass(teacher.assignedClasses[0])
+    }
+  }, [isTeacher, teacher, selectedClass])
 
   const calculateTotals = (firstCA: number, secondCA: number, exam: number) => {
     const total = firstCA + secondCA + exam
@@ -314,7 +357,7 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
 
       {/* Selection Controls */}
       <div className="card-lg space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
             <label htmlFor="bulk-subject-select" className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
               Subject *
@@ -335,6 +378,27 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
                   </option>
                 );
               })}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="bulk-class-select" className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
+              Class *
+            </label>
+            <select
+              id="bulk-class-select"
+              value={selectedClass}
+              onChange={(e) => setSelectedClass(e.target.value)}
+              className="input-field"
+              aria-label="Select a class"
+            >
+              <option value="">Select a class...</option>
+              {/* For teachers, show only their assigned classes; for admins show all */}
+              {(isTeacher && teacher?.assignedClasses && teacher.assignedClasses.length > 0
+                ? teacher.assignedClasses
+                : availableClasses
+              ).map((cls) => (
+                <option key={cls} value={cls}>{cls}</option>
+              ))}
             </select>
           </div>
           <div>
