@@ -60,6 +60,7 @@ export default function Reports() {
     "overview",
   );
   const [selectedClass, setSelectedClass] = useState<string>("");
+  const [selectedArm, setSelectedArm] = useState<string>("All");
   const [classFilter, setClassFilter] = useState<string>("");
   const [selectedStudentId, setSelectedStudentId] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -187,6 +188,10 @@ export default function Reports() {
     if (classFilter) {
       filteredStudents = filteredStudents.filter(s => s.class === classFilter);
     }
+    
+    if (selectedArm !== 'All') {
+      filteredStudents = filteredStudents.filter(s => s.arm === selectedArm);
+    }
 
     return filteredStudents
       .map((student) => {
@@ -216,7 +221,10 @@ export default function Reports() {
   const broadsheetData = useMemo(() => {
     if (reportType !== "broadsheet" || !selectedClass) return null;
 
-    const classStudents = students.filter(s => s.class === selectedClass);
+    const isSSS = selectedClass.startsWith('SSS') || selectedClass.startsWith('SS');
+    const classStudents = students.filter(s => 
+      s.class === selectedClass && (selectedArm === 'All' || !isSSS || s.arm === selectedArm)
+    );
     const classStudentIds = new Set(classStudents.map(s => s.id));
     
     // Filter results for students in this class
@@ -1007,6 +1015,22 @@ export default function Reports() {
               })()}
             </select>
           </div>
+
+          {/* Arm Filter */}
+          {((reportType === "broadsheet" ? selectedClass : classFilter).startsWith('SSS') || (reportType === "broadsheet" ? selectedClass : classFilter).startsWith('SS')) && (
+            <div className="relative w-full sm:w-48">
+              <select
+                value={selectedArm}
+                onChange={(e) => setSelectedArm(e.target.value)}
+                className="input-field pl-4 border-2 border-indigo-100 dark:border-indigo-900/30 focus:border-indigo-500"
+              >
+                <option value="All">All Departments</option>
+                <option value="Science">Science</option>
+                <option value="Art">Art</option>
+                <option value="Commercial">Commerce</option>
+              </select>
+            </div>
+          )}
         </div>
       </motion.div>
 

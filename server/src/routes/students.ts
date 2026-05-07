@@ -47,6 +47,7 @@ const mapStudent = (s: any) => ({
   parentPassword: s.parent_password,
   address: s.address,
   image: s.image,
+  arm: s.arm,
   enrollmentDate: s.enrollment_date,
   createdAt: s.created_at
 })
@@ -69,6 +70,7 @@ const mapToDB = (s: any) => {
     parent_password: s.parentPassword,
     address: s.address,
     image: s.image,
+    arm: s.arm,
     enrollment_date: s.enrollmentDate
   }
 

@@ -45,6 +45,7 @@ export default function StudentForm({
       image: '',
       parentUsername: '',
       parentPassword: '',
+      arm: '',
       _imageModified: false,
       ...initialData,
     }
@@ -111,6 +112,10 @@ export default function StudentForm({
     if (!formData.class.trim()) newErrors.class = 'Class is required'
     if (!formData.parentName.trim()) newErrors.parentName = 'Parent name is required'
     if (!formData.parentPhone.trim()) newErrors.parentPhone = 'Parent phone is required'
+    
+    if (formData.level === 'Secondary' && (formData.class.toUpperCase().startsWith('SSS') || formData.class.toUpperCase().startsWith('SS'))) {
+      if (!formData.arm) newErrors.arm = 'Department is required for SSS students'
+    }
 
     if (!formData.dateOfBirth) {
       newErrors.dateOfBirth = 'Date of birth is required'
@@ -500,6 +505,32 @@ export default function StudentForm({
                 <p className="text-red-500 text-sm mt-1 font-semibold">{errors.class}</p>
               )}
             </div>
+
+            {/* Department/Arm selector for SSS students */}
+            {formData.level === 'Secondary' && (formData.class.toUpperCase().startsWith('SSS') || formData.class.toUpperCase().startsWith('SS')) && (
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+              >
+                <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
+                  Department/Stream *
+                </label>
+                <select
+                  name="arm"
+                  value={formData.arm || ''}
+                  onChange={handleChange}
+                  className={`input-field border-2 ${errors.arm ? 'border-red-500' : 'border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500'}`}
+                >
+                  <option value="">Select Department</option>
+                  <option value="Science">Science</option>
+                  <option value="Art">Art</option>
+                  <option value="Commercial">Commerce</option>
+                </select>
+                {errors.arm && (
+                  <p className="text-red-500 text-sm mt-1 font-semibold">{errors.arm}</p>
+                )}
+              </motion.div>
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

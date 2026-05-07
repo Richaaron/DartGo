@@ -427,6 +427,7 @@ export default function StudentManagement() {
     { key: "lastName", label: "Last Name" },
     { key: "level", label: "Level" },
     { key: "class", label: "Class" },
+    { key: "arm", label: "Dept/Arm" },
     { key: "parentUsername", label: "Parent Username" },
     { key: "parentPassword", label: "Parent Password" },
     { key: "status", label: "Status" },

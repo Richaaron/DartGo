@@ -42,6 +42,7 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
   const { user } = useAuthContext()
   const [selectedSubjectId, setSelectedSubjectId] = useState<string>('')
   const [selectedClass, setSelectedClass] = useState<string>('')
+  const [selectedArm, setSelectedArm] = useState<string>('All')
   const [selectedTerm, setSelectedTerm] = useState<string>('First')
   const [selectedYear, setSelectedYear] = useState<string>(new Date().getFullYear().toString())
   const [bulkData, setBulkData] = useState<BulkEntryRow[]>([])
@@ -96,6 +97,10 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
       .map(assignment => {
         const student = students.find(s => s.id === assignment.studentId)
         if (!student || student.class !== selectedClass) return null
+
+        // Filter by arm if class is SSS and arm is selected
+        const isSSSClass = selectedClass.toUpperCase().startsWith('SSS') || selectedClass.toUpperCase().startsWith('SS')
+        if (isSSSClass && selectedArm !== 'All' && student.arm !== selectedArm) return null
 
       // Find existing result for this student, subject, term, year
       const existingResult = existingResults.find(r =>
@@ -156,7 +161,7 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
     // Sort by student name
     rows.sort((a, b) => a.studentName.localeCompare(b.studentName))
     setBulkData(rows)
-  }, [selectedSubjectId, selectedClass, selectedTerm, selectedYear, subjects, students, studentSubjects, existingResults, user?.name])
+  }, [selectedSubjectId, selectedClass, selectedArm, selectedTerm, selectedYear, subjects, students, studentSubjects, existingResults, user?.name])
 
   useEffect(() => {
     loadBulkData()
@@ -314,7 +319,7 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
 
       {/* Selection Controls */}
       <div className="card-lg space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           <div>
             <label htmlFor="bulk-subject-select" className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
               Subject *
@@ -332,6 +337,43 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
                   {subject.name} ({subject.code})
                 </option>
               ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="bulk-class-select" className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
+              Class *
+            </label>
+            <select
+              id="bulk-class-select"
+              value={selectedClass}
+              onChange={(e) => setSelectedClass(e.target.value)}
+              className="input-field"
+              aria-label="Select class"
+            >
+              <option value="">Select a class...</option>
+              {availableClasses.map((className) => (
+                <option key={className} value={className}>
+                  {className}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="bulk-arm-select" className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
+              Department/Arm
+            </label>
+            <select
+              id="bulk-arm-select"
+              value={selectedArm}
+              onChange={(e) => setSelectedArm(e.target.value)}
+              disabled={!(selectedClass && (selectedClass.toUpperCase().startsWith('SSS') || selectedClass.toUpperCase().startsWith('SS')))}
+              className="input-field disabled:opacity-50"
+              aria-label="Select arm"
+            >
+              <option value="All">All Departments</option>
+              <option value="Science">Science</option>
+              <option value="Art">Art</option>
+              <option value="Commercial">Commerce</option>
             </select>
           </div>
           <div>

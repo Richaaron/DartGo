@@ -33,6 +33,7 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
   const [debouncedFilterTerm, setDebouncedFilterTerm] = useState('')
   const [selectedTerm, setSelectedTerm] = useState<string>('All')
   const [selectedClass, setSelectedClass] = useState<string>('All')
+  const [selectedArm, setSelectedArm] = useState<string>('All')
   const [selectedSubject, setSelectedSubject] = useState<string>('All')
   const [isLoading, setIsLoading] = useState(true)
   const [message, setMessage] = useState({ type: '', text: '' })
@@ -279,8 +280,9 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
         student.registrationNumber.toLowerCase().includes(debouncedFilterTerm.toLowerCase())
       
       const matchesClass = selectedClass === 'All' || student.class === selectedClass
+      const matchesArm = selectedArm === 'All' || student.arm === selectedArm
       
-      return matchesSearch && matchesClass
+      return matchesSearch && matchesClass && matchesArm
     }).sort((a, b) => `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`))
   }, [students, debouncedFilterTerm, selectedClass])
 
@@ -307,9 +309,10 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
       
       const matchesTerm = selectedTerm === 'All' || item.term === selectedTerm
       const matchesClass = selectedClass === 'All' || student.class === selectedClass
+      const matchesArm = selectedArm === 'All' || student.arm === selectedArm
       const matchesSubject = selectedSubject === 'All' || item.subjectId === selectedSubject
 
-      return matchesSearch && matchesTerm && matchesClass && matchesSubject
+      return matchesSearch && matchesTerm && matchesClass && matchesArm && matchesSubject
     })
 
     // Sort by student name then by subject name to ensure grouping works
@@ -659,6 +662,22 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
                   {className}
                 </option>
               ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="list-arm-filter" className="block text-sm font-black text-school-blue dark:text-school-yellow mb-2 uppercase tracking-widest">Dept/Arm</label>
+            <select
+              id="list-arm-filter"
+              value={selectedArm}
+              onChange={(e) => setSelectedArm(e.target.value)}
+              disabled={!(selectedClass.startsWith('SSS') || selectedClass.startsWith('SS')) && selectedClass !== 'All'}
+              className="input-field disabled:opacity-50"
+              aria-label="Filter by arm"
+            >
+              <option value="All">All Departments</option>
+              <option value="Science">Science</option>
+              <option value="Art">Art</option>
+              <option value="Commercial">Commerce</option>
             </select>
           </div>
           <div>
