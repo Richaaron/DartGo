@@ -200,75 +200,93 @@ export interface AuthSession {
 }
 
 export const DEFAULT_SUBJECTS: Subject[] = [
-  // Pre-Nursery Subjects (8 subjects)
-  { id: 'pre-1', name: 'Mathematics', code: 'MTH', level: 'Primary', creditUnits: 2 },
-  { id: 'pre-2', name: 'English Language', code: 'ENG', level: 'Pre-Nursery', creditUnits: 1 },
-  { id: 'pre-3', name: 'Social Habits', code: 'SOH', level: 'Pre-Nursery', creditUnits: 1 },
-  { id: 'pre-4', name: 'Health Habits', code: 'HHB', level: 'Pre-Nursery', creditUnits: 1 },
-  { id: 'pre-5', name: 'Rhymes', code: 'RHM', level: 'Pre-Nursery', creditUnits: 1 },
-  { id: 'pre-6', name: 'Primary Science', code: 'PSC', level: 'Pre-Nursery', creditUnits: 1 },
-  { id: 'pre-7', name: 'Identification of Numbers', code: 'ION', level: 'Pre-Nursery', creditUnits: 1 },
-  { id: 'pre-8', name: 'Identification of Letters', code: 'IOL', level: 'Pre-Nursery', creditUnits: 1 },
+  // Pre-Nursery & Nursery (7 subjects)
+  ...['Pre-Nursery', 'Nursery'].flatMap(level => [
+    { id: `${level.toLowerCase().substring(0, 3)}-1`, name: 'Mathematics', code: 'MTH', level: level as SchoolLevel, creditUnits: 1 },
+    { id: `${level.toLowerCase().substring(0, 3)}-2`, name: 'English', code: 'ENG', level: level as SchoolLevel, creditUnits: 1 },
+    { id: `${level.toLowerCase().substring(0, 3)}-3`, name: 'Social Habits', code: 'SOH', level: level as SchoolLevel, creditUnits: 1 },
+    { id: `${level.toLowerCase().substring(0, 3)}-4`, name: 'Health Habits', code: 'HHB', level: level as SchoolLevel, creditUnits: 1 },
+    { id: `${level.toLowerCase().substring(0, 3)}-5`, name: 'Rhymes', code: 'RHM', level: level as SchoolLevel, creditUnits: 1 },
+    { id: `${level.toLowerCase().substring(0, 3)}-6`, name: 'Primary Science', code: 'PSC', level: level as SchoolLevel, creditUnits: 1 },
+    { id: `${level.toLowerCase().substring(0, 3)}-7`, name: 'Phonics', code: 'PHN', level: level as SchoolLevel, creditUnits: 1 },
+  ]),
   
-  // Nursery Subjects (8 subjects)
-  { id: 'nur-2', name: 'English Language', code: 'ENG', level: 'Nursery', creditUnits: 2 },
-  { id: 'nur-3', name: 'Social Habits', code: 'SOH', level: 'Nursery', creditUnits: 2 },
-  { id: 'nur-4', name: 'Health Habits', code: 'HHB', level: 'Nursery', creditUnits: 2 },
-  { id: 'nur-5', name: 'Rhymes', code: 'RHM', level: 'Nursery', creditUnits: 2 },
-  { id: 'nur-6', name: 'Primary Science', code: 'PSC', level: 'Nursery', creditUnits: 2 },
-  { id: 'nur-7', name: 'Identification of Numbers', code: 'ION', level: 'Nursery', creditUnits: 2 },
-  { id: 'nur-8', name: 'Identification of Letters', code: 'IOL', level: 'Nursery', creditUnits: 2 },
+  // Primary 1-3 (17 subjects)
+  ...[1, 2, 3].flatMap(p => [
+    { id: `pri-${p}-1`, name: 'Mathematics', code: 'MTH', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-2`, name: 'English Language', code: 'ENG', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-3`, name: 'National Values', code: 'NVL', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-4`, name: 'Basic Technology', code: 'BTE', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-5`, name: 'Basic Science', code: 'BSC', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-6`, name: 'Physical & Health Education', code: 'PHE', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-7`, name: 'Computer Studies', code: 'CST', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-8`, name: 'Religious Studies', code: 'RES', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-9`, name: 'Phonics', code: 'PHN', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-10`, name: 'Home Economics', code: 'HEC', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-11`, name: 'Literature', code: 'LIT', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-12`, name: 'Vocational Aptitude', code: 'VAP', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-13`, name: 'Writing', code: 'WRT', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-14`, name: 'Creative Arts', code: 'CAR', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-15`, name: 'Verbal Reasoning', code: 'VRR', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-16`, name: 'Quantitative Reasoning', code: 'QTR', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-17`, name: 'Agricultural Science', code: 'AGS', level: 'Primary', creditUnits: 2 },
+  ]),
+
+  // Primary 4-6 (16 subjects - no Writing)
+  ...[4, 5, 6].flatMap(p => [
+    { id: `pri-${p}-1`, name: 'Mathematics', code: 'MTH', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-2`, name: 'English Language', code: 'ENG', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-3`, name: 'National Values', code: 'NVL', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-4`, name: 'Basic Technology', code: 'BTE', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-5`, name: 'Basic Science', code: 'BSC', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-6`, name: 'Physical & Health Education', code: 'PHE', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-7`, name: 'Computer Studies', code: 'CST', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-8`, name: 'Religious Studies', code: 'RES', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-9`, name: 'Phonics', code: 'PHN', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-10`, name: 'Home Economics', code: 'HEC', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-11`, name: 'Literature', code: 'LIT', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-12`, name: 'Vocational Aptitude', code: 'VAP', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-13`, name: 'Creative Arts', code: 'CAR', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-14`, name: 'Verbal Reasoning', code: 'VRR', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-15`, name: 'Quantitative Reasoning', code: 'QTR', level: 'Primary', creditUnits: 2 },
+    { id: `pri-${p}-16`, name: 'Agricultural Science', code: 'AGS', level: 'Primary', creditUnits: 2 },
+  ]),
   
-  // Primary Subjects (15 subjects)
-  { id: 'pri-2', name: 'English Language', code: 'ENG', level: 'Primary', creditUnits: 2 },
-  { id: 'pri-3', name: 'Basic Science', code: 'BSC', level: 'Primary', creditUnits: 2 },
-  { id: 'pri-4', name: 'Basic Technology', code: 'BTE', level: 'Primary', creditUnits: 2 },
-  { id: 'pri-5', name: 'Agricultural Science', code: 'AGS', level: 'Primary', creditUnits: 2 },
-  { id: 'pri-6', name: 'Physical & Health Education', code: 'PHE', level: 'Primary', creditUnits: 2 },
-  { id: 'pri-7', name: 'Vocational Aptitude', code: 'VAP', level: 'Primary', creditUnits: 2 },
-  { id: 'pri-8', name: 'Quantitative Reasoning', code: 'QTR', level: 'Primary', creditUnits: 2 },
-  { id: 'pri-9', name: 'Verbal Reasoning', code: 'VRR', level: 'Primary', creditUnits: 2 },
-  { id: 'pri-10', name: 'Writing', code: 'WRT', level: 'Primary', creditUnits: 2 },
-  { id: 'pri-11', name: 'Creative Arts', code: 'CAR', level: 'Primary', creditUnits: 2 },
-  { id: 'pri-12', name: 'National Values', code: 'NVL', level: 'Primary', creditUnits: 2 },
-  { id: 'pri-13', name: 'Religious Studies', code: 'RES', level: 'Primary', creditUnits: 2 },
-  { id: 'pri-14', name: 'Computer Studies', code: 'CST', level: 'Primary', creditUnits: 2 },
-  { id: 'pri-15', name: 'Phonics', code: 'PHN', level: 'Primary', creditUnits: 2 },
-  { id: 'pri-16', name: 'Literature', code: 'LIT', level: 'Primary', creditUnits: 2 },
-  
-  // Secondary Subjects - Junior Secondary (12 subjects)
+  // Junior Secondary (13 subjects)
   { id: 'jss-1', name: 'Mathematics', code: 'MTH', level: 'Secondary', creditUnits: 2 },
   { id: 'jss-2', name: 'English Language', code: 'ENG', level: 'Secondary', creditUnits: 2 },
-  { id: 'jss-3', name: 'Basic Science', code: 'BSC', level: 'Secondary', creditUnits: 2 },
-  { id: 'jss-4', name: 'Basic Technology', code: 'BTE', level: 'Secondary', creditUnits: 2 },
-  { id: 'jss-5', name: 'Agricultural Science', code: 'AGS', level: 'Secondary', creditUnits: 2 },
-  { id: 'jss-6', name: 'National Values', code: 'NVL', level: 'Secondary', creditUnits: 2 },
-  { id: 'jss-7', name: 'Fine Arts', code: 'FAA', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
-  { id: 'jss-8', name: 'Business Studies', code: 'BUS', level: 'Secondary', creditUnits: 2, subjectCategory: 'Commercial' },
-  { id: 'jss-9', name: 'Physical & Health Education', code: 'PHE', level: 'Secondary', creditUnits: 2 },
-  { id: 'jss-10', name: 'Computer Studies', code: 'CST', level: 'Secondary', creditUnits: 2 },
-  { id: 'jss-11', name: 'Hausa', code: 'HAU', level: 'Secondary', creditUnits: 2 },
+  { id: 'jss-3', name: 'Basic Technology', code: 'BTE', level: 'Secondary', creditUnits: 2 },
+  { id: 'jss-4', name: 'Basic Science', code: 'BSC', level: 'Secondary', creditUnits: 2 },
+  { id: 'jss-5', name: 'Computer Studies', code: 'CST', level: 'Secondary', creditUnits: 2 },
+  { id: 'jss-6', name: 'Religious Studies', code: 'REL', level: 'Secondary', creditUnits: 2 },
+  { id: 'jss-7', name: 'Physical & Health Education', code: 'PHE', level: 'Secondary', creditUnits: 2 },
+  { id: 'jss-8', name: 'Fine Arts', code: 'FAA', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
+  { id: 'jss-9', name: 'Business Studies', code: 'BUS', level: 'Secondary', creditUnits: 2, subjectCategory: 'Commercial' },
+  { id: 'jss-10', name: 'National Values', code: 'NVL', level: 'Secondary', creditUnits: 2 },
+  { id: 'jss-11', name: 'Agricultural Science', code: 'AGS', level: 'Secondary', creditUnits: 2 },
   { id: 'jss-12', name: 'Home Economics', code: 'HEC', level: 'Secondary', creditUnits: 2 },
-  { id: 'jss-13', name: 'Religious Studies', code: 'REL', level: 'Secondary', creditUnits: 2 },
+  { id: 'jss-13', name: 'Hausa', code: 'HAU', level: 'Secondary', creditUnits: 2 },
   
-  // SSS General Subjects (shown to ALL SSS students regardless of arm)
+  // Senior Secondary - Core/General (9 subjects)
   { id: 'ss-g-1', name: 'Mathematics', code: 'MTH', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
   { id: 'ss-g-2', name: 'English Language', code: 'ENG', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
   { id: 'ss-g-3', name: 'Biology', code: 'BIO', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
-  { id: 'ss-g-4', name: 'Civic Education', code: 'CVE', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
-  { id: 'ss-g-5', name: 'Religious Studies', code: 'RES', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
-  { id: 'ss-g-6', name: 'I.C.T', code: 'ICT', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
-  { id: 'ss-g-7', name: 'Geography', code: 'GEO', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
-  { id: 'ss-g-8', name: 'Economics', code: 'ECO', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
-  { id: 'ss-g-9', name: 'Marketing', code: 'MKT', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
-  { id: 'ss-g-10', name: 'Agricultural Science', code: 'AGS', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
-  // SSS Science Arm Core Subjects
-  { id: 'ss-sci-1', name: 'Physics', code: 'PHY', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
-  { id: 'ss-sci-2', name: 'Chemistry', code: 'CHM', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
-  // SSS Art Arm Core Subjects
+  { id: 'ss-g-4', name: 'Geography', code: 'GEO', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
+  { id: 'ss-g-5', name: 'Agricultural Science', code: 'AGS', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
+  { id: 'ss-g-6', name: 'Civic Education', code: 'CVE', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
+  { id: 'ss-g-7', name: 'Marketing', code: 'MKT', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
+  { id: 'ss-g-8', name: 'ICT', code: 'ICT', level: 'Secondary', creditUnits: 2, subjectCategory: 'General' },
+  { id: 'ss-g-9', name: 'Economics', code: 'ECO', level: 'Secondary', creditUnits: 3, subjectCategory: 'General' },
+  
+  // SSS Science Arm Core
+  { id: 'ss-sci-1', name: 'Chemistry', code: 'CHM', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
+  { id: 'ss-sci-2', name: 'Physics', code: 'PHY', level: 'Secondary', creditUnits: 3, subjectCategory: 'Science' },
+  
+  // SSS Art Arm Core
   { id: 'ss-art-1', name: 'Government', code: 'GOV', level: 'Secondary', creditUnits: 2, subjectCategory: 'Art' },
-  { id: 'ss-art-2', name: 'Literature in English', code: 'LIT', level: 'Secondary', creditUnits: 3, subjectCategory: 'Art' },
-  // SSS Commercial Arm Core Subjects
+  { id: 'ss-art-2', name: 'Literature In English', code: 'LIT', level: 'Secondary', creditUnits: 3, subjectCategory: 'Art' },
+  
+  // SSS Commerce Arm Core
   { id: 'ss-com-1', name: 'Accounting', code: 'ACC', level: 'Secondary', creditUnits: 3, subjectCategory: 'Commercial' },
   { id: 'ss-com-2', name: 'Commerce', code: 'COM', level: 'Secondary', creditUnits: 2, subjectCategory: 'Commercial' },
 ]
