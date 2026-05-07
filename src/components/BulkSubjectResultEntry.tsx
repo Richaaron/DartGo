@@ -88,7 +88,14 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
     if (!isTeacher || !teacher) {
       baseClasses = Array.from(new Set([...ALL_STANDARD_CLASSES, ...availableClasses]))
     } else {
-      const isPureFormTeacher = teacher.teacherType === 'Form Teacher'
+      // A teacher is "Pure Form" only if they DON'T have specific assigned subjects.
+      // If they have subjects, they are acting as a Subject Teacher and need 
+      // access to every class that takes those subjects.
+      const hasSubjects = (teacher.subject && teacher.subject !== 'None') || 
+                          (teacher.assignedSubjects && teacher.assignedSubjects.length > 0);
+      
+      const isPureFormTeacher = teacher.teacherType === 'Form Teacher' && !hasSubjects;
+
       if (isPureFormTeacher && teacher.assignedClasses && teacher.assignedClasses.length > 0) {
         baseClasses = teacher.assignedClasses
       } else if (teacher.level === 'Secondary') {
