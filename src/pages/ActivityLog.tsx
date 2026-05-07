@@ -14,8 +14,7 @@ export default function ActivityLog() {
             Activity <span className="text-blue-600 dark:text-blue-400">Log</span>
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-            Every action your teachers take is recorded here and emailed to{' '}
-            <span className="font-semibold text-blue-600 dark:text-blue-400">folushovictoryschool@gmail.com</span>
+            Every action your teachers take is recorded here for administrative oversight and quality assurance.
           </p>
         </div>
       </div>

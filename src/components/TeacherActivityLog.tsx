@@ -397,10 +397,7 @@ export default function TeacherActivityLog() {
             Showing {filteredActivities.length} of {activities.length}{" "}
             activities
           </p>
-          <p className="text-[10px] text-gray-400 italic">
-            All teacher actions are emailed to folushovictoryschool@gmail.com in
-            real time
-          </p>
+
         </div>
       )}
     </div>
