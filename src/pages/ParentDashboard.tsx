@@ -46,7 +46,7 @@ export default function ParentDashboard() {
   }, [students, parent.studentId])
 
   const childResults = useMemo(() => {
-    return subjectResults.filter(r => r.studentId === parent.studentId)
+    return subjectResults.filter(r => r.studentId === parent.studentId && r.status === 'RELEASED')
   }, [subjectResults, parent.studentId])
 
   const stats = useMemo(() => {

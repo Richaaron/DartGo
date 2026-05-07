@@ -1,3 +1,4 @@
+import '../src/utils/env-loader.js'
 import { supabase } from '../src/config/supabase.js'
 import bcrypt from 'bcryptjs'
 

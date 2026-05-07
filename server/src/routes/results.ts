@@ -86,13 +86,20 @@ const mapToDB = (r: any) => {
   }
 }
 
-router.get('/', authenticate, async (req, res) => {
+router.get('/', authenticate, async (req: AuthRequest, res) => {
   try {
     const { studentId, classId, term, academicYear } = req.query
+    const user = req.user
+    
     let query = supabase.from('subject_results').select('*')
     
     if (studentId) query = query.eq('student_id', studentId)
     if (classId) query = query.eq('class_id', classId)
+    
+    // Security: Parents can only see released results
+    if (user?.role === 'Parent') {
+      query = query.eq('status', 'RELEASED')
+    }
     
     if (term) {
       const termMap: Record<string, number> = { 'First': 1, 'Second': 2, 'Third': 3 }
@@ -258,6 +265,123 @@ router.get('/student/:studentId', authenticate, async (req, res) => {
     res.json(data?.map(mapResult) || [])
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch student results' })
+  }
+})
+
+// PATCH /release — Form/Hybrid teachers release results for selected students
+router.patch('/release', authenticate, authorize(['Admin', 'Teacher']), async (req: AuthRequest, res) => {
+  try {
+    const { studentIds, term, academicYear } = req.body as {
+      studentIds: string[]
+      term: string
+      academicYear: string
+    }
+
+    if (!Array.isArray(studentIds) || studentIds.length === 0) {
+      return res.status(400).json({ error: 'studentIds must be a non-empty array' })
+    }
+
+    if (!term || !academicYear) {
+      return res.status(400).json({ error: 'term and academicYear are required' })
+    }
+
+    // Map string term to integer for DB
+    const termMap: Record<string, number> = { 'First': 1, 'Second': 2, 'Third': 3 }
+    const termInt = termMap[term] || (isNaN(Number(term)) ? 1 : Number(term))
+
+    // Verify teacher authorization
+    const user = req.user
+    if (user?.role === 'Teacher') {
+      const { data: teacher } = await supabase
+        .from('teachers')
+        .select('teacher_type, assigned_classes')
+        .eq('id', user.id)
+        .single()
+
+      const teacherType = teacher?.teacher_type || ''
+      const isFormTeacher = teacherType === 'Form Teacher' || teacherType === 'Form + Subject Teacher'
+
+      if (!isFormTeacher) {
+        return res.status(403).json({ error: 'Only Form Teachers and Hybrid Teachers can release results' })
+      }
+    }
+
+    const { data, error } = await supabase
+      .from('subject_results')
+      .update({ status: 'RELEASED', updated_at: new Date().toISOString() })
+      .in('student_id', studentIds)
+      .eq('term', termInt)
+      .eq('academic_year', academicYear)
+      .select()
+
+    if (error) throw error
+
+    console.log(`[RESULTS] Released results for ${studentIds.length} student(s) — Term ${termInt}, Year ${academicYear}`)
+    res.json({
+      message: `Results released successfully for ${studentIds.length} student(s)`,
+      updated: data?.length || 0
+    })
+  } catch (error: any) {
+    console.error('[RESULTS] Release error:', error)
+    res.status(500).json({ error: error.message || 'Failed to release results' })
+  }
+})
+
+// PATCH /unrelease — Form/Hybrid teachers revert results back to DRAFT
+router.patch('/unrelease', authenticate, authorize(['Admin', 'Teacher']), async (req: AuthRequest, res) => {
+  try {
+    const { studentIds, term, academicYear } = req.body as {
+      studentIds: string[]
+      term: string
+      academicYear: string
+    }
+
+    if (!Array.isArray(studentIds) || studentIds.length === 0) {
+      return res.status(400).json({ error: 'studentIds must be a non-empty array' })
+    }
+
+    if (!term || !academicYear) {
+      return res.status(400).json({ error: 'term and academicYear are required' })
+    }
+
+    const termMap: Record<string, number> = { 'First': 1, 'Second': 2, 'Third': 3 }
+    const termInt = termMap[term] || (isNaN(Number(term)) ? 1 : Number(term))
+
+    // Verify teacher authorization
+    const user = req.user
+    if (user?.role === 'Teacher') {
+      const { data: teacher } = await supabase
+        .from('teachers')
+        .select('teacher_type')
+        .eq('id', user.id)
+        .single()
+
+      const teacherType = teacher?.teacher_type || ''
+      const isFormTeacher = teacherType === 'Form Teacher' || teacherType === 'Form + Subject Teacher'
+
+      if (!isFormTeacher) {
+        return res.status(403).json({ error: 'Only Form Teachers and Hybrid Teachers can manage result releases' })
+      }
+    }
+
+    const { data, error } = await supabase
+      .from('subject_results')
+      .update({ status: 'DRAFT', updated_at: new Date().toISOString() })
+      .in('student_id', studentIds)
+      .eq('term', termInt)
+      .eq('academic_year', academicYear)
+      .select()
+
+    if (error) throw error
+
+    console.log(`[RESULTS] Unreleased results for ${studentIds.length} student(s) — Term ${termInt}, Year ${academicYear}`)
+    res.json({
+      message: `Results moved back to draft for ${studentIds.length} student(s)`,
+      updated: data?.length || 0
+    })
+  } catch (error: any) {
+    console.error('[RESULTS] Unrelease error:', error)
+    res.status(500).json({ error: error.message || 'Failed to unrelease results' })
   }
 })
 

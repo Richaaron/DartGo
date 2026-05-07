@@ -213,4 +213,14 @@ export async function deleteDeadline(id: string): Promise<void> {
   await apiService.delete(`/deadlines/${id}`)
 }
 
+export async function releaseResults(studentIds: string[], term: string, academicYear: string): Promise<{ message: string; updated: number }> {
+  const { data: result } = await apiService.patch('/results/release', { studentIds, term, academicYear })
+  return result as { message: string; updated: number }
+}
+
+export async function unreleaseResults(studentIds: string[], term: string, academicYear: string): Promise<{ message: string; updated: number }> {
+  const { data: result } = await apiService.patch('/results/unrelease', { studentIds, term, academicYear })
+  return result as { message: string; updated: number }
+}
+
 export default apiService

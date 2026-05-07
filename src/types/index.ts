@@ -64,6 +64,7 @@ export interface SubjectResult {
   recordedBy: string
   position?: number
   positionText?: string
+  status?: 'DRAFT' | 'RELEASED'
 }
 
 export interface ResultsSentTracker {

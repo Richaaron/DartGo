@@ -4,7 +4,8 @@ import { useState, useEffect, useMemo } from 'react'
 const PRIMARY_CLASSES = ['Nursery 1', 'Nursery 2', 'Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6']
 const SECONDARY_CLASSES = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']
 const ALL_CLASSES = [...PRIMARY_CLASSES, ...SECONDARY_CLASSES]
-import { Plus, Trash2, Search, Download, Send, Mail, AlertCircle, CheckCircle2, Clock, BarChart3, X, User, ChevronRight, List } from 'lucide-react'
+import { Plus, Trash2, Search, Download, Send, Mail, AlertCircle, CheckCircle2, Clock, BarChart3, X, User, ChevronRight, List, Unlock, Lock } from 'lucide-react'
+import ReleaseResultsPanel from '../components/ReleaseResultsPanel'
 import { SubjectResult, Student, Subject, ResultsSentTracker, StudentSubject } from '../types'
 import { useAuthContext } from '../context/AuthContext'
 import SubjectResultForm from '../components/SubjectResultForm'
@@ -51,6 +52,7 @@ export default function ResultEntry() {
   // New state for student selection
   const [selectedStudents, setSelectedStudents] = useState<Set<string>>(new Set())
   const [selectAllMode, setSelectAllMode] = useState<'all' | 'none' | 'custom'>('none')
+  const [activeTab, setActiveTab] = useState<'entry' | 'release'>('entry')
   
   // Subject breakdown state
   const [showSubjectBreakdown, setShowSubjectBreakdown] = useState(false)
@@ -616,6 +618,20 @@ export default function ResultEntry() {
     { key: 'grade', label: 'Grade' },
     { key: 'positionText', label: 'Position' },
     { key: 'term', label: 'Term' },
+    { 
+      key: 'status', 
+      label: 'Status',
+      render: (value: string) => (
+        <span className={`flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full ${
+          value === 'RELEASED' 
+            ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' 
+            : 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400'
+        }`}>
+          {value === 'RELEASED' ? <Unlock size={10} /> : <Lock size={10} />}
+          {value || 'DRAFT'}
+        </span>
+      )
+    },
   ]
 
   const handleSendToParent = async (resultId: string) => {
@@ -953,28 +969,40 @@ export default function ResultEntry() {
           <div className="flex gap-4 items-center">
             <div className="flex bg-slate-100 dark:bg-brand-800 p-1 rounded-xl border border-slate-200 dark:border-brand-700">
               <button
-                onClick={() => setViewMode('students')}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-black transition-all ${
-                  viewMode === 'students' 
+                  viewMode === 'students' && activeTab === 'entry'
                     ? 'bg-white dark:bg-brand-700 text-indigo-600 dark:text-indigo-400 shadow-sm' 
                     : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
                 }`}
+                onClick={() => { setViewMode('students'); setActiveTab('entry') }}
               >
                 <User size={18} />
                 STUDENT VIEW
               </button>
               <button
-                onClick={() => setViewMode('results')}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-black transition-all ${
-                  viewMode === 'results' 
+                  viewMode === 'results' && activeTab === 'entry'
                     ? 'bg-white dark:bg-brand-700 text-indigo-600 dark:text-indigo-400 shadow-sm' 
                     : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
                 }`}
+                onClick={() => { setViewMode('results'); setActiveTab('entry') }}
               >
                 <List size={18} />
                 RESULT LIST
               </button>
-            </div>
+              {(isFormTeacher || user?.role === 'Admin') && (
+                <button
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-black transition-all ${
+                    activeTab === 'release'
+                      ? 'bg-white dark:bg-brand-700 text-yellow-600 dark:text-yellow-400 shadow-sm' 
+                      : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                  }`}
+                  onClick={() => setActiveTab('release')}
+                >
+                  <Unlock size={18} />
+                  RELEASE RESULTS
+                </button>
+              )}
             <button
               onClick={handleExport}
               className="btn-secondary flex items-center gap-2"
@@ -1014,7 +1042,17 @@ export default function ResultEntry() {
         </div>
       </div>
 
-      {showForm && (
+      {/* Release Results Panel — only shown when release tab is active */}
+      {activeTab === 'release' && (
+        <ReleaseResultsPanel
+          students={students}
+          results={results}
+          onRefresh={loadData}
+        />
+      )}
+
+      {activeTab === 'entry' && (
+        <>
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
             <SubjectResultForm
@@ -1472,6 +1510,8 @@ export default function ResultEntry() {
         </div>
       </div>
 
+        </>
+      )}
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
