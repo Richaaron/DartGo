@@ -118,14 +118,14 @@
 
 /* ── Table ───────────────────────────────── */
 .table-header {
-    @apply px-4 py-3 text-left text-xs font-bold
+    @apply px-3 py-2 text-left text-[10px] font-bold
          text-royal-purple-700 dark:text-royal-gold-400 uppercase tracking-wider
          bg-gradient-to-r from-royal-gold-50 to-royal-purple-50 dark:from-royal-black-800 dark:to-royal-purple-900/30
          border-b-2 border-royal-gold-200 dark:border-royal-purple-700;
 }
 
 .table-cell {
-    @apply px-4 py-3 text-sm text-royal-black-700 dark:text-royal-gold-200
+    @apply px-3 py-1.5 text-[13px] text-royal-black-700 dark:text-royal-gold-200
          border-b border-royal-gold-100 dark:border-royal-purple-700/30
          transition-colors duration-100 hover:bg-royal-gold-50/30 dark:hover:bg-royal-purple-900/20;
 }

@@ -7,7 +7,11 @@ import StudentResultEntryView from '../components/StudentResultEntryView'
 import { createResult, updateResult, fetchStudentSubjects } from '../services/api'
 import { useAuthContext } from '../context/AuthContext'
 import { useLocation } from 'react-router-dom'
-import { getPositionSuffix } from '../utils/calculations'
+import { getPositionSuffix, getStudentClassPosition } from '../utils/calculations'
+import PrintResult from '../components/PrintResult'
+import { Printer, Download } from 'lucide-react'
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
 
 const PRIMARY_CLASSES = ['Nursery 1', 'Nursery 2', 'Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6']
 const SECONDARY_CLASSES = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']
@@ -34,6 +38,8 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
   const [apiError, setApiError] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const searchDebounceTimer = useRef<NodeJS.Timeout | null>(null)
+  const printRef = useRef<HTMLDivElement>(null)
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
 
   const userRole = user?.role || 'Teacher'
   const isTeacher = userRole === 'Teacher'
@@ -282,18 +288,106 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
     })
   }, [offeringStudents, results, students, subjects, debouncedFilterTerm, selectedTerm, selectedClass, selectedSubject, isTeacher])
 
-  // Transform for display in the table with pagination
+
+
+  // NEW: Identify if we are viewing a single student's results
+  const singleStudentResults = useMemo(() => {
+    const studentIds = [...new Set(filteredDisplayData.map(r => r.studentId))]
+    if (studentIds.length === 1 && filteredDisplayData.length > 0) {
+      const student = students.find(s => s.id === studentIds[0])
+      if (!student) return null
+      
+      const classPos = getStudentClassPosition(
+        results,
+        student.id,
+        filteredDisplayData[0].term,
+        filteredDisplayData[0].academicYear
+      )
+
+      return {
+        student,
+        results: filteredDisplayData,
+        classPositionText: classPos.positionText
+      }
+    }
+    return null
+  }, [filteredDisplayData, students, results])
+
+  const handlePrint = () => {
+    const printContent = printRef.current
+    if (!printContent) return
+    
+    const windowToPrint = window.open('', '', 'width=900,height=900')
+    if (!windowToPrint) {
+      window.alert('Please allow popups to print the result.')
+      return
+    }
+    
+    windowToPrint.document.write(`
+      <html>
+        <head>
+          <title>Print Result - ${singleStudentResults?.student?.firstName} ${singleStudentResults?.student?.lastName}</title>
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+            body { font-family: 'Inter', sans-serif; padding: 20px; }
+            table { width: 100%; border-collapse: collapse; }
+            th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: center; }
+            th { background-color: #0f172a; color: #ffffff; text-transform: uppercase; font-size: 10px; letter-spacing: 0.1em; }
+          </style>
+        </head>
+        <body>
+          ${printContent.innerHTML}
+        </body>
+      </html>
+    `)
+    windowToPrint.document.close()
+    windowToPrint.focus()
+    windowToPrint.print()
+    windowToPrint.close()
+  }
+
+  const handleDownloadPDF = async () => {
+    const printContent = printRef.current
+    if (!printContent) return
+
+    try {
+      setIsGeneratingPDF(true)
+      const canvas = await html2canvas(printContent, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff'
+      })
+
+      const imgData = canvas.toDataURL('image/png')
+      const pdf = new jsPDF('p', 'mm', 'a4')
+      const imgProps = pdf.getImageProperties(imgData)
+      const pdfWidth = pdf.internal.pageSize.getWidth()
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
+      pdf.save(`${singleStudentResults?.student?.firstName}_${singleStudentResults?.student?.lastName}_Result_Card.pdf`)
+    } catch (error) {
+      console.error('Failed to generate PDF:', error)
+      window.alert('Failed to generate PDF. Please try printing instead.')
+    } finally {
+      setIsGeneratingPDF(false)
+    }
+  }
+
   const displayResults = useMemo(() => {
-    const transformed = filteredDisplayData.map(item => {
+    const transformed = filteredDisplayData.map((item, index) => {
       const student = students.find(s => s.id === item.studentId)
       const subject = subjects.find(s => s.id === item.subjectId)
       
       return {
         ...item,
-        studentName: student ? `${student.firstName} ${student.lastName}` : 'Unknown Student',
+        studentName: student ? \`\${student.firstName} \${student.lastName}\` : 'Unknown Student',
         class: student ? student.class : 'Unknown Class',
         subjectName: subject ? subject.name : 'Unknown Subject',
-        positionText: item.position ? getPositionSuffix(item.position) : 'N/A'
+        positionText: item.position ? getPositionSuffix(item.position) : 'N/A',
+        // Grouping aid: Hide name if same as previous row student
+        hideName: index > 0 && filteredDisplayData[index - 1].studentId === item.studentId
       }
     })
     
@@ -580,6 +674,51 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
           />
         ) : (
           <div className="card-lg">
+            {/* Action Bar for Single Student */}
+            {singleStudentResults && (
+              <div className="mb-6 p-4 bg-indigo-600/10 border border-indigo-500/20 rounded-xl flex items-center justify-between animate-scaleIn">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center text-white font-black">
+                    {singleStudentResults.student?.firstName[0]}{singleStudentResults.student?.lastName[0]}
+                  </div>
+                  <div>
+                    <h3 className="text-white font-black uppercase tracking-tight">Report for {singleStudentResults.student?.firstName} {singleStudentResults.student?.lastName}</h3>
+                    <p className="text-indigo-300 text-xs font-bold uppercase tracking-widest">{singleStudentResults.results.length} Subjects Recorded</p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    onClick={handlePrint}
+                    className="btn-purple flex items-center gap-2 py-2"
+                  >
+                    <Printer size={16} />
+                    Print
+                  </button>
+                  <button
+                    onClick={handleDownloadPDF}
+                    disabled={isGeneratingPDF}
+                    className="btn-gold flex items-center gap-2 py-2"
+                  >
+                    {isGeneratingPDF ? <Loader2 className="animate-spin" size={16} /> : <Download size={16} />}
+                    {isGeneratingPDF ? 'Generating...' : 'Download PDF'}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Hidden Print Content */}
+            {singleStudentResults && (
+              <div className="hidden">
+                <div ref={printRef}>
+                  <PrintResult 
+                    child={singleStudentResults.student!} 
+                    results={singleStudentResults.results} 
+                    subjects={subjects}
+                    classPositionText={getPositionSuffix(1) /* Placeholder or actual calculation */}
+                  />
+                </div>
+              </div>
+            )}
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
@@ -598,19 +737,23 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                   {displayResults.map((result, index) => (
-                    <tr key={result.id || index} className="hover:bg-brand-50 dark:hover:bg-indigo-900/10 transition-colors">
+                    <tr key={result.id || index} className={`hover:bg-brand-50 dark:hover:bg-indigo-900/10 transition-colors ${result.hideName ? 'border-t-0' : 'border-t'}`}>
                       <td className="table-cell">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-xs">
-                            {result.studentName.split(' ').map((n: string) => n[0]).join('')}
+                        {!result.hideName && (
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-xs">
+                              {result.studentName.split(' ').map((n: string) => n[0]).join('')}
+                            </div>
+                            <div>
+                              <p className="font-bold text-gray-900 dark:text-white leading-none">{result.studentName}</p>
+                              <p className="text-[9px] text-gray-400 uppercase tracking-widest mt-1">Reg: {students.find(s => s.id === result.studentId)?.registrationNumber || 'N/A'}</p>
+                            </div>
                           </div>
-                          <div>
-                            <p className="font-bold text-gray-900 dark:text-white">{result.studentName}</p>
-                            <p className="text-[10px] text-gray-400 uppercase tracking-widest">Reg: {students.find(s => s.id === result.studentId)?.registrationNumber || 'N/A'}</p>
-                          </div>
-                        </div>
+                        )}
                       </td>
-                      <td className="table-cell font-bold">{result.class}</td>
+                      <td className="table-cell font-bold text-xs opacity-60">
+                        {!result.hideName && result.class}
+                      </td>
                       <td className="table-cell">
                         <span className="px-2 py-1 bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded text-xs font-bold border border-indigo-100 dark:border-indigo-800/50">
                           {result.subjectName}
