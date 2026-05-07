@@ -85,11 +85,11 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({
               {config?.schoolName || "FOLUSHO VICTORY SCHOOLS"}
             </h1>
             <p className="text-indigo-600 font-black text-xs uppercase tracking-[0.3em]">
-              Excellence in Learning & Character
+              {config?.motto || "Fountain of Education"}
             </p>
             <p className="text-xs text-gray-400 font-bold mt-2 uppercase tracking-widest">
-              {config?.schoolAddress || "Nigeria"}{" "}
-              | {config?.schoolPhone || ""}
+              {config?.schoolAddress || "C6 Kwasau street, Barnawa, Kaduna"}{" "}
+              | {config?.schoolPhone || "08063020938, 08138115993, 08138594397"}
             </p>
           </div>
         </div>
