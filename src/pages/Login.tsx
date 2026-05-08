@@ -139,17 +139,12 @@ export default function Login({ onLoginSuccess }: LoginProps) {
         >
           {/* Logo */}
           <motion.div 
-            className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-royal-gold-400 to-royal-gold-500 rounded-2xl mb-8 shadow-2xl shadow-royal-gold-500/40"
+            className="inline-flex items-center justify-center w-20 h-20 bg-white rounded-2xl mb-8 shadow-2xl shadow-white/20 p-2"
             animate={{ rotateY: [0, 360] }}
             transition={{ duration: 3, repeat: Infinity }}
             style={{ perspective: '1200px' }}
           >
-            <motion.div
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <GraduationCap className="w-11 h-11 text-royal-purple-700" />
-            </motion.div>
+            <img src="/school_logo.png" alt="Logo" className="w-16 h-16 object-contain" />
           </motion.div>
 
           <h1 className="text-4xl font-bold text-white mb-3 leading-tight animate-fadeInDown">
@@ -213,8 +208,8 @@ export default function Login({ onLoginSuccess }: LoginProps) {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div className="w-12 h-12 bg-gradient-to-br from-royal-purple-600 to-royal-gold-500 rounded-xl flex items-center justify-center shadow-lg">
-              <GraduationCap className="w-7 h-7 text-white" />
+            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg p-1.5">
+              <img src="/school_logo.png" alt="Logo" className="w-9 h-9 object-contain" />
             </div>
             <div>
               <p className="font-bold text-royal-purple-900 dark:text-royal-gold-300 text-base">

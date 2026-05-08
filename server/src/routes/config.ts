@@ -11,7 +11,7 @@ const mapConfig = (c: any) => ({
   currentTerm: c.current_term,
   currentAcademicYear: c.current_academic_year,
   themeColor: c.theme_color,
-  schoolLogo: c.school_logo,
+  schoolLogo: c.school_logo || "/school_logo.png",
   availableClasses: c.available_classes,
   principalName: c.principal_name,
   proprietressName: c.proprietress_name,

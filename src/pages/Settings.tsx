@@ -188,15 +188,11 @@ export default function Settings() {
               </label>
               <div className="flex items-center gap-5">
                 <div className="w-20 h-20 bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl flex items-center justify-center overflow-hidden">
-                  {config.schoolLogo ? (
-                    <img
-                      src={config.schoolLogo}
-                      alt="School Logo"
-                      className="w-full h-full object-contain"
-                    />
-                  ) : (
-                    <ImageIcon className="text-gray-300" size={28} />
-                  )}
+                  <img
+                    src={config.schoolLogo || "/school_logo.png"}
+                    alt="School Logo"
+                    className="w-full h-full object-contain"
+                  />
                 </div>
                 <label className="cursor-pointer bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-4 py-2 rounded-lg font-bold hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-all text-sm">
                   Change Logo

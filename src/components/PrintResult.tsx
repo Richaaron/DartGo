@@ -101,17 +101,11 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({
       {/* School Header */}
       <div className="text-center border-b-4 border-indigo-600 pb-10 mb-10 flex items-center justify-between relative z-10">
         <div className="flex items-center gap-8">
-          {config?.schoolLogo ? (
-            <img
-              src={config.schoolLogo}
-              alt="Logo"
-              className="w-24 h-24 object-contain shadow-lg rounded-2xl p-2 bg-white"
-            />
-          ) : (
-            <div className="w-24 h-24 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-xl">
-              <GraduationCap size={48} />
-            </div>
-          )}
+          <img
+            src={config?.schoolLogo || "/school_logo.png"}
+            alt="Logo"
+            className="w-24 h-24 object-contain shadow-lg rounded-2xl p-2 bg-white"
+          />
           <div className="text-left">
             <h1 className="text-4xl font-black text-gray-900 tracking-tighter uppercase mb-1">
               {config?.schoolName || "FOLUSHO VICTORY SCHOOLS"}

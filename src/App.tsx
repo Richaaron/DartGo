@@ -151,17 +151,11 @@ function AppContent() {
             {showMobileMenu ? <X size={24} /> : <Menu size={24} />}
           </button>
           <div className="flex items-center gap-2">
-            {config?.schoolLogo ? (
-              <img
-                src={config.schoolLogo}
-                alt="Logo"
-                className="w-8 h-8 object-contain rounded-full ring-2 ring-white/20"
-              />
-            ) : (
-              <div className="w-8 h-8 bg-gradient-to-br from-royal-purple-600 to-royal-gold-500 rounded-full flex items-center justify-center text-white shadow-sm">
-                <GraduationCap size={18} />
-              </div>
-            )}
+            <img
+              src={config?.schoolLogo || "/school_logo.png"}
+              alt="Logo"
+              className="w-8 h-8 object-contain rounded-full ring-2 ring-white/20"
+            />
             <span className="text-sm font-semibold text-white">
               {config?.schoolName?.split(" ")[0] || "FOLUSHO"}
             </span>
@@ -203,17 +197,11 @@ function AppContent() {
                 animate={{ opacity: 1, x: 0 }}
                 className="flex items-center gap-3"
               >
-                {config?.schoolLogo ? (
-                  <img
-                    src={config.schoolLogo}
-                    alt="Logo"
-                    className="w-9 h-9 object-contain rounded-lg ring-2 ring-white/10"
-                  />
-                ) : (
-                  <div className="w-9 h-9 bg-gradient-to-br from-royal-purple-600 to-royal-gold-500 rounded-lg flex items-center justify-center text-white shadow-sm">
-                    <GraduationCap size={24} />
-                  </div>
-                )}
+                <img
+                  src={config?.schoolLogo || "/school_logo.png"}
+                  alt="Logo"
+                  className="w-9 h-9 object-contain rounded-lg ring-2 ring-white/10"
+                />
                 <div className="overflow-hidden">
                   <h1 className="text-sm font-bold text-white truncate">
                     {config?.schoolName?.split(" ")[0] || "FOLUSHO"}
