@@ -975,7 +975,6 @@ export default function Reports() {
               </p>
             </div>
           </div>
-          </div>
         </div>
       </motion.div>
     );
