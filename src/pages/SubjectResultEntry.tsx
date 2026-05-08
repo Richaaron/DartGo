@@ -282,9 +282,38 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
       const matchesClass = selectedClass === 'All' || student.class === selectedClass
       const matchesArm = selectedArm === 'All' || student.arm === selectedArm
       
+      // Teacher filter: Only show students in classes they are assigned to
+      // or who take subjects they teach
+      if (isTeacher && teacher) {
+        const isFormClass = teacher.assignedClasses?.includes(student.class);
+        const takesMySubject = allStudentSubjects.some(sa => 
+          sa.studentId === student.id && 
+          teacherSubjects.some(ts => ts.id === sa.subjectId)
+        );
+        if (!isFormClass && !takesMySubject) return false;
+      }
+      
       return matchesSearch && matchesClass && matchesArm
     }).sort((a, b) => `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`))
-  }, [students, debouncedFilterTerm, selectedClass])
+  }, [students, debouncedFilterTerm, selectedClass, isTeacher, teacher, allStudentSubjects, teacherSubjects])
+
+  const availableClasses = useMemo(() => {
+    if (!isTeacher || !teacher) return ALL_CLASSES;
+    
+    const classSet = new Set<string>()
+    teacher.assignedClasses?.forEach(c => classSet.add(c))
+    
+    // Add classes where students take the teacher's subjects
+    allStudentSubjects.forEach(sa => {
+      if (teacherSubjects.some(ts => ts.id === sa.subjectId)) {
+        const student = students.find(s => s.id === sa.studentId)
+        if (student && student.class) classSet.add(student.class)
+      }
+    })
+    
+    if (classSet.size === 0) return [teacher.class].filter(Boolean);
+    return Array.from(classSet).sort();
+  }, [isTeacher, teacher, allStudentSubjects, teacherSubjects, students])
 
   // Simple filtering for the combined list - uses debounced filter for performance
   const filteredDisplayData = useMemo(() => {
@@ -656,8 +685,8 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
               className="input-field"
               aria-label="Filter by class"
             >
-              <option value="All">All Classes</option>
-              {ALL_CLASSES.map((className) => (
+              <option value="All">All {isTeacher ? 'My' : ''} Classes</option>
+              {availableClasses.map((className) => (
                 <option key={className} value={className}>
                   {className}
                 </option>

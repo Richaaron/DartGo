@@ -55,26 +55,69 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
   const teacher = isTeacher ? (user as Teacher) : null
 
   // Get teacher's subjects if available
-  const availableSubjects = useMemo(() => {
-    if (!isTeacher || !teacher) return subjects
-    
-    const assignedNames = new Set<string>()
-    if (teacher.subject) assignedNames.add(teacher.subject)
+    const teacherSubjectNames = new Set<string>()
+    if (teacher.subject) teacherSubjectNames.add(teacher.subject)
     if (teacher.assignedSubjects) {
-      teacher.assignedSubjects.forEach(s => assignedNames.add(s))
+      teacher.assignedSubjects.forEach(s => teacherSubjectNames.add(s))
     }
 
-    return subjects.filter(s => assignedNames.has(s.name) || assignedNames.has(s.id))
+    return subjects.filter(s => {
+      const isAssigned = teacherSubjectNames.has(s.name) || teacherSubjectNames.has(s.id);
+      if (!isAssigned) return false;
+
+      // Extra Guard: If teacher is 'Secondary', don't show 'Primary' or 'Nursery' subjects
+      // even if names match (like 'Mathematics')
+      if (teacher.level === 'Secondary') {
+        return s.id.startsWith('jss-') || s.id.startsWith('ss-') || s.level === 'Secondary';
+      }
+      if (teacher.level === 'Primary') {
+        return s.level === 'Primary';
+      }
+      return true;
+    })
   }, [subjects, isTeacher, teacher])
 
-  // Get all unique classes from students
+  // Get only classes relevant to the teacher's scope
   const availableClasses = useMemo(() => {
     const classSet = new Set<string>()
-    students.forEach(s => {
-      if (s.class) classSet.add(s.class)
+    const teacherAssignedClasses = new Set(teacher?.assignedClasses || [])
+    const teacherSubjectIds = new Set(availableSubjects.map(s => s.id))
+
+    // 1. Add classes where the teacher is a Form Teacher
+    teacherAssignedClasses.forEach(c => classSet.add(c))
+
+    // 2. Add classes that have students registered for subjects the teacher teaches
+    studentSubjects.forEach(sa => {
+      if (teacherSubjectIds.has(sa.subjectId)) {
+        const student = students.find(s => s.id === sa.studentId)
+        if (student && student.class) {
+          classSet.add(student.class)
+        }
+      }
     })
-    return Array.from(classSet).sort()
-  }, [students])
+
+    // If for some reason nothing is found but they are an Admin, show everything
+    if (classSet.size === 0 && !isTeacher) {
+      students.forEach(s => {
+        if (s.class) classSet.add(s.class)
+      })
+    }
+
+    return Array.from(classSet).sort((a, b) => {
+      // Sort Secondary classes properly
+      const getPriority = (c: string) => {
+        if (c.startsWith('SSS')) return 40;
+        if (c.startsWith('JSS')) return 30;
+        if (c.startsWith('Primary')) return 20;
+        if (c.startsWith('Nursery')) return 10;
+        return 0;
+      }
+      const pA = getPriority(a);
+      const pB = getPriority(b);
+      if (pA !== pB) return pB - pA;
+      return a.localeCompare(b);
+    })
+  }, [students, isTeacher, teacher, studentSubjects, availableSubjects])
 
   // Build bulk entry data when subject and class are selected
   const loadBulkData = useCallback(() => {
