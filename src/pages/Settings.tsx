@@ -184,6 +184,20 @@ export default function Settings() {
             </div>
             <div>
               <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                School Motto
+              </label>
+              <input
+                type="text"
+                className="input-field"
+                placeholder="e.g. Fountain of Knowledge"
+                value={config.motto || ""}
+                onChange={(e) =>
+                  setConfig({ ...config, motto: e.target.value })
+                }
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
                 School Logo
               </label>
               <div className="flex items-center gap-5">

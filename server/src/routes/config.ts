@@ -17,6 +17,7 @@ const mapConfig = (c: any) => ({
   proprietressName: c.proprietress_name,
   schoolAddress: c.school_address,
   schoolPhone: c.school_phone,
+  motto: c.motto,
   updatedAt: c.updated_at,
 });
 
@@ -33,6 +34,7 @@ const mapToDB = (c: any) => ({
   proprietress_name: c.proprietressName,
   school_address: c.schoolAddress,
   school_phone: c.schoolPhone,
+  motto: c.motto,
 });
 
 router.get("/", async (req, res) => {

@@ -23,7 +23,7 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({
 }, ref) => {
   const grandTotal = results.reduce((sum, r) => sum + r.totalScore, 0)
   const averageScore = results.length > 0 ? (grandTotal / results.length) : 0
-  const formattedAverage = averageScore.toFixed(1)
+  const formattedAverage = Math.round(averageScore)
 
   const getAutomatedComments = (score: number) => {
     let teacher = "No qualitative feedback provided for this session."
@@ -111,7 +111,7 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({
               {config?.schoolName || "FOLUSHO VICTORY SCHOOLS"}
             </h1>
             <p className="text-indigo-600 font-black text-xs uppercase tracking-[0.3em]">
-              {config?.motto || "Fountain of Education"}
+              {config?.motto || "Fountain of Knowledge"}
             </p>
             <p className="text-xs text-gray-400 font-bold mt-2 uppercase tracking-widest">
               {config?.schoolAddress || "C6 Kwasau street, Barnawa, Kaduna"}{" "}
@@ -268,12 +268,31 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({
           <p className="text-4xl font-black text-indigo-900 tracking-tighter">{grandTotal}</p>
         </div>
         <div className="p-8 bg-emerald-50/50 rounded-[1.5rem] border-2 border-emerald-100/50 text-center">
-          <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-2">Average Score</p>
-          <p className="text-4xl font-black text-emerald-900 tracking-tighter">{formattedAverage}</p>
+          <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-2">Percentage</p>
+          <p className="text-4xl font-black text-emerald-900 tracking-tighter">{formattedAverage}%</p>
         </div>
         <div className="p-8 bg-violet-50/50 rounded-[1.5rem] border-2 border-violet-100/50 text-center">
-          <p className="text-[10px] font-black text-violet-400 uppercase tracking-widest mb-2">Class Position</p>
-          <p className="text-4xl font-black text-violet-900 tracking-tighter">{classPositionText || "N/A"}</p>
+          <p className="text-[10px] font-black text-violet-400 uppercase tracking-widest mb-2">
+            {child.level === "Secondary" && (child.class.startsWith("SSS") || child.class.startsWith("SS")) 
+              ? "Overall Grade" 
+              : "Class Position"}
+          </p>
+          <p className="text-4xl font-black text-violet-900 tracking-tighter">
+            {child.level === "Secondary" && (child.class.startsWith("SSS") || child.class.startsWith("SS")) 
+              ? (() => {
+                  const mean = averageScore;
+                  if (mean >= 80) return "A1";
+                  if (mean >= 75) return "B2";
+                  if (mean >= 70) return "B3";
+                  if (mean >= 65) return "C4";
+                  if (mean >= 60) return "C5";
+                  if (mean >= 55) return "C6";
+                  if (mean >= 50) return "D7";
+                  if (mean >= 45) return "E8";
+                  return "F9";
+                })()
+              : (classPositionText || "N/A")}
+          </p>
         </div>
       </div>
 

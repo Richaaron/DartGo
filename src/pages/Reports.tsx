@@ -130,6 +130,61 @@ export default function Reports() {
     [observations, selectedStudentId],
   );
 
+  const grandTotal = useMemo(() => 
+    studentResults.reduce((sum, r) => sum + (r.totalScore || 0), 0),
+    [studentResults]
+  );
+
+  const meanPercentage = useMemo(() => 
+    studentResults.length > 0
+      ? Math.round(studentResults.reduce((sum, r) => sum + (r.percentage || 0), 0) / studentResults.length)
+      : 0,
+    [studentResults]
+  );
+
+  const classRanking = useMemo(() => {
+    if (!selectedStudent || !selectedStudent.class) return null;
+    
+    // Get all students in the same class
+    const classStudents = students.filter(s => s.class === selectedStudent.class);
+    const classStudentIds = new Set(classStudents.map(s => s.id));
+    
+    // Get results for these students
+    const classResults = results.filter(r => r && r.studentId && classStudentIds.has(r.studentId));
+    
+    // Calculate average for each student
+    const scores = classStudents.map(s => {
+      const sResults = classResults.filter(r => r.studentId === s.id);
+      const avg = sResults.length > 0 
+        ? sResults.reduce((sum, r) => sum + (r.percentage || 0), 0) / sResults.length
+        : 0;
+      return { id: s.id, avg };
+    }).sort((a, b) => b.avg - a.avg);
+
+    const rank = scores.findIndex(s => s.id === selectedStudentId) + 1;
+    
+    // Helper for ordinal suffix
+    const getOrdinal = (n: number) => {
+      const s = ["th", "st", "nd", "rd"];
+      const v = n % 100;
+      return n + (s[(v - 20) % 10] || s[v] || s[0]);
+    };
+
+    return rank > 0 ? getOrdinal(rank) : "N/A";
+  }, [students, results, selectedStudent, selectedStudentId]);
+
+  const overallGrade = useMemo(() => {
+    if (meanPercentage >= 80) return "A1";
+    if (meanPercentage >= 75) return "B2";
+    if (meanPercentage >= 70) return "B3";
+    if (meanPercentage >= 65) return "C4";
+    if (meanPercentage >= 60) return "C5";
+    if (meanPercentage >= 55) return "C6";
+    if (meanPercentage >= 50) return "D7";
+    if (meanPercentage >= 45) return "E8";
+    return "F9";
+  }, [meanPercentage]);
+
   // Find the form teacher assigned to the selected student's class
   const classTeacher = useMemo(() => {
     if (!selectedStudent?.class) return null;
@@ -152,7 +207,30 @@ export default function Reports() {
 
   useEffect(() => {
     if (studentObservation) {
-      setEditObservation(studentObservation);
+      // Map flat DB structure to nested frontend structure if needed
+      if (!studentObservation.affectiveDomain) {
+        setEditObservation({
+          affectiveDomain: {
+            punctuality: studentObservation.punctuality || 3,
+            neatness: studentObservation.neatness || 3,
+            honesty: studentObservation.honesty || 3,
+            leadership: studentObservation.leadership || 3,
+            cooperation: studentObservation.cooperation || 3,
+            selfControl: studentObservation.selfControl || 3,
+          },
+          psychomotorSkills: {
+            handwriting: studentObservation.handwriting || 3,
+            sports: studentObservation.sports || 3,
+            arts: studentObservation.arts || studentObservation.crafts || 3,
+            fluency: studentObservation.fluency || 3,
+          },
+          teacherComment: studentObservation.teacherComment || "",
+          principalComment: studentObservation.principalComment || "",
+          ...studentObservation,
+        });
+      } else {
+        setEditObservation(studentObservation);
+      }
     } else {
       setEditObservation({
         affectiveDomain: {
@@ -290,12 +368,20 @@ export default function Reports() {
 
   const handleSaveObservation = async () => {
     try {
-      const saved = await saveObservation({
-        ...editObservation,
+      // Flatten the data for the API
+      const flatData = {
         studentId: selectedStudentId,
         term: config?.currentTerm || "2nd Term",
         academicYear: config?.currentAcademicYear || "2023/2024",
-      });
+        teacherComment: editObservation.teacherComment,
+        principalComment: editObservation.principalComment,
+        ...editObservation.affectiveDomain,
+        ...editObservation.psychomotorSkills,
+        // Map arts to crafts for the backend if needed
+        crafts: editObservation.psychomotorSkills.arts,
+      };
+
+      const saved = await saveObservation(flatData);
       setObservations((prev) => {
         const index = prev.findIndex((o) => o.studentId === selectedStudentId);
         if (index > -1) {
@@ -527,7 +613,7 @@ export default function Reports() {
                   {config?.schoolName || "FOLUSHO VICTORY SCHOOLS"}
                 </h1>
                 <p className="text-indigo-600 font-black text-xs uppercase tracking-[0.3em]">
-                  Excellence in Learning & Character
+                  {config?.motto || "Fountain of Knowledge"}
                 </p>
                 <p className="text-xs text-gray-400 font-bold mt-2 uppercase tracking-widest">
                   {config?.schoolAddress || "123 Victory Lane, Lagos, Nigeria"}{" "}
@@ -729,37 +815,32 @@ export default function Reports() {
           <div className="grid grid-cols-3 gap-8 mb-16">
             <div className="p-8 bg-indigo-50/50 rounded-[1.5rem] border-2 border-indigo-100/50 text-center group hover:bg-indigo-600 transition-all duration-500">
               <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-2 group-hover:text-indigo-200">
-                Enrolled Units
+                Grand Total
               </p>
               <p className="text-4xl font-black text-indigo-900 tracking-tighter group-hover:text-white">
-                {studentResults.length}
+                {grandTotal}
               </p>
             </div>
             <div className="p-8 bg-emerald-50/50 rounded-[1.5rem] border-2 border-emerald-100/50 text-center group hover:bg-emerald-600 transition-all duration-500">
               <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-2 group-hover:text-emerald-200">
-                Mean Percentage
+                Percentage
               </p>
               <p className="text-4xl font-black text-emerald-900 tracking-tighter group-hover:text-white">
-                {studentResults.length > 0
-                  ? Math.round(
-                      studentResults.reduce((sum, r) => sum + r.percentage, 0) /
-                        studentResults.length,
-                    )
-                  : 0}
-                %
+                {meanPercentage}%
               </p>
             </div>
             <div className="p-8 bg-violet-50/50 rounded-[1.5rem] border-2 border-violet-100/50 text-center group hover:bg-violet-600 transition-all duration-500">
               <p className="text-[10px] font-black text-violet-400 uppercase tracking-widest mb-2 group-hover:text-violet-200">
-                Scholastic Index (GPA)
+                {selectedStudent?.level === "Secondary" && 
+                 (selectedStudent?.class.startsWith("SSS") || selectedStudent?.class.startsWith("SS")) 
+                  ? "Overall Grade" 
+                  : "Class Position"}
               </p>
               <p className="text-4xl font-black text-violet-900 tracking-tighter group-hover:text-white">
-                {studentResults.length > 0
-                  ? (
-                      studentResults.reduce((sum, r) => sum + r.gradePoint, 0) /
-                      studentResults.length
-                    ).toFixed(2)
-                  : "0.00"}
+                {selectedStudent?.level === "Secondary" && 
+                 (selectedStudent?.class.startsWith("SSS") || selectedStudent?.class.startsWith("SS")) 
+                  ? overallGrade 
+                  : classRanking}
               </p>
             </div>
           </div>
