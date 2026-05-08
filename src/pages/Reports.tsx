@@ -590,94 +590,121 @@ export default function Reports() {
                   </button>
                 </div>
               </div>
-            </motion.div>
+</motion.div>
           )}
         </AnimatePresence>
 
         <div
-          className="bg-white p-12 rounded-[2rem] shadow-2xl border border-gray-100 print:shadow-none print:border-none relative overflow-hidden"
+          className="bg-white dark:bg-black p-12 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-8 border-double border-royal-gold-500/30 print:shadow-none print:border-8 print:border-royal-gold-500 relative overflow-hidden"
           ref={reportRef}
+          style={{ fontFamily: "'Outfit', sans-serif" }}
         >
-          <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50 opacity-20 rounded-full -mt-32 -mr-32 blur-3xl"></div>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-royal-gold-500/10 rounded-full -mt-48 -mr-48 blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-royal-purple-500/10 rounded-full -mb-48 -ml-48 blur-3xl"></div>
 
           {/* School Header */}
-          <div className="text-center border-b-4 border-indigo-600 pb-10 mb-10 flex items-center justify-between relative z-10">
+          <div className="text-center border-b-8 border-double border-royal-gold-500 pb-12 mb-12 flex items-center justify-between relative z-10">
             <div className="flex items-center gap-8">
               <img
                 src={config?.schoolLogo || "/school_logo.png"}
                 alt="Logo"
-                className="w-24 h-24 object-contain shadow-lg rounded-2xl p-2 bg-white"
+                className="w-28 h-28 object-contain shadow-2xl rounded-3xl p-3 bg-white border-2 border-royal-gold-500"
               />
               <div className="text-left">
-                <h1 className="text-4xl font-black text-gray-900 tracking-tighter uppercase mb-1">
+                <h1 
+                  className="text-5xl font-black text-royal-black-900 dark:text-royal-gold-500 tracking-tight uppercase mb-2"
+                  style={{ fontFamily: "'Cinzel', serif" }}
+                >
                   {config?.schoolName || "FOLUSHO VICTORY SCHOOLS"}
                 </h1>
-                <p className="text-indigo-600 font-black text-xs uppercase tracking-[0.3em]">
+                <p 
+                  className="text-royal-purple-600 dark:text-royal-gold-400 font-black text-sm uppercase tracking-[0.4em]"
+                  style={{ fontFamily: "'Cinzel', serif" }}
+                >
                   {config?.motto || "Fountain of Knowledge"}
                 </p>
-                <p className="text-xs text-gray-400 font-bold mt-2 uppercase tracking-widest">
-                  {config?.schoolAddress || "123 Victory Lane, Lagos, Nigeria"}{" "}
-                  | {config?.schoolPhone || "+234 800 000 0000"}
+                <p className="text-xs text-gray-500 font-bold mt-3 uppercase tracking-widest flex items-center gap-3">
+                  <span className="w-2 h-2 bg-royal-gold-500 rounded-full"></span>
+                  {config?.schoolAddress || "123 Victory Lane, Lagos, Nigeria"}
+                  <span className="w-2 h-2 bg-royal-gold-500 rounded-full"></span>
+                  {config?.schoolPhone || "+234 800 000 0000"}
                 </p>
               </div>
             </div>
             <div className="text-right">
-              <div className="bg-gray-900 text-white px-6 py-3 rounded-2xl shadow-xl inline-block">
-                <p className="text-[10px] font-black uppercase tracking-widest opacity-50 mb-0.5">
-                  Report Status
+              <div className="bg-gradient-to-br from-royal-purple-900 to-black text-white px-8 py-5 rounded-[2rem] shadow-2xl border-2 border-royal-gold-500 relative overflow-hidden group">
+                <div className="absolute inset-0 bg-royal-gold-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <p 
+                  className="text-[10px] font-black uppercase tracking-[0.3em] text-royal-gold-400 mb-1"
+                  style={{ fontFamily: "'Cinzel', serif" }}
+                >
+                  Official Record
                 </p>
-                <p className="text-sm font-black uppercase tracking-tighter">
-                  Official Document
+                <p className="text-lg font-black uppercase tracking-tighter text-white">
+                  Academic Report
                 </p>
               </div>
             </div>
           </div>
 
           {/* Student Info */}
-          <div className="grid grid-cols-2 gap-10 mb-12 bg-gray-50/80 p-8 rounded-[1.5rem] border border-gray-100">
-            <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-12 mb-16 bg-royal-black-900 dark:bg-black/40 p-10 rounded-[2.5rem] border-2 border-royal-gold-500/20 shadow-inner relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-royal-gold-500/5 rotate-45 transform translate-x-16 -translate-y-16"></div>
+            <div className="space-y-6 relative z-10">
               <div>
-                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
-                  Full Name
+                <p 
+                  className="text-[10px] font-black text-royal-gold-500 uppercase tracking-[0.3em] mb-2"
+                  style={{ fontFamily: "'Cinzel', serif" }}
+                >
+                  Learner Identification
                 </p>
-                <p className="text-xl font-black text-gray-900 uppercase tracking-tight">
+                <p 
+                  className="text-3xl font-black text-white uppercase tracking-tight"
+                  style={{ fontFamily: "'Cinzel', serif" }}
+                >
                   {selectedStudent.firstName} {selectedStudent.lastName}
                 </p>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-8">
                 <div>
                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
-                    ID Number
+                    Reg. Number
                   </p>
-                  <p className="text-sm font-black text-gray-900">
+                  <p className="text-md font-black text-royal-gold-400">
                     {selectedStudent.registrationNumber}
                   </p>
                 </div>
                 <div>
                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
-                    Classification
+                    Class Group
                   </p>
-                  <p className="text-sm font-black text-gray-900">
+                  <p className="text-md font-black text-royal-gold-400">
                     {selectedStudent.class}
                   </p>
                 </div>
               </div>
             </div>
-            <div className="space-y-4 text-right">
+            <div className="space-y-6 text-right relative z-10">
               <div>
-                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
-                  Academic Level
+                <p 
+                  className="text-[10px] font-black text-royal-gold-500 uppercase tracking-[0.3em] mb-2"
+                  style={{ fontFamily: "'Cinzel', serif" }}
+                >
+                  Academic Standing
                 </p>
-                <p className="text-xl font-black text-gray-900 uppercase tracking-tight">
+                <p 
+                  className="text-3xl font-black text-white uppercase tracking-tight"
+                  style={{ fontFamily: "'Cinzel', serif" }}
+                >
                   {selectedStudent.level}
                 </p>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-8">
                 <div>
                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
-                    Term
+                    Current Term
                   </p>
-                  <p className="text-sm font-black text-indigo-600 uppercase tracking-widest">
+                  <p className="text-md font-black text-royal-gold-400 uppercase tracking-widest">
                     {config?.currentTerm || "2nd Term"}
                   </p>
                 </div>
@@ -685,7 +712,7 @@ export default function Reports() {
                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
                     Session
                   </p>
-                  <p className="text-sm font-black text-gray-900 uppercase tracking-widest">
+                  <p className="text-md font-black text-royal-gold-400 uppercase tracking-widest">
                     {config?.currentAcademicYear || "2023/2024"}
                   </p>
                 </div>
@@ -694,93 +721,95 @@ export default function Reports() {
           </div>
 
           {/* Results Table */}
-          <div className="rounded-[1.5rem] overflow-hidden border-2 border-gray-100 mb-12 shadow-sm">
+          <div className="overflow-hidden rounded-[2rem] border-2 border-royal-gold-500/20 shadow-2xl mb-16">
             <table className="w-full border-collapse">
               <thead>
-                <tr className="bg-gray-900 text-white">
-                  <th className="p-5 text-left text-[10px] font-black uppercase tracking-widest">
+                <tr className="bg-gradient-to-r from-royal-purple-900 to-royal-black-900 text-white">
+                  <th 
+                    className="px-8 py-6 text-left text-[10px] font-black uppercase tracking-[0.2em] border-b-2 border-royal-gold-500/30"
+                    style={{ fontFamily: "'Cinzel', serif" }}
+                  >
                     Subject
                   </th>
-                  <th className="p-5 text-center text-[10px] font-black uppercase tracking-widest">
-                    CA 1 (20)
+                  <th className="px-6 py-6 text-center text-[10px] font-black uppercase tracking-[0.2em] border-b-2 border-royal-gold-500/30">
+                    CA (40)
                   </th>
-                  <th className="p-5 text-center text-[10px] font-black uppercase tracking-widest">
-                    CA 2 (20)
-                  </th>
-                  <th className="p-5 text-center text-[10px] font-black uppercase tracking-widest">
+                  <th className="px-6 py-6 text-center text-[10px] font-black uppercase tracking-[0.2em] border-b-2 border-royal-gold-500/30">
                     Exam (60)
                   </th>
-                  <th className="p-5 text-center text-[10px] font-black uppercase tracking-widest">
-                    Total
+                  <th className="px-6 py-6 text-center text-[10px] font-black uppercase tracking-[0.2em] border-b-2 border-royal-gold-500/30">
+                    Total (100)
                   </th>
-                  <th className="p-5 text-center text-[10px] font-black uppercase tracking-widest">
+                  <th className="px-6 py-6 text-center text-[10px] font-black uppercase tracking-[0.2em] border-b-2 border-royal-gold-500/30">
                     Grade
                   </th>
-                  <th className="p-5 text-left text-[10px] font-black uppercase tracking-widest">
-                    Remark
+                  <th className="px-8 py-6 text-center text-[10px] font-black uppercase tracking-[0.2em] border-b-2 border-royal-gold-500/30">
+                    Comment
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
-                {studentResults.map((r) => {
-                  const subject = subjects.find((s) => s.id === r.subjectId);
-                  return (
-                    <tr
-                      key={r.id}
-                      className="hover:bg-gray-50/50 transition-colors"
-                    >
-                      <td className="p-5 font-black text-gray-900 text-sm tracking-tight">
-                        {subject?.name || "Unknown"}
-                      </td>
-                      <td className="p-5 text-center font-bold text-gray-600">
-                        {r.firstCA}
-                      </td>
-                      <td className="p-5 text-center font-bold text-gray-600">
-                        {r.secondCA}
-                      </td>
-                      <td className="p-5 text-center font-bold text-gray-600">
-                        {r.exam}
-                      </td>
-                      <td className="p-5 text-center font-black text-gray-900">
-                        {r.totalScore}
-                      </td>
-                      <td className="p-5 text-center">
-                        <span
-                          className={`px-3 py-1 rounded-lg font-black text-xs ${
-                            ["A", "B"].includes(r.grade)
-                              ? "bg-emerald-100 text-emerald-700"
-                              : r.grade === "C"
-                                ? "bg-amber-100 text-amber-700"
-                                : "bg-rose-100 text-rose-700"
-                          }`}
-                        >
-                          {r.grade}
-                        </span>
-                      </td>
-                      <td className="p-5 text-xs font-bold italic text-gray-500">
-                        {r.remarks}
-                      </td>
-                    </tr>
-                  );
-                })}
+              <tbody className="divide-y divide-royal-gold-500/10">
+                {studentResults.map((result, idx) => (
+                  <tr
+                    key={idx}
+                    className="hover:bg-royal-gold-50/50 dark:hover:bg-royal-gold-500/5 transition-colors group"
+                  >
+                    <td className="px-8 py-5">
+                      <p className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight group-hover:text-royal-purple-600 dark:group-hover:text-royal-gold-500 transition-colors">
+                        {subjects.find((s) => s.id === result.subjectId)
+                          ?.name || "Unknown"}
+                      </p>
+                    </td>
+                    <td className="px-6 py-5 text-center text-sm font-bold text-gray-600 dark:text-gray-400">
+                      {result.caScore}
+                    </td>
+                    <td className="px-6 py-5 text-center text-sm font-bold text-gray-600 dark:text-gray-400">
+                      {result.examScore}
+                    </td>
+                    <td className="px-6 py-5 text-center">
+                      <span className="text-md font-black text-royal-purple-900 dark:text-royal-gold-500">
+                        {result.totalScore}
+                      </span>
+                    </td>
+                    <td className="px-6 py-5 text-center">
+                      <span
+                        className={`inline-flex items-center justify-center w-10 h-10 rounded-full text-xs font-black border-2 ${
+                          result.grade === "A1"
+                            ? "bg-royal-gold-500 text-white border-royal-gold-600"
+                            : "bg-royal-purple-50 text-royal-purple-600 border-royal-purple-200"
+                        }`}
+                      >
+                        {result.grade}
+                      </span>
+                    </td>
+                    <td className="px-8 py-5 text-center">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                        {result.comment}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
 
           {/* Behavioral and Psychomotor Sections */}
-          <div className="grid grid-cols-2 gap-16 mb-16">
-            <div className="space-y-6">
-              <h3 className="font-black text-indigo-600 text-[10px] uppercase tracking-[0.3em] pb-3 border-b-2 border-indigo-50">
+          <div className="grid grid-cols-2 gap-20 mb-20">
+            <div className="space-y-8">
+              <h3 
+                className="font-black text-royal-purple-900 dark:text-royal-gold-500 text-[10px] uppercase tracking-[0.4em] pb-4 border-b-4 border-royal-gold-500/20"
+                style={{ fontFamily: "'Cinzel', serif" }}
+              >
                 Affective Domain
               </h3>
-              <div className="space-y-4">
+              <div className="space-y-5">
                 {Object.entries(editObservation.affectiveDomain).map(
                   ([key, val]: [string, any]) => (
                     <div
                       key={key}
-                      className="flex justify-between items-center group"
+                      className="flex justify-between items-center group bg-royal-gold-50/30 dark:bg-royal-gold-500/5 p-3 rounded-2xl border border-transparent hover:border-royal-gold-500/30 transition-all"
                     >
-                      <span className="text-xs text-gray-500 font-black tracking-widest group-hover:text-gray-900 transition-colors capitalize">
+                      <span className="text-xs text-gray-600 dark:text-gray-400 font-black tracking-widest group-hover:text-royal-purple-900 dark:group-hover:text-royal-gold-500 transition-colors capitalize">
                         {key.replace(/([A-Z])/g, " $1")}
                       </span>
                       {renderRating(val)}
@@ -789,18 +818,21 @@ export default function Reports() {
                 )}
               </div>
             </div>
-            <div className="space-y-6">
-              <h3 className="font-black text-indigo-600 text-[10px] uppercase tracking-[0.3em] pb-3 border-b-2 border-indigo-50">
+            <div className="space-y-8">
+              <h3 
+                className="font-black text-royal-purple-900 dark:text-royal-gold-500 text-[10px] uppercase tracking-[0.4em] pb-4 border-b-4 border-royal-gold-500/20"
+                style={{ fontFamily: "'Cinzel', serif" }}
+              >
                 Psychomotor Skills
               </h3>
-              <div className="space-y-4">
+              <div className="space-y-5">
                 {Object.entries(editObservation.psychomotorSkills).map(
                   ([key, val]: [string, any]) => (
                     <div
                       key={key}
-                      className="flex justify-between items-center group"
+                      className="flex justify-between items-center group bg-royal-gold-50/30 dark:bg-royal-gold-500/5 p-3 rounded-2xl border border-transparent hover:border-royal-gold-500/30 transition-all"
                     >
-                      <span className="text-xs text-gray-500 font-black tracking-widest group-hover:text-gray-900 transition-colors capitalize">
+                      <span className="text-xs text-gray-600 dark:text-gray-400 font-black tracking-widest group-hover:text-royal-purple-900 dark:group-hover:text-royal-gold-500 transition-colors capitalize">
                         {key}
                       </span>
                       {renderRating(val)}
@@ -873,123 +905,76 @@ export default function Reports() {
           </div>
 
           {/* Footer Signatures */}
-          <div className="grid grid-cols-3 gap-8 pt-10 mt-4 border-t-2 border-gray-100">
-            {/* Class Teacher — cursive signature from assigned form teacher */}
+          <div className="grid grid-cols-2 gap-16 pt-12 mt-4 border-t-4 border-double border-royal-gold-500/30">
+            {/* Class Teacher — typed name */}
             <div className="text-center">
-              <div className="h-16 mb-1 flex items-end justify-center overflow-hidden pb-1">
+              <div className="h-20 mb-2 flex items-end justify-center">
                 {classTeacher ? (
                   <span
-                    style={{
-                      fontFamily:
-                        "'Dancing Script', 'Brush Script MT', cursive",
-                      fontSize: "2rem",
-                      fontWeight: 700,
-                      color: "#1e3a8a",
-                      lineHeight: 1,
-                      display: "inline-block",
-                      transform: "rotate(-2.5deg)",
-                      transformOrigin: "bottom center",
-                      letterSpacing: "0.02em",
-                      textShadow: "0.5px 0.5px 0 rgba(30,58,138,0.15)",
-                      whiteSpace: "nowrap",
-                    }}
+                    className="text-xl font-black text-royal-purple-900 dark:text-royal-gold-500 uppercase tracking-tight"
+                    style={{ fontFamily: "'Cinzel', serif" }}
                   >
                     {classTeacher.name}
                   </span>
                 ) : (
-                  <span className="text-[9px] text-gray-300 uppercase tracking-widest border border-dashed border-gray-200 rounded px-3 py-2 select-none">
-                    Sign here
+                  <span className="text-[9px] text-royal-gold-500/50 uppercase tracking-widest border border-dashed border-royal-gold-500/30 rounded-xl px-4 py-3 select-none">
+                    Unassigned
                   </span>
                 )}
               </div>
-              <div className="h-px bg-gray-400 mb-2 w-full" />
-              {classTeacher && (
-                <p className="text-xs font-bold text-gray-700 mb-0.5 tracking-tight">
-                  {classTeacher.name}
-                </p>
-              )}
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
-                Class Teacher
+              <div className="h-0.5 bg-royal-gold-500/40 mb-3 w-full" />
+              <p 
+                className="text-[10px] font-black text-royal-gold-600 uppercase tracking-[0.4em]"
+                style={{ fontFamily: "'Cinzel', serif" }}
+              >
+                Form Teacher
               </p>
             </div>
 
-            {/* Principal — cursive signature */}
+            {/* Principal — script signature */}
             <div className="text-center">
-              <div className="h-16 mb-1 flex items-end justify-center overflow-hidden pb-1">
+              <div className="h-20 mb-2 flex items-end justify-center overflow-hidden pb-1 relative">
+                {/* Decorative Stamp Effect */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
+                   <div className="w-16 h-16 border-4 border-royal-gold-500 rounded-full flex items-center justify-center">
+                      <span className="text-[8px] font-black uppercase text-royal-gold-600 rotate-12">Certified</span>
+                   </div>
+                </div>
                 {config?.principalName ? (
                   <span
                     style={{
-                      fontFamily:
-                        "'Dancing Script', 'Brush Script MT', cursive",
-                      fontSize: "2rem",
-                      fontWeight: 700,
-                      color: "#1e3a8a",
-                      lineHeight: 1,
+                      fontFamily: "'Great Vibes', cursive",
+                      fontSize: "3.2rem",
+                      fontWeight: 400,
+                      color: "#1a1a1a",
+                      lineHeight: 0.8,
                       display: "inline-block",
-                      transform: "rotate(-3deg)",
-                      transformOrigin: "bottom center",
-                      letterSpacing: "0.02em",
-                      textShadow: "0.5px 0.5px 0 rgba(30,58,138,0.15)",
-                      whiteSpace: "nowrap",
+                      transform: "rotate(-2deg)",
+                      textShadow: "2px 2px 4px rgba(0,0,0,0.1)",
                     }}
                   >
                     {config.principalName}
                   </span>
                 ) : (
-                  <span className="text-[9px] text-gray-300 uppercase tracking-widest border border-dashed border-gray-200 rounded px-3 py-2 select-none">
-                    Not set
+                  <span className="text-[9px] text-royal-gold-500/50 uppercase tracking-widest border border-dashed border-royal-gold-500/30 rounded-xl px-4 py-3 select-none">
+                    Office Seal
                   </span>
                 )}
               </div>
-              <div className="h-px bg-gray-400 mb-2 w-full" />
+              <div className="h-0.5 bg-royal-gold-500/40 mb-3 w-full" />
               {config?.principalName && (
-                <p className="text-xs font-bold text-gray-700 mb-0.5 tracking-tight">
+                <p className="text-xs font-black text-royal-black-900 dark:text-white mb-0.5 tracking-tight uppercase">
                   {config.principalName}
                 </p>
               )}
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
-                Principal
+              <p 
+                className="text-[10px] font-black text-royal-gold-600 uppercase tracking-[0.4em]"
+                style={{ fontFamily: "'Cinzel', serif" }}
+              >
+                School Principal
               </p>
             </div>
-
-            {/* Proprietress — cursive signature */}
-            <div className="text-center">
-              <div className="h-16 mb-1 flex items-end justify-center overflow-hidden pb-1">
-                {config?.proprietressName ? (
-                  <span
-                    style={{
-                      fontFamily:
-                        "'Dancing Script', 'Brush Script MT', cursive",
-                      fontSize: "2rem",
-                      fontWeight: 700,
-                      color: "#1e3a8a",
-                      lineHeight: 1,
-                      display: "inline-block",
-                      transform: "rotate(-2deg)",
-                      transformOrigin: "bottom center",
-                      letterSpacing: "0.02em",
-                      textShadow: "0.5px 0.5px 0 rgba(30,58,138,0.15)",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {config.proprietressName}
-                  </span>
-                ) : (
-                  <span className="text-[9px] text-gray-300 uppercase tracking-widest border border-dashed border-gray-200 rounded px-3 py-2 select-none">
-                    Not set
-                  </span>
-                )}
-              </div>
-              <div className="h-px bg-gray-400 mb-2 w-full" />
-              {config?.proprietressName && (
-                <p className="text-xs font-bold text-gray-700 mb-0.5 tracking-tight">
-                  {config.proprietressName}
-                </p>
-              )}
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
-                Proprietress
-              </p>
-            </div>
+          </div>
           </div>
         </div>
       </motion.div>
