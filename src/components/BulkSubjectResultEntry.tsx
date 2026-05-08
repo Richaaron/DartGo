@@ -55,6 +55,9 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
   const teacher = isTeacher ? (user as Teacher) : null
 
   // Get teacher's subjects if available
+  const availableSubjects = useMemo(() => {
+    if (!isTeacher || !teacher) return subjects
+    
     const teacherSubjectNames = new Set<string>()
     if (teacher.subject) teacherSubjectNames.add(teacher.subject)
     if (teacher.assignedSubjects) {
