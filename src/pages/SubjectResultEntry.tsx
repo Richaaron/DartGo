@@ -301,19 +301,33 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
     if (!isTeacher || !teacher) return ALL_CLASSES;
     
     const classSet = new Set<string>()
-    teacher.assignedClasses?.forEach(c => classSet.add(c))
+    const teacherAssignedClasses = teacher.assignedClasses || []
+    const teacherLevel = teacher.level || 'Secondary'
     
-    // Add classes where students take the teacher's subjects
-    allStudentSubjects.forEach(sa => {
-      if (teacherSubjects.some(ts => ts.id === sa.subjectId)) {
-        const student = students.find(s => s.id === sa.studentId)
-        if (student && student.class) classSet.add(student.class)
-      }
-    })
+    // 1. Level-based classes
+    if (teacherLevel === 'Secondary') {
+      ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].forEach(c => classSet.add(c))
+    } else if (teacherLevel === 'Primary') {
+      ['Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6'].forEach(c => classSet.add(c))
+    } else if (teacherLevel === 'Nursery') {
+      ['Nursery 1', 'Nursery 2'].forEach(c => classSet.add(c))
+    }
+    
+    // 2. Add specifically assigned classes (just in case they are cross-level)
+    teacherAssignedClasses.forEach(c => classSet.add(c))
     
     if (classSet.size === 0) return [teacher.class].filter(Boolean);
-    return Array.from(classSet).sort();
-  }, [isTeacher, teacher, allStudentSubjects, teacherSubjects, students])
+    
+    return Array.from(classSet).sort((a, b) => {
+      // Prioritize assigned form classes
+      const isAssignedA = teacherAssignedClasses.includes(a);
+      const isAssignedB = teacherAssignedClasses.includes(b);
+      if (isAssignedA && !isAssignedB) return -1;
+      if (!isAssignedA && isAssignedB) return 1;
+      
+      return a.localeCompare(b);
+    });
+  }, [isTeacher, teacher])
 
   // Simple filtering for the combined list - uses debounced filter for performance
   const filteredDisplayData = useMemo(() => {

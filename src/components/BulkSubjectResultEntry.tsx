@@ -83,21 +83,23 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
   // Get only classes relevant to the teacher's scope
   const availableClasses = useMemo(() => {
     const classSet = new Set<string>()
-    const teacherAssignedClasses = new Set(teacher?.assignedClasses || [])
-    const teacherSubjectIds = new Set(availableSubjects.map(s => s.id))
+    const teacherAssignedClasses = teacher?.assignedClasses || []
+    const teacherLevel = teacher?.level || 'Secondary'
 
-    // 1. Add classes where the teacher is a Form Teacher
+    // 1. If teacher is Secondary, show all JSS and SSS classes
+    if (teacherLevel === 'Secondary') {
+      ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].forEach(c => classSet.add(c))
+    } 
+    // 2. If teacher is Primary, show all Primary classes
+    else if (teacherLevel === 'Primary') {
+      ['Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6'].forEach(c => classSet.add(c))
+    }
+    // 3. If teacher is Nursery, show all Nursery classes
+    else if (teacherLevel === 'Nursery') {
+      ['Nursery 1', 'Nursery 2'].forEach(c => classSet.add(c))
+    }
+    // 4. Fallback: Add classes where the teacher is a Form Teacher (just in case they cross levels)
     teacherAssignedClasses.forEach(c => classSet.add(c))
-
-    // 2. Add classes that have students registered for subjects the teacher teaches
-    studentSubjects.forEach(sa => {
-      if (teacherSubjectIds.has(sa.subjectId)) {
-        const student = students.find(s => s.id === sa.studentId)
-        if (student && student.class) {
-          classSet.add(student.class)
-        }
-      }
-    })
 
     // If for some reason nothing is found but they are an Admin, show everything
     if (classSet.size === 0 && !isTeacher) {
@@ -117,6 +119,13 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
       }
       const pA = getPriority(a);
       const pB = getPriority(b);
+      
+      // If one is an assigned form class, give it highest priority
+      const isAssignedA = teacherAssignedClasses.includes(a);
+      const isAssignedB = teacherAssignedClasses.includes(b);
+      if (isAssignedA && !isAssignedB) return -1;
+      if (!isAssignedA && isAssignedB) return 1;
+
       if (pA !== pB) return pB - pA;
       return a.localeCompare(b);
     })
