@@ -311,14 +311,26 @@ export default function ResultEntry() {
     localStorage.setItem('resultsSentTracker', JSON.stringify(updatedTracker))
   }
 
+  // List of classes available to this user
+  const availableClasses = useMemo(() => {
+    if (!teacher || user?.role === 'Admin') return ALL_CLASSES;
+    return teacher.assignedClasses || [];
+  }, [teacher, user?.role])
+
   const displayStudents = useMemo(() => {
     return students.filter(student => {
+      // Role restrictions for students list
+      if (teacher && user?.role === 'Teacher') {
+        const isAssigned = teacher.assignedClasses?.includes(student.class);
+        if (!isAssigned) return false;
+      }
+
       const matchesSearch = !filterTerm || 
         `${student.firstName} ${student.lastName}`.toLowerCase().includes(filterTerm.toLowerCase())
       const matchesClass = selectedClass === 'All' || student.class === selectedClass
       return matchesSearch && matchesClass
     }).sort((a, b) => `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`))
-  }, [students, filterTerm, selectedClass])
+  }, [students, filterTerm, selectedClass, teacher, user?.role])
 
   const handlePrint = () => { /* Print logic */ }
   const handleDownloadPDF = async () => { /* PDF logic */ }
@@ -414,8 +426,8 @@ export default function ResultEntry() {
                     onChange={(e) => setSelectedClass(e.target.value)}
                     className="input-field py-3 min-w-[200px]"
                   >
-                    <option value="All">All Classes</option>
-                    {ALL_CLASSES.map(cls => <option key={cls} value={cls}>{cls}</option>)}
+                    <option value="All">All {user?.role === 'Teacher' ? 'My' : ''} Classes</option>
+                    {availableClasses.map(cls => <option key={cls} value={cls}>{cls}</option>)}
                   </select>
                 </div>
               </div>
