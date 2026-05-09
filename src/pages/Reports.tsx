@@ -106,7 +106,9 @@ export default function Reports() {
         setObservations(observationsData || []);
         setConfig(configData);
       } catch (error: any) {
-        console.error("Failed to load report data", error);
+        if (error.name !== 'AbortError') {
+          console.error("Failed to load report data", error);
+        }
       } finally {
         setIsLoading(false);
       }

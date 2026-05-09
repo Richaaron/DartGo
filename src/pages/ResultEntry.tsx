@@ -160,8 +160,10 @@ export default function ResultEntry() {
       setObservations(Array.isArray(observationsData) ? observationsData : [])
       setConfig(configData)
       setTeachers(Array.isArray(teachersData) ? teachersData : [])
-    } catch (error) {
-      console.error('Failed to load results data', error)
+    } catch (error: any) {
+      if (error.name !== 'AbortError') {
+        console.error('Failed to load results data', error)
+      }
     }
   }
 

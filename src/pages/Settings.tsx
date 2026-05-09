@@ -33,8 +33,10 @@ export default function Settings() {
       try {
         const data = await fetchConfig();
         setConfig((prev: any) => ({ ...prev, ...data }));
-      } catch (error) {
-        console.error("Failed to load config", error);
+      } catch (error: any) {
+        if (error.name !== 'AbortError') {
+          console.error("Failed to load config", error);
+        }
       } finally {
         setIsLoading(false);
       }

@@ -158,11 +158,13 @@ export default function AttendancePage() {
           setAttendanceRecords(records);
         }
       } catch (error: any) {
-        console.error("Failed to load students:", error);
-        setMessage({
-          type: "error",
-          text: "Failed to load student data, using sample data",
-        });
+        if (error.name !== 'AbortError') {
+          console.error("Failed to load students:", error);
+          setMessage({
+            type: "error",
+            text: "Failed to load student data, using sample data",
+          });
+        }
         setDebugInfo(
           `Error loading students: ${error.message}, using sample data`,
         );
@@ -227,9 +229,11 @@ export default function AttendancePage() {
       await saveBulkAttendance(attendanceData);
       setMessage({ type: "success", text: "Attendance saved successfully!" });
       setTimeout(() => setMessage({ type: "", text: "" }), 3000);
-    } catch (error) {
-      console.error("Failed to save attendance:", error);
-      setMessage({ type: "error", text: "Failed to save attendance" });
+    } catch (error: any) {
+      if (error.name !== 'AbortError') {
+        console.error("Failed to save attendance:", error);
+        setMessage({ type: "error", text: "Failed to save attendance" });
+      }
     } finally {
       setIsSaving(false);
     }

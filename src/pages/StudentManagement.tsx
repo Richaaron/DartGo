@@ -99,7 +99,9 @@ export default function StudentManagement() {
         }
       })
       .catch((error) => {
-        console.error("Failed to load students or subjects", error);
+        if (error.name !== 'AbortError') {
+          console.error("Failed to load students or subjects", error);
+        }
       });
 
     return () => {
@@ -127,8 +129,10 @@ export default function StudentManagement() {
       } else {
         setStudents(safeData);
       }
-    } catch (error) {
-      console.error("Failed to load students", error);
+    } catch (error: any) {
+      if (error.name !== 'AbortError') {
+        console.error("Failed to load students", error);
+      }
       setStudents([]);
     }
   }
@@ -138,8 +142,10 @@ export default function StudentManagement() {
     try {
       const subjects = await fetchStudentSubjects(student.id);
       setStudentSubjects(subjects);
-    } catch (error) {
-      console.error("Failed to load student subjects", error);
+    } catch (error: any) {
+      if (error.name !== 'AbortError') {
+        console.error("Failed to load student subjects", error);
+      }
       setStudentSubjects([]);
     }
     setShowSubjectForm(true);
@@ -340,8 +346,10 @@ export default function StudentManagement() {
     try {
       const subjectAssignments = await fetchStudentSubjects(student.id);
       setStudentSubjects(subjectAssignments);
-    } catch (error) {
-      console.error("Failed to load student subjects", error);
+    } catch (error: any) {
+      if (error.name !== 'AbortError') {
+        console.error("Failed to load student subjects", error);
+      }
       setStudentSubjects([]);
     }
     setShowAdvancedEditor(true);

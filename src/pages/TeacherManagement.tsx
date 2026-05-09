@@ -36,7 +36,9 @@ export default function TeacherManagement() {
         if (isMounted) setTeachers(data);
       })
       .catch((error) => {
-        console.error("Failed to load teachers", error);
+        if (error.name !== 'AbortError') {
+          console.error("Failed to load teachers", error);
+        }
       });
 
     return () => {
@@ -48,8 +50,10 @@ export default function TeacherManagement() {
     try {
       const data = await fetchTeachers();
       setTeachers(data);
-    } catch (error) {
-      console.error("Failed to load teachers", error);
+    } catch (error: any) {
+      if (error.name !== 'AbortError') {
+        console.error("Failed to load teachers", error);
+      }
     }
   }
 

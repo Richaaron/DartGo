@@ -87,8 +87,10 @@ export default function TeacherDashboard() {
             d.status === "ACTIVE" && new Date(d.deadline_date) > new Date(),
         ),
       );
-    } catch (error) {
-      console.error("Failed to load dashboard data", error);
+    } catch (error: any) {
+      if (error.name !== 'AbortError') {
+        console.error("Failed to load dashboard data", error);
+      }
     } finally {
       setIsLoading(false);
     }

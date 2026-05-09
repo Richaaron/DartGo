@@ -116,8 +116,10 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
       setSubjects(Array.isArray(subjectsData) ? subjectsData : [])
       setAllStudentSubjects(Array.isArray(studentSubjectsData) ? studentSubjectsData : [])
     } catch (error: any) {
-      console.error('Failed to load results data', error)
-      setApiError('Failed to load data. Please try again.')
+      if (error.name !== 'AbortError') {
+        console.error('Failed to load results data', error)
+        setApiError('Failed to load data. Please try again.')
+      }
       setStudents([])
       setResults([])
       setSubjects([])

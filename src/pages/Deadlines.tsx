@@ -36,8 +36,10 @@ export default function Deadlines() {
     try {
       const data = await fetchDeadlines();
       setDeadlines(data);
-    } catch (error) {
-      console.error("Failed to load deadlines:", error);
+    } catch (error: any) {
+      if (error.name !== 'AbortError') {
+        console.error("Failed to load deadlines:", error);
+      }
     } finally {
       setIsLoading(false);
     }

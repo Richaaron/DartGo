@@ -86,7 +86,7 @@ async function fetchWithTimeout(url: string, endpoint: string, options: RequestI
       if (isCancelled) throw new DOMException('Request cancelled by user', 'AbortError')
 
       currentController = new AbortController()
-      const timeoutId = setTimeout(() => currentController?.abort(), REQUEST_TIMEOUT)
+      const timeoutId = setTimeout(() => currentController?.abort('Request timeout'), REQUEST_TIMEOUT)
 
       try {
         const headers = {
@@ -157,7 +157,9 @@ async function fetchWithTimeout(url: string, endpoint: string, options: RequestI
       }
       throw new Error(errorData.error || `Request failed with status ${res.status}`)
     } catch (error: any) {
-      console.error(`API Error at ${endpoint}:`, error.message)
+      if (error.name !== 'AbortError') {
+        console.error(`API Error at ${endpoint}:`, error.message)
+      }
       clearTimeout(timeoutId)
       if (isCancelled) throw error
 

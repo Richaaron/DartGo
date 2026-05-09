@@ -34,8 +34,10 @@ export default function ParentDashboard() {
       setStudents(studentsData)
       setSubjectResults(resultsData)
       setSubjects(subjectsData)
-    } catch (error) {
-      console.error('Failed to load dashboard data', error)
+    } catch (error: any) {
+      if (error.name !== 'AbortError') {
+        console.error('Failed to load dashboard data', error)
+      }
     } finally {
       setIsLoading(false)
     }
