@@ -29,12 +29,13 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import StatCard from "../components/StatCard";
 import { Student, SubjectResult } from "../types";
-import { fetchStudents, fetchResults } from "../services/api";
-import apiService from "../services/apiService";
-import { useAuthContext } from "../context/AuthContext";
 import ChatSystem from "../components/ChatSystem";
 import TeacherActivityLog from "../components/TeacherActivityLog";
 import PerformanceInsights from "../components/PerformanceInsights";
+import SubjectMetrics from "../components/SubjectMetrics";
+import { fetchStudents, fetchResults, fetchSubjects } from "../services/api";
+import apiService from "../services/apiService";
+import { useAuthContext } from "../context/AuthContext";
 
 // School-inspired colors for charts
 const COLORS = [
@@ -73,8 +74,10 @@ export default function Dashboard() {
   const { user } = useAuthContext();
   const [students, setStudents] = useState<Student[]>([]);
   const [results, setResults] = useState<SubjectResult[]>([]);
+  const [subjects, setSubjects] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [selectedAnalyticsClass, setSelectedAnalyticsClass] = useState<string>("All");
 
   const userRole = user?.role || "Student";
   const teacher = userRole === "Teacher" ? (user as any) : null;
@@ -115,12 +118,14 @@ export default function Dashboard() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [studentsData, resultsData] = await Promise.all([
+        const [studentsData, resultsData, subjectsData] = await Promise.all([
           fetchStudents(),
           fetchResults(),
+          fetchSubjects(),
         ]);
         setStudents(studentsData);
         setResults(resultsData);
+        setSubjects(subjectsData);
       } catch (error: any) {
         if (error.name !== 'AbortError') {
           console.error("Failed to load dashboard data", error);
@@ -564,6 +569,35 @@ export default function Dashboard() {
           </div>
         </div>
 
+      </motion.div>
+
+      {/* Subject-wise Performance Metrics Section */}
+      <motion.div variants={itemVariants} className="space-y-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">
+            Subject-wise Performance Analytics
+          </h2>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-gray-400 uppercase">Filter Class:</span>
+            <select
+              value={selectedAnalyticsClass}
+              onChange={(e) => setSelectedAnalyticsClass(e.target.value)}
+              className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg px-3 py-1.5 text-xs font-bold text-gray-600 dark:text-gray-300 outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value="All">All Classes</option>
+              {[...new Set(students.map(s => s.class))].filter(Boolean).sort().map(c => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+        
+        <SubjectMetrics 
+          students={students} 
+          results={results} 
+          subjects={subjects} 
+          selectedClass={selectedAnalyticsClass} 
+        />
       </motion.div>
 
       {/* Recent Activity */}
