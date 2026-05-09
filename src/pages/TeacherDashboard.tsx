@@ -22,6 +22,7 @@ import {
 } from "../services/api";
 import ChatSystem from "../components/ChatSystem";
 import PerformanceInsights from "../components/PerformanceInsights";
+import SubjectMetrics from "../components/SubjectMetrics";
 
 export default function TeacherDashboard() {
   const { user } = useAuthContext();
@@ -53,7 +54,7 @@ export default function TeacherDashboard() {
   const [deadlines, setDeadlines] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<
-    "results" | "messages" | "insights"
+    "results" | "messages" | "insights" | "analytics"
   >("results");
   const [selectedClass, setSelectedClass] = useState<string>("All");
   const [selectedSubject, setSelectedSubject] = useState<string>("All");
@@ -349,7 +350,7 @@ export default function TeacherDashboard() {
 
       {/* Tab Navigation */}
       <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-        {(["results", "messages", "insights"] as const).map((tab) => (
+        {(["results", "messages", "insights", "analytics"] as const).map((tab) => (
           <motion.button
             key={tab}
             whileHover={{ scale: 1.05 }}
@@ -363,7 +364,8 @@ export default function TeacherDashboard() {
           >
             {tab === "results" && "Results"}
             {tab === "messages" && "Messages"}
-            {tab === "insights" && "Insights"}
+            {tab === "insights" && "AI Insights"}
+            {tab === "analytics" && "Performance Metrics"}
           </motion.button>
         ))}
       </div>
@@ -414,6 +416,21 @@ export default function TeacherDashboard() {
           animate={{ opacity: 1, y: 0 }}
         >
           <PerformanceInsights />
+        </motion.div>
+      )}
+
+      {/* Analytics Tab */}
+      {activeTab === "analytics" && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <SubjectMetrics 
+            students={students} 
+            results={results} 
+            subjects={subjects} 
+            selectedClass={selectedClass} 
+          />
         </motion.div>
       )}
     </div>
