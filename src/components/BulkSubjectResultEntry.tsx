@@ -71,7 +71,7 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
       // Extra Guard: If teacher is 'Secondary', don't show 'Primary' or 'Nursery' subjects
       // even if names match (like 'Mathematics')
       if (teacher.level === 'Secondary') {
-        return s.id.startsWith('jss-') || s.id.startsWith('ss-') || s.level === 'Secondary';
+        return s.code?.startsWith('JSS-') || s.code?.startsWith('SSS-') || s.level === 'Secondary';
       }
       if (teacher.level === 'Primary') {
         return s.level === 'Primary';

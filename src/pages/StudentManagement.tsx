@@ -673,7 +673,7 @@ export default function StudentManagement() {
                           setBulkAssignArm(arm);
                           // Auto-check the arm-specific subjects; General subjects left unchecked for manual pick
                           const armIds = subjects
-                            .filter(s => s.id.startsWith('ss-') && s.subjectCategory === arm)
+                            .filter(s => (s.code?.startsWith('SSS-') || (s.level === 'Secondary' && s.subjectCategory)) && s.subjectCategory === arm)
                             .map(s => s.id);
                           setBulkAssignSubjects(armIds);
                         }}
@@ -704,7 +704,7 @@ export default function StudentManagement() {
                         </p>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                           {subjects
-                            .filter(s => s.id.startsWith('ss-') && s.subjectCategory === bulkAssignArm)
+                            .filter(s => (s.code?.startsWith('SSS-') || (s.level === 'Secondary' && s.subjectCategory)) && s.subjectCategory === bulkAssignArm)
                             .map(subject => (
                               <label
                                 key={subject.id}
@@ -746,7 +746,7 @@ export default function StudentManagement() {
                         </p>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                           {subjects
-                            .filter(s => s.id.startsWith('ss-') && s.subjectCategory === 'General')
+                            .filter(s => (s.code?.startsWith('SSS-') || (s.level === 'Secondary' && s.subjectCategory)) && s.subjectCategory === 'General')
                             .map(subject => (
                               <label
                                 key={subject.id}
@@ -792,7 +792,12 @@ export default function StudentManagement() {
                               const classLevel = students.find(
                                 (student) => student && student.class === bulkAssignClass,
                               )?.level;
-                              return classLevel && s.level === classLevel && !s.id.startsWith('ss-');
+                              if (!classLevel || s.level !== classLevel) return false;
+                              // Specific rule: Writing is only for P1-3
+                              if (s.name === 'Writing' && (bulkAssignClass.includes('4') || bulkAssignClass.includes('5') || bulkAssignClass.includes('6'))) {
+                                return false;
+                              }
+                              return !(s.code?.startsWith('SSS-') || (s.level === 'Secondary' && s.subjectCategory));
                             })
                             .map((subject) => (
                               <label

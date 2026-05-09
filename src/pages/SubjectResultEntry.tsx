@@ -137,22 +137,25 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
   const filterSubjectsByClass = (subjects: Subject[], className: string): Subject[] => {
     if (className.startsWith('SSS')) {
       // For Senior Secondary classes, ONLY show Senior Secondary subjects
-      // Senior Secondary subjects have IDs starting with 'ss-'
-      return subjects.filter(s => s.id.startsWith('ss-'))
+      return subjects.filter(s => s.code?.startsWith('SSS-') || (s.level === 'Secondary' && s.subjectCategory))
     } else if (className.startsWith('JSS')) {
       // For Junior Secondary classes, ONLY show Junior Secondary subjects
-      // Junior Secondary subjects have IDs starting with 'jss-'
-      return subjects.filter(s => s.id.startsWith('jss-'))
+      return subjects.filter(s => s.code?.startsWith('JSS-') || (s.level === 'Secondary' && !s.subjectCategory))
     }
+    
     // For other levels, filter by level as usual
-    if (className.startsWith('Primary')) {
-      return subjects.filter(s => s.level === 'Primary')
-    } else if (className.startsWith('Nursery')) {
-      return subjects.filter(s => s.level === 'Nursery')
-    } else if (className.startsWith('Pre-Nursery')) {
-      return subjects.filter(s => s.level === 'Pre-Nursery')
-    }
-    return subjects.filter(s => s.level === 'Primary') // Default fallback
+    const level = className.startsWith('Primary') ? 'Primary' : 
+                  className.startsWith('Nursery') ? 'Nursery' : 
+                  className.startsWith('Pre-Nursery') ? 'Pre-Nursery' : 'Primary'
+    
+    return subjects.filter(s => {
+      if (s.level !== level) return false;
+      // Specific rule: Writing is only for P1-3
+      if (s.name === 'Writing' && (className.includes('4') || className.includes('5') || className.includes('6'))) {
+        return false;
+      }
+      return true;
+    })
   }
 
   // Get subjects assigned to the teacher
@@ -736,7 +739,8 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
             >
               <option value="All">All {isTeacher ? 'My' : ''} Subjects</option>
               {teacherSubjects.map((subject) => {
-                const levelLabel = subject.id.startsWith('jss-') ? 'JSS' : subject.id.startsWith('ss-') ? 'SSS' : subject.level;
+                const levelLabel = (subject.code?.startsWith('JSS-') || (subject.level === 'Secondary' && !subject.subjectCategory)) ? 'JSS' : 
+                                  (subject.code?.startsWith('SSS-') || (subject.level === 'Secondary' && subject.subjectCategory)) ? 'SSS' : subject.level;
                 return (
                   <option key={subject.id} value={subject.id}>
                     {subject.name} ({levelLabel})

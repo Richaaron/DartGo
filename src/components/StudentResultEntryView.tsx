@@ -69,19 +69,36 @@ const StudentResultEntryView = memo(function StudentResultEntryView({
 
     // Helper to get exact subjects for the class
     const filterSubjectsByClass = (allSubjects: Subject[], className: string, studentArm?: string): Subject[] => {
-      const isSSSClass = className.toUpperCase().startsWith('SSS')
+      const isSSSClass = className.toUpperCase().startsWith('SSS') || className.toUpperCase().startsWith('SS ');
+      const isJSSClass = className.toUpperCase().startsWith('JSS');
+      
       if (isSSSClass) {
         // SSS students: show General subjects + their arm-specific subjects
         return allSubjects.filter(s =>
-          s.id.startsWith('ss-') && (
+          (s.code?.startsWith('SSS-') || s.level === 'Secondary' && s.subjectCategory) && (
             s.subjectCategory === 'General' ||
             (studentArm && s.subjectCategory === studentArm)
           )
         )
       }
-      if (className.startsWith('JSS')) return allSubjects.filter(s => s.id.startsWith('jss-'))
-      const level = className.startsWith('Primary') ? 'Primary' : className.startsWith('Nursery') ? 'Nursery' : className.startsWith('Pre-Nursery') ? 'Pre-Nursery' : 'Primary'
-      return allSubjects.filter(s => s.level === level)
+      if (isJSSClass) {
+        return allSubjects.filter(s => 
+          (s.code?.startsWith('JSS-') || (s.level === 'Secondary' && !s.subjectCategory))
+        )
+      }
+
+      const level = className.startsWith('Primary') ? 'Primary' : 
+                    className.startsWith('Nursery') ? 'Nursery' : 
+                    className.startsWith('Pre-Nursery') ? 'Pre-Nursery' : 'Primary'
+      
+      return allSubjects.filter(s => {
+        if (s.level !== level) return false;
+        // Specific rule: Writing is only for P1-3
+        if (s.name === 'Writing' && (className.includes('4') || className.includes('5') || className.includes('6'))) {
+          return false;
+        }
+        return true;
+      })
     }
 
     // If no specific subjects found via registration or results, 
