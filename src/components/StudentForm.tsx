@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
-import { X, Upload, User as UserIcon, BookOpen, Search } from 'lucide-react'
+import { X, BookOpen, Search } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Student, Subject } from '../types'
 import { generateParentCredentials } from '../utils/calculations'
@@ -26,8 +26,6 @@ export default function StudentForm({
   lockClass = false,
   availableSubjects = [],
 }: StudentFormProps) {
-  const fileInputRef = useRef<any>(null)
-  
   const [formData, setFormData] = useState<Omit<Student, 'id'> & { id?: string; _imageModified?: boolean }>(() => {
     return {
       firstName: '',
@@ -130,55 +128,6 @@ export default function StudentForm({
     return Object.keys(newErrors).length === 0
   }
 
-  const handleImageChange = (e: ChangeEvent<any>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      // Check file size - limit to 2MB
-      if (file.size > 2 * 1024 * 1024) {
-        alert("Image file is too large. Maximum size is 2MB. Please compress the image and try again.");
-        return;
-      }
-
-      // Create image preview with compression
-      const reader = new window.FileReader()
-      reader.onloadend = () => {
-        const base64String = reader.result as string;
-        
-        // For large images, compress before storing
-        const img = new Image();
-        img.onload = () => {
-          // Create canvas and draw resized image
-          const canvas = document.createElement("canvas");
-          let width = img.width;
-          let height = img.height;
-          
-          // Resize if too large
-          const maxDimension = 800;
-          if (width > maxDimension || height > maxDimension) {
-            const ratio = Math.min(maxDimension / width, maxDimension / height);
-            width = Math.round(width * ratio);
-            height = Math.round(height * ratio);
-          }
-          
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext("2d");
-          ctx?.drawImage(img, 0, 0, width, height);
-          
-          // Convert to compressed JPEG
-          const compressedBase64 = canvas.toDataURL("image/jpeg", 0.75);
-          setFormData((prev) => ({ 
-            ...prev, 
-            image: compressedBase64,
-            _imageModified: true  // Flag to indicate image was changed
-          }));
-        };
-        img.src = base64String;
-      }
-      reader.readAsDataURL(file)
-    }
-  }
-
   const handleChange = (
     e: ChangeEvent<any>
   ) => {
@@ -247,45 +196,6 @@ export default function StudentForm({
       </div>
 
       <motion.form onSubmit={handleSubmit} className="space-y-6">
-        {/* Profile Image Section */}
-        <motion.div 
-          className="flex flex-col items-center mb-8"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.1 }}
-        >
-          <motion.div 
-            className="relative w-32 h-32 mb-4 group"
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="w-full h-full rounded-full bg-gradient-to-br from-royal-gold-100 to-royal-purple-100 dark:from-royal-purple-900/50 dark:to-royal-gold-900/30 flex items-center justify-center overflow-hidden border-4 border-royal-gold-300 dark:border-royal-purple-600 group-hover:border-royal-purple-500 transition-colors shadow-lg">
-              {formData.image ? (
-                <img src={formData.image} alt="Profile" className="w-full h-full object-cover" />
-              ) : (
-                <UserIcon className="w-16 h-16 text-royal-purple-300 dark:text-royal-gold-400" />
-              )}
-            </div>
-            <motion.button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="absolute bottom-0 right-0 p-2 bg-gradient-to-r from-royal-purple-600 to-royal-purple-700 text-white rounded-full hover:from-royal-purple-700 hover:to-royal-purple-800 transition-all shadow-lg"
-              title="Upload Photo"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Upload size={16} />
-            </motion.button>
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleImageChange}
-              accept="image/*"
-              className="hidden"
-            />
-          </motion.div>
-          <p className="text-xs text-royal-purple-600 dark:text-royal-gold-400 font-semibold">Upload profile photo</p>
-        </motion.div>
-
         {/* Personal Information */}
         <motion.div 
           className="space-y-4"
