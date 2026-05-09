@@ -643,59 +643,61 @@ export default function TeacherForm({
               </select>
             </div>
 
-            <div>
-              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
-                Assign Classes {isFormTeacher && "*"}
-              </label>
-              <div className="flex gap-2">
-                <select
-                  value={selectedClass}
-                  onChange={(e) => setSelectedClass(e.target.value)}
-                  className="input-field border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"
-                >
-                  <option value="">Select class...</option>
-                  {levelClasses.map((className) => (
-                    <option key={className} value={className}>
-                      {className}
-                    </option>
-                  ))}
-                </select>
-                <motion.button
-                  type="button"
-                  onClick={addClass}
-                  className="px-4 py-2 bg-gradient-to-r from-royal-purple-600 to-royal-purple-700 text-white rounded-lg hover:from-royal-purple-700 hover:to-royal-purple-800 transition-all font-semibold"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Add
-                </motion.button>
-              </div>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {formData.assignedClasses.map((c) => (
-                  <motion.span
-                    key={c}
-                    className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-royal-purple-50 to-royal-gold-50 dark:from-royal-purple-900/40 dark:to-royal-gold-900/40 text-royal-purple-700 dark:text-royal-purple-300 rounded-full text-sm font-bold border border-royal-purple-300 dark:border-royal-purple-700/50"
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
+            {(formData.level !== "Secondary" || isFormTeacher) && (
+              <div>
+                <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
+                  Assign Classes {isFormTeacher && "*"}
+                </label>
+                <div className="flex gap-2">
+                  <select
+                    value={selectedClass}
+                    onChange={(e) => setSelectedClass(e.target.value)}
+                    className="input-field border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"
                   >
-                    {c}
-                    <motion.button
-                      type="button"
-                      onClick={() => removeClass(c)}
-                      className="hover:text-royal-purple-900 dark:hover:text-royal-purple-200"
-                      whileHover={{ scale: 1.2 }}
+                    <option value="">Select class...</option>
+                    {levelClasses.map((className) => (
+                      <option key={className} value={className}>
+                        {className}
+                      </option>
+                    ))}
+                  </select>
+                  <motion.button
+                    type="button"
+                    onClick={addClass}
+                    className="px-4 py-2 bg-gradient-to-r from-royal-purple-600 to-royal-purple-700 text-white rounded-lg hover:from-royal-purple-700 hover:to-royal-purple-800 transition-all font-semibold"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Add
+                  </motion.button>
+                </div>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {formData.assignedClasses.map((c) => (
+                    <motion.span
+                      key={c}
+                      className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-royal-purple-50 to-royal-gold-50 dark:from-royal-purple-900/40 dark:to-royal-gold-900/40 text-royal-purple-700 dark:text-royal-purple-300 rounded-full text-sm font-bold border border-royal-purple-300 dark:border-royal-purple-700/50"
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
                     >
-                      <X size={14} />
-                    </motion.button>
-                  </motion.span>
-                ))}
+                      {c}
+                      <motion.button
+                        type="button"
+                        onClick={() => removeClass(c)}
+                        className="hover:text-royal-purple-900 dark:hover:text-royal-purple-200"
+                        whileHover={{ scale: 1.2 }}
+                      >
+                        <X size={14} />
+                      </motion.button>
+                    </motion.span>
+                  ))}
+                </div>
+                {errors.assignedClasses && (
+                  <p className="text-red-500 text-sm mt-1 font-semibold">
+                    {errors.assignedClasses}
+                  </p>
+                )}
               </div>
-              {errors.assignedClasses && (
-                <p className="text-red-500 text-sm mt-1 font-semibold">
-                  {errors.assignedClasses}
-                </p>
-              )}
-            </div>
+            )}
           </div>
         </motion.div>
 
