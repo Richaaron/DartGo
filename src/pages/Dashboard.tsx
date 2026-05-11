@@ -316,33 +316,75 @@ export default function Dashboard() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="p-4 md:p-8 space-y-6 md:space-y-10"
+      className="p-4 md:p-8 space-y-12"
     >
-      {/* Header */}
-      <motion.div
-        variants={itemVariants}
-        className="flex flex-col sm:flex-row items-start justify-between gap-4"
-      >
-        <div className="flex-1">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 dark:text-white tracking-tight">
-            Champions{" "}
-            <span className="text-indigo-600 dark:text-indigo-400">Hub</span>
-          </h1>
-          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mt-2 font-medium">
-            Welcome back! Here's a quick look at how your school is doing.
-          </p>
-        </div>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setShowPasswordModal(true)}
-          className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors shadow-lg text-sm sm:text-base whitespace-nowrap"
-        >
-          <Lock className="w-4 h-4" />
-          <span className="hidden sm:inline">Change Password</span>
-          <span className="sm:hidden">Password</span>
-        </motion.button>
-      </motion.div>
+      {/* Hero Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <motion.div variants={itemVariants} className="space-y-8">
+          <div className="space-y-4">
+            <h1 className="text-5xl md:text-7xl font-black text-white leading-[0.9] tracking-tighter">
+              Excellence <br />
+              Defined by <br />
+              <span className="text-royal-purple-500 italic">Legacy.</span>
+            </h1>
+            <p className="text-lg text-royal-dark-400 font-medium max-w-lg leading-relaxed">
+              Welcome to the Folusho Victory Schools digital citadel. A sanctuary of academic precision, teacher empowerment, and parental partnership.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-6">
+            {userRole === 'Admin' && (
+              <Link to="/admin" className="btn-royal-purple group">
+                <Lock className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                Admin Portal
+              </Link>
+            )}
+            {userRole === 'Teacher' && (
+              <Link to="/subject-results" className="btn-royal-gold group">
+                <ClipboardList className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                Teacher Portal
+              </Link>
+            )}
+            <button className="flex items-center gap-3 text-sm font-black uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors group">
+              Parental Access
+              <Check className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+            </button>
+          </div>
+        </motion.div>
+
+        <motion.div variants={itemVariants} className="royal-card !p-10 border-white/10 glow-purple">
+           <div className="flex items-center gap-4 mb-10">
+              <div className="w-12 h-12 bg-royal-dark-900 rounded-xl flex items-center justify-center border border-white/10 shadow-inner">
+                <BookOpen className="w-6 h-6 text-royal-purple-400" />
+              </div>
+              <h2 className="text-2xl font-black text-white tracking-tight">Academic Pillar</h2>
+           </div>
+
+           <div className="space-y-8">
+              <div className="flex gap-4">
+                <div className="w-2 h-2 rounded-full bg-royal-gold-400 mt-2 flex-shrink-0" />
+                <div>
+                  <h3 className="text-sm font-black text-white uppercase tracking-widest mb-1">Royal Governance</h3>
+                  <p className="text-xs text-royal-dark-400 font-medium leading-relaxed">Centralized control of academic records and institutional intelligence.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-2 h-2 rounded-full bg-royal-purple-500 mt-2 flex-shrink-0" />
+                <div>
+                  <h3 className="text-sm font-black text-white uppercase tracking-widest mb-1">Scholarly Assessment</h3>
+                  <p className="text-xs text-royal-dark-400 font-medium leading-relaxed">Sophisticated evaluation frameworks for numeric and character development.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-2 h-2 rounded-full bg-royal-dark-400 mt-2 flex-shrink-0" />
+                <div>
+                  <h3 className="text-sm font-black text-white uppercase tracking-widest mb-1">Parental Engagement</h3>
+                  <p className="text-xs text-royal-dark-400 font-medium leading-relaxed">Real-time academic updates and detailed student performance report cards.</p>
+                </div>
+              </div>
+           </div>
+        </motion.div>
+      </div>
 
       {/* Stats Grid */}
       <motion.div
@@ -374,71 +416,6 @@ export default function Dashboard() {
           color="orange"
         />
       </motion.div>
-
-      {/* Quick Recording Center */}
-      {userRole === "Teacher" && (
-        <motion.div
-          variants={itemVariants}
-          className="card-lg bg-gradient-to-r from-indigo-600/10 to-purple-600/10 dark:from-indigo-500/10 dark:to-purple-500/10 border-indigo-500/30"
-        >
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex-1">
-              <h2 className="text-xl font-black text-gray-900 dark:text-white tracking-tight flex items-center gap-2">
-                <ClipboardList className="w-6 h-6 text-indigo-500" />
-                Quick{" "}
-                <span className="text-indigo-600 dark:text-indigo-400">
-                  Actions
-                </span>
-              </h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 font-medium">
-                Access your result entry sheets quickly from here.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-4 w-full md:w-auto">
-              {isFormTeacher && (
-                <Link
-                  to="/results"
-                  className="flex-1 md:flex-none px-6 py-4 bg-white dark:bg-brand-900 rounded-2xl border-2 border-dashed border-indigo-500/50 hover:border-indigo-500 transition-all hover:scale-105 group"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-                      <FileText className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-black text-gray-400 uppercase tracking-widest">
-                        Class Records
-                      </p>
-                      <p className="text-sm font-black text-gray-900 dark:text-white">
-                        Form Teacher Entry
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              )}
-              {isSubjectTeacher && (
-                <Link
-                  to="/subject-results"
-                  className="flex-1 md:flex-none px-6 py-4 bg-white dark:bg-brand-900 rounded-2xl border-2 border-dashed border-purple-500/50 hover:border-purple-500 transition-all hover:scale-105 group"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-purple-50 dark:bg-purple-900/30 rounded-xl group-hover:bg-purple-600 group-hover:text-white transition-colors">
-                      <BookOpen className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-black text-gray-400 uppercase tracking-widest">
-                        Subject Records
-                      </p>
-                      <p className="text-sm font-black text-gray-900 dark:text-white">
-                        Subject Teacher Entry
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              )}
-            </div>
-          </div>
-        </motion.div>
-      )}
 
       {/* Charts Row */}
       <motion.div

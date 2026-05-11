@@ -200,15 +200,14 @@ function AppContent() {
                 <img
                   src={config?.schoolLogo || "/school_logo.png"}
                   alt="Logo"
-                  className="w-9 h-9 object-contain rounded-lg ring-2 ring-white/10"
+                  className="w-10 h-10 object-contain rounded-xl ring-2 ring-white/10 shadow-lg glow-purple"
                 />
                 <div className="overflow-hidden">
-                  <h1 className="text-sm font-bold text-white truncate">
+                  <h1 className="text-base font-black text-white truncate tracking-tighter uppercase">
                     {config?.schoolName?.split(" ")[0] || "FOLUSHO"}
                   </h1>
-                  <p className="text-[10px] text-royal-gold-400 truncate mt-0.5">
-                    {config?.schoolName?.split(" ").slice(1).join(" ") ||
-                      "Victory Schools"}
+                  <p className="text-[10px] text-royal-gold-400 font-black uppercase tracking-[0.2em] truncate mt-0.5">
+                    Citadel of Excellence
                   </p>
                 </div>
               </motion.div>
@@ -676,10 +675,10 @@ function NavLink({ to, icon, label, isOpen, onClick }: NavLinkProps & { onClick?
       to={to}
       onClick={onClick}
       className={({ isActive }: { isActive: boolean }) =>
-        `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 text-sm font-medium ${
+        `flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-300 text-xs font-black uppercase tracking-widest ${
           isActive
-            ? "bg-gradient-to-r from-royal-purple-600 to-royal-gold-500 text-white shadow-md"
-            : "text-royal-purple-200 hover:text-white hover:bg-white/[0.07]"
+            ? "bg-gradient-to-r from-royal-purple-600 to-royal-purple-800 text-white shadow-lg glow-purple"
+            : "text-royal-purple-300 hover:text-white hover:bg-white/[0.05]"
         }`
       }
     >

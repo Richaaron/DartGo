@@ -201,21 +201,68 @@ export default function TeacherDashboard() {
     return <div className="p-8 text-center">Loading dashboard...</div>;
 
   return (
-    <div className="p-4 md:p-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-          Welcome, {teacher.name}
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">
-          Squads —{" "}
-          {(assignedSubjects.length > 0
-            ? assignedSubjects.join(", ")
-            : "Form Teacher") || "Form Teacher"}{" "}
-          | Level: {teacher.level}
-        </p>
-        <div className="mt-3 text-sm text-gray-600 dark:text-gray-400">
-          <p>Assigned Classes: {(teacher.assignedClasses || []).join(", ")}</p>
-        </div>
+    <div className="p-4 md:p-8 space-y-12">
+      {/* Hero Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <motion.div variants={itemVariants} className="space-y-8">
+          <div className="space-y-4">
+            <p className="text-xs font-black text-royal-gold-400 uppercase tracking-[0.3em]">
+              Welcome back, {teacher.name}
+            </p>
+            <h1 className="text-5xl md:text-7xl font-black text-white leading-[0.9] tracking-tighter">
+              Legacy <br />
+              Starts with <br />
+              <span className="text-royal-purple-500 italic">Instruction.</span>
+            </h1>
+            <p className="text-lg text-royal-dark-400 font-medium max-w-lg leading-relaxed">
+              Managing {(assignedSubjects.length > 0 ? assignedSubjects.join(", ") : "Form Teacher") || "Form Teacher"} | Level: {teacher.level}
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-6">
+            <Link to="/subject-results" className="btn-royal-purple group">
+              <BookOpen className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+              Enter Results
+            </Link>
+            <button className="flex items-center gap-3 text-sm font-black uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors group">
+              View Schedules
+              <Calendar className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+            </button>
+          </div>
+        </motion.div>
+
+        <motion.div variants={itemVariants} className="royal-card !p-10 border-white/10 glow-purple">
+           <div className="flex items-center gap-4 mb-10">
+              <div className="w-12 h-12 bg-royal-dark-900 rounded-xl flex items-center justify-center border border-white/10 shadow-inner">
+                <Users className="w-6 h-6 text-royal-purple-400" />
+              </div>
+              <h2 className="text-2xl font-black text-white tracking-tight">Teacher Pillar</h2>
+           </div>
+
+           <div className="space-y-8">
+              <div className="flex gap-4">
+                <div className="w-2 h-2 rounded-full bg-royal-gold-400 mt-2 flex-shrink-0" />
+                <div>
+                  <h3 className="text-sm font-black text-white uppercase tracking-widest mb-1">Assigned Classes</h3>
+                  <p className="text-xs text-royal-dark-400 font-medium leading-relaxed">{(teacher.assignedClasses || []).join(", ")}</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-2 h-2 rounded-full bg-royal-purple-500 mt-2 flex-shrink-0" />
+                <div>
+                  <h3 className="text-sm font-black text-white uppercase tracking-widest mb-1">Subject Mastery</h3>
+                  <p className="text-xs text-royal-dark-400 font-medium leading-relaxed">{assignedSubjects.join(", ") || "General Studies"}</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-2 h-2 rounded-full bg-royal-dark-400 mt-2 flex-shrink-0" />
+                <div>
+                  <h3 className="text-sm font-black text-white uppercase tracking-widest mb-1">Academic Status</h3>
+                  <p className="text-xs text-royal-dark-400 font-medium leading-relaxed">Active & Registered Academic Pillar</p>
+                </div>
+              </div>
+           </div>
+        </motion.div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
