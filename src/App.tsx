@@ -30,6 +30,7 @@ import { useAuthContext } from "./context/AuthContext";
 import { useDarkMode } from "./hooks/useLocalStorage";
 import PageTransition from "./components/PageTransition";
 import NotificationBell from "./components/NotificationBell";
+import FloatingAcademicBackground from "./components/FloatingAcademicBackground";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 
 // Page imports with lazy loading
@@ -150,6 +151,7 @@ function AppContent() {
     <div
       className={`flex flex-col md:flex-row h-screen bg-brand-100 dark:bg-brand-900 transition-colors duration-200 ${isDarkMode ? "dark" : ""}`}
     >
+      <FloatingAcademicBackground />
       {/* Mobile Header */}
       {isMobile && (
         <div className="bg-royal-black-900 border-b border-royal-purple-900/50 text-white px-4 py-3 flex items-center justify-between z-40 shadow-lg">
