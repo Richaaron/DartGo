@@ -18,7 +18,7 @@ const SECONDARY_CLASSES = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']
 const ALL_CLASSES = [...PRIMARY_CLASSES, ...SECONDARY_CLASSES]
 const ITEMS_PER_PAGE = 25 // Paginate results to improve rendering performance
 
-const SubjectResultEntry = memo(function SubjectResultEntry() {
+export default function SubjectResultEntry() {
   const { user } = useAuthContext()
   const [results, setResults] = useState<SubjectResult[]>([])
   const [students, setStudents] = useState<Student[]>([])
@@ -1044,6 +1044,4 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
       )}
     </div>
   )
-})
-
-export default SubjectResultEntry
+}
