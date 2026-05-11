@@ -72,9 +72,9 @@ html {
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-    font-weight: 900;
-    letter-spacing: -0.04em;
-    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
 }
 
 @layer components {
@@ -89,13 +89,13 @@ h1, h2, h3, h4, h5, h6 {
     @apply bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.4)];
   }
   .btn-royal-purple {
-    @apply bg-gradient-to-br from-royal-purple-500 to-royal-purple-700 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(124,58,237,0.3)] transition-all duration-300 hover:scale-[1.05] hover:shadow-[0_0_40px_rgba(124,58,237,0.5)] active:scale-95 flex items-center justify-center gap-3;
+    @apply bg-gradient-to-br from-royal-purple-500 to-royal-purple-700 text-white px-8 py-4 rounded-2xl font-bold uppercase tracking-wider text-sm shadow-[0_0_20px_rgba(124,58,237,0.3)] transition-all duration-300 hover:scale-[1.05] hover:shadow-[0_0_40px_rgba(124,58,237,0.5)] active:scale-95 flex items-center justify-center gap-3;
   }
   .btn-royal-gold {
-    @apply bg-gradient-to-br from-royal-gold-400 to-royal-gold-600 text-royal-dark-950 px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(251,191,36,0.2)] transition-all duration-300 hover:scale-[1.05] hover:shadow-[0_0_40px_rgba(251,191,36,0.4)] active:scale-95 flex items-center justify-center gap-3;
+    @apply bg-gradient-to-br from-royal-gold-400 to-royal-gold-600 text-royal-dark-950 px-8 py-4 rounded-2xl font-bold uppercase tracking-wider text-sm shadow-[0_0_20px_rgba(251,191,36,0.2)] transition-all duration-300 hover:scale-[1.05] hover:shadow-[0_0_40px_rgba(251,191,36,0.4)] active:scale-95 flex items-center justify-center gap-3;
   }
   .input-field {
-    @apply w-full px-5 py-4 bg-royal-dark-900/50 text-white border border-white/10 rounded-2xl font-bold focus:ring-2 focus:ring-royal-purple-500/50 focus:border-royal-purple-500 outline-none transition-all duration-300 placeholder:text-gray-500 backdrop-blur-md;
+    @apply w-full px-5 py-4 bg-royal-dark-900/50 text-white border border-white/10 rounded-2xl font-medium focus:ring-2 focus:ring-royal-purple-500/50 focus:border-royal-purple-500 outline-none transition-all duration-300 placeholder:text-gray-500 backdrop-blur-md;
   }
 }
 
