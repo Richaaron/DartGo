@@ -274,7 +274,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                     <p className="text-[10px] font-black tracking-widest uppercase">Est. 2005</p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         ) : (
