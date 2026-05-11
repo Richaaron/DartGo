@@ -4,7 +4,7 @@ import { SubjectResult, Student, Subject, StudentSubject, Teacher } from '../typ
 import SubjectResultForm from '../components/SubjectResultForm'
 import BulkSubjectResultEntry from '../components/BulkSubjectResultEntry'
 import StudentResultEntryView from '../components/StudentResultEntryView'
-import { createResult, updateResult, fetchStudentSubjects } from '../services/api'
+import { createResult, updateResult, fetchStudentSubjects, fetchStudents, fetchResults, fetchSubjects, deleteResult } from '../services/api'
 import { useAuthContext } from '../context/AuthContext'
 import { useLocation } from 'react-router-dom'
 import { getPositionSuffix, getStudentClassPosition } from '../utils/calculations'
@@ -76,15 +76,17 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
     setApiError(null)
     
     try {
-      const { fetchStudents, fetchResults, fetchSubjects, fetchStudentSubjects } = await import('../services/api')
-      
       // For teachers, optimize by loading only relevant data
       // For admins, load all data
       const isTeacher = user?.role === 'Teacher'
       
       // Load core data
-      let subjectsData = await fetchSubjects().catch(() => [])
-      let resultsData = await fetchResults().catch(() => [])
+      let [subjectsData, resultsData, studentsData, studentSubjectsData] = await Promise.all([
+        fetchSubjects().catch(() => []),
+        fetchResults().catch(() => []),
+        fetchStudents().catch(() => []),
+        fetchStudentSubjects().catch(() => [])
+      ])
       
       // If teacher, optimize by filtering results
       if (isTeacher && teacher) {
@@ -104,12 +106,6 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
         // Filter results to only teacher's subjects
         resultsData = (resultsData || []).filter(r => teacherSubjectIds.has(r.subjectId))
       }
-      
-      // Load students and student subjects in parallel
-      const [studentsData, studentSubjectsData] = await Promise.all([
-        fetchStudents().catch(() => []),
-        fetchStudentSubjects().catch(() => [])
-      ])
       
       setStudents(Array.isArray(studentsData) ? studentsData : [])
       setResults(Array.isArray(resultsData) ? resultsData : [])
@@ -508,7 +504,6 @@ const SubjectResultEntry = memo(function SubjectResultEntry() {
   const handleDeleteResult = useCallback(async (id: string) => {
     if (window.confirm('Are you sure you want to delete this result?')) {
       try {
-        const { deleteResult } = await import('../services/api')
         await deleteResult(id)
         setResults(prev => prev.filter(r => r.id !== id))
       } catch (error) {
