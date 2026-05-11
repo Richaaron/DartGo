@@ -41,6 +41,11 @@ export const activityService = {
       entityType: a.entity_type,
       entityId: a.entity_id
     }))
+  },
+
+  clearActivities: async () => {
+    const response = await api.delete('/activities')
+    return response.data
   }
 }
 

@@ -6,6 +6,7 @@ import {
   Filter,
   Mail,
   CheckCircle,
+  Trash2,
 } from "lucide-react";
 import { activityService, Activity } from "../services/activityService";
 import api from "../services/api";
@@ -96,6 +97,7 @@ export default function TeacherActivityLog() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [sendingDigest, setSendingDigest] = useState(false);
   const [digestSent, setDigestSent] = useState(false);
+  const [clearing, setClearing] = useState(false);
   const [lastRefreshed, setLastRefreshed] = useState<Date>(new Date());
 
   const loadActivities = useCallback(async () => {
@@ -127,6 +129,23 @@ export default function TeacherActivityLog() {
       console.error("Failed to send digest:", err);
     } finally {
       setSendingDigest(false);
+    }
+  };
+
+  const handleClearLog = async () => {
+    if (!window.confirm("Are you sure you want to clear the entire activity log? This action cannot be undone.")) {
+      return;
+    }
+
+    setClearing(true);
+    try {
+      await activityService.clearActivities();
+      await loadActivities();
+    } catch (error) {
+      console.error("Failed to clear activity log:", error);
+      alert("Failed to clear activity log. Please try again.");
+    } finally {
+      setClearing(false);
     }
   };
 
@@ -195,6 +214,21 @@ export default function TeacherActivityLog() {
                   <Mail className="w-3.5 h-3.5" /> Send Digest
                 </>
               )}
+            </button>
+
+            {/* Clear Log Button */}
+            <button
+              onClick={handleClearLog}
+              disabled={clearing || activities.length === 0}
+              className="flex items-center gap-2 px-3 py-2 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/30 rounded-lg text-xs font-bold hover:bg-red-100 dark:hover:bg-red-900/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Clear all activities"
+            >
+              {clearing ? (
+                <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Trash2 className="w-3.5 h-3.5" />
+              )}
+              Clear Log
             </button>
 
             {/* Refresh Button */}

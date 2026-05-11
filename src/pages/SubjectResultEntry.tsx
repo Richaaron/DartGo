@@ -100,7 +100,18 @@ export default function SubjectResultEntry() {
         // Filter to only teacher's subjects
         const teacherSubjectIds = new Set(
           (subjectsData || [])
-            .filter(s => teacherSubjectNames.has(s.name) || teacherSubjectNames.has(s.id))
+            .filter(s => {
+              if (teacherSubjectNames.has(s.name) || teacherSubjectNames.has(s.id)) return true;
+              
+              // Handle Subject Roles (e.g., "Mathematics (JSS)")
+              const isJSS = s.code?.startsWith('JSS-') || (s.level === 'Secondary' && !s.subjectCategory);
+              const isSSS = s.code?.startsWith('SSS-') || (s.level === 'Secondary' && s.subjectCategory);
+              
+              if (isJSS && teacherSubjectNames.has(`${s.name} (JSS)`)) return true;
+              if (isSSS && teacherSubjectNames.has(`${s.name} (SSS)`)) return true;
+              
+              return false;
+            })
             .map(s => s.id)
         )
         
@@ -171,7 +182,18 @@ export default function SubjectResultEntry() {
     // We filter from the full subjects list to ensure they aren't accidentally 
     // filtered out by class level logic if the teacher teaches across levels.
     if (assignedNames.size > 0) {
-      return subjects.filter(s => assignedNames.has(s.name) || assignedNames.has(s.id))
+      return subjects.filter(s => {
+        if (assignedNames.has(s.name) || assignedNames.has(s.id)) return true;
+        
+        // Handle Subject Roles (e.g., "Mathematics (JSS)")
+        const isJSS = s.code?.startsWith('JSS-') || (s.level === 'Secondary' && !s.subjectCategory);
+        const isSSS = s.code?.startsWith('SSS-') || (s.level === 'Secondary' && s.subjectCategory);
+        
+        if (isJSS && assignedNames.has(`${s.name} (JSS)`)) return true;
+        if (isSSS && assignedNames.has(`${s.name} (SSS)`)) return true;
+        
+        return false;
+      });
     }
 
     // 2. If no specific subjects, but has assigned classes (Form Teacher):

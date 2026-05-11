@@ -66,4 +66,24 @@ router.post(
   },
 );
 
+// Clear all activities — admin only
+router.delete(
+  "/",
+  authenticate,
+  authorize(["Admin"]),
+  async (req: Request, res: Response) => {
+    try {
+      const { error } = await supabase
+        .from("activities")
+        .delete()
+        .neq("id", "00000000-0000-0000-0000-000000000000"); // Hack to delete all since .delete() requires a filter
+
+      if (error) throw error;
+      res.json({ message: "Activity log cleared successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Error clearing activities", error });
+    }
+  },
+);
+
 export default router;

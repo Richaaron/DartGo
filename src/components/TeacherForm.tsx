@@ -202,13 +202,34 @@ export default function TeacherForm({
   const toggleSubject = (subjectName: string) => {
     setFormData((prev) => {
       const currentSubjects = prev.assignedSubjects || [];
-      const updatedSubjects = currentSubjects.includes(subjectName)
-        ? currentSubjects.filter((s) => s !== subjectName)
-        : [...currentSubjects, subjectName];
+      const isAdding = !currentSubjects.includes(subjectName);
+      
+      const updatedSubjects = isAdding
+        ? [...currentSubjects, subjectName]
+        : currentSubjects.filter((s) => s !== subjectName);
+
+      let updatedClasses = [...prev.assignedClasses];
+      
+      // Auto-sync classes for JSS/SSS subject roles
+      if (isAdding) {
+        if (subjectName.endsWith('(JSS)')) {
+          const jssClasses = ['JSS 1', 'JSS 2', 'JSS 3'];
+          jssClasses.forEach(cls => {
+            if (!updatedClasses.includes(cls)) updatedClasses.push(cls);
+          });
+        } else if (subjectName.endsWith('(SSS)')) {
+          const sssClasses = ['SSS 1', 'SSS 2', 'SSS 3'];
+          sssClasses.forEach(cls => {
+            if (!updatedClasses.includes(cls)) updatedClasses.push(cls);
+          });
+        }
+      }
+
       return {
         ...prev,
         assignedSubjects: updatedSubjects,
         subject: updatedSubjects.join(", "),
+        assignedClasses: updatedClasses,
       };
     });
   };
