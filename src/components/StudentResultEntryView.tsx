@@ -30,7 +30,7 @@ interface StudentResultEntryViewProps {
   onResultsSaved: () => void
 }
 
-const StudentResultEntryView = memo(function StudentResultEntryView({
+export default function StudentResultEntryView({
   student,
   subjects,
   studentSubjects,
@@ -484,6 +484,4 @@ const StudentResultEntryView = memo(function StudentResultEntryView({
       </div>
     </div>
   )
-})
-
-export default StudentResultEntryView
+}

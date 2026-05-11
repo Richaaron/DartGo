@@ -31,7 +31,7 @@ interface BulkSubjectResultEntryProps {
   teacherSubjects?: Subject[]
 }
 
-const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
+export default function BulkSubjectResultEntry({
   subjects,
   students,
   studentSubjects,
@@ -709,6 +709,4 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
       )}
     </div>
   )
-})
-
-export default BulkSubjectResultEntry
+}
