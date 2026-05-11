@@ -41,6 +41,7 @@ export default function BulkSubjectResultEntry({
 }: BulkSubjectResultEntryProps) {
   const { user } = useAuthContext()
   const [selectedSubjectId, setSelectedSubjectId] = useState<string>('')
+  const selectedSubject = subjects.find(s => s.id === selectedSubjectId)
   const [selectedClass, setSelectedClass] = useState<string>('')
   const [selectedArm, setSelectedArm] = useState<string>('All')
   const [selectedTerm, setSelectedTerm] = useState<string>('First')
@@ -387,7 +388,6 @@ export default function BulkSubjectResultEntry({
   }
 
   const dirtyCount = useMemo(() => bulkData.filter(r => r.isDirty || r.isNew).length, [bulkData])
-  const selectedSubject = subjects.find(s => s.id === selectedSubjectId)
 
   return (
     <div className="space-y-6">
