@@ -79,6 +79,18 @@ function AppContent() {
     }
   }, [isAuthenticated]);
 
+  const userRole = user?.role || "Student";
+  const userName = user?.name || "User";
+
+  useEffect(() => {
+    console.log('[App] Auth State:', {
+      isAuthenticated,
+      userRole,
+      userName,
+      pathname: location.pathname
+    });
+  }, [isAuthenticated, userRole, userName, location.pathname]);
+
   // Show a loading state while hydrating
   if (!isHydrated) {
     return (
@@ -96,18 +108,6 @@ function AppContent() {
   if (!isAuthenticated) {
     return <Login onLoginSuccess={() => window.location.reload()} />;
   }
-
-  const userRole = user?.role || "Student";
-  const userName = user?.name || "User";
-
-  useEffect(() => {
-    console.log('[App] Auth State:', {
-      isAuthenticated,
-      userRole,
-      userName,
-      pathname: location.pathname
-    });
-  }, [isAuthenticated, userRole, userName, location.pathname]);
   const teacher = userRole === "Teacher" ? (user as any) : null;
   const teacherType = teacher?.teacherType;
   const hasAssignedClasses =
