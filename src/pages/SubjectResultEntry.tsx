@@ -331,6 +331,19 @@ export default function SubjectResultEntry() {
     });
   }, [isTeacher, teacher])
 
+  // Pre-index students and subjects for O(1) lookup performance
+  const studentMap = useMemo(() => {
+    const map = new Map<string, Student>()
+    students.forEach(s => map.set(s.id, s))
+    return map
+  }, [students])
+
+  const subjectMap = useMemo(() => {
+    const map = new Map<string, Subject>()
+    subjects.forEach(s => map.set(s.id, s))
+    return map
+  }, [subjects])
+
   // Simple filtering for the combined list - uses debounced filter for performance
   const filteredDisplayData = useMemo(() => {
     let dataToFilter = isTeacher ? offeringStudents : results.map(r => ({ ...r, status: 'Completed' }))
@@ -341,10 +354,10 @@ export default function SubjectResultEntry() {
     }
 
     const filtered = dataToFilter.filter(item => {
-      const student = students.find(s => s.id === item.studentId)
+      const student = studentMap.get(item.studentId)
       if (!student) return false
 
-      const subject = subjects.find(s => s.id === item.subjectId)
+      const subject = subjectMap.get(item.subjectId)
       if (!subject) return false
 
       const matchesSearch = debouncedFilterTerm === '' || 
@@ -362,18 +375,18 @@ export default function SubjectResultEntry() {
 
     // Sort by student name then by subject name to ensure grouping works
     return filtered.sort((a, b) => {
-      const studentA = students.find(s => s.id === a.studentId)
-      const studentB = students.find(s => s.id === b.studentId)
+      const studentA = studentMap.get(a.studentId)
+      const studentB = studentMap.get(b.studentId)
       const nameA = studentA ? `${studentA.firstName} ${studentA.lastName}` : ''
       const nameB = studentB ? `${studentB.firstName} ${studentB.lastName}` : ''
       
       if (nameA !== nameB) return nameA.localeCompare(nameB)
       
-      const subjectA = subjects.find(s => s.id === a.subjectId)?.name || ''
-      const subjectB = subjects.find(s => s.id === b.subjectId)?.name || ''
+      const subjectA = subjectMap.get(a.subjectId)?.name || ''
+      const subjectB = subjectMap.get(b.subjectId)?.name || ''
       return subjectA.localeCompare(subjectB)
     })
-  }, [offeringStudents, results, students, subjects, debouncedFilterTerm, selectedTerm, selectedClass, selectedSubject, isTeacher])
+  }, [offeringStudents, results, studentMap, subjectMap, debouncedFilterTerm, selectedTerm, selectedClass, selectedSubject, isTeacher, selectedArm, selectedStudentResults])
 
 
 
