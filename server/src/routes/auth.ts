@@ -60,7 +60,7 @@ router.post('/login', authLimiter, async (req, res) => {
         const isTeacher = normalizedLoginId === 'teacher@folusho.com'
         const table = isTeacher ? 'teachers' : 'users'
         const email = isTeacher ? 'teacher@folusho.com' : 'admin@folusho.com'
-        const defaultPassword = isTeacher ? 'TeacherPassword123!' : 'AdminPassword123!@#'
+        const defaultPassword = isTeacher ? 'TeacherPassword123!' : 'FolushoVIC1@@'
         
         const { data: existingUser, error: checkError } = await supabase
           .from(table)
