@@ -158,8 +158,10 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                   className="space-y-6"
                 >
                   <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-royal-purple-900/30 border border-royal-purple-500/30 text-royal-gold-400 text-xs font-black tracking-[0.2em] uppercase">
-                    <Sparkles size={14} className="animate-pulse" />
-                    Digital Citadel v3.0
+                    <div className="w-6 h-6 bg-white rounded-lg flex items-center justify-center p-1 shadow-lg ring-1 ring-royal-purple-500/30">
+                      <img src="/school_logo.png" alt="Logo" className="w-full h-full object-contain" />
+                    </div>
+                    FOLUSHO VICTORY SCHOOLS
                   </div>
 
                   <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] text-white">
