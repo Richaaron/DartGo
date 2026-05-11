@@ -4,6 +4,7 @@ import { SubjectResult, Student, Subject, StudentSubject, Teacher } from '../typ
 import SubjectResultForm from '../components/SubjectResultForm'
 // Lazy load sub-components to prevent TDZ issues
 const BulkSubjectResultEntry = React.lazy(() => import('../components/BulkSubjectResultEntry'))
+const StudentResultEntryView = React.lazy(() => import('../components/StudentResultEntryView'))
 import { createResult, updateResult, fetchStudentSubjects, fetchStudents, fetchResults, fetchSubjects, deleteResult } from '../services/api'
 import { useAuthContext } from '../context/AuthContext'
 import { useLocation } from 'react-router-dom'
@@ -599,14 +600,21 @@ export default function SubjectResultEntry() {
   if (selectedStudentForEntry) {
     return (
       <div className="p-8">
-        <StudentResultEntryView
-          student={selectedStudentForEntry}
-          subjects={isTeacher ? teacherSubjects : subjects}
-          studentSubjects={allStudentSubjects}
-          existingResults={results}
-          onBack={() => setSelectedStudentForEntry(null)}
-          onResultsSaved={loadData}
-        />
+        <React.Suspense fallback={
+          <div className="flex flex-col items-center justify-center p-20 card-lg">
+            <Loader2 className="w-12 h-12 text-indigo-500 animate-spin mb-4" />
+            <p className="text-gray-400 font-black uppercase tracking-widest text-[10px]">Loading Student Details...</p>
+          </div>
+        }>
+          <StudentResultEntryView
+            student={selectedStudentForEntry}
+            subjects={isTeacher ? teacherSubjects : subjects}
+            studentSubjects={allStudentSubjects}
+            existingResults={results}
+            onBack={() => setSelectedStudentForEntry(null)}
+            onResultsSaved={loadData}
+          />
+        </React.Suspense>
       </div>
     )
   }
