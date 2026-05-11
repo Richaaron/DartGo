@@ -231,12 +231,12 @@ export async function startServer() {
     }
 
     console.log('[STARTUP] Step 5: Connecting to Supabase...')
-    const { data, error } = await supabase.from('users').select('count', { count: 'exact', head: true })
+    const { count, error } = await supabase.from('users').select('*', { count: 'exact', head: true })
     if (error) throw error
     console.log('[STARTUP] ✓ Supabase connected')
 
     // Check if database is empty
-    const userCount = data?.[0]?.count || 0
+    const userCount = count || 0
     if (userCount === 0) {
       console.warn('\n╔════════════════════════════════════════════════════════════╗')
       console.log('║ ⚠️  WARNING: DATABASE IS EMPTY                             ║')
