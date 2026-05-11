@@ -483,13 +483,7 @@ function AppContent() {
           className={`max-w-7xl mx-auto ${isMobile ? "px-4 py-4" : "px-6 py-6 md:px-8 md:py-8"}`}
         >
           <AnimatePresence mode="wait">
-            <React.Suspense fallback={
-              <div className="flex flex-col items-center justify-center min-h-[400px]">
-                <div className="w-12 h-12 border-4 border-royal-purple-500/20 border-t-royal-purple-500 rounded-full animate-spin mb-4" />
-                <p className="text-royal-purple-400 font-black uppercase tracking-widest text-[10px]">Initializing...</p>
-              </div>
-            }>
-              <Routes location={location} key={location.pathname}>
+            <Routes location={location} key={location.pathname}>
               {userRole === "Teacher" ? (
                 <>
                   <Route
@@ -671,7 +665,6 @@ function AppContent() {
                 </>
               )}
               </Routes>
-            </React.Suspense>
           </AnimatePresence>
         </div>
       </main>
@@ -712,7 +705,14 @@ export default function App() {
   return (
     <ErrorBoundary showDetails={true}>
       <Router>
-        <AppContent />
+        <React.Suspense fallback={
+          <div className="fixed inset-0 bg-royal-dark-950 flex flex-col items-center justify-center z-[9999]">
+            <div className="w-16 h-16 border-4 border-royal-purple-500/20 border-t-royal-purple-500 rounded-full animate-spin mb-6" />
+            <p className="text-royal-purple-400 font-black uppercase tracking-[0.3em] text-xs animate-pulse">Initializing Digital Citadel...</p>
+          </div>
+        }>
+          <AppContent />
+        </React.Suspense>
       </Router>
     </ErrorBoundary>
   );
