@@ -1,4 +1,5 @@
 import { useMemo, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Users,
   BookOpen,
@@ -23,6 +24,23 @@ import {
 import ChatSystem from "../components/ChatSystem";
 import PerformanceInsights from "../components/PerformanceInsights";
 import SubjectMetrics from "../components/SubjectMetrics";
+
+const containerVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 }
+};
 
 export default function TeacherDashboard() {
   const { user } = useAuthContext();
