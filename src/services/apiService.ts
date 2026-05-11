@@ -29,16 +29,10 @@ const getPrimaryUrl = () => {
     return cleanUrl.endsWith('/api') ? cleanUrl : `${cleanUrl}/api`
   }
 
-  if (import.meta.env.PROD) {
-    // In production, try to use the current domain's /api endpoint
-    const protocol = window.location.protocol
-    const hostname = window.location.hostname
-    const port = window.location.port ? `:${window.location.port}` : ''
-    return `${protocol}//${hostname}${port}/api`
-  }
+  if (import.meta.env.PROD) return 'https://folushovictoryschools.netlify.app/api'
   
   // Fall back to local dev server
-  return 'http://localhost:3001/api'
+  return 'http://localhost:3002/api'
 }
 
 let memoizedUrl: string | null = null

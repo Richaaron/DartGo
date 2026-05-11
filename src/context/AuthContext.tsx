@@ -12,7 +12,7 @@ const getBaseUrl = () => {
     return cleanUrl.endsWith('/api') ? cleanUrl : `${cleanUrl}/api`
   }
 
-  if (import.meta.env.PROD) return '/api'
+  if (import.meta.env.PROD) return 'https://folushovictoryschools.netlify.app/api'
   // Fall back to local dev server
   return 'http://localhost:3002/api'
 }

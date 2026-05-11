@@ -32,22 +32,22 @@ import PageTransition from "./components/PageTransition";
 import NotificationBell from "./components/NotificationBell";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 
-// Regular imports (removed lazy loading)
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import StudentManagement from "./pages/StudentManagement";
-import TeacherManagement from "./pages/TeacherManagement";
-import ResultEntry from "./pages/ResultEntry";
-import SubjectResultEntry from "./pages/SubjectResultEntry";
-import Reports from "./pages/Reports";
-import Attendance from "./pages/Attendance";
-import Settings from "./pages/Settings";
-import TeacherDashboard from "./pages/TeacherDashboard";
-import ParentDashboard from "./pages/ParentDashboard";
-import NotificationsPage from "./pages/Notifications";
-import Messages from "./pages/Messages";
-import Deadlines from "./pages/Deadlines";
-import ActivityLog from "./pages/ActivityLog";
+// Page imports with lazy loading
+const Login = React.lazy(() => import("./pages/Login"));
+const Dashboard = React.lazy(() => import("./pages/Dashboard"));
+const StudentManagement = React.lazy(() => import("./pages/StudentManagement"));
+const TeacherManagement = React.lazy(() => import("./pages/TeacherManagement"));
+const ResultEntry = React.lazy(() => import("./pages/ResultEntry"));
+const SubjectResultEntry = React.lazy(() => import("./pages/SubjectResultEntry"));
+const Reports = React.lazy(() => import("./pages/Reports"));
+const Attendance = React.lazy(() => import("./pages/Attendance"));
+const Settings = React.lazy(() => import("./pages/Settings"));
+const TeacherDashboard = React.lazy(() => import("./pages/TeacherDashboard"));
+const ParentDashboard = React.lazy(() => import("./pages/ParentDashboard"));
+const NotificationsPage = React.lazy(() => import("./pages/Notifications"));
+const Messages = React.lazy(() => import("./pages/Messages"));
+const Deadlines = React.lazy(() => import("./pages/Deadlines"));
+const ActivityLog = React.lazy(() => import("./pages/ActivityLog"));
 import "./App.css";
 
 import { fetchConfig } from "./services/api";
@@ -483,7 +483,13 @@ function AppContent() {
           className={`max-w-7xl mx-auto ${isMobile ? "px-4 py-4" : "px-6 py-6 md:px-8 md:py-8"}`}
         >
           <AnimatePresence mode="wait">
-            <Routes location={location} key={location.pathname}>
+            <React.Suspense fallback={
+              <div className="flex flex-col items-center justify-center min-h-[400px]">
+                <div className="w-12 h-12 border-4 border-royal-purple-500/20 border-t-royal-purple-500 rounded-full animate-spin mb-4" />
+                <p className="text-royal-purple-400 font-black uppercase tracking-widest text-[10px]">Initializing...</p>
+              </div>
+            }>
+              <Routes location={location} key={location.pathname}>
               {userRole === "Teacher" ? (
                 <>
                   <Route
@@ -664,7 +670,8 @@ function AppContent() {
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </>
               )}
-            </Routes>
+              </Routes>
+            </React.Suspense>
           </AnimatePresence>
         </div>
       </main>
