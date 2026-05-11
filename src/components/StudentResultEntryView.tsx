@@ -156,7 +156,22 @@ const StudentResultEntryView = memo(function StudentResultEntryView({
     setBulkData(registeredSubjects)
   }, [registeredSubjects])
 
-  const calculateTotals = (firstCA: number, secondCA: number, exam: number) => {
+  const TRAIT_OPTIONS = ['Excellent', 'Good', 'Fair', 'Poor']
+
+  const calculateTotals = (subjectId: string, firstCA: number, secondCA: number, exam: number, trait?: string) => {
+    const subject = subjects.find(s => s.id === subjectId)
+    const isTraitBased = subject?.topics?.assessment_type === 'TRAIT'
+
+    if (isTraitBased && trait) {
+      return { 
+        totalScore: 0, 
+        percentage: 0, 
+        grade: trait === 'Excellent' ? 'A' : trait === 'Good' ? 'B' : trait === 'Fair' ? 'C' : 'D',
+        gradePoint: trait === 'Excellent' ? 4 : trait === 'Good' ? 3 : trait === 'Fair' ? 2 : 1,
+        remarks: trait 
+      }
+    }
+
     const total = firstCA + secondCA + exam
     const percentage = calculatePercentage(total, 100)
     const grade = calculateGrade(percentage)
@@ -173,15 +188,28 @@ const StudentResultEntryView = memo(function StudentResultEntryView({
     return { totalScore: total, percentage, grade, gradePoint, remarks }
   }
 
-  const handleScoreChange = (subjectId: string, field: 'firstCA' | 'secondCA' | 'exam', value: number) => {
+  const handleScoreChange = (subjectId: string, field: 'firstCA' | 'secondCA' | 'exam' | 'remarks', value: any) => {
     setBulkData(prev => {
       return prev.map(row => {
         if (row.subjectId === subjectId) {
+          const subject = subjects.find(s => s.id === subjectId)
+          const isTraitBased = subject?.topics?.assessment_type === 'TRAIT'
+
+          if (isTraitBased && field === 'remarks') {
+            const totals = calculateTotals(subjectId, 0, 0, 0, value)
+            return {
+              ...row,
+              remarks: value,
+              ...totals,
+              isDirty: true,
+            }
+          }
+
           const firstCA = field === 'firstCA' ? value : row.firstCA
           const secondCA = field === 'secondCA' ? value : row.secondCA
           const exam = field === 'exam' ? value : row.exam
 
-          const totals = calculateTotals(firstCA, secondCA, exam)
+          const totals = calculateTotals(subjectId, firstCA, secondCA, exam)
 
           return {
             ...row,
@@ -357,51 +385,73 @@ const StudentResultEntryView = memo(function StudentResultEntryView({
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-              {bulkData.map((row) => (
-                <tr key={row.subjectId} className={`hover:bg-indigo-50/50 dark:hover:bg-indigo-900/10 transition-colors ${row.isDirty ? 'bg-yellow-50/50 dark:bg-yellow-900/10' : ''}`}>
-                  <td className="px-6 py-4">
-                    <p className="font-black text-gray-900 dark:text-white uppercase tracking-tight">{row.subjectName}</p>
-                    <p className="text-[10px] text-indigo-500 font-bold uppercase tracking-widest">{row.subjectCode}</p>
-                  </td>
-                  <td className="px-6 py-4">
-                    <input
-                      type="number"
-                      value={row.firstCA}
-                      onChange={(e) => handleScoreChange(row.subjectId, 'firstCA', parseFloat(e.target.value) || 0)}
-                      className={`w-20 mx-auto block text-center font-bold input-field py-1 ${errors[`${row.subjectId}-ca1`] ? 'border-red-500' : ''}`}
-                    />
-                  </td>
-                  <td className="px-6 py-4">
-                    <input
-                      type="number"
-                      value={row.secondCA}
-                      onChange={(e) => handleScoreChange(row.subjectId, 'secondCA', parseFloat(e.target.value) || 0)}
-                      className={`w-20 mx-auto block text-center font-bold input-field py-1 ${errors[`${row.subjectId}-ca2`] ? 'border-red-500' : ''}`}
-                    />
-                  </td>
-                  <td className="px-6 py-4">
-                    <input
-                      type="number"
-                      value={row.exam}
-                      onChange={(e) => handleScoreChange(row.subjectId, 'exam', parseFloat(e.target.value) || 0)}
-                      className={`w-20 mx-auto block text-center font-bold input-field py-1 ${errors[`${row.subjectId}-exam`] ? 'border-red-500' : ''}`}
-                    />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <p className="text-lg font-black text-indigo-600 dark:text-indigo-400">{row.totalScore}</p>
-                    <p className="text-[10px] text-gray-400 font-bold">{row.percentage.toFixed(1)}%</p>
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <span className={`px-3 py-1 rounded-full text-xs font-black border-2 ${
-                      ['A', 'B', 'C'].includes(row.grade) 
-                        ? 'bg-emerald-50 text-emerald-600 border-emerald-100 dark:bg-emerald-900/20 dark:border-emerald-800' 
-                        : 'bg-orange-50 text-orange-600 border-orange-100 dark:bg-orange-900/20 dark:border-orange-800'
-                    }`}>
-                      {row.grade}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+              {bulkData.map((row) => {
+                const subject = subjects.find(s => s.id === row.subjectId)
+                const isTraitBased = subject?.topics?.assessment_type === 'TRAIT'
+
+                return (
+                  <tr key={row.subjectId} className={`hover:bg-indigo-50/50 dark:hover:bg-indigo-900/10 transition-colors ${row.isDirty ? 'bg-yellow-50/50 dark:bg-yellow-900/10' : ''}`}>
+                    <td className="px-6 py-4">
+                      <p className="font-black text-gray-900 dark:text-white uppercase tracking-tight">{row.subjectName}</p>
+                      <p className="text-[10px] text-indigo-500 font-bold uppercase tracking-widest">{row.subjectCode}</p>
+                    </td>
+                    {!isTraitBased ? (
+                      <>
+                        <td className="px-6 py-4">
+                          <input
+                            type="number"
+                            value={row.firstCA}
+                            onChange={(e) => handleScoreChange(row.subjectId, 'firstCA', parseFloat(e.target.value) || 0)}
+                            className={`w-20 mx-auto block text-center font-bold input-field py-1 ${errors[`${row.subjectId}-ca1`] ? 'border-red-500' : ''}`}
+                          />
+                        </td>
+                        <td className="px-6 py-4">
+                          <input
+                            type="number"
+                            value={row.secondCA}
+                            onChange={(e) => handleScoreChange(row.subjectId, 'secondCA', parseFloat(e.target.value) || 0)}
+                            className={`w-20 mx-auto block text-center font-bold input-field py-1 ${errors[`${row.subjectId}-ca2`] ? 'border-red-500' : ''}`}
+                          />
+                        </td>
+                        <td className="px-6 py-4">
+                          <input
+                            type="number"
+                            value={row.exam}
+                            onChange={(e) => handleScoreChange(row.subjectId, 'exam', parseFloat(e.target.value) || 0)}
+                            className={`w-20 mx-auto block text-center font-bold input-field py-1 ${errors[`${row.subjectId}-exam`] ? 'border-red-500' : ''}`}
+                          />
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          <p className="text-lg font-black text-indigo-600 dark:text-indigo-400">{row.totalScore}</p>
+                          <p className="text-[10px] text-gray-400 font-bold">{row.percentage.toFixed(1)}%</p>
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          <span className={`px-3 py-1 rounded-full text-xs font-black border-2 ${
+                            ['A', 'B', 'C'].includes(row.grade) 
+                              ? 'bg-emerald-50 text-emerald-600 border-emerald-100 dark:bg-emerald-900/20 dark:border-emerald-800' 
+                              : 'bg-orange-50 text-orange-600 border-orange-100 dark:bg-orange-900/20 dark:border-orange-800'
+                          }`}>
+                            {row.grade}
+                          </span>
+                        </td>
+                      </>
+                    ) : (
+                      <td colSpan={5} className="px-6 py-4">
+                        <select
+                          value={row.remarks || ''}
+                          onChange={(e) => handleScoreChange(row.subjectId, 'remarks', e.target.value)}
+                          className="w-full max-w-xs mx-auto block px-3 py-1.5 font-bold rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-brand-700 text-sm"
+                        >
+                          <option value="">Select Trait Assessment...</option>
+                          {TRAIT_OPTIONS.map(opt => (
+                            <option key={opt} value={opt}>{opt}</option>
+                          ))}
+                        </select>
+                      </td>
+                    )}
+                  </tr>
+                )
+              })}
               {bulkData.length === 0 && (
                 <tr>
                   <td colSpan={6} className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">

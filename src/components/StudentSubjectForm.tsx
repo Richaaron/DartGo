@@ -33,8 +33,9 @@ export default function StudentSubjectForm({
     
     // For Secondary level, further distinguish between JSS and SSS
     if (isSecondary) {
-      if (isSSSStudent) return s.code?.startsWith('SSS-') || (s.level === 'Secondary' && !!s.subjectCategory)
-      if (isJSSStudent) return s.code?.startsWith('JSS-') || (s.level === 'Secondary' && !s.subjectCategory)
+      const code = (s.code || '').toUpperCase()
+      if (isSSSStudent) return code.includes('SS') && !code.includes('JSS')
+      if (isJSSStudent) return code.includes('JSS')
     }
     
     return true

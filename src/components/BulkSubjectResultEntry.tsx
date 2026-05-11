@@ -215,14 +215,27 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
 
     // Sort by student name
     rows.sort((a, b) => a.studentName.localeCompare(b.studentName))
-    setBulkData(rows)
-  }, [selectedSubjectId, selectedClass, selectedArm, selectedTerm, selectedYear, subjects, students, studentSubjects, existingResults, user?.name])
-
   useEffect(() => {
     loadBulkData()
   }, [loadBulkData])
 
-  const calculateTotals = (firstCA: number, secondCA: number, exam: number) => {
+  const isTraitBased = useMemo(() => {
+    return selectedSubject?.topics?.assessment_type === 'TRAIT'
+  }, [selectedSubject])
+
+  const TRAIT_OPTIONS = ['Excellent', 'Good', 'Fair', 'Poor']
+
+  const calculateTotals = (firstCA: number, secondCA: number, exam: number, trait?: string) => {
+    if (isTraitBased && trait) {
+      return { 
+        totalScore: 0, 
+        percentage: 0, 
+        grade: trait === 'Excellent' ? 'A' : trait === 'Good' ? 'B' : trait === 'Fair' ? 'C' : 'D',
+        gradePoint: trait === 'Excellent' ? 4 : trait === 'Good' ? 3 : trait === 'Fair' ? 2 : 1,
+        remarks: trait 
+      }
+    }
+
     const total = firstCA + secondCA + exam
     const percentage = calculatePercentage(total, 100)
     const grade = calculateGrade(percentage)
@@ -246,10 +259,20 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
     return { totalScore: total, percentage, grade, gradePoint, remarks }
   }
 
-  const handleScoreChange = (studentId: string, field: 'firstCA' | 'secondCA' | 'exam', value: number) => {
+  const handleScoreChange = (studentId: string, field: 'firstCA' | 'secondCA' | 'exam' | 'remarks', value: any) => {
     setBulkData(prev => {
       return prev.map(row => {
         if (row.studentId === studentId) {
+          if (isTraitBased && field === 'remarks') {
+            const totals = calculateTotals(0, 0, 0, value)
+            return {
+              ...row,
+              remarks: value,
+              ...totals,
+              isDirty: true,
+            }
+          }
+
           const firstCA = field === 'firstCA' ? value : row.firstCA
           const secondCA = field === 'secondCA' ? value : row.secondCA
           const exam = field === 'exam' ? value : row.exam
@@ -508,30 +531,38 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
                     <th className="px-4 py-3 text-left text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
                       Student Name
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest hidden-mobile">
-                      Reg. No.
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest hidden-mobile">
-                      Class
-                    </th>
-                    <th className="px-4 py-3 text-center text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
-                      1st CA (20)
-                    </th>
-                    <th className="px-4 py-3 text-center text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
-                      2nd CA (20)
-                    </th>
-                    <th className="px-4 py-3 text-center text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
-                      Exam (60)
-                    </th>
-                    <th className="px-4 py-3 text-center text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
-                      Total
-                    </th>
-                    <th className="px-4 py-3 text-center text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
-                      %
-                    </th>
-                    <th className="px-4 py-3 text-center text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
-                      Grade
-                    </th>
+                    {!isTraitBased ? (
+                      <>
+                        <th className="px-4 py-3 text-left text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest hidden-mobile">
+                          Reg. No.
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest hidden-mobile">
+                          Class
+                        </th>
+                        <th className="px-4 py-3 text-center text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
+                          1st CA (20)
+                        </th>
+                        <th className="px-4 py-3 text-center text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
+                          2nd CA (20)
+                        </th>
+                        <th className="px-4 py-3 text-center text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
+                          Exam (60)
+                        </th>
+                        <th className="px-4 py-3 text-center text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
+                          Total
+                        </th>
+                        <th className="px-4 py-3 text-center text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
+                          %
+                        </th>
+                        <th className="px-4 py-3 text-center text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
+                          Grade
+                        </th>
+                      </>
+                    ) : (
+                      <th className="px-4 py-3 text-left text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
+                        Trait Assessment
+                      </th>
+                    )}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -548,88 +579,105 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
                           <p className="text-[10px] text-gray-400 font-normal">{row.registrationNumber}</p>
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-sm font-bold text-gray-600 dark:text-gray-400 hidden-mobile">
-                        {row.registrationNumber}
-                      </td>
-                      <td className="px-4 py-3 text-sm font-bold text-gray-600 dark:text-gray-400 hidden-mobile">
-                        {row.class}
-                      </td>
-                      <td className="px-4 py-3">
-                        <input
-                          type="number"
-                          value={row.firstCA}
-                          onChange={(e) => handleScoreChange(row.studentId, 'firstCA', parseFloat(e.target.value) || 0)}
-                          min="0"
-                          max="20"
-                          step="0.01"
-                          aria-label={`1st CA for ${row.studentName}`}
-                          className={`w-20 px-2 py-1 text-center font-bold rounded border text-sm ${
-                            errors[`${row.studentId}-ca1`]
-                              ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
-                              : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-brand-700'
-                          }`}
-                        />
-                        {errors[`${row.studentId}-ca1`] && (
-                          <p className="text-red-500 text-xs mt-0.5">{errors[`${row.studentId}-ca1`]}</p>
-                        )}
-                      </td>
-                      <td className="px-4 py-3">
-                        <input
-                          type="number"
-                          value={row.secondCA}
-                          onChange={(e) => handleScoreChange(row.studentId, 'secondCA', parseFloat(e.target.value) || 0)}
-                          min="0"
-                          max="20"
-                          step="0.01"
-                          aria-label={`2nd CA for ${row.studentName}`}
-                          className={`w-20 px-2 py-1 text-center font-bold rounded border text-sm ${
-                            errors[`${row.studentId}-ca2`]
-                              ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
-                              : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-brand-700'
-                          }`}
-                        />
-                        {errors[`${row.studentId}-ca2`] && (
-                          <p className="text-red-500 text-xs mt-0.5">{errors[`${row.studentId}-ca2`]}</p>
-                        )}
-                      </td>
-                      <td className="px-4 py-3">
-                        <input
-                          type="number"
-                          value={row.exam}
-                          onChange={(e) => handleScoreChange(row.studentId, 'exam', parseFloat(e.target.value) || 0)}
-                          min="0"
-                          max="60"
-                          step="0.01"
-                          aria-label={`Exam for ${row.studentName}`}
-                          className={`w-20 px-2 py-1 text-center font-bold rounded border text-sm ${
-                            errors[`${row.studentId}-exam`]
-                              ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
-                              : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-brand-700'
-                          }`}
-                        />
-                        {errors[`${row.studentId}-exam`] && (
-                          <p className="text-red-500 text-xs mt-0.5">{errors[`${row.studentId}-exam`]}</p>
-                        )}
-                      </td>
-                      <td className="px-4 py-3 text-center font-bold text-indigo-600 dark:text-indigo-400">
-                        {row.totalScore}
-                      </td>
-                      <td className="px-4 py-3 text-center font-bold">
-                        {row.percentage.toFixed(1)}%
-                      </td>
-                      <td className="px-4 py-3 text-center font-black">
-                        <span
-                          className={`px-2 py-1 rounded text-xs font-black ${
-                            ['A', 'B', 'C'].includes(row.grade)
-                              ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
-                              : ['D', 'E'].includes(row.grade)
-                              ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400'
-                              : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
-                          }`}
-                        >
-                          {row.grade}
-                        </span>
-                      </td>
+                      {!isTraitBased ? (
+                        <>
+                          <td className="px-4 py-3 text-sm font-bold text-gray-600 dark:text-gray-400 hidden-mobile">
+                            {row.registrationNumber}
+                          </td>
+                          <td className="px-4 py-3 text-sm font-bold text-gray-600 dark:text-gray-400 hidden-mobile">
+                            {row.class}
+                          </td>
+                          <td className="px-4 py-3">
+                            <input
+                              type="number"
+                              value={row.firstCA}
+                              onChange={(e) => handleScoreChange(row.studentId, 'firstCA', parseFloat(e.target.value) || 0)}
+                              min="0"
+                              max="20"
+                              step="0.01"
+                              aria-label={`1st CA for ${row.studentName}`}
+                              className={`w-20 px-2 py-1 text-center font-bold rounded border text-sm ${
+                                errors[`${row.studentId}-ca1`]
+                                  ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                                  : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-brand-700'
+                              }`}
+                            />
+                            {errors[`${row.studentId}-ca1`] && (
+                              <p className="text-red-500 text-xs mt-0.5">{errors[`${row.studentId}-ca1`]}</p>
+                            )}
+                          </td>
+                          <td className="px-4 py-3">
+                            <input
+                              type="number"
+                              value={row.secondCA}
+                              onChange={(e) => handleScoreChange(row.studentId, 'secondCA', parseFloat(e.target.value) || 0)}
+                              min="0"
+                              max="20"
+                              step="0.01"
+                              aria-label={`2nd CA for ${row.studentName}`}
+                              className={`w-20 px-2 py-1 text-center font-bold rounded border text-sm ${
+                                errors[`${row.studentId}-ca2`]
+                                  ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                                  : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-brand-700'
+                              }`}
+                            />
+                            {errors[`${row.studentId}-ca2`] && (
+                              <p className="text-red-500 text-xs mt-0.5">{errors[`${row.studentId}-ca2`]}</p>
+                            )}
+                          </td>
+                          <td className="px-4 py-3">
+                            <input
+                              type="number"
+                              value={row.exam}
+                              onChange={(e) => handleScoreChange(row.studentId, 'exam', parseFloat(e.target.value) || 0)}
+                              min="0"
+                              max="60"
+                              step="0.01"
+                              aria-label={`Exam for ${row.studentName}`}
+                              className={`w-20 px-2 py-1 text-center font-bold rounded border text-sm ${
+                                errors[`${row.studentId}-exam`]
+                                  ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                                  : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-brand-700'
+                              }`}
+                            />
+                            {errors[`${row.studentId}-exam`] && (
+                              <p className="text-red-500 text-xs mt-0.5">{errors[`${row.studentId}-exam`]}</p>
+                            )}
+                          </td>
+                          <td className="px-4 py-3 text-center font-bold text-indigo-600 dark:text-indigo-400">
+                            {row.totalScore}
+                          </td>
+                          <td className="px-4 py-3 text-center font-bold">
+                            {row.percentage.toFixed(1)}%
+                          </td>
+                          <td className="px-4 py-3 text-center font-black">
+                            <span
+                              className={`px-2 py-1 rounded text-xs font-black ${
+                                ['A', 'B', 'C'].includes(row.grade)
+                                  ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
+                                  : ['D', 'E'].includes(row.grade)
+                                  ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400'
+                                  : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+                              }`}
+                            >
+                              {row.grade}
+                            </span>
+                          </td>
+                        </>
+                      ) : (
+                        <td className="px-4 py-3">
+                          <select
+                            value={row.remarks || ''}
+                            onChange={(e) => handleScoreChange(row.studentId, 'remarks', e.target.value)}
+                            className="w-full px-3 py-1.5 font-bold rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-brand-700 text-sm"
+                          >
+                            <option value="">Select Trait...</option>
+                            {TRAIT_OPTIONS.map(opt => (
+                              <option key={opt} value={opt}>{opt}</option>
+                            ))}
+                          </select>
+                        </td>
+                      )}
                     </tr>
                   ))}
                 </tbody>
