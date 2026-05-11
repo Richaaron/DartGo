@@ -2,8 +2,8 @@ import { useState, useEffect, useMemo, useCallback, memo, useRef } from 'react'
 import { Plus, Search, AlertCircle, Filter, User, BookOpen, ClipboardList, ChevronLeft, ChevronRight, LayoutGrid, List, Loader2 } from 'lucide-react'
 import { SubjectResult, Student, Subject, StudentSubject, Teacher } from '../types'
 import SubjectResultForm from '../components/SubjectResultForm'
-import BulkSubjectResultEntry from '../components/BulkSubjectResultEntry'
-import StudentResultEntryView from '../components/StudentResultEntryView'
+// Lazy load sub-components to prevent TDZ issues
+const BulkSubjectResultEntry = React.lazy(() => import('../components/BulkSubjectResultEntry'))
 import { createResult, updateResult, fetchStudentSubjects, fetchStudents, fetchResults, fetchSubjects, deleteResult } from '../services/api'
 import { useAuthContext } from '../context/AuthContext'
 import { useLocation } from 'react-router-dom'
@@ -766,14 +766,21 @@ export default function SubjectResultEntry() {
       {/* Main Content Area */}
       <div className="space-y-6">
         {viewMode === 'students' ? (
-          <BulkSubjectResultEntry
-            subjects={subjects}
-            students={students}
-            studentSubjects={allStudentSubjects}
-            existingResults={results}
-            onResultsSaved={loadData}
-            teacherSubjects={teacherSubjects}
-          />
+          <React.Suspense fallback={
+            <div className="flex flex-col items-center justify-center p-20 card-lg">
+              <Loader2 className="w-12 h-12 text-indigo-500 animate-spin mb-4" />
+              <p className="text-gray-400 font-black uppercase tracking-widest text-[10px]">Loading Student Entries...</p>
+            </div>
+          }>
+            <BulkSubjectResultEntry
+              subjects={subjects}
+              students={students}
+              studentSubjects={allStudentSubjects}
+              existingResults={results}
+              onResultsSaved={loadData}
+              teacherSubjects={teacherSubjects}
+            />
+          </React.Suspense>
         ) : !selectedStudentResults ? (
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {studentResultsSummary.length > 0 ? (
