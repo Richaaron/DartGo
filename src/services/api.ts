@@ -1,46 +1,5 @@
-import { Student, Teacher, Subject, SubjectResult, Curriculum, StudentSubject, DEFAULT_SUBJECTS } from '../types'
+import { Student, Teacher, Subject, SubjectResult, Curriculum, StudentSubject } from '../types'
 import apiService from './apiService'
-
-const DEV_SUBJECTS: Subject[] = DEFAULT_SUBJECTS.map((subject) => ({
-  ...subject,
-  description: subject.description || `${subject.name} for ${subject.level} level with guided classroom content and learning objectives.`,
-  subjectCategory: subject.subjectCategory || 'General',
-  curriculumType: subject.curriculumType || 'NIGERIAN',
-  prerequisiteSubjects: subject.prerequisiteSubjects || [],
-}))
-
-const DEV_CURRICULUMS: Curriculum[] = [
-  {
-    id: 'dev-curriculum-primary',
-    name: 'Nigerian Primary School Curriculum',
-    version: '2023.1',
-    level: 'Primary',
-    yearsOfStudy: 6,
-    subjects: DEV_SUBJECTS.filter((subject) => subject.level === 'Primary') as any,
-    implementationDate: '2023-09-01',
-    description: 'Current Nigerian primary school curriculum (Classes 1-6)',
-    curriculum: 'NIGERIAN',
-    status: 'ACTIVE',
-    createdBy: 'admin@folusho.com',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: 'dev-curriculum-secondary',
-    name: 'Nigerian Secondary School Curriculum',
-    version: '2023.1',
-    level: 'Secondary',
-    yearsOfStudy: 6,
-    subjects: DEV_SUBJECTS.filter((subject) => subject.level === 'Secondary') as any,
-    implementationDate: '2023-09-01',
-    description: 'Current Nigerian secondary school curriculum (JSS 1-3, SSS 1-3)',
-    curriculum: 'NIGERIAN',
-    status: 'ACTIVE',
-    createdBy: 'admin@folusho.com',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-]
 
 export async function fetchStudents(): Promise<Student[]> {
   const { data } = await apiService.get('/students')
@@ -93,15 +52,12 @@ export async function deleteTeacher(id: string): Promise<void> {
 export async function fetchSubjects(): Promise<Subject[]> {
   try {
     const { data } = await apiService.get('/subjects')
-    // Validate data and use DEFAULT_SUBJECTS if needed
     if (Array.isArray(data) && data.length > 0) {
       return data as Subject[]
     }
   } catch (error) {
-    console.log('Subjects API call failed, using DEFAULT_SUBJECTS:', error)
   }
-  // Always return fresh DEV_SUBJECTS based on current DEFAULT_SUBJECTS
-  return DEV_SUBJECTS
+  return []
 }
 
 export async function fetchResults(): Promise<SubjectResult[]> {
@@ -159,7 +115,7 @@ export async function fetchCurriculums(params: any = {}): Promise<Curriculum[]> 
     const { data } = await apiService.get(`/curriculum?${query}`)
     return data as Curriculum[]
   } catch {
-    return DEV_CURRICULUMS
+    return []
   }
 }
 
