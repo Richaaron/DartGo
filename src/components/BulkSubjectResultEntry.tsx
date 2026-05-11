@@ -214,7 +214,9 @@ const BulkSubjectResultEntry = memo(function BulkSubjectResultEntry({
     }).filter((row): row is BulkEntryRow => row !== null)
 
     // Sort by student name
-    rows.sort((a, b) => a.studentName.localeCompare(b.studentName))
+    setBulkData(rows)
+  }, [selectedSubjectId, selectedClass, selectedArm, selectedTerm, selectedYear, subjects, students, studentSubjects, existingResults, user])
+
   useEffect(() => {
     loadBulkData()
   }, [loadBulkData])
