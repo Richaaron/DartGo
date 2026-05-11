@@ -41,7 +41,13 @@ const getPrimaryUrl = () => {
   return 'http://localhost:3001/api'
 }
 
-const PRIMARY_API_URL = getPrimaryUrl()
+let memoizedUrl: string | null = null
+
+function getUrl() {
+  if (memoizedUrl) return memoizedUrl
+  memoizedUrl = getPrimaryUrl()
+  return memoizedUrl
+}
 
 function getHeaders() {
   const session = localStorage.getItem('authSession')

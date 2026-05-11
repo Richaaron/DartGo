@@ -17,7 +17,12 @@ const getBaseUrl = () => {
   return 'http://localhost:3002/api'
 }
 
-const API_URL = getBaseUrl()
+let memoizedApiUrl: string | null = null
+const getApiUrl = () => {
+  if (memoizedApiUrl) return memoizedApiUrl
+  memoizedApiUrl = getBaseUrl()
+  return memoizedApiUrl
+}
 
 // Development fallback users - ONLY in development mode
 const isDevelopment = import.meta.env.DEV
@@ -210,7 +215,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!session.isAuthenticated || !session.token) return false
 
     try {
-      const res = await fetch(`${API_URL}/auth/refresh`, {
+      const res = await fetch(`${getApiUrl()}/auth/refresh`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -267,7 +272,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     try {
-      const res = await fetch(`${API_URL}/auth/login`, {
+      const res = await fetch(`${getApiUrl()}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: normalizedLoginId, password }),
