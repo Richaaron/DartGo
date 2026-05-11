@@ -109,13 +109,24 @@ export class ErrorBoundary extends Component<Props, State> {
                   Try Again
                 </button>
               )}
-              <button
-                onClick={this.handleGoHome}
-                className="btn-secondary flex items-center gap-2"
-              >
-                <Home className="w-4 h-4" />
-                Go Home
-              </button>
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+            <button
+              onClick={() => (window.location.href = "/")}
+              className="px-8 py-3 bg-white text-brand-900 rounded-xl font-bold hover:bg-slate-100 transition-all flex items-center gap-2"
+            >
+              <RefreshCw className="w-5 h-5" />
+              Return Home
+            </button>
+            <button
+              onClick={() => {
+                localStorage.clear();
+                window.location.href = "/";
+              }}
+              className="px-8 py-3 bg-red-600/20 border border-red-500/50 text-red-100 rounded-xl font-bold hover:bg-red-600/30 transition-all"
+            >
+              Reset Application State
+            </button>
+          </div>
             </div>
           </div>
         </div>

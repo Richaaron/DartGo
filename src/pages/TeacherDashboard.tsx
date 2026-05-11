@@ -176,7 +176,7 @@ export default function TeacherDashboard() {
         secondCA: result.secondCA,
         exam: result.exam,
         totalScore: result.totalScore,
-        percentage: `${result.percentage.toFixed(2)}%`,
+        percentage: `${(result.percentage || 0).toFixed(0)}%`,
         grade: result.grade,
         term: result.term,
         dateRecorded: formatDate(result.dateRecorded),

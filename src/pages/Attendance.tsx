@@ -80,7 +80,7 @@ export default function AttendancePage() {
   const [usingSampleData, setUsingSampleData] = useState(false);
 
   const classes = useMemo(
-    () => [...new Set(students.map((s) => s.class))],
+    () => [...new Set(students.filter(Boolean).map((s) => s.class))],
     [students],
   );
 
@@ -188,7 +188,7 @@ export default function AttendancePage() {
   const filteredStudents = useMemo(() => {
     return selectedClass === "All"
       ? students
-      : students.filter((s: Student) => s.class === selectedClass);
+      : students.filter((s: Student) => s && s.class === selectedClass);
   }, [students, selectedClass]);
 
   const handleStatusChange = (studentId: string, status: string) => {

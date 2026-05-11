@@ -20,8 +20,8 @@ export const activityService = {
       userId: a.user_id,
       userName: a.user_name || a.user_id || 'Unknown',
       role: a.role || 'User',
-      action: a.action,
-      details: a.details,
+      action: a.action || '',
+      details: a.details || '',
       createdAt: a.created_at,
       entityType: a.entity_type,
       entityId: a.entity_id
@@ -35,8 +35,8 @@ export const activityService = {
       userId: a.user_id,
       userName: a.user_name || a.user_id || 'Unknown',
       role: a.role || 'User',
-      action: a.action,
-      details: a.details,
+      action: a.action || '',
+      details: a.details || '',
       createdAt: a.created_at,
       entityType: a.entity_type,
       entityId: a.entity_id

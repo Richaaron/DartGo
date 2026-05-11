@@ -12,6 +12,9 @@ import api from "../services/api";
 
 // Map raw HTTP action strings to human-readable labels
 function humanizeAction(action: string): { label: string; category: string } {
+  if (!action || typeof action !== "string") {
+    return { label: "Unknown Action", category: "other" };
+  }
   const parts = action.trim().split(" ");
   const method = parts[0];
   const url = parts[1] || "";

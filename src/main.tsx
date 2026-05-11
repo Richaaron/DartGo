@@ -40,7 +40,7 @@ if (isSentryEnabled) {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ErrorBoundary>
+    <ErrorBoundary showDetails={true}>
       <ToastProvider />
       <AuthProvider>
         <App />

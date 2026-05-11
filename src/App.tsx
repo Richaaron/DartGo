@@ -99,6 +99,15 @@ function AppContent() {
 
   const userRole = user?.role || "Student";
   const userName = user?.name || "User";
+
+  useEffect(() => {
+    console.log('[App] Auth State:', {
+      isAuthenticated,
+      userRole,
+      userName,
+      pathname: location.pathname
+    });
+  }, [isAuthenticated, userRole, userName, location.pathname]);
   const teacher = userRole === "Teacher" ? (user as any) : null;
   const teacherType = teacher?.teacherType;
   const hasAssignedClasses =
@@ -204,7 +213,9 @@ function AppContent() {
                 />
                 <div className="overflow-hidden">
                   <h1 className="text-base font-black text-white truncate tracking-tighter uppercase">
-                    {config?.schoolName?.split(" ")[0] || "FOLUSHO"}
+                    {typeof config?.schoolName === 'string' 
+                      ? config.schoolName.split(" ")[0] 
+                      : (config?.schoolName || "FOLUSHO")}
                   </h1>
                   <p className="text-[10px] text-royal-gold-400 font-black uppercase tracking-[0.2em] truncate mt-0.5">
                     Citadel of Excellence
@@ -692,7 +703,7 @@ function NavLink({ to, icon, label, isOpen, onClick }: NavLinkProps & { onClick?
 
 export default function App() {
   return (
-    <ErrorBoundary>
+    <ErrorBoundary showDetails={true}>
       <Router>
         <AppContent />
       </Router>

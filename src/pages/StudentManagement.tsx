@@ -69,7 +69,7 @@ export default function StudentManagement() {
     if (selectedLevel !== "All") {
       filtered = students.filter((s) => s.level === selectedLevel);
     }
-    return [...new Set(filtered.map((s) => s.class))].sort();
+    return [...new Set(filtered.filter(Boolean).map((s) => s.class))].sort();
   }, [students, selectedLevel]);
 
   useEffect(() => {
@@ -187,7 +187,7 @@ export default function StudentManagement() {
       return;
     }
 
-    const studentsInClass = students.filter((s) => s.class === bulkAssignClass);
+    const studentsInClass = students.filter((s) => s && s.class === bulkAssignClass);
     if (studentsInClass.length === 0) {
       window.alert("No students found in the selected class");
       return;
@@ -252,11 +252,11 @@ export default function StudentManagement() {
       parentEmail.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesLevel =
-      selectedLevel === "All" || student.level === selectedLevel;
+      selectedLevel === "All" || (student && student.level === selectedLevel);
     const matchesClass =
       !isFormCapableTeacher ||
       selectedClass === "All" ||
-      student.class === selectedClass;
+      (student && student.class === selectedClass);
 
     return matchesSearch && matchesLevel && matchesClass;
   });
