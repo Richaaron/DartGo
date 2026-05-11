@@ -201,13 +201,13 @@ async function fetchWithTimeout(url: string, endpoint: string, options: RequestI
 
 // API methods
 async function get<T>(url: string, config: RequestInit = {}): Promise<{ data: T }> {
-  const data = await fetchWithTimeout(PRIMARY_API_URL, url, { method: 'GET', ...config })
+  const data = await fetchWithTimeout(getUrl(), url, { method: 'GET', ...config })
   return { data }
 }
 
 async function post<T>(url: string, data: any = {}, config: RequestInit = {}): Promise<{ data: T }> {
   const isFormData = data instanceof FormData
-  const result = await fetchWithTimeout(PRIMARY_API_URL, url, { 
+  const result = await fetchWithTimeout(getUrl(), url, { 
     method: 'POST', 
     body: isFormData ? data : JSON.stringify(data),
     ...config 
@@ -217,7 +217,7 @@ async function post<T>(url: string, data: any = {}, config: RequestInit = {}): P
 
 async function put<T>(url: string, data: any = {}, config: RequestInit = {}): Promise<{ data: T }> {
   const isFormData = data instanceof FormData
-  const result = await fetchWithTimeout(PRIMARY_API_URL, url, { 
+  const result = await fetchWithTimeout(getUrl(), url, { 
     method: 'PUT', 
     body: isFormData ? data : JSON.stringify(data),
     ...config 
@@ -227,7 +227,7 @@ async function put<T>(url: string, data: any = {}, config: RequestInit = {}): Pr
 
 async function patch<T>(url: string, data: any = {}, config: RequestInit = {}): Promise<{ data: T }> {
   const isFormData = data instanceof FormData
-  const result = await fetchWithTimeout(PRIMARY_API_URL, url, { 
+  const result = await fetchWithTimeout(getUrl(), url, { 
     method: 'PATCH', 
     body: isFormData ? data : JSON.stringify(data),
     ...config 
@@ -236,7 +236,7 @@ async function patch<T>(url: string, data: any = {}, config: RequestInit = {}): 
 }
 
 async function del<T>(url: string, config: RequestInit = {}): Promise<{ data: T }> {
-  const result = await fetchWithTimeout(PRIMARY_API_URL, url, { method: 'DELETE', ...config })
+  const result = await fetchWithTimeout(getUrl(), url, { method: 'DELETE', ...config })
   return { data: result }
 }
 

@@ -13,12 +13,6 @@ export default defineConfig({
     sourcemap: false,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'ui-vendor': ['lucide-react', 'framer-motion'],
-          'chart-vendor': ['recharts'],
-          'pdf-vendor': ['jspdf', 'html2canvas'],
-        }
       }
     },
     chunkSizeWarningLimit: 1000
