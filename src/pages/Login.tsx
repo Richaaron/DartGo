@@ -114,11 +114,11 @@ export default function Login({ onLoginSuccess }: LoginProps) {
   };
 
   return (
-    <div className="min-h-screen bg-folusho-cream-50 text-folusho-slate-900 overflow-hidden relative selection:bg-folusho-sage-500/20">
+    <div className="min-h-screen bg-folusho-cream-100 text-folusho-slate-900 overflow-hidden relative selection:bg-folusho-sage-500/20">
       {/* ── Immersive Background ──────────────────────── */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         {/* Organic Sage Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1400px] h-[1400px] bg-folusho-sage-100/40 rounded-full blur-[180px] animate-folusho-blob" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1400px] h-[1400px] bg-folusho-sage-200/40 rounded-full blur-[180px] animate-folusho-blob" />
         
         {/* Dynamic Blobs */}
         <motion.div 
@@ -145,7 +145,10 @@ export default function Login({ onLoginSuccess }: LoginProps) {
         />
         
         {/* Premium Noise Pattern */}
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')] opacity-[0.4] mix-blend-multiply" />
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')] opacity-[0.6] mix-blend-multiply" />
+        
+        {/* Subtle Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/20 to-folusho-cream-200/40" />
       </div>
 
       <AnimatePresence mode="wait">
@@ -169,7 +172,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                   transition={{ duration: 1, delay: 0.2 }}
                   className="space-y-8"
                 >
-                  <div className="inline-flex items-center gap-4 px-6 py-2.5 rounded-full bg-white border border-folusho-cream-200 text-folusho-sage-600 text-[10px] font-black tracking-[0.4em] uppercase shadow-sm">
+                  <div className="inline-flex items-center gap-4 px-6 py-2.5 rounded-full bg-folusho-cream-50 border border-folusho-cream-200 text-folusho-sage-600 text-[10px] font-black tracking-[0.4em] uppercase shadow-sm">
                     <div className="w-10 h-10 bg-folusho-sage-50 rounded-2xl flex items-center justify-center p-2 shadow-sm border border-folusho-sage-100">
                       <img src="/school_logo.png?v=20260512" alt="Logo" className="w-full h-full object-contain" />
                     </div>
@@ -238,7 +241,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                 transition={{ duration: 1.2, delay: 0.4 }}
                 className="hidden lg:block relative"
               >
-                <div className="relative z-10 p-20 rounded-[4rem] bg-white border border-folusho-cream-200 shadow-folusho-lg overflow-hidden group">
+                <div className="relative z-10 p-20 rounded-[4rem] bg-folusho-cream-50 border border-folusho-cream-200 shadow-folusho-lg overflow-hidden group">
                   {/* Internal Shimmer */}
                   <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-folusho-cream-50/50 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1200" />
                   
@@ -312,7 +315,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                 <span className="text-xs font-black tracking-[0.35em] uppercase">Return to Orbit</span>
               </button>
 
-              <div className="p-16 rounded-[4rem] bg-white border border-folusho-cream-200 shadow-folusho-lg">
+              <div className="p-16 rounded-[4rem] bg-folusho-cream-50 border border-folusho-cream-200 shadow-folusho-lg">
                 <div className="text-center mb-14">
                   <motion.div 
                     initial={{ scale: 0 }}
