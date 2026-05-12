@@ -423,5 +423,4 @@ export default function SubjectResultForm({
       </form>
     </motion.div>
   )
-  )
 }

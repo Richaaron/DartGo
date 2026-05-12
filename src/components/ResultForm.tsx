@@ -356,5 +356,4 @@ export default function ResultForm({
       </div>
     </motion.div>
   )
-  )
 }
