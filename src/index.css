@@ -22,6 +22,8 @@ body {
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.6;
     overflow-x: hidden;
+    background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+    background-blend-mode: multiply;
 }
 
 .dark body {
@@ -35,7 +37,7 @@ html {
 /* ── FOLUSHO ACADEMIC DESIGN SYSTEM ────────────────── */
 @layer components {
   .folusho-card {
-    @apply bg-white border border-folusho-cream-300 rounded-5xl p-10 shadow-folusho relative overflow-hidden transition-all duration-500 hover:shadow-folusho-lg hover:-translate-y-1;
+    @apply bg-folusho-cream-50 border border-folusho-cream-300 rounded-5xl p-10 shadow-folusho relative overflow-hidden transition-all duration-500 hover:shadow-folusho-lg hover:-translate-y-1;
   }
   
   .bento-surface {
@@ -47,7 +49,7 @@ html {
   }
 
   .input-folusho {
-    @apply w-full px-8 py-5 bg-white text-folusho-slate-900 border-2 border-folusho-cream-200 rounded-3xl font-medium focus:ring-4 focus:ring-folusho-sage-400/20 focus:border-folusho-sage-400 outline-none transition-all duration-300 placeholder:text-folusho-cream-500;
+    @apply w-full px-8 py-5 bg-folusho-cream-50 text-folusho-slate-900 border-2 border-folusho-cream-200 rounded-3xl font-medium focus:ring-4 focus:ring-folusho-sage-400/20 focus:border-folusho-sage-400 outline-none transition-all duration-300 placeholder:text-folusho-cream-500;
   }
 
   .text-gradient-folusho {
