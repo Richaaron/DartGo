@@ -81,6 +81,11 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.1;
 }
 
+select, option {
+    background-color: #020617 !important;
+    color: white !important;
+}
+
 @keyframes nebula-shimmer {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
