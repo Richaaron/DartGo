@@ -15,7 +15,7 @@ import {
   Area
 } from 'recharts'
 import { Student, SubjectResult, Subject } from '../types'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { BarChart3, PieChart as PieChartIcon, Activity, AlertTriangle } from 'lucide-react'
 
 interface SubjectMetricsProps {
@@ -36,7 +36,84 @@ const GRADE_COLORS: Record<string, string> = {
 };
 
 export default function SubjectMetrics({ students, results, subjects, selectedClass }: SubjectMetricsProps) {
-  // ... (previous logic stays the same)
+  const classResults = useMemo(() => {
+    if (selectedClass === 'All') return results;
+    const classStudentIds = students
+      .filter(s => s.class === selectedClass)
+      .map(s => s.id);
+    return results.filter(r => classStudentIds.includes(r.studentId));
+  }, [results, students, selectedClass]);
+
+  const subjectPerformanceData = useMemo(() => {
+    const data: Record<string, { total: number, count: number, passCount: number, name: string }> = {};
+    
+    classResults.forEach(result => {
+      const subject = subjects.find(s => s.id === result.subjectId);
+      if (!subject) return;
+      
+      if (!data[subject.id]) {
+        data[subject.id] = { total: 0, count: 0, passCount: 0, name: subject.name };
+      }
+      
+      data[subject.id].total += result.totalScore;
+      data[subject.id].count += 1;
+      if (result.totalScore >= 50) data[subject.id].passCount += 1;
+    });
+    
+    return Object.values(data).map(d => ({
+      name: d.name,
+      average: Math.round(d.total / d.count),
+      passRate: Math.round((d.passCount / d.count) * 100),
+      count: d.count
+    })).sort((a, b) => b.average - a.average);
+  }, [classResults, subjects]);
+
+  const gradeDistributionData = useMemo(() => {
+    const distribution: Record<string, number> = { 'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'F': 0 };
+    
+    classResults.forEach(r => {
+      const score = r.totalScore;
+      let grade = 'F';
+      if (score >= 70) grade = 'A';
+      else if (score >= 60) grade = 'B';
+      else if (score >= 50) grade = 'C';
+      else if (score >= 45) grade = 'D';
+      else if (score >= 40) grade = 'E';
+      
+      distribution[grade]++;
+    });
+    
+    return Object.entries(distribution)
+      .filter(([_, value]) => value > 0)
+      .map(([name, value]) => ({ name, value }));
+  }, [classResults]);
+
+  const scoreRangeData = useMemo(() => {
+    const ranges = [
+      { name: '0-39', count: 0 },
+      { name: '40-49', count: 0 },
+      { name: '50-59', count: 0 },
+      { name: '60-69', count: 0 },
+      { name: '70-79', count: 0 },
+      { name: '80-100', count: 0 },
+    ];
+    
+    classResults.forEach(r => {
+      const s = r.totalScore;
+      if (s < 40) ranges[0].count++;
+      else if (s < 50) ranges[1].count++;
+      else if (s < 60) ranges[2].count++;
+      else if (s < 70) ranges[3].count++;
+      else if (s < 80) ranges[4].count++;
+      else ranges[5].count++;
+    });
+    
+    return ranges;
+  }, [classResults]);
+
+  const laggingSubjects = useMemo(() => {
+    return subjectPerformanceData.filter(s => s.passRate < 50);
+  }, [subjectPerformanceData]);
 
   if (classResults.length === 0) {
     return (
