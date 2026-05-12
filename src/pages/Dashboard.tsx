@@ -322,7 +322,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <motion.div variants={itemVariants} className="space-y-10">
           <div className="space-y-6">
-            <h1 className="text-7xl md:text-9xl font-black text-white leading-[0.85] tracking-tighter">
+            <h1 className="text-5xl md:text-7xl font-black text-white leading-[0.85] tracking-tighter">
               Future <br />
               Intelligence <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-nebula-indigo-400 via-nebula-teal-400 to-nebula-pink-400">Nebula.</span>
@@ -357,7 +357,7 @@ export default function Dashboard() {
               <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 shadow-inner">
                 <BookOpen className="w-8 h-8 text-nebula-indigo-400" />
               </div>
-              <h2 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">Core <br /> <span className="text-nebula-indigo-500">Infrastructure</span></h2>
+              <h2 className="text-xl font-black text-white tracking-tighter uppercase leading-none">Core <br /> <span className="text-nebula-indigo-500">Infrastructure</span></h2>
            </div>
 
            <div className="space-y-10">
@@ -672,7 +672,7 @@ export default function Dashboard() {
               <div className="p-4 bg-nebula-indigo-500/10 rounded-3xl border border-nebula-indigo-500/20">
                 <Lock className="w-8 h-8 text-nebula-indigo-400" />
               </div>
-              <h2 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">
+              <h2 className="text-xl font-black text-white tracking-tighter uppercase leading-none">
                 Update <br /> <span className="text-nebula-indigo-500">Credentials</span>
               </h2>
             </div>
