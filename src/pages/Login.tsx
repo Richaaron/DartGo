@@ -176,7 +176,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                     FOLUSHO VICTORY SCHOOLS
                   </div>
 
-                  <h1 className="text-7xl md:text-9xl font-black tracking-tighter leading-[0.85] text-white">
+                  <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.85] text-white">
                     Future <br />
                     Intelligence <br />
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-nebula-indigo-400 via-nebula-teal-400 to-nebula-pink-400">
@@ -184,7 +184,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                     </span>
                   </h1>
 
-                  <p className="text-nebula-slate-400 text-xl md:text-2xl max-w-xl font-bold leading-relaxed tracking-tight">
+                  <p className="text-nebula-slate-400 text-base md:text-lg max-w-xl font-bold leading-relaxed tracking-tight">
                     Enter the Nebula ecosystem. A high-performance environment for academic governance, precise evaluation, and strategic partnership.
                   </p>
                 </motion.div>
@@ -246,7 +246,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                     <div className="w-20 h-20 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center text-nebula-indigo-400 shadow-inner">
                       <Layers size={40} />
                     </div>
-                    <h2 className="text-4xl font-black text-white tracking-tighter uppercase leading-none">
+                    <h2 className="text-2xl font-black text-white tracking-tighter uppercase leading-none">
                       Core <br /> <span className="text-nebula-indigo-500">Infrastructure</span>
                     </h2>
                   </div>
@@ -268,10 +268,10 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                           <div className={`w-3 h-3 rounded-full ${item.color} shadow-[0_0_15px_rgba(255,255,255,0.3)] group-hover/item:scale-150 transition-transform`} />
                         </div>
                         <div className="space-y-3">
-                          <h3 className="text-xl font-black text-white tracking-widest uppercase group-hover/item:text-nebula-indigo-400 transition-colors">
+                          <h3 className="text-base font-black text-white tracking-widest uppercase group-hover/item:text-nebula-indigo-400 transition-colors">
                             {item.label}
                           </h3>
-                          <p className="text-nebula-slate-500 text-base font-bold leading-relaxed max-w-sm">
+                          <p className="text-nebula-slate-500 text-sm font-bold leading-relaxed max-w-sm">
                             {item.desc}
                           </p>
                         </div>
@@ -327,7 +327,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                      loginType === 'teacher' ? <BookOpen size={48} /> : 
                      <Users size={48} />}
                   </motion.div>
-                  <h2 className="text-4xl font-black text-white tracking-tighter uppercase leading-none">
+                  <h2 className="text-2xl font-black text-white tracking-tighter uppercase leading-none">
                     {loginType} <br />
                     <span className={
                       loginType === 'admin' ? 'text-nebula-indigo-500' :
@@ -335,7 +335,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                       'text-nebula-pink-500'
                     }>Portal Access</span>
                   </h2>
-                  <p className="text-nebula-slate-500 text-base font-bold mt-4">
+                  <p className="text-nebula-slate-500 text-sm font-bold mt-4">
                     Decrypt your identity to access the digital citadel.
                   </p>
                 </div>
