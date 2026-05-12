@@ -165,177 +165,109 @@ export default function TeacherManagement() {
   ];
 
   return (
-    <motion.div 
-      className="p-4 md:p-8 bg-gradient-to-br from-royal-gold-50 via-white to-royal-purple-50 dark:bg-gradient-to-br dark:from-royal-black-900 dark:via-royal-purple-900/10 dark:to-royal-black-900 min-h-screen"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-    >
-      {/* Header */}
-      <motion.div 
-        className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <div>
-          <motion.h1 
-            className="text-4xl font-black bg-gradient-to-r from-royal-purple-600 via-royal-black-700 to-royal-gold-500 bg-clip-text text-transparent tracking-tight"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-          >
-            Squad Management
-          </motion.h1>
-          <motion.p 
-            className="text-royal-purple-600 dark:text-royal-gold-400 mt-2 font-semibold"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.1 }}
-          >
-            Manage teachers and class assignments
-          </motion.p>
+    <div className="space-y-12">
+      {/* ── Dynamic Header ────────────────────────────── */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
+        <div className="space-y-4">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-nebula-teal-500/10 border border-nebula-teal-500/20 text-nebula-teal-400 text-[10px] font-black tracking-[0.3em] uppercase backdrop-blur-md">
+            Human Resources
+          </div>
+          <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none">
+            Faculty <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-nebula-indigo-400 via-nebula-teal-400 to-nebula-pink-400">Command.</span>
+          </h1>
+          <p className="text-nebula-slate-400 text-lg font-bold max-w-xl leading-relaxed tracking-tight">
+            Orchestrate the elite educators behind the digital citadel.
+          </p>
         </div>
-        <motion.div 
-          className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-        >
-          <motion.button
+
+        <div className="flex flex-wrap gap-6">
+          <button
             onClick={handleExport}
-            className="btn-secondary flex items-center justify-center gap-2 flex-1 sm:flex-initial"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            className="btn-vibrant from-white/5 to-white/10 !text-white border border-white/10 hover:border-nebula-teal-500/50 shadow-none"
           >
-            <Download size={20} />
-            Export
-          </motion.button>
-          <motion.button
+            <Download className="w-5 h-5 text-nebula-teal-400" />
+            Personnel Export
+          </button>
+          <button
             onClick={() => {
               setEditingTeacher(null);
               setShowForm(true);
             }}
-            className="btn-primary flex items-center justify-center gap-2 flex-1 sm:flex-initial"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            className="btn-vibrant from-nebula-indigo-600 to-nebula-indigo-800"
           >
-            <Plus size={20} />
-            Add Squad Member
-          </motion.button>
-        </motion.div>
-      </motion.div>
+            <Plus className="w-5 h-5" />
+            Enlist Member
+          </button>
+        </div>
+      </div>
 
-      {/* Search and Filter */}
-      <motion.div 
-        className="card-lg mb-8 border-2 border-royal-gold-200 dark:border-royal-purple-700/50"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <motion.div
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.15 }}
-          >
-            <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
-              Search
+      {/* ── Intelligence Filters ───────────────────────── */}
+      <div className="nebula-card !p-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div className="space-y-3">
+            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+              Personnel Search
             </label>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-royal-purple-400 dark:text-royal-gold-400" />
+            <div className="relative group">
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-nebula-indigo-500 group-focus-within:text-white transition-colors" />
               <input
                 type="text"
-                placeholder="Search by name, username, email or subject..."
+                placeholder="Name, Email or Specialized Skill..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="input-field pl-10 border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"
+                className="input-nebula pl-14"
               />
             </div>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: 10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.15 }}
-          >
-            <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
-              Level
+          </div>
+
+          <div className="space-y-3">
+            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+              Operational Level
             </label>
             <select
               value={selectedLevel}
               onChange={(e) =>
                 setSelectedLevel(e.target.value as SchoolLevel | "All")
               }
-              className="input-field border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"
+              className="input-nebula !py-4"
             >
-              <option value="All">All Levels</option>
+              <option value="All">Global Operations</option>
               <option value="Pre-Nursery">Pre-Nursery</option>
               <option value="Nursery">Nursery</option>
               <option value="Primary">Primary</option>
               <option value="Secondary">Secondary</option>
             </select>
-          </motion.div>
+          </div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Form Modal */}
-      {showForm && (
-        <motion.div 
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
-          <motion.div 
-            className="bg-white dark:bg-royal-black-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border-2 border-royal-gold-300 dark:border-royal-purple-600"
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-          >
-            <TeacherForm
-              onSubmit={handleSubmitTeacher}
-              initialData={editingTeacher || undefined}
-              onCancel={() => setShowForm(false)}
-              isEditing={!!editingTeacher}
-            />
-          </motion.div>
-        </motion.div>
-      )}
-
-      {/* Table */}
-      <motion.div 
-        className="card-lg border-2 border-royal-gold-200 dark:border-royal-purple-700/50"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-      >
+      {/* ── Data Matrix ────────────────────────────────── */}
+      <div className="nebula-card !p-0 overflow-hidden">
         <Table
           columns={columns}
           data={filteredTeachers.map((teacher) => ({
             ...teacher,
             subjects: (
-              <div className="flex flex-wrap gap-1">
+              <div className="flex flex-wrap gap-2">
                 {getTeacherSubjects(teacher).length > 0 ? (
                   getTeacherSubjects(teacher).map((subject) => (
-                    <motion.span
+                    <span
                       key={subject}
-                      className="px-2 py-0.5 bg-gradient-to-r from-royal-purple-50 to-royal-gold-50 dark:from-royal-purple-900/40 dark:to-royal-gold-900/40 text-royal-purple-700 dark:text-royal-purple-300 rounded-md text-xs font-bold border border-royal-purple-300 dark:border-royal-purple-700/50"
-                      whileHover={{ scale: 1.05 }}
+                      className="px-3 py-1 bg-nebula-indigo-500/10 text-nebula-indigo-400 rounded-lg text-[10px] font-black uppercase tracking-widest border border-nebula-indigo-500/20"
                     >
                       {subject}
-                    </motion.span>
+                    </span>
                   ))
                 ) : (
-                  <motion.span 
-                    className="px-2 py-0.5 bg-gradient-to-r from-royal-gold-100 to-royal-gold-50 dark:from-royal-gold-900/40 dark:to-royal-gold-800/30 text-royal-gold-700 dark:text-royal-gold-300 rounded-md text-xs font-bold border border-royal-gold-300 dark:border-royal-gold-700/50"
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    Form Teacher
-                  </motion.span>
+                  <span className="px-3 py-1 bg-nebula-pink-500/10 text-nebula-pink-400 rounded-lg text-[10px] font-black uppercase tracking-widest border border-nebula-pink-500/20">
+                    Lead Mentor
+                  </span>
                 )}
               </div>
             ),
             profile: (
-              <motion.div 
-                className="w-10 h-10 rounded-full bg-gradient-to-br from-royal-purple-100 to-royal-gold-100 dark:from-royal-purple-900/40 dark:to-royal-gold-900/40 flex items-center justify-center overflow-hidden border-2 border-royal-gold-300 dark:border-royal-purple-600/50 shadow-sm"
-                whileHover={{ scale: 1.05 }}
-              >
+              <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center overflow-hidden border border-white/10 shadow-nebula">
                 {teacher.image ? (
                   <img
                     src={teacher.image}
@@ -343,60 +275,79 @@ export default function TeacherManagement() {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <UserIcon className="w-6 h-6 text-royal-purple-600 dark:text-royal-gold-400" />
+                  <UserIcon className="w-6 h-6 text-nebula-indigo-400" />
                 )}
-              </motion.div>
+              </div>
             ),
+            name: <span className="font-bold text-white text-lg">{teacher.name}</span>,
+            email: <span className="font-mono text-nebula-slate-400 text-sm">{teacher.email}</span>,
             classes: (
-              <div className="flex flex-wrap gap-1">
+              <div className="flex flex-wrap gap-2">
                 {(teacher.assignedClasses || []).map((c) => (
-                  <motion.span
+                  <span
                     key={c}
-                    className="px-2 py-0.5 bg-gradient-to-r from-royal-gold-50 to-royal-gold-100 dark:from-royal-gold-900/30 dark:to-royal-gold-900/50 text-royal-gold-700 dark:text-royal-gold-300 rounded-md text-xs font-bold border border-royal-gold-300 dark:border-royal-gold-700/50"
-                    whileHover={{ scale: 1.05 }}
+                    className="px-3 py-1 bg-nebula-teal-500/10 text-nebula-teal-400 rounded-lg text-[10px] font-black uppercase tracking-widest border border-nebula-teal-500/20"
                   >
                     {c}
-                  </motion.span>
+                  </span>
                 ))}
               </div>
             ),
             actions: (
-              <div className="flex gap-2">
-                <motion.button
+              <div className="flex gap-3">
+                <button
                   onClick={() => {
                     setEditingTeacher(teacher);
                     setShowForm(true);
                   }}
-                  className="p-1 text-royal-purple-600 dark:text-royal-gold-400 hover:bg-royal-purple-100 dark:hover:bg-royal-purple-900/30 rounded transition-colors"
-                  title="Edit"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="p-2.5 rounded-xl bg-white/5 hover:bg-nebula-indigo-500/20 text-nebula-indigo-400 transition-all border border-white/5"
+                  title="Modify Entry"
                 >
-                  <Edit2 size={18} />
-                </motion.button>
-                <motion.button
+                  <Edit2 size={16} />
+                </button>
+                <button
                   onClick={() => handleDeleteTeacher(teacher.id)}
-                  className="p-1 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 rounded transition-colors"
-                  title="Delete"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="p-2.5 rounded-xl bg-white/5 hover:bg-nebula-pink-500/20 text-nebula-pink-400 transition-all border border-white/5"
+                  title="Expel Member"
                 >
-                  <Trash2 size={18} />
-                </motion.button>
+                  <Trash2 size={16} />
+                </button>
               </div>
             ),
           }))}
         />
         {filteredTeachers.length === 0 && (
+          <div className="text-center py-20">
+            <p className="text-nebula-slate-500 font-bold uppercase tracking-widest text-sm">No specialized personnel detected in this sector.</p>
+          </div>
+        )}
+      </div>
+
+      {/* ── Modals ────────────────────────────────────── */}
+      <AnimatePresence>
+        {showForm && (
           <motion.div 
-            className="text-center py-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-nebula-slate-950/80 backdrop-blur-xl flex items-center justify-center z-50 p-6"
           >
-            <p className="text-royal-purple-600 dark:text-royal-gold-400 font-semibold">No squad members found</p>
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="nebula-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/10"
+            >
+              <TeacherForm
+                onSubmit={handleSubmitTeacher}
+                initialData={editingTeacher || undefined}
+                onCancel={() => setShowForm(false)}
+                isEditing={!!editingTeacher}
+              />
+            </motion.div>
           </motion.div>
         )}
-      </motion.div>
-    </motion.div>
+      </AnimatePresence>
+    </div>
   );
 }

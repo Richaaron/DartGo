@@ -114,248 +114,268 @@ export default function Login({ onLoginSuccess }: LoginProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#050510] text-white overflow-hidden relative selection:bg-royal-gold-500/30">
-      {/* ── Background Elements ───────────────────────── */}
+    <div className="min-h-screen bg-nebula-slate-950 text-white overflow-hidden relative selection:bg-nebula-indigo-500/30">
+      {/* ── Immersive Background ──────────────────────── */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        {/* Main Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-royal-purple-900/10 rounded-full blur-[120px]" />
+        {/* Deep Core Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] bg-nebula-indigo-900/10 rounded-full blur-[160px] animate-nebula-pulse" />
         
-        {/* Accent Orbs */}
+        {/* Dynamic Orbs */}
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.4, 1],
+            opacity: [0.1, 0.3, 0.1],
+            rotate: [0, 90, 0],
+            x: [0, 100, 0],
+            y: [0, -50, 0]
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[5%] right-[5%] w-[600px] h-[600px] bg-nebula-teal-900/20 rounded-full blur-[120px]" 
+        />
+        
         <motion.div 
           animate={{ 
             scale: [1, 1.2, 1],
             opacity: [0.1, 0.2, 0.1],
-            x: [0, 50, 0],
-            y: [0, -30, 0]
+            x: [0, -80, 0],
+            y: [0, 60, 0]
           }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[10%] right-[10%] w-[500px] h-[500px] bg-royal-gold-950/10 rounded-full blur-[100px]" 
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute bottom-[10%] left-[5%] w-[500px] h-[500px] bg-nebula-pink-900/15 rounded-full blur-[100px]" 
         />
         
-        {/* Subtle Grid */}
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03] mix-blend-overlay" />
+        {/* Premium Grid Pattern */}
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-[0.05] mix-blend-screen" />
       </div>
 
       <AnimatePresence mode="wait">
         {!loginType ? (
-          /* ── Portal Selection Dashboard ────────────────── */
+          /* ── Immersive Portal Dashboard ────────────────── */
           <motion.div
             key="dashboard"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
-            className="relative z-10 min-h-screen flex items-center justify-center p-6 md:p-12 lg:p-24"
+            transition={{ duration: 1 }}
+            className="relative z-10 min-h-screen flex items-center justify-center p-8 md:p-16 lg:p-32"
           >
-            <div className="max-w-7xl w-full grid lg:grid-cols-2 gap-16 items-center">
+            <div className="max-w-7xl w-full grid lg:grid-cols-2 gap-24 items-center">
               
-              {/* Left Column: Hero Content */}
-              <div className="space-y-10">
+              {/* Left Column: Hero Intelligence */}
+              <div className="space-y-12">
                 <motion.div
-                  initial={{ opacity: 0, x: -50 }}
+                  initial={{ opacity: 0, x: -60 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  className="space-y-6"
+                  transition={{ duration: 1, delay: 0.2 }}
+                  className="space-y-8"
                 >
-                  <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-royal-purple-900/30 border border-royal-purple-500/30 text-royal-gold-400 text-xs font-black tracking-[0.2em] uppercase">
-                    <div className="w-6 h-6 bg-white rounded-lg flex items-center justify-center p-1 shadow-lg ring-1 ring-royal-purple-500/30">
+                  <div className="inline-flex items-center gap-4 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-nebula-indigo-400 text-[10px] font-black tracking-[0.3em] uppercase backdrop-blur-md">
+                    <div className="w-8 h-8 bg-white rounded-xl flex items-center justify-center p-1.5 shadow-2xl ring-1 ring-white/20">
                       <img src="/school_logo.png" alt="Logo" className="w-full h-full object-contain" />
                     </div>
                     FOLUSHO VICTORY SCHOOLS
                   </div>
 
-                  <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] text-white">
-                    Excellence <br />
-                    Defined by <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-royal-purple-400 via-royal-purple-500 to-royal-gold-500">
-                      Legacy.
+                  <h1 className="text-7xl md:text-9xl font-black tracking-tighter leading-[0.85] text-white">
+                    Future <br />
+                    Intelligence <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-nebula-indigo-400 via-nebula-teal-400 to-nebula-pink-400">
+                      Unleashed.
                     </span>
                   </h1>
 
-                  <p className="text-royal-purple-200/60 text-lg md:text-xl max-w-lg font-medium leading-relaxed">
-                    Welcome to the Folusho Victory Schools digital citadel. A sanctuary of academic precision, teacher empowerment, and parental partnership.
+                  <p className="text-nebula-slate-400 text-xl md:text-2xl max-w-xl font-bold leading-relaxed tracking-tight">
+                    Enter the Nebula ecosystem. A high-performance environment for academic governance, precise evaluation, and strategic partnership.
                   </p>
                 </motion.div>
 
-                {/* Portal Buttons */}
-                <div className="flex flex-wrap items-center gap-6">
+                {/* Cyber Portal Selection */}
+                <div className="flex flex-wrap items-center gap-8">
                   {loginTypes.map((type, i) => (
                     type.id !== 'parent' ? (
                       <motion.button
                         key={type.id}
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5 + i * 0.1 }}
-                        whileHover={{ y: -5, scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
+                        transition={{ delay: 0.6 + i * 0.1 }}
+                        whileHover={{ y: -8, scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                         onClick={() => setLoginType(type.id)}
-                        className={`group relative overflow-hidden px-8 py-5 rounded-2xl font-black text-sm tracking-widest uppercase transition-all shadow-2xl ${
+                        className={`group relative overflow-hidden px-10 py-6 rounded-3xl font-black text-xs tracking-[0.2em] uppercase transition-all shadow-nebula-lg ${
                           type.id === 'admin' 
-                            ? 'bg-gradient-to-br from-royal-purple-600 to-royal-purple-800 text-white shadow-royal-purple-500/20' 
-                            : 'bg-gradient-to-br from-royal-gold-400 to-royal-gold-600 text-royal-black-900 shadow-royal-gold-500/20'
+                            ? 'bg-gradient-to-br from-nebula-indigo-600 to-nebula-indigo-900 text-white' 
+                            : 'bg-gradient-to-br from-nebula-teal-500 to-nebula-teal-800 text-nebula-slate-950'
                         }`}
                       >
-                        <div className="relative z-10 flex items-center gap-3">
+                        <div className="relative z-10 flex items-center gap-4">
                           {type.label}
-                          <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                          <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
                         </div>
-                        {/* Internal Glow Effect */}
-                        <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </motion.button>
                     ) : (
                       <motion.button
                         key={type.id}
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.7 }}
+                        transition={{ delay: 0.8 }}
+                        whileHover={{ x: 10 }}
                         onClick={() => setLoginType(type.id)}
-                        className="px-6 py-4 flex items-center gap-3 text-royal-gold-400 hover:text-white font-black text-sm tracking-widest uppercase transition-colors"
+                        className="px-8 py-5 flex items-center gap-4 text-nebula-teal-400 hover:text-white font-black text-xs tracking-[0.2em] uppercase transition-all"
                       >
                         {type.label}
-                        <ArrowRight size={18} />
+                        <ArrowRight size={20} />
                       </motion.button>
                     )
                   ))}
                 </div>
               </div>
 
-              {/* Right Column: Academic Pillar Card */}
+              {/* Right Column: Dynamic Matrix Card */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.9, x: 50 }}
+                initial={{ opacity: 0, scale: 0.8, x: 80 }}
                 animate={{ opacity: 1, scale: 1, x: 0 }}
-                transition={{ duration: 1, delay: 0.4 }}
+                transition={{ duration: 1.2, delay: 0.4 }}
                 className="hidden lg:block relative"
               >
-                {/* Floating Elements around the card */}
-                <motion.div 
-                  animate={{ y: [0, -20, 0] }}
-                  transition={{ duration: 4, repeat: Infinity }}
-                  className="absolute -top-10 -right-10 w-24 h-24 bg-royal-gold-500/10 rounded-2xl blur-xl"
-                />
-                
-                {/* The Pillar Card */}
-                <div className="relative z-10 p-12 rounded-[40px] bg-gradient-to-br from-royal-purple-900/40 to-royal-black-950/80 border border-white/10 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-                  <div className="flex items-center gap-6 mb-12">
-                    <div className="w-16 h-16 rounded-2xl bg-royal-black-950/50 border border-white/5 flex items-center justify-center text-royal-purple-400">
-                      <Layers size={32} />
+                <div className="relative z-10 p-16 rounded-5xl bg-nebula-slate-900/40 border border-white/5 backdrop-blur-3xl shadow-nebula-lg overflow-hidden group">
+                  {/* Internal Shimmer */}
+                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.02] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                  
+                  <div className="flex items-center gap-8 mb-16">
+                    <div className="w-20 h-20 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center text-nebula-indigo-400 shadow-inner">
+                      <Layers size={40} />
                     </div>
-                    <h2 className="text-3xl font-black text-white tracking-tight uppercase">
-                      Academic Pillar
+                    <h2 className="text-4xl font-black text-white tracking-tighter uppercase leading-none">
+                      Core <br /> <span className="text-nebula-indigo-500">Infrastructure</span>
                     </h2>
                   </div>
 
-                  <div className="space-y-10">
-                    {loginTypes.map((item) => (
-                      <div key={item.id} className="flex gap-6 group">
-                        <div className="mt-2.5">
-                          <div className={`w-3 h-3 rounded-full ${
-                            item.id === 'admin' ? 'bg-royal-gold-500 shadow-[0_0_10px_#f59e0b]' : 
-                            item.id === 'teacher' ? 'bg-royal-purple-500 shadow-[0_0_10px_#8b5cf6]' : 
-                            'bg-royal-black-400 shadow-[0_0_10px_#475569]'
-                          }`} />
+                  <div className="space-y-12">
+                    {[
+                      { label: "Elite Governance", desc: "Centralized intelligence for institutional precision.", color: "bg-nebula-indigo-500" },
+                      { label: "Precision Metrics", desc: "Advanced frameworks for character and academic growth.", color: "bg-nebula-teal-500" },
+                      { label: "Strategic Alliance", desc: "Transparent engagement for parental stakeholders.", color: "bg-nebula-pink-500" }
+                    ].map((item, i) => (
+                      <motion.div 
+                        key={i} 
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.8 + i * 0.1 }}
+                        className="flex gap-8 group/item"
+                      >
+                        <div className="mt-3">
+                          <div className={`w-3 h-3 rounded-full ${item.color} shadow-[0_0_15px_rgba(255,255,255,0.3)] group-hover/item:scale-150 transition-transform`} />
                         </div>
-                        <div className="space-y-2">
-                          <h3 className="text-lg font-black text-white tracking-widest uppercase group-hover:text-royal-gold-400 transition-colors">
-                            {item.label === 'PARENTAL ACCESS' ? 'PARENTAL ENGAGEMENT' : item.label === 'TEACHER PORTAL' ? 'SCHOLARLY ASSESSMENT' : 'ROYAL GOVERNANCE'}
+                        <div className="space-y-3">
+                          <h3 className="text-xl font-black text-white tracking-widest uppercase group-hover/item:text-nebula-indigo-400 transition-colors">
+                            {item.label}
                           </h3>
-                          <p className="text-royal-purple-200/40 text-sm font-medium leading-relaxed max-w-xs">
+                          <p className="text-nebula-slate-500 text-base font-bold leading-relaxed max-w-sm">
                             {item.desc}
                           </p>
                         </div>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
 
-                  {/* Bottom Accents */}
-                  <div className="mt-16 pt-8 border-t border-white/5 flex items-center justify-between opacity-40">
-                    <div className="flex gap-2">
-                      <div className="w-2 h-2 rounded-full bg-white/20" />
-                      <div className="w-2 h-2 rounded-full bg-white/20" />
-                      <div className="w-12 h-2 rounded-full bg-royal-purple-500/50" />
+                  {/* Operational Status */}
+                  <div className="mt-20 pt-10 border-t border-white/5 flex items-center justify-between">
+                    <div className="flex gap-3">
+                      <div className="w-3 h-3 rounded-full bg-nebula-teal-500 animate-pulse" />
+                      <span className="text-[10px] font-black tracking-widest uppercase text-nebula-teal-500">System Online</span>
                     </div>
-                    <p className="text-[10px] font-black tracking-widest uppercase">Est. 2005</p>
+                    <p className="text-[10px] font-black tracking-widest uppercase text-nebula-slate-600">v1.0.1 PREMIUM</p>
                   </div>
                 </div>
               </motion.div>
             </div>
           </motion.div>
         ) : (
-          /* ── Actual Login Form ─────────────────────────── */
+          /* ── Secure Access Interface ───────────────────── */
           <motion.div
             key="login-form"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.05 }}
-            className="relative z-10 min-h-screen flex items-center justify-center p-6"
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 1.1 }}
+            className="relative z-10 min-h-screen flex items-center justify-center p-8"
           >
-            <div className="w-full max-w-md space-y-8">
-              {/* Back Button */}
+            <div className="w-full max-w-lg space-y-10">
+              {/* Back Navigation */}
               <button 
                 onClick={handleBack}
-                className="flex items-center gap-2 text-royal-purple-300 hover:text-white transition-colors group mb-4"
+                className="flex items-center gap-4 text-nebula-slate-400 hover:text-white transition-all group"
               >
-                <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-all">
-                  <ArrowRight size={20} className="rotate-180" />
+                <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-nebula-indigo-500/20 transition-all border border-white/5">
+                  <ArrowRight size={24} className="rotate-180" />
                 </div>
-                <span className="text-xs font-black tracking-widest uppercase">Go Back</span>
+                <span className="text-xs font-black tracking-[0.3em] uppercase">Return to Orbit</span>
               </button>
 
-              <div className="p-10 rounded-[32px] bg-gradient-to-br from-royal-black-900/90 to-royal-black-950 border border-white/10 backdrop-blur-xl shadow-2xl shadow-black/50">
-                <div className="text-center mb-10">
-                  <div className={`w-20 h-20 mx-auto rounded-3xl flex items-center justify-center mb-6 shadow-2xl ${
-                    loginType === 'admin' ? 'bg-royal-purple-600/20 text-royal-purple-400 border border-royal-purple-500/30' :
-                    loginType === 'teacher' ? 'bg-royal-gold-600/20 text-royal-gold-400 border border-royal-gold-500/30' :
-                    'bg-slate-800 text-slate-400 border border-slate-700'
-                  }`}>
-                    {loginType === 'admin' ? <Shield size={40} /> : 
-                     loginType === 'teacher' ? <BookOpen size={40} /> : 
-                     <Users size={40} />}
-                  </div>
-                  <h2 className="text-3xl font-black text-white tracking-tight uppercase">
+              <div className="p-12 rounded-5xl bg-nebula-slate-900/60 border border-white/5 backdrop-blur-3xl shadow-nebula-lg">
+                <div className="text-center mb-12">
+                  <motion.div 
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className={`w-24 h-24 mx-auto rounded-4xl flex items-center justify-center mb-8 shadow-inner ${
+                      loginType === 'admin' ? 'bg-nebula-indigo-500/10 text-nebula-indigo-400 border border-nebula-indigo-500/30' :
+                      loginType === 'teacher' ? 'bg-nebula-teal-500/10 text-nebula-teal-400 border border-nebula-teal-500/30' :
+                      'bg-nebula-pink-500/10 text-nebula-pink-400 border border-nebula-pink-500/30'
+                    }`}
+                  >
+                    {loginType === 'admin' ? <Shield size={48} /> : 
+                     loginType === 'teacher' ? <BookOpen size={48} /> : 
+                     <Users size={48} />}
+                  </motion.div>
+                  <h2 className="text-4xl font-black text-white tracking-tighter uppercase leading-none">
                     {loginType} <br />
-                    <span className="text-royal-gold-400">Portal</span>
+                    <span className={
+                      loginType === 'admin' ? 'text-nebula-indigo-500' :
+                      loginType === 'teacher' ? 'text-nebula-teal-500' :
+                      'text-nebula-pink-500'
+                    }>Portal Access</span>
                   </h2>
-                  <p className="text-royal-purple-200/50 text-sm font-medium mt-2">
-                    Verify your credentials to enter the citadel.
+                  <p className="text-nebula-slate-500 text-base font-bold mt-4">
+                    Decrypt your identity to access the digital citadel.
                   </p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-royal-purple-300 px-1">
+                <form onSubmit={handleSubmit} className="space-y-8">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black uppercase tracking-[0.3em] text-nebula-indigo-400/60 px-2">
                       Username
                     </label>
-                    <div className="relative">
-                      <User className="absolute left-4 top-1/2 -translate-y-1/2 text-royal-purple-500" size={18} />
+                    <div className="relative group">
+                      <User className="absolute left-5 top-1/2 -translate-y-1/2 text-nebula-indigo-500 group-focus-within:text-white transition-colors" size={20} />
                       <input
                         type="text"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full bg-royal-black-950 border-2 border-white/5 rounded-2xl px-12 py-4 text-white focus:outline-none focus:border-royal-purple-500/50 transition-all font-bold"
-                        placeholder="your.name"
+                        className="input-nebula pl-14"
+                        placeholder="identity.code"
                       />
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-royal-purple-300 px-1">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black uppercase tracking-[0.3em] text-nebula-indigo-400/60 px-2">
                       Access Code
                     </label>
-                    <div className="relative">
-                      <Shield className="absolute left-4 top-1/2 -translate-y-1/2 text-royal-purple-500" size={18} />
+                    <div className="relative group">
+                      <Shield className="absolute left-5 top-1/2 -translate-y-1/2 text-nebula-indigo-500 group-focus-within:text-white transition-colors" size={20} />
                       <input
                         type={showPassword ? "text" : "password"}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="w-full bg-royal-black-950 border-2 border-white/5 rounded-2xl px-12 py-4 text-white focus:outline-none focus:border-royal-purple-500/50 transition-all font-bold"
-                        placeholder="••••••••"
+                        className="input-nebula pl-14 pr-14"
+                        placeholder="••••••••••••"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-royal-purple-500 hover:text-white transition-colors"
+                        className="absolute right-5 top-1/2 -translate-y-1/2 text-nebula-indigo-500 hover:text-white transition-colors"
                       >
-                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                       </button>
                     </div>
                   </div>
@@ -364,9 +384,9 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                     <motion.div
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-xl text-xs font-bold flex items-center gap-3"
+                      className="bg-nebula-pink-500/10 border border-nebula-pink-500/30 text-nebula-pink-400 p-5 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center gap-4 shadow-lg"
                     >
-                      <Zap size={14} />
+                      <Zap size={18} className="animate-pulse" />
                       {error}
                     </motion.div>
                   )}
@@ -374,19 +394,19 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className={`w-full py-5 rounded-2xl font-black text-sm tracking-widest uppercase shadow-2xl transition-all active:scale-95 disabled:opacity-50 ${
-                      loginType === 'admin' ? 'bg-royal-purple-600 hover:bg-royal-purple-700 shadow-royal-purple-500/20' :
-                      loginType === 'teacher' ? 'bg-royal-gold-500 text-royal-black-900 hover:bg-royal-gold-600 shadow-royal-gold-500/20' :
-                      'bg-white text-royal-black-900 hover:bg-slate-100 shadow-white/20'
+                    className={`btn-vibrant w-full py-6 rounded-3xl text-xs tracking-[0.3em] ${
+                      loginType === 'admin' ? 'from-nebula-indigo-600 to-nebula-indigo-800' :
+                      loginType === 'teacher' ? 'from-nebula-teal-500 to-nebula-teal-700 !text-nebula-slate-950' :
+                      'from-nebula-pink-600 to-nebula-pink-800'
                     }`}
                   >
                     {isLoading ? (
-                      <div className="flex items-center justify-center gap-3">
+                      <div className="flex items-center justify-center gap-4">
                         <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
                         Authenticating...
                       </div>
                     ) : (
-                      "Secure Entry"
+                      "Establish Connection"
                     )}
                   </button>
                 </form>
@@ -396,11 +416,11 @@ export default function Login({ onLoginSuccess }: LoginProps) {
         )}
       </AnimatePresence>
 
-      {/* Floating Bottom Copyright */}
-      <div className="absolute bottom-10 left-10 z-20 opacity-20 hidden md:block">
-        <p className="text-[10px] font-black tracking-[0.5em] uppercase text-white">
+      {/* Corporate Footprint */}
+      <div className="absolute bottom-12 right-12 z-20 opacity-30 hidden xl:block">
+        <p className="text-[10px] font-black tracking-[0.6em] uppercase text-white text-right leading-relaxed">
           Folusho Victory Schools <br /> 
-          <span className="text-royal-gold-400">Digital Fortress © 2025</span>
+          <span className="text-nebula-indigo-400">Digital Governance © 2026</span>
         </p>
       </div>
     </div>

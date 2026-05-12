@@ -443,82 +443,77 @@ export default function StudentManagement() {
   ];
 
   return (
-    <div className="p-4 md:p-8 space-y-6 md:space-y-8">
-      {/* Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
-            Champions{" "}
-            <span className="text-indigo-600 dark:text-indigo-400">
-              Management
-            </span>
+    <div className="space-y-12">
+      {/* ── Dynamic Header ────────────────────────────── */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
+        <div className="space-y-4">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-nebula-indigo-500/10 border border-nebula-indigo-500/20 text-nebula-indigo-400 text-[10px] font-black tracking-[0.3em] uppercase backdrop-blur-md">
+            Academic Governance
+          </div>
+          <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none">
+            Champion <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-nebula-indigo-400 via-nebula-teal-400 to-nebula-pink-400">Inventory.</span>
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-2 font-medium">
+          <p className="text-nebula-slate-400 text-lg font-bold max-w-xl leading-relaxed tracking-tight">
             {isTeacher
               ? isFormCapableTeacher
-                ? "Manage students in your assigned class"
-                : "View students in your assigned classes"
-              : "Manage all students in the school"}
+                ? "Oversee the development of your assigned champions."
+                : "View the academic progress of your student cohorts."
+              : "Global institutional oversight of the student population."}
           </p>
         </div>
-        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+
+        <div className="flex flex-wrap gap-6">
           <button
             onClick={() => setShowBulkAssign(true)}
-            className="btn-accent flex items-center justify-center gap-2 flex-1 sm:flex-initial text-sm sm:text-base"
+            className="btn-vibrant from-white/5 to-white/10 !text-white border border-white/10 hover:border-nebula-indigo-500/50 shadow-none"
           >
-            <BookOpen size={20} />
-            <span className="hidden sm:inline">Bulk Assign Subjects</span>
-            <span className="sm:hidden">Bulk Assign</span>
+            <BookOpen className="w-5 h-5 text-nebula-indigo-400" />
+            Bulk Matrix
           </button>
           <button
             onClick={handleExport}
-            className="btn-secondary flex items-center justify-center gap-2 flex-1 sm:flex-initial text-sm sm:text-base"
+            className="btn-vibrant from-white/5 to-white/10 !text-white border border-white/10 hover:border-nebula-teal-500/50 shadow-none"
           >
-            <Download size={20} />
-            <span className="hidden sm:inline">Export</span>
+            <Download className="w-5 h-5 text-nebula-teal-400" />
+            Vault Export
           </button>
           <button
             onClick={() => {
               setEditingStudent(null);
               setShowForm(true);
             }}
-            className="btn-primary flex items-center justify-center gap-2 flex-1 sm:flex-initial text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isTeacher && !isFormCapableTeacher}
-            title={
-              isTeacher && !isFormCapableTeacher
-                ? "Only form teachers can add students"
-                : "Add student"
-            }
+            className="btn-vibrant from-nebula-indigo-600 to-nebula-indigo-800 disabled:opacity-30"
           >
-            <Plus size={20} />
-            <span className="hidden sm:inline">Add Student</span>
-            <span className="sm:hidden">Add</span>
+            <Plus className="w-5 h-5" />
+            New Identity
           </button>
         </div>
       </div>
 
-      {/* Search and Filter */}
-      <div className="card-lg mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-2 uppercase tracking-widest">
-              Search
+      {/* ── Intelligence Filters ───────────────────────── */}
+      <div className="nebula-card !p-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          <div className="space-y-3">
+            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+              Identity Search
             </label>
-            <div className="relative">
-              <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400 dark:text-gray-500" />
+            <div className="relative group">
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-nebula-indigo-500 group-focus-within:text-white transition-colors" />
               <input
                 type="text"
-                placeholder="Search by name, parent email or reg. no..."
+                placeholder="Name, ID or Registry..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="input-field pl-10"
+                className="input-nebula pl-14"
               />
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-2 uppercase tracking-widest">
-              Level
+          <div className="space-y-3">
+            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+              Academic Level
             </label>
             <select
               value={selectedLevel}
@@ -526,9 +521,9 @@ export default function StudentManagement() {
                 setSelectedLevel(e.target.value as any);
                 setSelectedClass("All");
               }}
-              className="input-field"
+              className="input-nebula !py-4"
             >
-              <option value="All">All Levels</option>
+              <option value="All">All Operations</option>
               <option value="Pre-Nursery">Pre-Nursery</option>
               <option value="Nursery">Nursery</option>
               <option value="Primary">Primary</option>
@@ -536,16 +531,16 @@ export default function StudentManagement() {
             </select>
           </div>
 
-          <div>
-            <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-2 uppercase tracking-widest">
-              Class
+          <div className="space-y-3">
+            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+              Squad / Class
             </label>
             <select
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
-              className="input-field"
+              className="input-nebula !py-4"
             >
-              <option value="All">All Classes</option>
+              <option value="All">Global Deployment</option>
               {(isTeacher ? assignedClasses : availableClassesForLevel).map(
                 (className: string) => (
                   <option key={className} value={className}>
@@ -558,79 +553,158 @@ export default function StudentManagement() {
         </div>
       </div>
 
-      {/* Form Modal */}
-      {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <StudentForm
-              onSubmit={handleSubmitStudent}
-              initialData={editingStudent || undefined}
-              onCancel={() => setShowForm(false)}
-              isEditing={!!editingStudent}
-              allowedClasses={
-                !isTeacher ? availableClassesForLevel : undefined
-              }
-              defaultClass={
-                isTeacher && isFormCapableTeacher && selectedClass !== "All"
-                  ? selectedClass
-                  : ""
-              }
-              lockClass={
-                isTeacher &&
-                isFormCapableTeacher &&
-                selectedClass !== "All" &&
-                !editingStudent
-              }
-              availableSubjects={subjects}
-            />
-          </div>
-        </div>
-      )}
+      {/* ── Data Matrix ────────────────────────────────── */}
+      <div className="nebula-card !p-0 overflow-hidden">
+        <Table
+          columns={columns}
+          data={filteredStudents}
+          renderCell={(student, key) => {
+            if (key === "actions") {
+              return (
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => handleOpenAdvancedEditor(student)}
+                    className="p-2.5 rounded-xl bg-white/5 hover:bg-nebula-indigo-500/20 text-nebula-indigo-400 transition-all border border-white/5"
+                    title="Intelligence Editor"
+                  >
+                    <Edit2 size={16} />
+                  </button>
+                  <button
+                    onClick={() => handleOpenSubjectAssignment(student)}
+                    className="p-2.5 rounded-xl bg-white/5 hover:bg-nebula-teal-500/20 text-nebula-teal-400 transition-all border border-white/5"
+                    title="Matrix Assignment"
+                  >
+                    <BookOpen size={16} />
+                  </button>
+                  {permissions.canDelete && (
+                    <button
+                      onClick={() => handleDeleteStudent(student.id)}
+                      className="p-2.5 rounded-xl bg-white/5 hover:bg-nebula-pink-500/20 text-nebula-pink-400 transition-all border border-white/5"
+                      title="Terminate Identity"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  )}
+                </div>
+              );
+            }
+            if (key === "status") {
+              return (
+                <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${
+                  student.status === "Active" 
+                    ? "bg-nebula-teal-500/10 text-nebula-teal-400 border border-nebula-teal-500/20" 
+                    : "bg-nebula-slate-500/10 text-nebula-slate-400 border border-nebula-slate-500/20"
+                }`}>
+                  {student.status}
+                </span>
+              );
+            }
+            if (key === "registrationNumber") {
+              return <span className="font-mono font-black text-nebula-indigo-400">{student[key]}</span>;
+            }
+            return <span className="font-bold text-white">{student[key]}</span>;
+          }}
+        />
+      </div>
 
-      {/* Subject Assignment Modal */}
-      {showSubjectForm && selectedStudentForSubjects && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <StudentSubjectForm
-              student={selectedStudentForSubjects}
-              subjects={subjects}
-              currentSubjects={studentSubjects}
-              onSubmit={handleAssignSubjects}
-              onCancel={() => {
-                setShowSubjectForm(false);
-                setSelectedStudentForSubjects(null);
-                setStudentSubjects([]);
-              }}
-            />
-          </div>
-        </div>
-      )}
+      {/* ── Modals ────────────────────────────────────── */}
+      <AnimatePresence>
+        {showForm && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-nebula-slate-950/80 backdrop-blur-xl flex items-center justify-center z-50 p-6"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="nebula-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/10"
+            >
+              <StudentForm
+                onSubmit={handleSubmitStudent}
+                initialData={editingStudent || undefined}
+                onCancel={() => setShowForm(false)}
+                isEditing={!!editingStudent}
+                allowedClasses={
+                  !isTeacher ? availableClassesForLevel : undefined
+                }
+                defaultClass={
+                  isTeacher && isFormCapableTeacher && selectedClass !== "All"
+                    ? selectedClass
+                    : ""
+                }
+                lockClass={
+                  isTeacher &&
+                  isFormCapableTeacher &&
+                  selectedClass !== "All" &&
+                  !editingStudent
+                }
+                availableSubjects={subjects}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+
+        {showSubjectForm && selectedStudentForSubjects && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-nebula-slate-950/80 backdrop-blur-xl flex items-center justify-center z-50 p-6"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="nebula-card max-w-4xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/10"
+            >
+              <StudentSubjectForm
+                student={selectedStudentForSubjects}
+                subjects={subjects}
+                currentSubjects={studentSubjects}
+                onSubmit={handleAssignSubjects}
+                onCancel={() => {
+                  setShowSubjectForm(false);
+                  setSelectedStudentForSubjects(null);
+                  setStudentSubjects([]);
+                }}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Bulk Subject Assignment Modal */}
       {showBulkAssign && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full mx-4 overflow-hidden border-4 border-dashed border-school-blue">
-            <div className="p-6 bg-gradient-to-r from-school-blue to-school-green text-white flex justify-between items-center">
+        <div className="fixed inset-0 bg-nebula-slate-950/80 backdrop-blur-xl flex items-center justify-center z-50 p-6">
+          <motion.div 
+            initial={{ scale: 0.9, y: 20 }}
+            animate={{ scale: 1, y: 0 }}
+            className="nebula-card max-w-2xl w-full !p-0 overflow-hidden border-white/10 shadow-nebula-lg"
+          >
+            <div className="p-10 bg-gradient-to-r from-nebula-indigo-600 to-nebula-indigo-900 text-white flex justify-between items-center">
               <div>
-                <h2 className="text-2xl font-black uppercase tracking-tight">
-                  Bulk Subject Assignment
+                <h2 className="text-3xl font-black uppercase tracking-tighter leading-none">
+                  Bulk Matrix <br /> <span className="text-white/60">Synchronization</span>
                 </h2>
-                <p className="text-xs font-medium opacity-90">
-                  Assign subjects to all students in a class
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] mt-3 opacity-70">
+                  Assign protocols to student cohorts
                 </p>
               </div>
               <button
                 onClick={() => setShowBulkAssign(false)}
-                className="p-2 hover:bg-white/20 rounded-full transition-all"
+                className="p-3 hover:bg-white/10 rounded-2xl transition-all"
               >
-                <X size={24} />
+                <X size={28} />
               </button>
             </div>
 
-            <div className="p-8 space-y-6 max-h-[70vh] overflow-y-auto">
-              <div>
-                <label className="block text-sm font-black text-school-blue mb-2 uppercase tracking-widest">
-                  1. Select Class
+            <div className="p-10 space-y-10 max-h-[70vh] overflow-y-auto custom-scrollbar">
+              <div className="space-y-4">
+                <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                  1. Target Cohort / Class
                 </label>
                 <select
                   value={bulkAssignClass}
@@ -639,9 +713,9 @@ export default function StudentManagement() {
                     setBulkAssignArm("");
                     setBulkAssignSubjects([]);
                   }}
-                  className="input-field"
+                  className="input-nebula !py-4"
                 >
-                  <option value="">Choose a class...</option>
+                  <option value="">Choose a target...</option>
                   {[
                     ...new Set(
                       students.filter((s) => s && s.class).map((s) => s.class),
@@ -658,30 +732,27 @@ export default function StudentManagement() {
 
               {/* Arm selector – only visible for SSS classes */}
               {bulkAssignClass && bulkAssignClass.toUpperCase().includes('SSS') && (
-                <div>
-                  <label className="block text-sm font-black text-school-blue mb-2 uppercase tracking-widest">
-                    2. Select Arm
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                    2. Strategic Department
                   </label>
-                  <p className="text-xs text-gray-500 mb-3 font-medium">
-                    9 general subjects are auto-included. Tick additional arm subjects below.
+                  <p className="text-[10px] text-nebula-slate-500 font-bold uppercase tracking-widest px-2">
+                    General protocols are auto-mapped. Select specialized department below.
                   </p>
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-3 gap-4">
                     {(['Science', 'Art', 'Commercial'] as const).map((arm) => (
                       <button
                         key={arm}
                         onClick={() => {
                           setBulkAssignArm(arm);
-                          // Auto-check the arm-specific subjects; General subjects left unchecked for manual pick
                           const armIds = subjects
                             .filter(s => (s.code?.startsWith('SSS-') || (s.level === 'Secondary' && s.subjectCategory)) && s.subjectCategory === arm)
                             .map(s => s.id);
                           setBulkAssignSubjects(armIds);
                         }}
-                        className={`py-3 px-4 rounded-2xl border-2 font-black text-sm transition-all ${bulkAssignArm === arm
-                            ? arm === 'Science' ? 'bg-blue-600 text-white border-blue-600' :
-                              arm === 'Art' ? 'bg-purple-600 text-white border-purple-600' :
-                                'bg-amber-600 text-white border-amber-600'
-                            : 'bg-white border-brand-200 text-gray-700 hover:border-school-blue/50'
+                        className={`py-4 px-6 rounded-2xl border font-black text-xs tracking-widest uppercase transition-all ${bulkAssignArm === arm
+                            ? 'bg-nebula-indigo-600 text-white border-nebula-indigo-500 shadow-nebula' 
+                            : 'bg-white/5 border-white/5 text-nebula-slate-400 hover:border-nebula-indigo-500/50'
                           }`}
                       >
                         {arm}
@@ -694,23 +765,24 @@ export default function StudentManagement() {
               {/* Subject list – shown when class selected (and arm selected for SSS) */}
               {bulkAssignClass && (
                 (!bulkAssignClass.toUpperCase().includes('SSS') || bulkAssignArm) && (
-                  <div className="space-y-5">
+                  <div className="space-y-8">
 
                     {/* === Arm subjects (SSS only) – auto-checked, can uncheck === */}
                     {bulkAssignClass.toUpperCase().includes('SSS') && (
-                      <div>
-                        <p className="text-xs font-black text-blue-600 uppercase tracking-widest mb-2">
-                          ✓ {bulkAssignArm} Arm Subjects — Auto-included (uncheck to remove)
+                      <div className="space-y-4">
+                        <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2 flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-nebula-indigo-500" />
+                          {bulkAssignArm} Specialized Matrix
                         </p>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           {subjects
                             .filter(s => (s.code?.startsWith('SSS-') || (s.level === 'Secondary' && s.subjectCategory)) && s.subjectCategory === bulkAssignArm)
                             .map(subject => (
                               <label
                                 key={subject.id}
-                                className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${bulkAssignSubjects.includes(subject.id)
-                                    ? 'bg-blue-50 border-blue-400 shadow-sm'
-                                    : 'bg-white border-gray-200 opacity-60'
+                                className={`flex items-center gap-4 p-5 rounded-3xl border transition-all cursor-pointer ${bulkAssignSubjects.includes(subject.id)
+                                    ? 'bg-nebula-indigo-500/10 border-nebula-indigo-500/40 shadow-inner'
+                                    : 'bg-white/[0.02] border-white/5 opacity-40'
                                   }`}
                               >
                                 <input
@@ -723,11 +795,11 @@ export default function StudentManagement() {
                                         : [...prev, subject.id]
                                     );
                                   }}
-                                  className="w-5 h-5 text-blue-600 rounded-lg focus:ring-blue-500 border-gray-300"
+                                  className="w-5 h-5 bg-nebula-slate-900 border-white/10 text-nebula-indigo-600 rounded-lg focus:ring-nebula-indigo-500"
                                 />
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-black text-gray-900 truncate">{subject.name}</p>
-                                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{subject.code}</p>
+                                  <p className="text-sm font-black text-white truncate">{subject.name}</p>
+                                  <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">{subject.code}</p>
                                 </div>
                               </label>
                             ))}
@@ -737,22 +809,20 @@ export default function StudentManagement() {
 
                     {/* === General subjects (SSS only) – unchecked, manual pick === */}
                     {bulkAssignClass.toUpperCase().includes('SSS') && (
-                      <div>
-                        <label className="block text-sm font-black text-school-blue mb-2 uppercase tracking-widest">
-                          3. Add General Subjects (manual)
+                      <div className="space-y-4">
+                        <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2 flex items-center gap-2">
+                           <div className="w-1.5 h-1.5 rounded-full bg-nebula-teal-500" />
+                           General Core Matrix (Manual Selection)
                         </label>
-                        <p className="text-xs text-gray-500 mb-3 font-medium">
-                          Tick any of the 9 general subjects you also want to assign.
-                        </p>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           {subjects
                             .filter(s => (s.code?.startsWith('SSS-') || (s.level === 'Secondary' && s.subjectCategory)) && s.subjectCategory === 'General')
                             .map(subject => (
                               <label
                                 key={subject.id}
-                                className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${bulkAssignSubjects.includes(subject.id)
-                                    ? 'bg-school-blue/10 border-school-blue shadow-md'
-                                    : 'bg-white border-brand-200 hover:border-school-blue/50'
+                                className={`flex items-center gap-4 p-5 rounded-3xl border transition-all cursor-pointer ${bulkAssignSubjects.includes(subject.id)
+                                    ? 'bg-nebula-teal-500/10 border-nebula-teal-500/40 shadow-inner'
+                                    : 'bg-white/[0.02] border-white/5'
                                   }`}
                               >
                                 <input
@@ -765,27 +835,25 @@ export default function StudentManagement() {
                                         : [...prev, subject.id]
                                     );
                                   }}
-                                  className="w-5 h-5 text-school-blue rounded-lg focus:ring-school-blue border-brand-300"
+                                  className="w-5 h-5 bg-nebula-slate-900 border-white/10 text-nebula-teal-600 rounded-lg focus:ring-nebula-teal-500"
                                 />
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-black text-gray-900 truncate">{subject.name}</p>
-                                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{subject.code}</p>
+                                  <p className="text-sm font-black text-white truncate">{subject.name}</p>
+                                  <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">{subject.code}</p>
                                 </div>
                               </label>
                             ))}
                         </div>
                       </div>
                     )}
-                    {/* === Non-SSS classes (JSS / Primary) \u2013 standard subject picker === */}
+
+                    {/* === Non-SSS classes (JSS / Primary) – standard subject picker === */}
                     {!bulkAssignClass.toUpperCase().includes('SSS') && (
-                      <div>
-                        <label className="block text-sm font-black text-school-blue mb-2 uppercase tracking-widest">
-                          2. Select Subjects
+                      <div className="space-y-4">
+                        <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                          2. Synchronize Protocols
                         </label>
-                        <p className="text-xs text-gray-500 mb-3 font-medium">
-                          Select subjects to assign to all students in {bulkAssignClass}.
-                        </p>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           {subjects
                             .filter((s) => {
                               if (!s) return false;
@@ -793,7 +861,6 @@ export default function StudentManagement() {
                                 (student) => student && student.class === bulkAssignClass,
                               )?.level;
                               if (!classLevel || s.level !== classLevel) return false;
-                              // Specific rule: Writing is only for P1-3
                               if (s.name === 'Writing' && (bulkAssignClass.includes('4') || bulkAssignClass.includes('5') || bulkAssignClass.includes('6'))) {
                                 return false;
                               }
@@ -802,42 +869,39 @@ export default function StudentManagement() {
                             .map((subject) => (
                               <label
                                 key={subject.id}
-                                className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer ${bulkAssignSubjects.includes(subject.id)
-                                    ? "bg-school-blue/10 border-school-blue shadow-md"
-                                    : "bg-white border-brand-200 hover:border-school-blue/50"
+                                className={`flex items-center gap-4 p-5 rounded-3xl border transition-all cursor-pointer ${bulkAssignSubjects.includes(subject.id)
+                                    ? 'bg-nebula-indigo-500/10 border-nebula-indigo-500/40 shadow-inner'
+                                    : 'bg-white/[0.02] border-white/5'
                                   }`}
                               >
                                 <input
                                   type="checkbox"
                                   checked={bulkAssignSubjects.includes(subject.id)}
                                   onChange={() => {
-                                    setBulkAssignSubjects((prev) =>
+                                    setBulkAssignSubjects(prev =>
                                       prev.includes(subject.id)
-                                        ? prev.filter((id) => id !== subject.id)
-                                        : [...prev, subject.id],
+                                        ? prev.filter(id => id !== subject.id)
+                                        : [...prev, subject.id]
                                     );
                                   }}
-                                  className="w-5 h-5 text-school-blue rounded-lg focus:ring-school-blue border-brand-300"
+                                  className="w-5 h-5 bg-nebula-slate-900 border-white/10 text-nebula-indigo-600 rounded-lg focus:ring-nebula-indigo-500"
                                 />
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-black text-gray-900 truncate">{subject.name}</p>
-                                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                                    {subject.code}
-                                  </p>
+                                  <p className="text-sm font-black text-white truncate">{subject.name}</p>
+                                  <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">{subject.code}</p>
                                 </div>
                               </label>
                             ))}
                         </div>
                       </div>
                     )}
-
                   </div>
                 )
               )}
             </div>
-
-            <div className="p-6 bg-brand-50 border-t-4 border-dashed border-brand-200 flex gap-3">
+            <div className="flex gap-4 mt-8">
               <button
+                type="button"
                 onClick={() => setShowBulkAssign(false)}
                 className="flex-1 py-3 px-6 bg-white border-2 border-brand-200 text-brand-600 rounded-full font-black hover:bg-brand-100 transition-all uppercase tracking-widest text-sm"
               >
@@ -851,7 +915,7 @@ export default function StudentManagement() {
                 Assign to Class
               </button>
             </div>
-          </div>
+          </motion.div>
         </div>
       )}
 

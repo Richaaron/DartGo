@@ -75,60 +75,79 @@ export default function Settings() {
     return <div className="p-8 text-center">Loading settings...</div>;
 
   return (
-    <div className="p-8 max-w-5xl mx-auto space-y-8">
-      {/* Page Header */}
-      <div className="mb-2">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-          School Settings
-        </h1>
-        <p className="text-gray-500 dark:text-gray-400 mt-1">
-          These details appear on student report cards and across the portal.
-        </p>
+    <div className="space-y-12">
+      {/* ── Dynamic Header ────────────────────────────── */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
+        <div className="space-y-4">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-nebula-indigo-500/10 border border-nebula-indigo-500/20 text-nebula-indigo-400 text-[10px] font-black tracking-[0.3em] uppercase backdrop-blur-md">
+            System Configuration
+          </div>
+          <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none">
+            Digital <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-nebula-indigo-400 via-nebula-teal-400 to-nebula-pink-400">Governance.</span>
+          </h1>
+          <p className="text-nebula-slate-400 text-lg font-bold max-w-xl leading-relaxed tracking-tight">
+            Calibrate the institutional parameters of the digital citadel.
+          </p>
+        </div>
+
+        <button
+          onClick={handleSave}
+          disabled={isSaving}
+          className="btn-vibrant from-nebula-indigo-600 to-nebula-indigo-800 px-10 py-4 shadow-nebula"
+        >
+          <Save size={20} /> 
+          {isSaving ? "Synchronizing..." : "Execute Updates"}
+        </button>
       </div>
 
       {/* Save Message */}
       {message.text && (
         <div
-          className={`p-4 rounded-xl flex items-center gap-3 ${
+          className={`p-6 rounded-3xl flex items-center gap-4 backdrop-blur-xl border ${
             message.type === "success"
-              ? "bg-green-50 text-green-700 border border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-800"
-              : "bg-red-50 text-red-700 border border-red-200 dark:bg-red-900/20 dark:text-red-300 dark:border-red-800"
+              ? "bg-nebula-teal-500/10 text-nebula-teal-400 border-nebula-teal-500/20"
+              : "bg-nebula-pink-500/10 text-nebula-pink-400 border-nebula-pink-500/20"
           }`}
         >
-          <CheckCircle size={20} />
-          <p className="font-semibold">{message.text}</p>
+          <CheckCircle size={24} />
+          <p className="font-bold tracking-tight">{message.text}</p>
         </div>
       )}
 
-      {/* Row 1: General Info + Branding */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* General Info */}
-        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-5 flex items-center gap-2">
-            <Globe size={18} className="text-blue-500" /> General Info
-          </h2>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
-                School Name
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
+        {/* Row 1: General Info */}
+        <div className="nebula-card space-y-10">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-black text-white uppercase tracking-tighter flex items-center gap-3">
+              <Globe size={24} className="text-nebula-indigo-400" /> General Logistics
+            </h2>
+            <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.2em]">Core institutional identifiers</p>
+          </div>
+          
+          <div className="space-y-8">
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                Institutional Name
               </label>
               <input
                 type="text"
-                className="input-field"
+                className="input-nebula"
                 value={config.schoolName || ""}
                 onChange={(e) =>
                   setConfig({ ...config, schoolName: e.target.value })
                 }
-                placeholder="e.g. Folusho Victory Schools"
+                placeholder="Folusho Victory Schools"
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
-                  Current Term
+
+            <div className="grid grid-cols-2 gap-8">
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                  Active Term
                 </label>
                 <select
-                  className="input-field"
+                  className="input-nebula !py-4"
                   value={config.currentTerm || ""}
                   onChange={(e) =>
                     setConfig({ ...config, currentTerm: e.target.value })
@@ -139,14 +158,14 @@ export default function Settings() {
                   <option value="3rd Term">3rd Term</option>
                 </select>
               </div>
-              <div>
-                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
-                  Academic Year
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                  Academic Cycle
                 </label>
                 <input
                   type="text"
-                  className="input-field"
-                  placeholder="e.g. 2024/2025"
+                  className="input-nebula"
+                  placeholder="2024/2025"
                   value={config.currentAcademicYear || ""}
                   onChange={(e) =>
                     setConfig({
@@ -161,57 +180,63 @@ export default function Settings() {
         </div>
 
         {/* Branding */}
-        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-5 flex items-center gap-2">
-            <Palette size={18} className="text-purple-500" /> Branding
-          </h2>
-          <div className="space-y-5">
-            <div>
-              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
-                Theme Color
+        <div className="nebula-card space-y-10">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-black text-white uppercase tracking-tighter flex items-center gap-3">
+              <Palette size={24} className="text-nebula-teal-400" /> Visual Identity
+            </h2>
+            <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.2em]">Aesthetic parameters & emblems</p>
+          </div>
+
+          <div className="space-y-10">
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                Signature Aesthetic
               </label>
-              <div className="flex gap-4 items-center">
+              <div className="flex gap-6 items-center bg-white/5 p-4 rounded-3xl border border-white/5">
                 <input
                   type="color"
-                  className="w-12 h-12 rounded-lg cursor-pointer border border-gray-200"
+                  className="w-16 h-16 rounded-2xl cursor-pointer border-2 border-white/10 bg-transparent"
                   value={config.themeColor || "#2563eb"}
                   onChange={(e) =>
                     setConfig({ ...config, themeColor: e.target.value })
                   }
                 />
-                <code className="bg-gray-100 dark:bg-gray-800 dark:text-gray-300 px-3 py-1.5 rounded-lg text-sm font-mono">
-                  {config.themeColor || "#2563eb"}
+                <code className="text-nebula-indigo-400 text-lg font-black tracking-widest font-mono">
+                  {config.themeColor?.toUpperCase() || "#2563EB"}
                 </code>
               </div>
             </div>
-            <div>
-              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
-                School Motto
+
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                Institutional Motto
               </label>
               <input
                 type="text"
-                className="input-field"
-                placeholder="e.g. Fountain of Knowledge"
+                className="input-nebula"
+                placeholder="Fountain of Knowledge"
                 value={config.motto || ""}
                 onChange={(e) =>
                   setConfig({ ...config, motto: e.target.value })
                 }
               />
             </div>
-            <div>
-              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
-                School Logo
+
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                Institutional Emblem
               </label>
-              <div className="flex items-center gap-5">
-                <div className="w-20 h-20 bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl flex items-center justify-center overflow-hidden">
+              <div className="flex items-center gap-8 bg-white/5 p-6 rounded-3xl border border-white/5">
+                <div className="w-24 h-24 bg-nebula-slate-900 rounded-2xl flex items-center justify-center overflow-hidden border border-white/10 shadow-nebula">
                   <img
                     src={config.schoolLogo || "/school_logo.png"}
                     alt="School Logo"
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain p-2"
                   />
                 </div>
-                <label className="cursor-pointer bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-4 py-2 rounded-lg font-bold hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-all text-sm">
-                  Change Logo
+                <label className="btn-vibrant from-white/5 to-white/10 !text-white border border-white/10 !py-3 !px-6 text-xs cursor-pointer">
+                  Update Emblem
                   <input
                     type="file"
                     className="hidden"
@@ -223,42 +248,40 @@ export default function Settings() {
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Row 2: School Officials + Contact Info */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* School Officials */}
-        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-            <Users size={18} className="text-indigo-500" /> School Officials
-          </h2>
-          <p className="text-xs text-gray-400 dark:text-gray-500 mb-5">
-            These names will appear on the signature section of every student's
-            report card.
-          </p>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
-                Principal's Name
+        <div className="nebula-card space-y-10">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-black text-white uppercase tracking-tighter flex items-center gap-3">
+              <Users size={24} className="text-nebula-pink-400" /> Executive Command
+            </h2>
+            <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.2em]">Validated signatures for certification</p>
+          </div>
+
+          <div className="space-y-8">
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                Lead Administrator / Principal
               </label>
               <input
                 type="text"
-                className="input-field"
-                placeholder="e.g. Mr. James Adeyemi"
+                className="input-nebula"
+                placeholder="Mr. James Adeyemi"
                 value={config.principalName || ""}
                 onChange={(e) =>
                   setConfig({ ...config, principalName: e.target.value })
                 }
               />
             </div>
-            <div>
-              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
-                Proprietress's Name
+
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                Supreme Proprietress
               </label>
               <input
                 type="text"
-                className="input-field"
-                placeholder="e.g. Mrs. Folusho Adekunle"
+                className="input-nebula"
+                placeholder="Mrs. Folusho Adekunle"
                 value={config.proprietressName || ""}
                 onChange={(e) =>
                   setConfig({ ...config, proprietressName: e.target.value })
@@ -267,31 +290,29 @@ export default function Settings() {
             </div>
           </div>
 
-          {/* Preview */}
+          {/* Signature Preview */}
           {(config.principalName || config.proprietressName) && (
-            <div className="mt-5 p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl border border-indigo-100 dark:border-indigo-800">
-              <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-3">
-                Report Card Preview
-              </p>
-              <div className="grid grid-cols-2 gap-4">
+            <div className="p-8 bg-nebula-indigo-500/5 rounded-3xl border border-nebula-indigo-500/10">
+              <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em] mb-10 text-center">Certification Validation Preview</p>
+              <div className="grid grid-cols-2 gap-10">
                 {config.principalName && (
-                  <div className="text-center">
-                    <div className="h-px bg-indigo-200 dark:bg-indigo-700 mb-2" />
-                    <p className="text-xs font-black text-gray-800 dark:text-white uppercase truncate">
+                  <div className="text-center space-y-4">
+                    <div className="h-px bg-gradient-to-r from-transparent via-nebula-indigo-500/40 to-transparent" />
+                    <p className="text-sm font-black text-white uppercase tracking-tighter truncate px-4">
                       {config.principalName}
                     </p>
-                    <p className="text-[9px] text-gray-400 uppercase tracking-widest mt-0.5">
+                    <p className="text-[10px] text-nebula-slate-500 font-black uppercase tracking-[0.2em]">
                       Principal
                     </p>
                   </div>
                 )}
                 {config.proprietressName && (
-                  <div className="text-center">
-                    <div className="h-px bg-indigo-200 dark:bg-indigo-700 mb-2" />
-                    <p className="text-xs font-black text-gray-800 dark:text-white uppercase truncate">
+                  <div className="text-center space-y-4">
+                    <div className="h-px bg-gradient-to-r from-transparent via-nebula-pink-500/40 to-transparent" />
+                    <p className="text-sm font-black text-white uppercase tracking-tighter truncate px-4">
                       {config.proprietressName}
                     </p>
-                    <p className="text-[9px] text-gray-400 uppercase tracking-widest mt-0.5">
+                    <p className="text-[10px] text-nebula-slate-500 font-black uppercase tracking-[0.2em]">
                       Proprietress
                     </p>
                   </div>
@@ -302,36 +323,37 @@ export default function Settings() {
         </div>
 
         {/* Contact Information */}
-        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-            <MapPin size={18} className="text-rose-500" /> Contact Information
-          </h2>
-          <p className="text-xs text-gray-400 dark:text-gray-500 mb-5">
-            These appear in the header of every printed report card.
-          </p>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
-                School Address
+        <div className="nebula-card space-y-10">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-black text-white uppercase tracking-tighter flex items-center gap-3">
+              <MapPin size={24} className="text-nebula-teal-400" /> Sector Coordinates
+            </h2>
+            <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.2em]">Global positioning & communications</p>
+          </div>
+
+          <div className="space-y-8">
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                Institutional Coordinates (Address)
               </label>
               <input
                 type="text"
-                className="input-field"
-                placeholder="e.g. 12 Victory Close, Ibadan, Nigeria"
+                className="input-nebula"
+                placeholder="12 Victory Close, Ibadan, Nigeria"
                 value={config.schoolAddress || ""}
                 onChange={(e) =>
                   setConfig({ ...config, schoolAddress: e.target.value })
                 }
               />
             </div>
-            <div>
-              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
-                School Phone Number
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                Comm-Link Frequency (Phone)
               </label>
               <input
                 type="text"
-                className="input-field"
-                placeholder="e.g. +234 801 234 5678"
+                className="input-nebula"
+                placeholder="+234 801 234 5678"
                 value={config.schoolPhone || ""}
                 onChange={(e) =>
                   setConfig({ ...config, schoolPhone: e.target.value })
@@ -340,17 +362,6 @@ export default function Settings() {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Save Button */}
-      <div className="flex justify-end">
-        <button
-          onClick={handleSave}
-          disabled={isSaving}
-          className="flex items-center gap-2 bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg disabled:opacity-50 text-sm"
-        >
-          <Save size={18} /> {isSaving ? "Saving..." : "Save All Settings"}
-        </button>
       </div>
     </div>
   );

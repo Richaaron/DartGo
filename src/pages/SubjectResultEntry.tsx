@@ -656,39 +656,37 @@ export default function SubjectResultEntry() {
 
 
   return (
-    <div className="p-8">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-        <div>
-          <h1 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">
-            Subject <span className="text-indigo-600 dark:text-indigo-400">Results</span>
+    <div className="space-y-12">
+      {/* ── Dynamic Header ────────────────────────────── */}
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-10">
+        <div className="space-y-4">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-nebula-indigo-500/10 border border-nebula-indigo-500/20 text-nebula-indigo-400 text-[10px] font-black tracking-[0.3em] uppercase backdrop-blur-md">
+            Evaluation Matrix
+          </div>
+          <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none">
+            Result <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-nebula-indigo-400 via-nebula-teal-400 to-nebula-pink-400">Synchronization.</span>
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2 font-medium">Enter CA and Exam scores for automated grading</p>
+          <p className="text-nebula-slate-400 text-lg font-bold max-w-xl leading-relaxed tracking-tight">
+            Input CA and Examination scores for high-fidelity grade synthesis.
+          </p>
         </div>
-        <div className="flex gap-2 flex-wrap">
-          <div className="flex bg-slate-100 dark:bg-brand-800 p-1 rounded-xl border border-slate-200 dark:border-brand-700">
-            <button
-              onClick={() => setViewMode('students')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-black transition-all ${
-                viewMode === 'students' 
-                  ? 'bg-white dark:bg-brand-700 text-indigo-600 dark:text-indigo-400 shadow-sm' 
-                  : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
-              }`}
-            >
-              <User size={18} />
-              STUDENT VIEW
-            </button>
-            <button
-              onClick={() => setViewMode('results')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-black transition-all ${
-                viewMode === 'results' 
-                  ? 'bg-white dark:bg-brand-700 text-indigo-600 dark:text-indigo-400 shadow-sm' 
-                  : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
-              }`}
-            >
-              <List size={18} />
-              RESULT LIST
-            </button>
+
+        <div className="flex flex-col sm:flex-row items-center gap-6">
+          <div className="flex bg-white/5 p-1.5 rounded-3xl border border-white/5 backdrop-blur-md">
+            {(["students", "results"] as const).map((mode) => (
+              <button
+                key={mode}
+                onClick={() => setViewMode(mode)}
+                className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                  viewMode === mode
+                    ? "bg-nebula-indigo-600 text-white shadow-nebula"
+                    : "text-nebula-slate-500 hover:text-white"
+                }`}
+              >
+                {mode === "students" ? "Identity Matrix" : "Archival List"}
+              </button>
+            ))}
           </div>
 
           <button
@@ -696,10 +694,10 @@ export default function SubjectResultEntry() {
               setEditingResult(null)
               setShowForm(true)
             }}
-            className="btn-primary"
+            className="btn-vibrant from-nebula-indigo-600 to-nebula-indigo-800 shadow-nebula"
           >
             <Plus size={20} />
-            Enter Results
+            Initialize Entry
           </button>
         </div>
       </div>
@@ -716,375 +714,200 @@ export default function SubjectResultEntry() {
         </div>
       )}
 
-      {/* Filters */}
-      {viewMode === 'results' && (
-        <div className="card-lg mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div>
-            <label className="block text-sm font-black text-school-blue dark:text-school-yellow mb-2 uppercase tracking-widest">Search</label>
-            <div className="relative">
-              <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400 dark:text-gray-500" />
+      {/* ── Intelligence Filters ───────────────────────── */}
+      <div className="nebula-card !p-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="space-y-3">
+            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">Personnel Lookup</label>
+            <div className="relative group">
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-nebula-indigo-500 group-focus-within:text-white transition-colors" />
               <input
                 type="text"
-                placeholder="Search student or registration..."
+                placeholder="Scan identities..."
                 value={filterTerm}
                 onChange={(e) => setFilterTerm(e.target.value)}
-                className="input-field pl-10"
+                className="input-nebula pl-14"
               />
             </div>
           </div>
-          <div>
-            <label htmlFor="list-class-filter" className="block text-sm font-black text-school-blue dark:text-school-yellow mb-2 uppercase tracking-widest">Class</label>
+
+          <div className="space-y-3">
+            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">Sector Focus</label>
             <select
-              id="list-class-filter"
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
-              className="input-field"
-              aria-label="Filter by class"
+              className="input-nebula !py-4"
             >
-              <option value="All">All {isTeacher ? 'My' : ''} Classes</option>
-              {availableClasses.map((className) => (
-                <option key={className} value={className}>
-                  {className}
-                </option>
+              <option value="All">Global Sectors</option>
+              {availableClasses.map(cls => <option key={cls} value={cls}>{cls}</option>)}
+            </select>
+          </div>
+
+          <div className="space-y-3">
+            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">Matrix Focus (Subject)</label>
+            <select
+              value={selectedSubject}
+              onChange={(e) => setSelectedSubject(e.target.value)}
+              className="input-nebula !py-4"
+            >
+              <option value="All">All {isTeacher ? 'My' : ''} Subjects</option>
+              {teacherSubjects.map((subject) => (
+                <option key={subject.id} value={subject.id}>{subject.name}</option>
               ))}
             </select>
           </div>
-          <div>
-            <label htmlFor="list-arm-filter" className="block text-sm font-black text-school-blue dark:text-school-yellow mb-2 uppercase tracking-widest">Dept/Arm</label>
+
+          <div className="space-y-3">
+            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">Temporal Phase</label>
             <select
-              id="list-arm-filter"
-              value={selectedArm}
-              onChange={(e) => setSelectedArm(e.target.value)}
-              disabled={!(selectedClass.startsWith('SSS') || selectedClass.startsWith('SS')) && selectedClass !== 'All'}
-              className="input-field disabled:opacity-50"
-              aria-label="Filter by arm"
-            >
-              <option value="All">All Departments</option>
-              <option value="Science">Science</option>
-              <option value="Art">Art</option>
-              <option value="Commercial">Commerce</option>
-            </select>
-          </div>
-          <div>
-            <label htmlFor="list-subject-filter" className="block text-sm font-black text-school-blue dark:text-school-yellow mb-2 uppercase tracking-widest">Subject</label>
-            <select
-              id="list-subject-filter"
-              value={selectedSubject}
-              onChange={(e) => setSelectedSubject(e.target.value)}
-              className="input-field"
-              aria-label="Filter by subject"
-            >
-              <option value="All">All {isTeacher ? 'My' : ''} Subjects</option>
-              {teacherSubjects.map((subject) => {
-                const levelLabel = (subject.code?.startsWith('JSS-') || (subject.level === 'Secondary' && !subject.subjectCategory)) ? 'JSS' : 
-                                  (subject.code?.startsWith('SSS-') || (subject.level === 'Secondary' && subject.subjectCategory)) ? 'SSS' : subject.level;
-                return (
-                  <option key={subject.id} value={subject.id}>
-                    {subject.name} ({levelLabel})
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="list-term-filter" className="block text-sm font-black text-school-blue dark:text-school-yellow mb-2 uppercase tracking-widest">Term</label>
-            <select
-              id="list-term-filter"
               value={selectedTerm}
               onChange={(e) => setSelectedTerm(e.target.value)}
-              className="input-field"
-              aria-label="Filter by term"
+              className="input-nebula !py-4"
             >
-              <option value="All">All Terms</option>
-              <option value="First">First Term</option>
-              <option value="Second">Second Term</option>
-              <option value="Third">Third Term</option>
+              <option value="All">All Phases</option>
+              <option value="First">First Phase</option>
+              <option value="Second">Second Phase</option>
+              <option value="Third">Third Phase</option>
             </select>
           </div>
         </div>
       </div>
-      )}
 
-      {/* Main Content Area */}
-      <div className="space-y-6">
-        {viewMode === 'students' ? (
-          <BulkSubjectResultEntry
-            subjects={subjects}
-            students={students}
-            studentSubjects={allStudentSubjects}
-            existingResults={results}
-            onResultsSaved={loadData}
-            teacherSubjects={teacherSubjects}
-          />
-        ) : !selectedStudentResults ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {studentResultsSummary.length > 0 ? (
-              studentResultsSummary.filter(s => {
-                const matchesSearch = !debouncedFilterTerm || 
-                  `${s.student.firstName} ${s.student.lastName} ${s.student.registrationNumber}`.toLowerCase().includes(debouncedFilterTerm.toLowerCase())
-                const matchesClass = selectedClass === 'All' || s.student.class === selectedClass
-                return matchesSearch && matchesClass
-              }).map(summary => (
-                <div 
-                  key={summary.student.id}
-                  onClick={() => setSelectedStudentResults(summary.student.id)}
-                  className="professional-card p-6 cursor-pointer group hover:bg-brand-900/60 transition-all duration-300"
-                >
-                  <div className="flex flex-col items-center text-center">
-                    <div className="w-16 h-16 rounded-2xl bg-indigo-600/20 flex items-center justify-center text-indigo-400 font-black text-2xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
-                      {summary.student.firstName[0]}{summary.student.lastName[0]}
-                    </div>
-                    <h3 className="text-white font-black uppercase tracking-tight text-lg mb-1">{summary.student.firstName} {summary.student.lastName}</h3>
-                    <p className="text-indigo-400 text-xs font-bold uppercase tracking-widest mb-4">{summary.student.class}</p>
-                    
-                    <div className="w-full pt-4 border-t border-indigo-500/10 flex justify-between items-center">
-                      <div className="text-left">
-                        <p className="text-[10px] text-gray-500 uppercase font-black">Records</p>
-                        <p className="text-white font-black">{summary.count}</p>
-                      </div>
-                      <div className="px-3 py-1 bg-amber-500/10 text-amber-500 rounded-full text-[10px] font-black uppercase tracking-widest border border-amber-500/20">
-                        View Results
-                      </div>
-                    </div>
-                  </div>
+      {/* ── Data Matrix ────────────────────────────────── */}
+      <div className="nebula-card !p-0 overflow-hidden">
+        {viewMode === "students" ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 p-10">
+            {displayStudents.map((student) => (
+              <motion.div
+                key={student.id}
+                layoutId={student.id}
+                onClick={() => setSelectedStudentForEntry(student)}
+                className="bg-white/[0.02] border border-white/5 rounded-3xl p-8 hover:bg-white/[0.04] hover:border-nebula-indigo-500/30 transition-all cursor-pointer group"
+              >
+                <div className="w-14 h-14 bg-nebula-slate-900 rounded-2xl flex items-center justify-center border border-white/10 group-hover:border-nebula-indigo-500/40 transition-colors shadow-inner mb-6">
+                  <span className="text-xl font-black text-nebula-indigo-400">{student.firstName[0]}{student.lastName[0]}</span>
                 </div>
-              ))
-            ) : (
-              <div className="col-span-full py-20 text-center card-lg">
-                <div className="w-20 h-20 bg-brand-900/40 rounded-full flex items-center justify-center mx-auto mb-4 border border-brand-800">
-                  <User className="text-brand-400" size={40} />
+                <h3 className="text-lg font-black text-white mb-1 tracking-tight group-hover:text-nebula-indigo-400 transition-colors">
+                  {student.firstName} {student.lastName}
+                </h3>
+                <p className="text-[9px] font-black text-nebula-slate-500 uppercase tracking-widest mb-6">
+                  {student.registrationNumber}
+                </p>
+                <div className="pt-4 border-t border-white/5 flex items-center justify-between">
+                  <span className="text-[10px] font-black text-nebula-slate-400 uppercase tracking-widest">{student.class}</span>
+                  <ChevronRight size={16} className="text-nebula-indigo-500 group-hover:translate-x-1 transition-transform" />
                 </div>
-                <h3 className="text-white text-xl font-bold">No results found</h3>
-                <p className="text-gray-500 mt-2">Try adjusting your filters or record some new results.</p>
-              </div>
-            )}
+              </motion.div>
+            ))}
           </div>
         ) : (
-          <div className="card-lg">
-            <div className="mb-6 flex items-center justify-between">
-              <button
-                onClick={() => setSelectedStudentResults(null)}
-                className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold hover:underline transition-all hover:-translate-x-1"
-              >
-                <ChevronLeft size={20} />
-                Back to All Students
-              </button>
-              
-              {singleStudentResults && (
-                <div className="flex gap-3">
-                  <button onClick={handlePrint} className="btn-purple flex items-center gap-2 py-2 text-xs">
-                    <Printer size={14} /> Print Report
-                  </button>
-                  <button onClick={handleDownloadPDF} disabled={isGeneratingPDF} className="btn-gold flex items-center gap-2 py-2 text-xs">
-                    {isGeneratingPDF ? <Loader2 className="animate-spin" size={14} /> : <Download size={14} />}
-                    {isGeneratingPDF ? 'Generating...' : 'Download PDF'}
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* Hidden Print Content */}
-            {singleStudentResults && (
-              <div className="hidden">
-                <div ref={printRef}>
-                  <PrintResult 
-                    child={singleStudentResults.student!} 
-                    results={singleStudentResults.results} 
-                    subjects={subjects}
-                    classPositionText={singleStudentResults.classPositionText}
-                  />
-                </div>
-              </div>
-            )}
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-200 dark:border-indigo-500/30">
-                    <th className="table-header text-left">Student Name</th>
-                    <th className="table-header text-left">Class</th>
-                    <th className="table-header text-left">Subject</th>
-                    <th className="table-header text-left">Status</th>
-                    <th className="table-header text-center">1st CA</th>
-                    <th className="table-header text-center">2nd CA</th>
-                    <th className="table-header text-center">Exam</th>
-                    <th className="table-header text-center">Total</th>
-                    <th className="table-header text-center">Grade</th>
-                    <th className="table-header text-right">Actions</th>
+          <div className="overflow-x-auto">
+            <table className="min-w-full">
+              <thead className="bg-white/5 border-b border-white/5">
+                <tr>
+                  <th className="py-5 px-8 text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] text-left">Personnel</th>
+                  <th className="py-5 px-6 text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] text-left">Subject</th>
+                  <th className="py-5 px-6 text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] text-center">Protocol Status</th>
+                  <th className="py-5 px-6 text-[10px] font-black text-nebula-teal-400 uppercase tracking-[0.3em] text-center">Score</th>
+                  <th className="py-5 px-8 text-[10px] font-black text-nebula-teal-400 uppercase tracking-[0.3em] text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                {displayResults.map((item) => (
+                  <tr key={item.id} className="hover:bg-white/[0.02] transition-colors">
+                    <td className="py-6 px-8">
+                      <div className="font-bold text-white text-sm">{item.studentName}</div>
+                      <div className="text-[9px] font-black text-nebula-slate-500 uppercase tracking-widest mt-1">{item.class}</div>
+                    </td>
+                    <td className="py-6 px-6 text-sm font-bold text-nebula-slate-300">{item.subjectName}</td>
+                    <td className="py-6 px-6 text-center">
+                      <span className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${
+                        item.status === "Completed" ? "bg-nebula-teal-500/10 text-nebula-teal-400 border-nebula-teal-500/20" : "bg-nebula-pink-500/10 text-nebula-pink-400 border-nebula-pink-500/20"
+                      }`}>
+                        {item.status}
+                      </span>
+                    </td>
+                    <td className="py-6 px-6 text-center font-black text-white text-lg">{item.totalScore}</td>
+                    <td className="py-6 px-8 text-right">
+                      <div className="flex justify-end gap-3">
+                        <button
+                          onClick={() => { setEditingResult(item); setShowForm(true) }}
+                          className="p-2.5 rounded-xl bg-white/5 hover:bg-nebula-indigo-500/20 text-nebula-indigo-400 transition-all border border-white/5"
+                        >
+                          <ClipboardList size={16} />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteResult(item.id)}
+                          className="p-2.5 rounded-xl bg-white/5 hover:bg-nebula-pink-500/20 text-nebula-pink-400 transition-all border border-white/5"
+                        >
+                          <AlertCircle size={16} />
+                        </button>
+                      </div>
+                    </td>
                   </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                  {displayResults.map((result, index) => (
-                    <tr key={result.id || index} className={`hover:bg-brand-50 dark:hover:bg-indigo-900/10 transition-colors ${result.hideName ? 'border-t-0' : 'border-t'}`}>
-                      <td className="table-cell">
-                        {!result.hideName && (
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-xs">
-                              {result.studentName.split(' ').map((n: string) => n[0]).join('')}
-                            </div>
-                            <div>
-                              <p className="font-bold text-gray-900 dark:text-white leading-none">{result.studentName}</p>
-                              <p className="text-[9px] text-gray-400 uppercase tracking-widest mt-1">Reg: {students.find(s => s.id === result.studentId)?.registrationNumber || 'N/A'}</p>
-                            </div>
-                          </div>
-                        )}
-                      </td>
-                      <td className="table-cell font-bold text-xs opacity-60">
-                        {!result.hideName && result.class}
-                      </td>
-                      <td className="table-cell">
-                        <span className="px-2 py-1 bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded text-xs font-bold border border-indigo-100 dark:border-indigo-800/50">
-                          {result.subjectName}
-                        </span>
-                      </td>
-                      <td className="table-cell">
-                        <span className={`px-2 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
-                          result.status === 'Completed' 
-                            ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800/50' 
-                            : 'bg-orange-50 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 border border-orange-100 dark:border-orange-800/50'
-                        }`}>
-                          {result.status}
-                        </span>
-                      </td>
-                      <td className="table-cell text-center font-bold">{result.firstCA || 0}</td>
-                      <td className="table-cell text-center font-bold">{result.secondCA || 0}</td>
-                      <td className="table-cell text-center font-bold">{result.exam || 0}</td>
-                      <td className="table-cell text-center font-bold text-indigo-600 dark:text-indigo-400">{result.totalScore || 0}</td>
-                      <td className="table-cell text-center font-black">{result.grade || 'N/A'}</td>
-                      <td className="table-cell">
-                        <div className="flex justify-end gap-2">
-                          {result.status === 'Pending' ? (
-                            <button
-                              onClick={() => {
-                                setEditingResult(result)
-                                setShowForm(true)
-                              }}
-                              className="flex items-center gap-1 px-3 py-1 bg-indigo-600 text-white rounded-lg text-xs font-bold hover:bg-indigo-700 transition-all shadow-sm"
-                            >
-                              <Plus size={14} />
-                              Enter Result
-                            </button>
-                          ) : (
-                            <>
-                              <button
-                                onClick={() => {
-                                  setEditingResult(result)
-                                  setShowForm(true)
-                                }}
-                                className="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
-                                title="Edit"
-                              >
-                                <ClipboardList size={18} />
-                              </button>
-                              <button
-                                onClick={() => handleDeleteResult(result.id)}
-                                className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors"
-                                title="Delete"
-                              >
-                                <AlertCircle size={18} />
-                              </button>
-                            </>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              {displayResults.length === 0 && (
-                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                  No results found. Try adjusting your filters or add some results.
-                </div>
-              )}
-            </div>
-
-            {/* Pagination Controls */}
-            {totalPages > 1 && (
-              <div className="mt-6 flex items-center justify-between">
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                  Showing <span className="font-bold">{Math.min((currentPage - 1) * ITEMS_PER_PAGE + 1, filteredDisplayData.length)}</span> to{' '}
-                  <span className="font-bold">{Math.min(currentPage * ITEMS_PER_PAGE, filteredDisplayData.length)}</span> of{' '}
-                  <span className="font-bold">{filteredDisplayData.length}</span> results
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                    disabled={currentPage === 1}
-                    className="flex items-center gap-1 px-3 py-2 bg-white dark:bg-brand-800 border border-gray-200 dark:border-brand-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    <ChevronLeft size={16} />
-                    Previous
-                  </button>
-                  <div className="flex items-center gap-2">
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                      <button
-                        key={page}
-                        onClick={() => setCurrentPage(page)}
-                        className={`w-8 h-8 rounded-lg font-bold text-sm transition-colors ${
-                          page === currentPage
-                            ? 'bg-indigo-600 text-white'
-                            : 'bg-white dark:bg-brand-800 border border-gray-200 dark:border-brand-700 hover:bg-gray-50 dark:hover:bg-brand-700'
-                        }`}
-                      >
-                        {page}
-                      </button>
-                    ))}
-                  </div>
-                  <button
-                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                    disabled={currentPage === totalPages}
-                    className="flex items-center gap-1 px-3 py-2 bg-white dark:bg-brand-800 border border-gray-200 dark:border-brand-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    Next
-                    <ChevronRight size={16} />
-                  </button>
-                </div>
-              </div>
-            )}
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
-        <div className="card-lg text-center">
-          <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">Total Records</p>
-          <p className="text-3xl font-black text-gray-900 dark:text-white mt-1">{stats.totalRecords}</p>
-        </div>
-        <div className="card-lg text-center">
-          <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">Average Score</p>
-          <p className="text-3xl font-black text-indigo-600 dark:text-indigo-400 mt-1">{stats.averageScore}%</p>
-        </div>
-        <div className="card-lg text-center">
-          <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">Pass Rate</p>
-          <p className="text-3xl font-black text-emerald-600 dark:text-emerald-400 mt-1">{stats.passRate}%</p>
-        </div>
-        <div className="card-lg text-center">
-          <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">Passing Grade</p>
-          <p className="text-3xl font-black text-orange-500 dark:text-orange-400 mt-1">{stats.passingGrade}</p>
-        </div>
-      </div>
-
-      {/* Form Modal */}
-      {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <SubjectResultForm
-              onSubmit={handleSubmitResult}
-              initialData={editingResult || {
-                term: selectedTerm === 'All' ? 'First' : selectedTerm,
-                subjectId: selectedSubject === 'All' ? '' : selectedSubject,
-                academicYear: new Date().getFullYear().toString()
-              } as any}
-              onCancel={handleCancel}
-              isEditing={!!editingResult && !editingResult.id?.startsWith('pending-')}
-              students={students}
-              subjects={isTeacher ? teacherSubjects : subjects}
-              studentSubjects={allStudentSubjects}
-            />
-          </div>
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-6 pb-12">
+          <button
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage(p => p - 1)}
+            className="p-3 rounded-2xl bg-white/5 border border-white/10 text-nebula-indigo-400 disabled:opacity-20 hover:bg-white/10 transition-all"
+          >
+            <ChevronLeft size={24} />
+          </button>
+          <span className="text-[10px] font-black text-nebula-slate-400 uppercase tracking-[0.4em]">
+            Matrix Phase {currentPage} of {totalPages}
+          </span>
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage(p => p + 1)}
+            className="p-3 rounded-2xl bg-white/5 border border-white/10 text-nebula-indigo-400 disabled:opacity-20 hover:bg-white/10 transition-all"
+          >
+            <ChevronRight size={24} />
+          </button>
         </div>
       )}
+
+      {/* Modal Overlay */}
+      <AnimatePresence>
+        {showForm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-nebula-slate-950/80 backdrop-blur-xl flex items-center justify-center z-50 p-6"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="nebula-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/10"
+            >
+              <div className="p-10 border-b border-white/5 bg-gradient-to-r from-nebula-indigo-600/20 to-transparent">
+                <h2 className="text-2xl font-black text-white tracking-tighter uppercase">Protocol Injection</h2>
+                <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] mt-2">Manual override active</p>
+              </div>
+              <div className="p-10">
+                <SubjectResultForm
+                  onSubmit={handleSubmitResult}
+                  initialData={editingResult || undefined}
+                  onCancel={handleCancel}
+                  isEditing={!!editingResult}
+                  students={students}
+                  subjects={isTeacher ? teacherSubjects : subjects}
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

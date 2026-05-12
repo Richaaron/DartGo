@@ -178,90 +178,124 @@ export default function ParentDashboard() {
   }
 
   return (
-    <div className="p-8">
-      {/* Header */}
-      <div className="mb-8 flex items-center gap-6">
-        <div className="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden border-2 border-blue-500">
-          {child.image ? (
-            <img src={child.image} alt={child.firstName} className="w-full h-full object-cover" />
-          ) : (
-            <User className="w-10 h-10 text-blue-500" />
-          )}
-        </div>
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">
-            Welcome, {parent.name}
-          </h1>
-          <p className="text-gray-600 mt-1">
-            Viewing results for: <span className="font-semibold text-blue-600">{child.firstName} {child.lastName}</span>
-          </p>
-          <div className="flex gap-4 mt-2 text-sm text-gray-500">
-            <p>Registration No: {child.registrationNumber}</p>
-            <p>Class: {child.class}</p>
-            <p>Level: {child.level}</p>
+    <div className="space-y-12">
+      {/* ── Dynamic Hero Section ────────────────────────────── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <motion.div variants={itemVariants} className="space-y-10">
+          <div className="space-y-6">
+            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-nebula-indigo-500/10 border border-nebula-indigo-500/20 text-nebula-indigo-400 text-[10px] font-black tracking-[0.3em] uppercase backdrop-blur-md">
+              Guardian Command: {parent.name}
+            </div>
+            <h1 className="text-6xl md:text-8xl font-black text-white leading-[0.85] tracking-tighter">
+              Legacy <br />
+              Through <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-nebula-indigo-400 via-nebula-teal-400 to-nebula-pink-400">Excellence.</span>
+            </h1>
+            <p className="text-xl text-nebula-slate-400 font-bold max-w-lg leading-relaxed tracking-tight">
+              Monitoring the academic matrix of <span className="text-white font-black">{child.firstName} {child.lastName}</span>
+            </p>
           </div>
-        </div>
-      </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <StatCard
-          icon={<BookOpen className="w-8 h-8" />}
-          label="Subjects"
-          value={stats.totalSubjects}
-          color="blue"
-        />
-        <StatCard
-          icon={<TrendingUp className="w-8 h-8" />}
-          label="Assessments"
-          value={stats.totalAssessments}
-          color="green"
-        />
-        <StatCard
-          icon={<GraduationCap className="w-8 h-8" />}
-          label="Average Score"
-          value={`${stats.averageScore}%`}
-          color="purple"
-        />
-      </div>
-
-      {/* Results Table */}
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold text-gray-900">Academic Results</h2>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-6">
             <button
               onClick={handlePrint}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="btn-vibrant from-nebula-indigo-600 to-nebula-indigo-800 shadow-nebula"
             >
               <Printer size={18} />
-              Print
+              Output Protocol
             </button>
             <button
               onClick={handleDownloadPDF}
-              className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-white/40 hover:text-white transition-all group"
             >
-              <Download size={18} />
-              Download PDF
+              Archive Matrix (PDF)
+              <Download className="w-5 h-5 group-hover:translate-x-2 transition-transform text-nebula-indigo-500" />
             </button>
           </div>
+        </motion.div>
+
+        <motion.div variants={itemVariants} className="nebula-card !p-12 group hover:border-nebula-indigo-500/30 transition-all">
+           <div className="flex items-center gap-6 mb-12">
+              <div className="w-24 h-24 bg-nebula-slate-900 rounded-[2.5rem] flex items-center justify-center border border-white/10 shadow-inner overflow-hidden">
+                {child.image ? (
+                  <img src={child.image} alt={child.firstName} className="w-full h-full object-cover" />
+                ) : (
+                  <User className="w-10 h-10 text-nebula-indigo-400" />
+                )}
+              </div>
+              <div>
+                <h2 className="text-3xl font-black text-white tracking-tighter uppercase">{child.firstName} {child.lastName}</h2>
+                <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-widest mt-1 opacity-70">Sector: {child.class} · {child.level}</p>
+              </div>
+           </div>
+
+           <div className="space-y-10">
+              <div className="flex gap-6 items-start">
+                <div className="w-3 h-3 rounded-full bg-nebula-indigo-500 mt-1 shadow-[0_0_15px_rgba(99,102,241,0.5)]" />
+                <div>
+                  <h3 className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.3em] mb-2">Registry Assignment</h3>
+                  <p className="text-sm text-white font-bold tracking-tight">{child.registrationNumber}</p>
+                </div>
+              </div>
+              <div className="flex gap-6 items-start">
+                <div className="w-3 h-3 rounded-full bg-nebula-teal-500 mt-1 shadow-[0_0_15px_rgba(20,184,166,0.5)]" />
+                <div>
+                  <h3 className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.3em] mb-2">Academic Standing</h3>
+                  <p className="text-sm text-white font-bold tracking-tight">{stats.classPositionText}</p>
+                </div>
+              </div>
+           </div>
+        </motion.div>
+      </div>
+
+      {/* Metrics Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+        <div className="nebula-card !p-8 group hover:border-nebula-indigo-500/30 transition-all">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em]">Protocol Units</p>
+            <BookOpen className="w-5 h-5 text-nebula-indigo-400 opacity-50" />
+          </div>
+          <p className="text-4xl font-black text-white">{stats.totalSubjects}</p>
         </div>
+        <div className="nebula-card !p-8 group hover:border-nebula-teal-500/30 transition-all">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-[10px] font-black text-nebula-teal-400 uppercase tracking-[0.3em]">Evaluations</p>
+            <TrendingUp className="w-5 h-5 text-nebula-teal-400 opacity-50" />
+          </div>
+          <p className="text-4xl font-black text-white">{stats.totalAssessments}</p>
+        </div>
+        <div className="nebula-card !p-8 group hover:border-nebula-pink-500/30 transition-all">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-[10px] font-black text-nebula-pink-400 uppercase tracking-[0.3em]">Efficiency Quotient</p>
+            <GraduationCap className="w-5 h-5 text-nebula-pink-400 opacity-50" />
+          </div>
+          <p className="text-4xl font-black text-white">{stats.averageScore}%</p>
+        </div>
+      </div>
+
+      {/* Results Matrix */}
+      <div className="nebula-card !p-0 overflow-hidden">
+        <div className="p-10 border-b border-white/5">
+          <h2 className="text-2xl font-black text-white tracking-tighter uppercase leading-none">
+            Performance <br /> <span className="text-white/40">Matrix</span>
+          </h2>
+        </div>
+
         {tableData.length > 0 ? (
-          <>
+          <div className="overflow-x-auto">
             <Table columns={columns} data={tableData} />
-            {/* Hidden Print-Only Content */}
+            {/* Hidden components for export remain unchanged */}
             <div className="hidden print:block">
               <PrintResult ref={printRef} child={child} results={childResults} subjects={subjects} classPositionText={stats.classPositionText} />
             </div>
-            {/* Always visible for PDF generation */}
             <div ref={printRef} className="hidden">
               <PrintResult child={child} results={childResults} subjects={subjects} classPositionText={stats.classPositionText} />
             </div>
-          </>
+          </div>
         ) : (
-          <div className="text-center py-12 bg-gray-50 rounded-lg">
-            <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-            <p className="text-gray-500">No results have been recorded for your child yet.</p>
+          <div className="text-center py-40">
+            <AlertCircle className="w-16 h-16 text-nebula-slate-700 mx-auto mb-6" />
+            <p className="text-nebula-slate-500 font-bold uppercase tracking-widest text-sm">Zero performance protocols detected in matrix.</p>
           </div>
         )}
       </div>

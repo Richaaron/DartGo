@@ -39,7 +39,7 @@
 }
 
 .card-animated {
-    @apply card animate-fade-in-up;
+    @apply card animate-fadeInUp;
 }
 
 /* ── Buttons ─────────────────────────────────── */

@@ -316,151 +316,147 @@ export default function Dashboard() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="p-4 md:p-8 space-y-12"
+      className="space-y-16"
     >
-      {/* Hero Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <motion.div variants={itemVariants} className="space-y-8">
-          <div className="space-y-4">
-            <h1 className="text-5xl md:text-7xl font-black text-white leading-[0.9] tracking-tighter">
-              Excellence <br />
-              Defined by <br />
-              <span className="text-royal-purple-500 italic">Legacy.</span>
+      {/* Hero Performance Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <motion.div variants={itemVariants} className="space-y-10">
+          <div className="space-y-6">
+            <h1 className="text-7xl md:text-9xl font-black text-white leading-[0.85] tracking-tighter">
+              Future <br />
+              Intelligence <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-nebula-indigo-400 via-nebula-teal-400 to-nebula-pink-400">Nebula.</span>
             </h1>
-            <p className="text-lg text-royal-dark-400 font-medium max-w-lg leading-relaxed">
-              Welcome to the Folusho Victory Schools digital citadel. A sanctuary of academic precision, teacher empowerment, and parental partnership.
+            <p className="text-xl text-nebula-slate-400 font-bold max-w-xl leading-relaxed tracking-tight">
+              A high-performance sanctuary for academic precision, teacher empowerment, and institutional governance.
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-6">
+          <div className="flex flex-wrap gap-8">
             {userRole === 'Admin' && (
-              <Link to="/admin" className="btn-royal-purple group">
+              <Link to="/settings" className="btn-vibrant from-nebula-indigo-600 to-nebula-indigo-800 group shadow-nebula">
                 <Lock className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                Admin Portal
+                Control Panel
               </Link>
             )}
             {userRole === 'Teacher' && (
-              <Link to="/subject-results" className="btn-royal-gold group">
+              <Link to="/subject-results" className="btn-vibrant from-nebula-teal-500 to-nebula-teal-800 !text-nebula-slate-950 group shadow-nebula">
                 <ClipboardList className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                Teacher Portal
+                Assessment Matrix
               </Link>
             )}
-            <button className="flex items-center gap-3 text-sm font-black uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors group">
-              Parental Access
-              <Check className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+            <button className="flex items-center gap-4 text-xs font-black uppercase tracking-[0.3em] text-nebula-indigo-400 hover:text-white transition-all group">
+              Legacy Portal
+              <Check className="w-4 h-4 group-hover:translate-x-3 transition-transform" />
             </button>
           </div>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="royal-card !p-10 border-white/10 glow-purple">
-           <div className="flex items-center gap-4 mb-10">
-              <div className="w-12 h-12 bg-royal-dark-900 rounded-xl flex items-center justify-center border border-white/10 shadow-inner">
-                <BookOpen className="w-6 h-6 text-royal-purple-400" />
+        <motion.div variants={itemVariants} className="nebula-card !p-12 border-white/5 shadow-nebula-lg">
+           <div className="flex items-center gap-6 mb-12">
+              <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 shadow-inner">
+                <BookOpen className="w-8 h-8 text-nebula-indigo-400" />
               </div>
-              <h2 className="text-2xl font-black text-white tracking-tight">Academic Pillar</h2>
+              <h2 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">Core <br /> <span className="text-nebula-indigo-500">Infrastructure</span></h2>
            </div>
 
-           <div className="space-y-8">
-              <div className="flex gap-4">
-                <div className="w-2 h-2 rounded-full bg-royal-gold-400 mt-2 flex-shrink-0" />
+           <div className="space-y-10">
+              <div className="flex gap-6 group/item">
+                <div className="w-3 h-3 rounded-full bg-nebula-indigo-500 mt-2.5 flex-shrink-0 shadow-[0_0_15px_rgba(99,102,241,0.5)] group-hover/item:scale-150 transition-transform" />
                 <div>
-                  <h3 className="text-sm font-black text-white uppercase tracking-widest mb-1">Royal Governance</h3>
-                  <p className="text-xs text-royal-dark-400 font-medium leading-relaxed">Centralized control of academic records and institutional intelligence.</p>
+                  <h3 className="text-xs font-black text-white uppercase tracking-[0.2em] mb-2">Elite Governance</h3>
+                  <p className="text-sm text-nebula-slate-500 font-bold leading-relaxed">Centralized intelligence for institutional precision.</p>
                 </div>
               </div>
-              <div className="flex gap-4">
-                <div className="w-2 h-2 rounded-full bg-royal-purple-500 mt-2 flex-shrink-0" />
+              <div className="flex gap-6 group/item">
+                <div className="w-3 h-3 rounded-full bg-nebula-teal-500 mt-2.5 flex-shrink-0 shadow-[0_0_15px_rgba(20,184,166,0.5)] group-hover/item:scale-150 transition-transform" />
                 <div>
-                  <h3 className="text-sm font-black text-white uppercase tracking-widest mb-1">Scholarly Assessment</h3>
-                  <p className="text-xs text-royal-dark-400 font-medium leading-relaxed">Sophisticated evaluation frameworks for numeric and character development.</p>
+                  <h3 className="text-xs font-black text-white uppercase tracking-[0.2em] mb-2">Precision Metrics</h3>
+                  <p className="text-sm text-nebula-slate-500 font-bold leading-relaxed">Advanced frameworks for character and growth.</p>
                 </div>
               </div>
-              <div className="flex gap-4">
-                <div className="w-2 h-2 rounded-full bg-royal-dark-400 mt-2 flex-shrink-0" />
+              <div className="flex gap-6 group/item">
+                <div className="w-3 h-3 rounded-full bg-nebula-pink-500 mt-2.5 flex-shrink-0 shadow-[0_0_15px_rgba(236,72,153,0.5)] group-hover/item:scale-150 transition-transform" />
                 <div>
-                  <h3 className="text-sm font-black text-white uppercase tracking-widest mb-1">Parental Engagement</h3>
-                  <p className="text-xs text-royal-dark-400 font-medium leading-relaxed">Real-time academic updates and detailed student performance report cards.</p>
+                  <h3 className="text-xs font-black text-white uppercase tracking-[0.2em] mb-2">Strategic Alliance</h3>
+                  <p className="text-sm text-nebula-slate-500 font-bold leading-relaxed">Transparent engagement for stakeholders.</p>
                 </div>
               </div>
            </div>
         </motion.div>
       </div>
 
-      {/* Stats Grid */}
+      {/* Analytics Matrix */}
       <motion.div
         variants={itemVariants}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
       >
         <StatCard
           icon={<Users className="w-6 h-6" />}
-          label="Total Students"
+          label="Champions"
           value={stats.totalStudents}
-          color="blue"
+          color="indigo"
         />
         <StatCard
           icon={<Users className="w-6 h-6" />}
-          label="Active Students"
+          label="Active Deployments"
           value={stats.activeStudents}
-          color="green"
+          color="teal"
         />
         <StatCard
           icon={<BookOpen className="w-6 h-6" />}
-          label="Total Results"
+          label="Core Records"
           value={stats.totalResults}
-          color="purple"
+          color="pink"
         />
         <StatCard
           icon={<TrendingUp className="w-6 h-6" />}
-          label="Average Score"
+          label="Performance Index"
           value={`${stats.averageScore}%`}
-          color="orange"
+          color="indigo"
         />
       </motion.div>
 
-      {/* Charts Row */}
+      {/* Visual Intelligence Section */}
       <motion.div
         variants={itemVariants}
-        className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8"
+        className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12"
       >
-        <div className="card-lg">
-          <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-6 md:mb-8">
-            Class Performance
+        <div className="nebula-card">
+          <h2 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em] mb-10">
+            Performance Matrix
           </h2>
-          <div style={{ width: '100%', height: 280 }}>
-            <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
+          <div style={{ width: '100%', height: 320 }}>
+            <ResponsiveContainer width="100%" height="100%">
               <BarChart data={classPerformanceData}>
                 <CartesianGrid
                   strokeDasharray="3 3"
                   vertical={false}
-                  stroke="#f3f4f6"
-                  className="dark:stroke-gray-800"
+                  stroke="rgba(255,255,255,0.05)"
                 />
                 <XAxis
                   dataKey="name"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: "#9ca3af", fontSize: 10, fontWeight: 700 }}
+                  tick={{ fill: "#64748b", fontSize: 10, fontWeight: 800 }}
                 />
                 <YAxis
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: "#9ca3af", fontSize: 10, fontWeight: 700 }}
+                  tick={{ fill: "#64748b", fontSize: 10, fontWeight: 800 }}
                   domain={[0, 100]}
                 />
                 <Tooltip
-                  cursor={{ fill: "rgba(79, 70, 229, 0.05)", radius: 8 }}
+                  cursor={{ fill: "rgba(99, 102, 241, 0.05)", radius: 12 }}
                   content={({ active, payload }) => {
                     if (active && payload && payload.length) {
                       return (
-                        <div className="bg-white dark:bg-gray-900 shadow-2xl rounded-xl border border-gray-100 dark:border-gray-800 p-4">
-                          <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
+                        <div className="bg-nebula-slate-900/90 backdrop-blur-xl border border-white/10 p-5 rounded-3xl shadow-nebula">
+                          <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-widest mb-2">
                             {payload[0].payload.name}
                           </p>
-                          <p className="text-lg sm:text-xl font-black text-indigo-600 dark:text-indigo-400">
-                            {payload[0].value}%{" "}
-                            <span className="text-[10px] text-gray-400 font-medium ml-1">
-                              Avg Score
-                            </span>
+                          <p className="text-3xl font-black text-white tracking-tighter">
+                            {payload[0].value}%
                           </p>
                         </div>
                       );
@@ -470,36 +466,42 @@ export default function Dashboard() {
                 />
                 <Bar
                   dataKey="average"
-                  fill="#4f46e5"
-                  radius={[6, 6, 0, 0]}
-                  barSize={40}
+                  fill="url(#indigoGradient)"
+                  radius={[8, 8, 0, 0]}
+                  barSize={48}
                 />
+                <defs>
+                  <linearGradient id="indigoGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#6366f1" />
+                    <stop offset="100%" stopColor="#4f46e5" />
+                  </linearGradient>
+                </defs>
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="card-lg">
-          <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-6 md:mb-8">
-            Student Status
+        <div className="nebula-card">
+          <h2 className="text-[10px] font-black text-nebula-teal-400 uppercase tracking-[0.4em] mb-10">
+            Deployment Status
           </h2>
-          <div style={{ width: '100%', height: 224 }}>
-            <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
+          <div style={{ width: '100%', height: 260 }}>
+            <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={studentStatusData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={70}
-                  outerRadius={90}
-                  paddingAngle={8}
+                  innerRadius={80}
+                  outerRadius={100}
+                  paddingAngle={12}
                   dataKey="value"
                   stroke="none"
                 >
                   {studentStatusData.map((_, index) => (
                     <Cell
                       key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
+                      fill={[ "#6366f1", "#14b8a6", "#ec4899", "#f59e0b" ][index % 4]}
                     />
                   ))}
                 </Pie>
@@ -507,15 +509,12 @@ export default function Dashboard() {
                   content={({ active, payload }) => {
                     if (active && payload && payload.length) {
                       return (
-                        <div className="bg-white dark:bg-gray-900 shadow-2xl rounded-xl border border-gray-100 dark:border-gray-800 p-4">
-                          <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
+                        <div className="bg-nebula-slate-900/90 backdrop-blur-xl border border-white/10 p-5 rounded-3xl shadow-nebula">
+                          <p className="text-[10px] font-black text-nebula-teal-400 uppercase tracking-widest mb-2">
                             {payload[0].name}
                           </p>
-                          <p className="text-xl font-black text-gray-900 dark:text-white">
-                            {payload[0].value}{" "}
-                            <span className="text-[10px] text-gray-400 font-medium ml-1">
-                              Students
-                            </span>
+                          <p className="text-3xl font-black text-white tracking-tighter">
+                            {payload[0].value}
                           </p>
                         </div>
                       );
@@ -526,18 +525,18 @@ export default function Dashboard() {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="flex flex-wrap justify-center gap-4 mt-4">
+          <div className="flex flex-wrap justify-center gap-8 mt-6">
             {studentStatusData.map((entry, index) => (
-              <div key={entry.name} className="flex items-center gap-3">
+              <div key={entry.name} className="flex items-center gap-4">
                 <div
-                  className="w-2.5 h-2.5 rounded-full"
-                  style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                  className="w-3 h-3 rounded-full"
+                  style={{ backgroundColor: [ "#6366f1", "#14b8a6", "#ec4899", "#f59e0b" ][index % 4] }}
                 />
                 <div className="flex flex-col">
-                  <span className="text-[10px] text-gray-400 font-black uppercase tracking-widest leading-none mb-1">
+                  <span className="text-[10px] text-nebula-slate-500 font-black uppercase tracking-widest leading-none mb-1">
                     {entry.name}
                   </span>
-                  <span className="text-sm text-gray-900 dark:text-white font-bold leading-none">
+                  <span className="text-base text-white font-black leading-none">
                     {String(entry.value)}
                   </span>
                 </div>
@@ -545,23 +544,22 @@ export default function Dashboard() {
             ))}
           </div>
         </div>
-
       </motion.div>
 
-      {/* Subject-wise Performance Metrics Section */}
-      <motion.div variants={itemVariants} className="space-y-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">
-            Subject-wise Performance Analytics
+      {/* Performance Insights Matrix */}
+      <motion.div variants={itemVariants} className="space-y-10">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/5 pb-8">
+          <h2 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em]">
+            Precision Analytics Engine
           </h2>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-gray-400 uppercase">Filter Class:</span>
+          <div className="flex items-center gap-4 bg-white/5 p-2 rounded-2xl border border-white/5">
+            <span className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest ml-3">Matrix Filter:</span>
             <select
               value={selectedAnalyticsClass}
               onChange={(e) => setSelectedAnalyticsClass(e.target.value)}
-              className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg px-3 py-1.5 text-xs font-bold text-gray-600 dark:text-gray-300 outline-none focus:ring-2 focus:ring-indigo-500"
+              className="bg-nebula-slate-900 text-white rounded-xl px-4 py-2 text-xs font-black uppercase tracking-widest outline-none border border-white/10 focus:ring-2 focus:ring-nebula-indigo-500 transition-all"
             >
-              <option value="All">All Classes</option>
+              <option value="All">Global View</option>
               {[...new Set(students.map(s => s.class))].filter(Boolean).sort().map(c => (
                 <option key={c} value={c}>{c}</option>
               ))}
@@ -577,41 +575,41 @@ export default function Dashboard() {
         />
       </motion.div>
 
-      {/* Recent Activity */}
-      <motion.div variants={itemVariants} className="card-lg">
-        <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-8 flex items-center gap-2">
-          <TrendingUp className="w-4 h-4" /> Recent Results
+      {/* Activity Monitor Section */}
+      <motion.div variants={itemVariants} className="nebula-card">
+        <h2 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em] mb-12 flex items-center gap-4">
+          <TrendingUp className="w-5 h-5" /> Recent Sync Operations
         </h2>
         {results.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-gray-500 dark:text-gray-600">
-            <AlertCircle className="w-16 h-16 mb-4 opacity-10" />
-            <p className="font-bold uppercase tracking-widest text-[10px]">
-              No records yet
+          <div className="flex flex-col items-center justify-center py-24 text-nebula-slate-700">
+            <AlertCircle className="w-20 h-20 mb-6 opacity-10" />
+            <p className="font-black uppercase tracking-[0.3em] text-[10px]">
+              No data streams available
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {recentResults.map((result) => (
               <motion.div
                 key={result.id}
-                whileHover={{ scale: 1.02 }}
-                className="p-5 bg-gray-50 dark:bg-gray-900/40 rounded-2xl border border-gray-100 dark:border-gray-800/50 flex justify-between items-center group transition-all duration-300"
+                whileHover={{ y: -5, scale: 1.02 }}
+                className="p-8 bg-white/[0.02] rounded-3xl border border-white/5 flex justify-between items-center group transition-all duration-300 shadow-lg"
               >
-                <div>
-                  <p className="text-[10px] font-black text-indigo-500 uppercase tracking-widest mb-1">
+                <div className="space-y-2">
+                  <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.2em]">
                     {result.term}
                   </p>
-                  <p className="text-sm font-black text-gray-900 dark:text-white tracking-tight">
+                  <p className="text-lg font-black text-white tracking-tighter">
                     {result.academicYear}
                   </p>
                 </div>
-                <div className={`flex flex-col items-end`}>
+                <div className="flex flex-col items-end gap-1">
                   <span
-                    className={`text-xl font-black ${result.percentage >= 60 ? "text-emerald-500" : "text-rose-500"}`}
+                    className={`text-3xl font-black ${result.percentage >= 60 ? "text-nebula-teal-500" : "text-nebula-pink-500"} tracking-tighter`}
                   >
                     {result.grade}
                   </span>
-                  <span className="text-[10px] font-bold text-gray-400">
+                  <span className="text-[10px] font-black text-nebula-slate-500 tracking-widest">
                     {Math.round(result.percentage)}%
                   </span>
                 </div>
@@ -621,33 +619,33 @@ export default function Dashboard() {
         )}
       </motion.div>
 
-      {/* AI Performance Insights Section - Only for Admin/Teacher */}
+      {/* AI Performance Insights - Only for Admin/Teacher */}
       {(userRole === "Admin" || userRole === "Teacher") && (
-        <motion.div variants={itemVariants} className="mt-8 mb-8">
-          <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-4">
-            AI-Powered Performance Analytics
+        <motion.div variants={itemVariants} className="pt-12">
+          <h2 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em] mb-10">
+            Nebula AI Analytics Engine
           </h2>
           <PerformanceInsights />
         </motion.div>
       )}
 
-      {/* Teacher Activity and Messages Section - Activity for Admin, Messages for Admin/Teacher */}
+      {/* Teacher Activity and Messages - Activity for Admin, Messages for Admin/Teacher */}
       {(userRole === "Admin" || userRole === "Teacher") && (
         <motion.div
           variants={itemVariants}
-          className="grid grid-cols-1 xl:grid-cols-2 gap-6"
+          className="grid grid-cols-1 xl:grid-cols-2 gap-12"
         >
           {userRole === "Admin" && (
-            <div className="space-y-4">
-              <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-4">
-                Teacher Activity Monitor
+            <div className="space-y-8">
+              <h2 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em]">
+                Sentinel Monitor
               </h2>
               <TeacherActivityLog />
             </div>
           )}
-          <div className="space-y-4">
-            <h2 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-4">
-              Message Center
+          <div className="space-y-8">
+            <h2 className="text-[10px] font-black text-nebula-teal-400 uppercase tracking-[0.4em]">
+              Inter-Citadel Communication
             </h2>
             <ChatSystem />
           </div>
@@ -660,32 +658,32 @@ export default function Dashboard() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+          className="fixed inset-0 bg-nebula-slate-950/80 backdrop-blur-xl flex items-center justify-center p-8 z-50"
           onClick={() => !isChangingPassword && setShowPasswordModal(false)}
         >
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.95, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 30 }}
             onClick={(e) => e.stopPropagation()}
-            className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-md w-full p-8 border border-gray-200 dark:border-gray-800"
+            className="bg-nebula-slate-900 border border-white/5 rounded-5xl shadow-nebula-lg max-w-lg w-full p-12"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                <Lock className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <div className="flex items-center gap-6 mb-12">
+              <div className="p-4 bg-nebula-indigo-500/10 rounded-3xl border border-nebula-indigo-500/20">
+                <Lock className="w-8 h-8 text-nebula-indigo-400" />
               </div>
-              <h2 className="text-2xl font-black text-gray-900 dark:text-white">
-                Change Password
+              <h2 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">
+                Update <br /> <span className="text-nebula-indigo-500">Credentials</span>
               </h2>
             </div>
 
-            <form onSubmit={handlePasswordChange} className="space-y-4">
+            <form onSubmit={handlePasswordChange} className="space-y-8">
               {/* Current Password */}
-              <div>
-                <label className="block text-xs font-black text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
-                  Current Password
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-nebula-indigo-400/60 uppercase tracking-[0.2em] px-2">
+                  Identity Verification
                 </label>
-                <div className="relative">
+                <div className="relative group">
                   <input
                     type={showPassword.current ? "text" : "password"}
                     value={passwordForm.currentPassword}
@@ -696,7 +694,7 @@ export default function Dashboard() {
                       })
                     }
                     disabled={isChangingPassword}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
+                    className="input-nebula !py-5"
                     placeholder="Enter current password"
                   />
                   <button
@@ -708,23 +706,23 @@ export default function Dashboard() {
                       })
                     }
                     disabled={isChangingPassword}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-nebula-indigo-500 hover:text-white transition-colors"
                   >
                     {showPassword.current ? (
-                      <EyeOff className="w-4 h-4" />
+                      <EyeOff className="w-5 h-5" />
                     ) : (
-                      <Eye className="w-4 h-4" />
+                      <Eye className="w-5 h-5" />
                     )}
                   </button>
                 </div>
               </div>
 
               {/* New Password */}
-              <div>
-                <label className="block text-xs font-black text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
-                  New Password
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-nebula-indigo-400/60 uppercase tracking-[0.2em] px-2">
+                  New Encryption Sequence
                 </label>
-                <div className="relative">
+                <div className="relative group">
                   <input
                     type={showPassword.new ? "text" : "password"}
                     value={passwordForm.newPassword}
@@ -735,7 +733,7 @@ export default function Dashboard() {
                       })
                     }
                     disabled={isChangingPassword}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
+                    className="input-nebula !py-5"
                     placeholder="Enter new password"
                   />
                   <button
@@ -747,27 +745,26 @@ export default function Dashboard() {
                       })
                     }
                     disabled={isChangingPassword}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-nebula-indigo-500 hover:text-white transition-colors"
                   >
                     {showPassword.new ? (
-                      <EyeOff className="w-4 h-4" />
+                      <EyeOff className="w-5 h-5" />
                     ) : (
-                      <Eye className="w-4 h-4" />
+                      <Eye className="w-5 h-5" />
                     )}
                   </button>
                 </div>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-2">
-                  Must contain: 12+ characters, uppercase, lowercase, number,
-                  and special character
+                <p className="text-[10px] text-nebula-slate-600 font-black uppercase tracking-widest mt-3 px-2">
+                  Complexity Req: 12+ chars, mixed casing, symbol
                 </p>
               </div>
 
               {/* Confirm Password */}
-              <div>
-                <label className="block text-xs font-black text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
-                  Confirm New Password
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-nebula-indigo-400/60 uppercase tracking-[0.2em] px-2">
+                  Verify Sequence
                 </label>
-                <div className="relative">
+                <div className="relative group">
                   <input
                     type={showPassword.confirm ? "text" : "password"}
                     value={passwordForm.confirmPassword}
@@ -778,7 +775,7 @@ export default function Dashboard() {
                       })
                     }
                     disabled={isChangingPassword}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
+                    className="input-nebula !py-5"
                     placeholder="Confirm new password"
                   />
                   <button
@@ -790,18 +787,17 @@ export default function Dashboard() {
                       })
                     }
                     disabled={isChangingPassword}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-nebula-indigo-500 hover:text-white transition-colors"
                   >
                     {showPassword.confirm ? (
-                      <EyeOff className="w-4 h-4" />
+                      <EyeOff className="w-5 h-5" />
                     ) : (
-                      <Eye className="w-4 h-4" />
+                      <Eye className="w-5 h-5" />
                     )}
                   </button>
                 </div>
               </div>
 
-              {/* Error Message */}
               {passwordError && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}

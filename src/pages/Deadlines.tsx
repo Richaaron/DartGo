@@ -82,44 +82,42 @@ export default function Deadlines() {
   };
 
   return (
-    <div className="p-4 md:p-8 space-y-8">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="p-3 bg-amber-100 dark:bg-amber-900/30 rounded-xl">
-            <Timer className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+    <div className="space-y-12">
+      {/* ── Dynamic Header ────────────────────────────── */}
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-10">
+        <div className="space-y-4">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-nebula-indigo-500/10 border border-nebula-indigo-500/20 text-nebula-indigo-400 text-[10px] font-black tracking-[0.3em] uppercase backdrop-blur-md">
+            Chronos Protocol
           </div>
-          <div>
-            <h1 className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
-              Deadlines{" "}
-              <span className="text-amber-600 dark:text-amber-400">
-                Manager
-              </span>
-            </h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
-              Set and track important deadlines for your teachers.
-            </p>
-          </div>
+          <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none">
+            Temporal <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-nebula-indigo-400 via-nebula-teal-400 to-nebula-pink-400">Governance.</span>
+          </h1>
+          <p className="text-nebula-slate-400 text-lg font-bold max-w-xl leading-relaxed tracking-tight">
+            Manage institutional deadlines and temporal synchronizations.
+          </p>
         </div>
+
         <button
           onClick={() => setShowForm(true)}
-          className="btn-primary flex items-center gap-2"
+          className="btn-vibrant from-nebula-indigo-600 to-nebula-indigo-800 shadow-nebula"
         >
           <Plus size={20} />
-          Create Deadline
+          Initialize Deadline
         </button>
       </div>
 
       {isLoading ? (
-        <div className="flex justify-center py-20">
-          <div className="w-8 h-8 border-4 border-amber-500/20 border-t-amber-500 rounded-full animate-spin"></div>
+        <div className="flex justify-center py-40">
+          <div className="w-12 h-12 border-4 border-nebula-indigo-500/20 border-t-nebula-indigo-500 rounded-full animate-spin"></div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {deadlines.length === 0 ? (
-            <div className="col-span-full flex flex-col items-center justify-center py-20 bg-gray-50 dark:bg-gray-900/40 rounded-3xl border-2 border-dashed border-gray-200 dark:border-gray-800">
-              <Clock className="w-12 h-12 text-gray-300 mb-4" />
-              <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">
-                No Active Deadlines
+            <div className="col-span-full flex flex-col items-center justify-center py-40 nebula-card border-dashed border-white/10">
+              <Clock className="w-16 h-16 text-nebula-slate-700 mb-6" />
+              <p className="text-nebula-slate-500 font-black uppercase tracking-[0.4em] text-[10px]">
+                Zero Temporal Constraints Detected
               </p>
             </div>
           ) : (
@@ -128,38 +126,45 @@ export default function Deadlines() {
                 key={deadline.id}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="card-lg group"
+                className="nebula-card group hover:border-nebula-indigo-500/30 transition-all"
               >
-                <div className="flex justify-between items-start mb-4">
+                <div className="flex justify-between items-start mb-6">
                   <div
-                    className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${getStatusColor(deadline)}`}
+                    className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border backdrop-blur-md ${
+                      new Date(deadline.deadline_date) < new Date()
+                        ? "bg-nebula-pink-500/10 text-nebula-pink-400 border-nebula-pink-500/20"
+                        : deadline.status === "COMPLETED"
+                        ? "bg-nebula-teal-500/10 text-nebula-teal-400 border-nebula-teal-500/20"
+                        : "bg-nebula-indigo-500/10 text-nebula-indigo-400 border-nebula-indigo-500/20"
+                    }`}
                   >
                     {new Date(deadline.deadline_date) < new Date()
-                      ? "EXPIRED"
+                      ? "Expired"
                       : deadline.status}
                   </div>
                   <button
                     onClick={() => handleDelete(deadline.id)}
-                    className="p-2 text-gray-400 hover:text-rose-500 transition-colors"
+                    className="p-2.5 rounded-xl bg-white/5 text-nebula-slate-500 hover:text-nebula-pink-400 hover:bg-nebula-pink-500/10 transition-all border border-transparent hover:border-nebula-pink-500/20"
                   >
                     <Trash2 size={16} />
                   </button>
                 </div>
-                <h3 className="text-lg font-black text-gray-900 dark:text-white mb-2">
+                
+                <h3 className="text-xl font-black text-white mb-3 tracking-tight group-hover:text-nebula-indigo-400 transition-colors">
                   {deadline.title}
                 </h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-6 line-clamp-2">
+                <p className="text-sm text-nebula-slate-400 mb-8 line-clamp-3 leading-relaxed">
                   {deadline.description}
                 </p>
 
-                <div className="space-y-3 pt-4 border-t border-gray-100 dark:border-gray-800">
-                  <div className="flex items-center gap-2 text-xs font-bold text-gray-400">
-                    <Calendar size={14} />
-                    <span>Ends: {formatDate(deadline.deadline_date)}</span>
+                <div className="space-y-4 pt-6 border-t border-white/5">
+                  <div className="flex items-center gap-3 text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">
+                    <Calendar size={14} className="text-nebula-indigo-400" />
+                    <span>Terminus: {formatDate(deadline.deadline_date)}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs font-bold text-indigo-500">
+                  <div className="flex items-center gap-3 text-[10px] font-black text-nebula-teal-400 uppercase tracking-widest">
                     <AlertCircle size={14} />
-                    <span>Type: {deadline.type.replace("_", " ")}</span>
+                    <span>Protocol: {deadline.type.replace("_", " ")}</span>
                   </div>
                 </div>
               </motion.div>
@@ -171,25 +176,29 @@ export default function Deadlines() {
       {/* Create Modal */}
       <AnimatePresence>
         {showModal && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-nebula-slate-950/80 backdrop-blur-xl z-50 flex items-center justify-center p-6">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl max-w-md w-full p-8 border border-gray-100 dark:border-gray-800"
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="nebula-card max-w-xl w-full !p-0 overflow-hidden border-white/10"
             >
-              <h2 className="text-2xl font-black text-gray-900 dark:text-white mb-6 uppercase tracking-tight">
-                Create Deadline
-              </h2>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">
-                    Deadline Title
+              <div className="p-10 border-b border-white/5 bg-gradient-to-r from-nebula-indigo-600/20 to-transparent">
+                <h2 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">
+                  Timeline <br /> <span className="text-white/40">Injection</span>
+                </h2>
+                <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] mt-4">Establish temporal constraint</p>
+              </div>
+
+              <form onSubmit={handleSubmit} className="p-10 space-y-8">
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                    Constraint Identification
                   </label>
                   <input
                     type="text"
                     required
-                    className="input-field"
+                    className="input-nebula"
                     value={formData.title}
                     onChange={(e) =>
                       setFormData({ ...formData, title: e.target.value })
@@ -197,28 +206,30 @@ export default function Deadlines() {
                     placeholder="e.g. 1st Term Result Entry"
                   />
                 </div>
-                <div>
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">
-                    Description
+
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                    Logistical Overview
                   </label>
                   <textarea
-                    className="input-field h-24 resize-none"
+                    className="input-nebula h-32 resize-none"
                     value={formData.description}
                     onChange={(e) =>
                       setFormData({ ...formData, description: e.target.value })
                     }
-                    placeholder="Provide details for teachers..."
+                    placeholder="Provide details for units..."
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">
-                      Date & Time
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                      Termination Date
                     </label>
                     <input
                       type="datetime-local"
                       required
-                      className="input-field"
+                      className="input-nebula !py-3"
                       value={formData.deadline_date}
                       onChange={(e) =>
                         setFormData({
@@ -228,12 +239,12 @@ export default function Deadlines() {
                       }
                     />
                   </div>
-                  <div>
-                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">
-                      Category
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                      Constraint Category
                     </label>
                     <select
-                      className="input-field"
+                      className="input-nebula !py-3"
                       value={formData.type}
                       onChange={(e) =>
                         setFormData({ ...formData, type: e.target.value })
@@ -246,16 +257,17 @@ export default function Deadlines() {
                     </select>
                   </div>
                 </div>
-                <div className="flex gap-3 pt-6">
+
+                <div className="flex gap-6 pt-6">
                   <button
                     type="button"
                     onClick={() => setShowForm(false)}
-                    className="flex-1 btn-secondary"
+                    className="flex-1 btn-vibrant from-white/5 to-white/10 !text-white border border-white/10 shadow-none"
                   >
-                    Cancel
+                    Abort
                   </button>
-                  <button type="submit" className="flex-1 btn-primary">
-                    Save
+                  <button type="submit" className="flex-1 btn-vibrant from-nebula-indigo-600 to-nebula-indigo-800 shadow-nebula">
+                    Execute
                   </button>
                 </div>
               </form>

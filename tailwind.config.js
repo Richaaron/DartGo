@@ -5,35 +5,48 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Royal Citadel Theme: Deep Purple, Vibrant Gold, High-Contrast Black
-        royal: {
-          purple: {
-            50: "#f5f3ff",
-            100: "#ede9fe",
-            200: "#ddd6fe",
-            300: "#c4b5fd",
-            400: "#a78bfa",
-            500: "#8b5cf6", // Primary Accent
-            600: "#7c3aed", // Hover/Deep Accent
-            700: "#6d28d9",
-            800: "#5b21b6",
-            900: "#4c1d95",
-            950: "#2e1065",
+        // Nebula Premium Theme: Deep Midnight, Stellar Indigo, Aurora Teal, Cosmic Pink
+        nebula: {
+          indigo: {
+            50: "#eef2ff",
+            100: "#e0e7ff",
+            200: "#c7d2fe",
+            300: "#a5b4fc",
+            400: "#818cf8",
+            500: "#6366f1", // Primary Accent
+            600: "#4f46e5",
+            700: "#4338ca",
+            800: "#3730a3",
+            900: "#312e81",
+            950: "#1e1b4b",
           },
-          gold: {
-            50: "#fffbeb",
-            100: "#fef3c7",
-            200: "#fde68a",
-            300: "#fcd34d",
-            400: "#fbbf24", // Secondary Accent
-            500: "#f59e0b",
-            600: "#d97706",
-            700: "#b45309",
-            800: "#92400e",
-            900: "#78350f",
-            950: "#451a03",
+          teal: {
+            50: "#f0fdfa",
+            100: "#ccfbf1",
+            200: "#99f6e4",
+            300: "#5eead4",
+            400: "#2dd4bf",
+            500: "#14b8a6", // Secondary Accent
+            600: "#0d9488",
+            700: "#0f766e",
+            800: "#115e59",
+            900: "#134e4a",
+            950: "#042f2e",
           },
-          dark: {
+          pink: {
+            50: "#fdf2f8",
+            100: "#fce7f3",
+            200: "#fbcfe8",
+            300: "#f9a8d4",
+            400: "#f472b6",
+            500: "#ec4899",
+            600: "#db2777", // High Contrast Accent
+            700: "#be185d",
+            800: "#9d174d",
+            900: "#831843",
+            950: "#500724",
+          },
+          slate: {
             50: "#f8fafc",
             100: "#f1f5f9",
             200: "#e2e8f0",
@@ -44,7 +57,44 @@ export default {
             700: "#334155",
             800: "#1e293b",
             900: "#0f172a",
-            950: "#050510", // Primary BG
+            950: "#020617", // Primary BG
+          },
+        },
+        brand: {
+          500: "#6366f1",
+          600: "#4f46e5",
+          700: "#4338ca",
+          800: "#3730a3",
+          900: "#312e81",
+          950: "#020617",
+        },
+        // Legacy Royal Theme compatibility
+        royal: {
+          purple: {
+            50: "#f5f3ff",
+            100: "#ede9fe",
+            200: "#ddd6fe",
+            300: "#c4b5fd",
+            400: "#a78bfa",
+            500: "#8b5cf6",
+            600: "#7c3aed",
+            700: "#6d28d9",
+            800: "#5b21b6",
+            900: "#4c1d95",
+            950: "#2e1065",
+          },
+          gold: {
+            50: "#fffbeb",
+            100: "#fef3c7",
+            200: "#fde68a",
+            300: "#fcd34d",
+            400: "#fbbf24",
+            500: "#f59e0b",
+            600: "#d97706",
+            700: "#b45309",
+            800: "#92400e",
+            900: "#78350f",
+            950: "#451a03",
           },
           black: {
             50: "#f8fafc",
@@ -57,149 +107,53 @@ export default {
             700: "#334155",
             800: "#1e293b",
             900: "#0f172a",
-            950: "#050510",
-          },
-        },
-        brand: {
-          500: "#7c3aed",
-          600: "#6d28d9",
-          700: "#5b21b6",
-          800: "#4c1d95",
-          900: "#2e1065",
-          950: "#050510",
-        },
-        accent: {
-          purple: "#7c3aed",
-          gold: "#fbbf24",
-          red: "#ef4444",
-          green: "#10b981",
-        },
-        // Keep school colors for backwards compatibility
-        school: {
-          red: "#FF6B6B",
-          blue: "#663399",
-          yellow: "#D4AF37",
-          green: "#95E1D3",
-          purple: "#663399",
-          pink: "#FF9FF3",
-          orange: "#FFA502",
-          sky: "#87CEEB",
-        },
-        gold: {
-          50: "#fffef0",
-          100: "#fffde1",
-          200: "#fffcc2",
-          300: "#fffaa3",
-          400: "#fff985",
-          500: "#D4AF37",
-          600: "#c4992e",
-          700: "#b48326",
-          800: "#a46d1e",
-          900: "#945716",
-        },
+            950: "#020617",
+          }
+        }
       },
       backgroundImage: {
-        "gradient-school": "linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)",
-        "gradient-school-dark":
-          "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
-      },
-      backgroundSize: {
-        "size-200": "200% 200%",
-      },
-      fontFamily: {
-        sans: [
-          "Inter",
-          "Segoe UI",
-          "-apple-system",
-          "BlinkMacSystemFont",
-          "Roboto",
-          "sans-serif",
-        ],
-      },
-      animation: {
-        "bounce-slow": "bounce 2s infinite",
-        "pulse-bright": "pulse 2s ease-in-out infinite",
-        "spin-slow": "spin 3s linear infinite",
-        "fade-in": "fadeIn 0.2s ease-out",
-        "slide-up": "slideUp 0.3s ease-out",
-        "float": "float 3s ease-in-out infinite",
-        "pulse-glow": "pulse-glow 3s infinite ease-in-out",
-        "fade-in-up": "fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards",
-        "fadeInUp": "fadeInUp 0.6s ease-out",
-        "fadeInDown": "fadeInDown 0.6s ease-out",
-        "fadeInLeft": "fadeInLeft 0.6s ease-out",
-        "fadeInRight": "fadeInRight 0.6s ease-out",
-        "slideInUp": "slideInUp 0.7s ease-out",
-        "scaleIn": "scaleIn 0.5s ease-out",
-        "shimmer": "shimmer 2s infinite",
-        "pulse-gold": "pulse-gold 2s infinite",
-        "gradient": "gradient 3s ease infinite",
+        "mesh-nebula": "radial-gradient(at 0% 0%, hsla(263,88%,20%,0.15) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(263,88%,20%,0.1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(263,88%,20%,0.15) 0, transparent 50%)",
+        "gradient-nebula": "linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)",
       },
       keyframes: {
-        fadeIn: {
-          "0%": { opacity: "0" },
-          "100%": { opacity: "1" },
+        "nebula-float": {
+          "0%, 100%": { transform: "translateY(0) scale(1)" },
+          "50%": { transform: "translateY(-20px) scale(1.05)" },
         },
-        slideUp: {
-          "0%": { opacity: "0", transform: "translateY(8px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        float: {
-          "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-10px)" },
-        },
-        "pulse-glow": {
-          "0%, 100%": { opacity: 0.8, transform: "scale(1)", boxShadow: "0 0 15px rgba(212, 175, 55, 0.2)" },
-          "50%": { opacity: 1, transform: "scale(1.05)", boxShadow: "0 0 25px rgba(212, 175, 55, 0.6)" },
+        "nebula-pulse": {
+          "0%, 100%": { opacity: 0.5, filter: "blur(40px)" },
+          "50%": { opacity: 0.8, filter: "blur(60px)" },
         },
         fadeInUp: {
           "0%": { opacity: 0, transform: "translateY(20px)" },
           "100%": { opacity: 1, transform: "translateY(0)" },
         },
-        fadeInDown: {
-          "0%": { opacity: 0, transform: "translateY(-20px)" },
-          "100%": { opacity: 1, transform: "translateY(0)" },
-        },
-        fadeInLeft: {
-          "0%": { opacity: 0, transform: "translateX(-20px)" },
-          "100%": { opacity: 1, transform: "translateX(0)" },
-        },
-        fadeInRight: {
-          "0%": { opacity: 0, transform: "translateX(20px)" },
-          "100%": { opacity: 1, transform: "translateX(0)" },
-        },
-        slideInUp: {
-          "0%": { opacity: 0, transform: "translateY(40px)" },
-          "100%": { opacity: 1, transform: "translateY(0)" },
-        },
-        scaleIn: {
-          "0%": { opacity: 0, transform: "scale(0.95)" },
-          "100%": { opacity: 1, transform: "scale(1)" },
-        },
         shimmer: {
-          "0%": { backgroundPosition: "-1000px 0" },
-          "100%": { backgroundPosition: "1000px 0" },
-        },
-        "pulse-gold": {
-          "0%, 100%": { boxShadow: "0 0 0 0 rgba(212, 175, 55, 0.7)" },
-          "50%": { boxShadow: "0 0 0 10px rgba(212, 175, 55, 0)" },
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
         },
         gradient: {
-          "0%": { backgroundPosition: "0% 50%" },
+          "0%, 100%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
-          "100%": { backgroundPosition: "0% 50%" },
         },
       },
+      backgroundSize: {
+        "size-200": "200% 200%",
+      },
+      animation: {
+        "nebula-float": "nebula-float 6s ease-in-out infinite",
+        "nebula-pulse": "nebula-pulse 4s ease-in-out infinite",
+        "fadeInUp": "fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+        "shimmer": "shimmer 2.5s infinite linear",
+        "gradient": "gradient 15s ease infinite",
+      },
       borderRadius: {
-        "2xl": "1rem",
-        "3xl": "1.5rem",
+        "4xl": "2rem",
+        "5xl": "3rem",
       },
       boxShadow: {
-        card: "0 1px 3px 0 rgb(0 0 0 / 0.07), 0 1px 2px -1px rgb(0 0 0 / 0.07)",
-        "card-md":
-          "0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07)",
-        "card-lg":
-          "0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07)",
+        nebula: "0 0 50px -12px rgba(99, 102, 241, 0.25)",
+        "nebula-lg": "0 0 80px -15px rgba(99, 102, 241, 0.4)",
       },
     },
   },

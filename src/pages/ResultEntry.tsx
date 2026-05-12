@@ -338,7 +338,7 @@ export default function ResultEntry() {
   const handleDownloadPDF = async () => { /* PDF logic */ }
 
   return (
-    <div className="p-8">
+    <div className="space-y-12">
       {selectedStudentForEntry ? (
         <StudentResultEntryView
           student={selectedStudentForEntry}
@@ -351,108 +351,144 @@ export default function ResultEntry() {
       ) : (
         <>
           {sendMessage && (
-            <div className={`mb-6 p-4 rounded-lg flex items-center gap-3 ${
-              sendMessage.type === 'success' ? 'bg-green-50 text-green-800 border-green-200' : 'bg-red-50 text-red-800 border-red-200'
-            }`}>
-              <AlertCircle size={20} />
-              <span>{sendMessage.text}</span>
-              <button onClick={() => setSendMessage(null)} className="ml-auto text-lg">×</button>
-            </div>
+            <motion.div 
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`p-6 rounded-3xl flex items-center gap-4 backdrop-blur-xl border ${
+                sendMessage.type === 'success' 
+                  ? 'bg-nebula-teal-500/10 text-nebula-teal-400 border-nebula-teal-500/20' 
+                  : 'bg-nebula-pink-500/10 text-nebula-pink-400 border-nebula-pink-500/20'
+              }`}
+            >
+              <AlertCircle size={24} />
+              <span className="font-bold tracking-tight">{sendMessage.text}</span>
+              <button onClick={() => setSendMessage(null)} className="ml-auto p-2 hover:bg-white/10 rounded-xl transition-all">
+                <X size={20} />
+              </button>
+            </motion.div>
           )}
 
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{pageTitle}</h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-2">{pageDescription}</p>
+          {/* ── Dynamic Header ────────────────────────────── */}
+          <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-10">
+            <div className="space-y-4">
+              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-nebula-indigo-500/10 border border-nebula-indigo-500/20 text-nebula-indigo-400 text-[10px] font-black tracking-[0.3em] uppercase backdrop-blur-md">
+                Protocol Management
+              </div>
+              <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none">
+                Data <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-nebula-indigo-400 via-nebula-teal-400 to-nebula-pink-400">Archival.</span>
+              </h1>
+              <p className="text-nebula-slate-400 text-lg font-bold max-w-xl leading-relaxed tracking-tight">
+                {pageDescription}
+              </p>
             </div>
-            <div className="flex flex-col gap-3">
-              <div className="flex gap-4 items-center">
-                <div className="flex bg-slate-100 dark:bg-brand-800 p-1 rounded-xl border border-slate-200">
-                  <button
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-black transition-all ${
-                      viewMode === 'students' && activeTab === 'entry' ? 'bg-white text-indigo-600' : 'text-gray-500'
-                    }`}
-                    onClick={() => { setViewMode('students'); setActiveTab('entry') }}
-                  >
-                    <User size={18} /> STUDENT VIEW
-                  </button>
-                  <button
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-black transition-all ${
-                      viewMode === 'results' && activeTab === 'entry' ? 'bg-white text-indigo-600' : 'text-gray-500'
-                    }`}
-                    onClick={() => { setViewMode('results'); setActiveTab('entry') }}
-                  >
-                    <List size={18} /> RESULT LIST
-                  </button>
-                  {(isFormTeacher || user?.role === 'Admin') && (
-                    <button
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-black transition-all ${
-                        activeTab === 'release' ? 'bg-white text-yellow-600' : 'text-gray-500'
-                      }`}
-                      onClick={() => setActiveTab('release')}
-                    >
-                      <Unlock size={18} /> RELEASE RESULTS
-                    </button>
-                  )}
-                </div>
-                <button onClick={handleExport} className="btn-secondary flex items-center gap-2">
-                  <Download size={20} /> Export
+
+            <div className="flex flex-col sm:flex-row items-center gap-6">
+              <div className="flex bg-white/5 p-1.5 rounded-2xl border border-white/10 backdrop-blur-md shadow-nebula">
+                <button
+                  className={`flex items-center gap-3 px-6 py-3 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all ${
+                    viewMode === 'students' && activeTab === 'entry' ? 'bg-nebula-indigo-600 text-white shadow-nebula' : 'text-nebula-slate-400 hover:text-white'
+                  }`}
+                  onClick={() => { setViewMode('students'); setActiveTab('entry') }}
+                >
+                  <User size={14} /> Student View
                 </button>
-                <button onClick={() => setShowForm(true)} className="btn-primary flex items-center gap-2">
-                  <Plus size={20} /> Add Result
+                <button
+                  className={`flex items-center gap-3 px-6 py-3 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all ${
+                    viewMode === 'results' && activeTab === 'entry' ? 'bg-nebula-indigo-600 text-white shadow-nebula' : 'text-nebula-slate-400 hover:text-white'
+                  }`}
+                  onClick={() => { setViewMode('results'); setActiveTab('entry') }}
+                >
+                  <List size={14} /> Result List
+                </button>
+                {(isFormTeacher || user?.role === 'Admin') && (
+                  <button
+                    className={`flex items-center gap-3 px-6 py-3 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all ${
+                      activeTab === 'release' ? 'bg-nebula-teal-600 text-white shadow-nebula' : 'text-nebula-slate-400 hover:text-white'
+                    }`}
+                    onClick={() => setActiveTab('release')}
+                  >
+                    <Unlock size={14} /> Release
+                  </button>
+                )}
+              </div>
+              
+              <div className="flex gap-4">
+                <button onClick={handleExport} className="btn-vibrant from-white/5 to-white/10 !text-white border border-white/10 hover:border-nebula-indigo-500/50 shadow-none">
+                  <Download size={20} className="text-nebula-indigo-400" /> 
+                  <span className="hidden sm:inline">Export</span>
+                </button>
+                <button onClick={() => setShowForm(true)} className="btn-vibrant from-nebula-indigo-600 to-nebula-indigo-800">
+                  <Plus size={20} /> 
+                  <span className="hidden sm:inline">New Protocol</span>
                 </button>
               </div>
             </div>
           </div>
 
           {activeTab === 'release' && (
-            <ReleaseResultsPanel students={students} results={results} onRefresh={loadData} />
+            <div className="nebula-card">
+              <ReleaseResultsPanel students={students} results={results} onRefresh={loadData} />
+            </div>
           )}
 
           {activeTab === 'entry' && (
-            <>
-              <div className="professional-card p-6 mb-8">
-                <div className="flex flex-col md:flex-row gap-4">
-                  <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                    <input
-                      type="text"
-                      placeholder="Search students..."
-                      value={filterTerm}
-                      onChange={(e) => setFilterTerm(e.target.value)}
-                      className="input-field pl-10 py-3 w-full"
-                    />
+            <div className="space-y-10">
+              {/* Intelligence Filters */}
+              <div className="nebula-card !p-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                      Personnel Search
+                    </label>
+                    <div className="relative group">
+                      <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-nebula-indigo-500 group-focus-within:text-white transition-colors" />
+                      <input
+                        type="text"
+                        placeholder="Scan identities..."
+                        value={filterTerm}
+                        onChange={(e) => setFilterTerm(e.target.value)}
+                        className="input-nebula pl-14"
+                      />
+                    </div>
                   </div>
-                  <select
-                    value={selectedClass}
-                    onChange={(e) => setSelectedClass(e.target.value)}
-                    className="input-field py-3 min-w-[200px]"
-                  >
-                    <option value="All">All {user?.role === 'Teacher' ? 'My' : ''} Classes</option>
-                    {availableClasses.map(cls => <option key={cls} value={cls}>{cls}</option>)}
-                  </select>
+
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                      Operational Sector
+                    </label>
+                    <select
+                      value={selectedClass}
+                      onChange={(e) => setSelectedClass(e.target.value)}
+                      className="input-nebula !py-4"
+                    >
+                      <option value="All">Global Sectors</option>
+                      {availableClasses.map(cls => <option key={cls} value={cls}>{cls}</option>)}
+                    </select>
+                  </div>
                 </div>
               </div>
 
-              <div className="professional-card overflow-hidden">
+              {/* Data Matrix */}
+              <div className="nebula-card !p-0 overflow-hidden">
                 {viewMode === 'students' ? (
                   <Table
                     columns={[
                       { 
                         key: 'studentName', 
-                        label: 'Student',
-                        render: (v, row) => `${row.firstName} ${row.lastName}`
+                        label: 'Identity',
+                        render: (v, row) => <span className="font-bold text-white">{row.firstName} {row.lastName}</span>
                       },
-                      { key: 'class', label: 'Class' },
+                      { key: 'class', label: 'Sector' },
                       {
                         key: 'actions',
-                        label: 'Actions',
+                        label: 'Entry Protocol',
                         render: (v, row: Student) => (
                           <button
                             onClick={() => setSelectedStudentForEntry(row)}
-                            className="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-lg font-bold"
+                            className="px-6 py-2.5 bg-nebula-indigo-500/10 text-nebula-indigo-400 rounded-xl text-[10px] font-black tracking-widest uppercase border border-nebula-indigo-500/20 hover:bg-nebula-indigo-500 hover:text-white transition-all"
                           >
-                            Enter Results
+                            Synchronize Data
                           </button>
                         )
                       }
@@ -465,9 +501,19 @@ export default function ResultEntry() {
                     data={filteredResults.map(r => ({
                       ...r,
                       actions: (
-                        <div className="flex gap-2">
-                          <button onClick={() => { setEditingResult(r); setShowForm(true) }} className="text-indigo-600"><Plus size={18} /></button>
-                          <button onClick={() => handleDeleteResult(r.id)} className="text-red-600"><Trash2 size={18} /></button>
+                        <div className="flex gap-3">
+                          <button 
+                            onClick={() => { setEditingResult(r); setShowForm(true) }} 
+                            className="p-2.5 rounded-xl bg-white/5 hover:bg-nebula-indigo-500/20 text-nebula-indigo-400 transition-all border border-white/5"
+                          >
+                            <Plus size={16} />
+                          </button>
+                          <button 
+                            onClick={() => handleDeleteResult(r.id)} 
+                            className="p-2.5 rounded-xl bg-white/5 hover:bg-nebula-pink-500/20 text-nebula-pink-400 transition-all border border-white/5"
+                          >
+                            <Trash2 size={16} />
+                          </button>
                         </div>
                       )
                     }))}
@@ -475,30 +521,52 @@ export default function ResultEntry() {
                 )}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
-                <div className="card-lg text-center">
-                  <p className="text-sm font-medium text-gray-500">Total Results</p>
-                  <p className="text-3xl font-black">{filteredResults.length}</p>
+              {/* Stats Matrix */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="nebula-card !p-8 group hover:border-nebula-indigo-500/30 transition-all">
+                  <div className="flex items-center justify-between mb-4">
+                    <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em]">Total Archive</p>
+                    <BarChart3 className="w-5 h-5 text-nebula-indigo-400 opacity-50 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                  <p className="text-4xl font-black text-white">{filteredResults.length}</p>
                 </div>
-                {/* Other stats... */}
-              </div>
-            </>
-          )}
-
-          {showForm && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4 p-6">
-                <SubjectResultForm
-                  onSubmit={handleSubmitResult}
-                  initialData={editingResult || undefined}
-                  onCancel={() => { setShowForm(false); setEditingResult(null) }}
-                  isEditing={!!editingResult}
-                  students={students}
-                  subjects={subjects}
-                />
+                {/* Additional metrics can go here */}
               </div>
             </div>
           )}
+
+          <AnimatePresence>
+            {showForm && (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-nebula-slate-950/80 backdrop-blur-xl flex items-center justify-center z-50 p-6"
+              >
+                <motion.div 
+                  initial={{ scale: 0.9, y: 20 }}
+                  animate={{ scale: 1, y: 0 }}
+                  exit={{ scale: 0.9, y: 20 }}
+                  className="nebula-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/10"
+                >
+                  <div className="p-10 border-b border-white/5 bg-gradient-to-r from-nebula-indigo-600/20 to-transparent">
+                    <h2 className="text-2xl font-black text-white tracking-tighter uppercase">Protocol Entry</h2>
+                    <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] mt-2">Initialize synchronization</p>
+                  </div>
+                  <div className="p-10">
+                    <SubjectResultForm
+                      onSubmit={handleSubmitResult}
+                      initialData={editingResult || undefined}
+                      onCancel={() => { setShowForm(false); setEditingResult(null) }}
+                      isEditing={!!editingResult}
+                      students={students}
+                      subjects={subjects}
+                    />
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </>
       )}
     </div>

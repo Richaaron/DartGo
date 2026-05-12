@@ -250,175 +250,156 @@ export default function AttendancePage() {
   }
 
   return (
-    <div className="p-8">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            Attendance
+    <div className="space-y-12">
+      {/* ── Dynamic Header ────────────────────────────── */}
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-10">
+        <div className="space-y-4">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-nebula-indigo-500/10 border border-nebula-indigo-500/20 text-nebula-indigo-400 text-[10px] font-black tracking-[0.3em] uppercase backdrop-blur-md">
+            Chronicle Protocols
+          </div>
+          <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none">
+            Presence <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-nebula-indigo-400 via-nebula-teal-400 to-nebula-pink-400">Monitoring.</span>
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
-            Mark and manage student attendance
+          <p className="text-nebula-slate-400 text-lg font-bold max-w-xl leading-relaxed tracking-tight">
+            Log the biological presence of units within the digital ecosystem.
           </p>
           {usingSampleData && (
-            <p className="text-sm text-orange-600 font-medium mt-2">
-              Using sample data for testing. Add real students to enable saving.
-            </p>
+            <div className="flex items-center gap-2 text-nebula-pink-400 font-black text-[10px] uppercase tracking-widest bg-nebula-pink-500/10 p-2 rounded-lg border border-nebula-pink-500/20 w-fit">
+              <AlertCircle size={14} /> Synthetic Data Protocol Active
+            </div>
           )}
         </div>
-        <div className="flex gap-4 items-center">
+
+        <div className="flex flex-col sm:flex-row items-center gap-6">
           <input
             type="date"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
-            className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white"
+            className="input-nebula !py-3 !px-6 w-fit"
           />
           <button
             onClick={handleSave}
             disabled={isSaving || usingSampleData}
-            className="btn-primary flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="btn-vibrant from-nebula-indigo-600 to-nebula-indigo-800 shadow-nebula"
           >
             <Save size={20} />
             {isSaving
-              ? "Saving..."
+              ? "Synchronizing..."
               : usingSampleData
-                ? "Sample Data (No Save)"
-                : "Save Attendance"}
+                ? "Static View"
+                : "Execute Archive"}
           </button>
         </div>
       </div>
 
       {message.text && (
-        <div
-          className={`mb-6 p-4 rounded-lg flex items-center gap-3 ${
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`p-6 rounded-3xl flex items-center gap-4 backdrop-blur-xl border ${
             message.type === "success"
-              ? "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800"
-              : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800"
+              ? "bg-nebula-teal-500/10 text-nebula-teal-400 border-nebula-teal-500/20"
+              : "bg-nebula-pink-500/10 text-nebula-pink-400 border-nebula-pink-500/20"
           }`}
         >
-          {message.type === "success" ? (
-            <CheckCircle size={20} />
-          ) : (
-            <AlertCircle size={20} />
-          )}
-          <p className="font-medium">{message.text}</p>
-        </div>
+          {message.type === "success" ? <CheckCircle size={24} /> : <AlertCircle size={24} />}
+          <p className="font-bold tracking-tight">{message.text}</p>
+        </motion.div>
       )}
 
-      {usingSampleData && (
-        <div className="mb-6 p-4 rounded-lg bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800">
-          <AlertCircle size={20} className="inline mr-2" />
-          <p className="font-medium">Sample Data Mode</p>
-          <p className="text-sm mt-1">
-            No students found in the database. Using sample students for
-            testing. Add real students through the Students section to enable
-            attendance saving.
-          </p>
-        </div>
-      )}
-
-      <div className="card-lg mb-8">
-        <div className="flex gap-4 mb-6">
-          <select
-            value={selectedClass}
-            onChange={(e) => setSelectedClass(e.target.value)}
-            className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white"
-          >
-            <option value="All">All Classes</option>
-            {classes.map((cls) => (
-              <option key={cls} value={cls}>
-                {cls}
-              </option>
-            ))}
-          </select>
+      <div className="nebula-card space-y-10">
+        <div className="flex flex-col md:flex-row gap-6 items-center justify-between px-2">
+          <div className="flex items-center gap-4 bg-white/5 p-1.5 rounded-2xl border border-white/10 backdrop-blur-md">
+            <Calendar className="ml-3 text-nebula-indigo-400" size={18} />
+            <select
+              value={selectedClass}
+              onChange={(e) => setSelectedClass(e.target.value)}
+              className="bg-transparent text-white font-black text-[10px] uppercase tracking-widest py-2 pr-10 focus:outline-none"
+            >
+              <option value="All" className="bg-nebula-slate-900">Global Sectors</option>
+              {classes.map((cls) => (
+                <option key={cls} value={cls} className="bg-nebula-slate-900">
+                  Sector {cls}
+                </option>
+              ))}
+            </select>
+          </div>
+          
+          <div className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.3em]">
+            Tracking {filteredStudents.length} Personnel Units
+          </div>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-hidden rounded-3xl border border-white/5">
           <table className="min-w-full">
-            <thead>
-              <tr className="border-b dark:border-gray-700">
-                <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">
-                  Student
-                </th>
-                <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">
-                  Registration
-                </th>
-                <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">
-                  Status
-                </th>
-                <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">
-                  Remarks
-                </th>
+            <thead className="bg-white/5 border-b border-white/5">
+              <tr>
+                <th className="text-left py-5 px-8 text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em]">Identity</th>
+                <th className="text-left py-5 px-8 text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em]">Registry</th>
+                <th className="text-left py-5 px-8 text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em]">Status Protocol</th>
+                <th className="text-left py-5 px-8 text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em]">Notes</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-white/5">
               {filteredStudents.map((student) => (
-                <tr key={student.id} className="border-b dark:border-gray-700">
-                  <td className="py-3 px-4">
+                <tr key={student.id} className="hover:bg-white/[0.02] transition-colors">
+                  <td className="py-6 px-8">
                     <div>
-                      <div className="font-medium text-gray-900 dark:text-white">
+                      <div className="font-bold text-white text-base">
                         {student.firstName} {student.lastName}
-                        {usingSampleData && (
-                          <span className="ml-2 text-xs text-orange-600">
-                            (Sample)
-                          </span>
-                        )}
                       </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">
-                        {student.class}
+                      <div className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest mt-1">
+                        Sector {student.class}
                       </div>
                     </div>
                   </td>
-                  <td className="py-3 px-4 text-gray-900 dark:text-white">
+                  <td className="py-6 px-8 text-nebula-indigo-400 font-mono text-xs">
                     {student.registrationNumber}
                   </td>
-                  <td className="py-3 px-4">
-                    <div className="flex gap-2">
+                  <td className="py-6 px-8">
+                    <div className="flex gap-3">
                       <button
-                        onClick={() =>
-                          handleStatusChange(student.id, "Present")
-                        }
-                        className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${
+                        onClick={() => handleStatusChange(student.id, "Present")}
+                        className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 border ${
                           attendanceRecords[student.id]?.status === "Present"
-                            ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
-                            : "bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                            ? "bg-nebula-teal-500/20 text-nebula-teal-400 border-nebula-teal-500/40"
+                            : "bg-white/5 text-nebula-slate-500 border-transparent hover:border-white/10"
                         }`}
                       >
-                        <Check size={16} />
-                        Present
+                        <Check size={14} /> Present
                       </button>
                       <button
                         onClick={() => handleStatusChange(student.id, "Absent")}
-                        className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${
+                        className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 border ${
                           attendanceRecords[student.id]?.status === "Absent"
-                            ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300"
-                            : "bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                            ? "bg-nebula-pink-500/20 text-nebula-pink-400 border-nebula-pink-500/40"
+                            : "bg-white/5 text-nebula-slate-500 border-transparent hover:border-white/10"
                         }`}
                       >
-                        <XCircle size={16} />
-                        Absent
+                        <XCircle size={14} /> Absent
                       </button>
                       <button
                         onClick={() => handleStatusChange(student.id, "Late")}
-                        className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${
+                        className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 border ${
                           attendanceRecords[student.id]?.status === "Late"
-                            ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300"
-                            : "bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                            ? "bg-nebula-indigo-500/20 text-nebula-indigo-400 border-nebula-indigo-500/40"
+                            : "bg-white/5 text-nebula-slate-500 border-transparent hover:border-white/10"
                         }`}
                       >
-                        <Clock size={16} />
-                        Late
+                        <Clock size={14} /> Late
                       </button>
                     </div>
                   </td>
-                  <td className="py-3 px-4">
+                  <td className="py-6 px-8">
                     <input
                       type="text"
                       value={attendanceRecords[student.id]?.remarks || ""}
                       onChange={(e) =>
                         handleRemarksChange(student.id, e.target.value)
                       }
-                      placeholder="Add remarks..."
-                      className="w-full px-3 py-1 border border-gray-300 dark:border-gray-600 rounded dark:bg-gray-800 dark:text-white"
+                      placeholder="Add strategic log..."
+                      className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-nebula-indigo-500/50 transition-colors placeholder:text-nebula-slate-600"
                     />
                   </td>
                 </tr>
@@ -426,8 +407,8 @@ export default function AttendancePage() {
             </tbody>
           </table>
           {filteredStudents.length === 0 && (
-            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-              <p className="mb-2">No students found for this class.</p>
+            <div className="text-center py-20">
+              <p className="text-nebula-slate-500 font-bold uppercase tracking-widest text-sm">No personnel detected in sector.</p>
             </div>
           )}
         </div>

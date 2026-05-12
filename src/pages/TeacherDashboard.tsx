@@ -219,285 +219,259 @@ export default function TeacherDashboard() {
     return <div className="p-8 text-center">Loading dashboard...</div>;
 
   return (
-    <div className="p-4 md:p-8 space-y-12">
-      {/* Hero Section */}
+    <div className="space-y-12">
+      {/* ── Dynamic Hero Section ────────────────────────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <motion.div variants={itemVariants} className="space-y-8">
-          <div className="space-y-4">
-            <p className="text-xs font-black text-royal-gold-400 uppercase tracking-[0.3em]">
-              Welcome back, {teacher.name}
-            </p>
-            <h1 className="text-5xl md:text-7xl font-black text-white leading-[0.9] tracking-tighter">
-              Legacy <br />
-              Starts with <br />
-              <span className="text-royal-purple-500 italic">Instruction.</span>
+        <motion.div variants={itemVariants} className="space-y-10">
+          <div className="space-y-6">
+            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-nebula-indigo-500/10 border border-nebula-indigo-500/20 text-nebula-indigo-400 text-[10px] font-black tracking-[0.3em] uppercase backdrop-blur-md">
+              Faculty Command: {teacher.name}
+            </div>
+            <h1 className="text-6xl md:text-8xl font-black text-white leading-[0.85] tracking-tighter">
+              Inspire <br />
+              The <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-nebula-indigo-400 via-nebula-teal-400 to-nebula-pink-400">Future.</span>
             </h1>
-            <p className="text-lg text-royal-dark-400 font-medium max-w-lg leading-relaxed">
-              Managing {(assignedSubjects.length > 0 ? assignedSubjects.join(", ") : "Form Teacher") || "Form Teacher"} | Level: {teacher.level}
+            <p className="text-xl text-nebula-slate-400 font-bold max-w-lg leading-relaxed tracking-tight">
+              Managing {(assignedSubjects.length > 0 ? assignedSubjects.join(", ") : "Form Teacher") || "Form Teacher"} | Sector: {teacher.level}
             </p>
           </div>
 
           <div className="flex flex-wrap gap-6">
-            <Link to="/subject-results" className="btn-royal-purple group">
-              <BookOpen className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-              Enter Results
+            <Link to="/subject-results" className="btn-vibrant from-nebula-indigo-600 to-nebula-indigo-800 shadow-nebula">
+              <BookOpen className="w-5 h-5" />
+              Log Data Protocols
             </Link>
-            <button className="flex items-center gap-3 text-sm font-black uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors group">
-              View Schedules
-              <Calendar className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+            <button className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-white/40 hover:text-white transition-all group">
+              Global Schedule
+              <Calendar className="w-5 h-5 group-hover:translate-x-2 transition-transform text-nebula-indigo-500" />
             </button>
           </div>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="royal-card !p-10 border-white/10 glow-purple">
-           <div className="flex items-center gap-4 mb-10">
-              <div className="w-12 h-12 bg-royal-dark-900 rounded-xl flex items-center justify-center border border-white/10 shadow-inner">
-                <Users className="w-6 h-6 text-royal-purple-400" />
+        <motion.div variants={itemVariants} className="nebula-card !p-12 group hover:border-nebula-indigo-500/30 transition-all">
+           <div className="flex items-center gap-4 mb-12">
+              <div className="w-14 h-14 bg-nebula-slate-900 rounded-2xl flex items-center justify-center border border-white/10 shadow-inner">
+                <Users className="w-7 h-7 text-nebula-indigo-400" />
               </div>
-              <h2 className="text-2xl font-black text-white tracking-tight">Teacher Pillar</h2>
+              <div>
+                <h2 className="text-2xl font-black text-white tracking-tighter uppercase">Faculty Pillar</h2>
+                <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-widest mt-1 opacity-70">Operational status: Verified</p>
+              </div>
            </div>
 
-           <div className="space-y-8">
-              <div className="flex gap-4">
-                <div className="w-2 h-2 rounded-full bg-royal-gold-400 mt-2 flex-shrink-0" />
+           <div className="space-y-10">
+              <div className="flex gap-6 items-start">
+                <div className="w-3 h-3 rounded-full bg-nebula-indigo-500 mt-1 shadow-[0_0_15px_rgba(99,102,241,0.5)]" />
                 <div>
-                  <h3 className="text-sm font-black text-white uppercase tracking-widest mb-1">Assigned Classes</h3>
-                  <p className="text-xs text-royal-dark-400 font-medium leading-relaxed">{(teacher.assignedClasses || []).join(", ")}</p>
+                  <h3 className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.3em] mb-2">Assigned Sectors</h3>
+                  <p className="text-sm text-white font-bold leading-relaxed tracking-tight">{(teacher.assignedClasses || []).join(", ")}</p>
                 </div>
               </div>
-              <div className="flex gap-4">
-                <div className="w-2 h-2 rounded-full bg-royal-purple-500 mt-2 flex-shrink-0" />
+              <div className="flex gap-6 items-start">
+                <div className="w-3 h-3 rounded-full bg-nebula-teal-500 mt-1 shadow-[0_0_15px_rgba(20,184,166,0.5)]" />
                 <div>
-                  <h3 className="text-sm font-black text-white uppercase tracking-widest mb-1">Subject Mastery</h3>
-                  <p className="text-xs text-royal-dark-400 font-medium leading-relaxed">{assignedSubjects.join(", ") || "General Studies"}</p>
+                  <h3 className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.3em] mb-2">Subject Matrix</h3>
+                  <p className="text-sm text-white font-bold leading-relaxed tracking-tight">{assignedSubjects.join(", ") || "General Strategic Studies"}</p>
                 </div>
               </div>
-              <div className="flex gap-4">
-                <div className="w-2 h-2 rounded-full bg-royal-dark-400 mt-2 flex-shrink-0" />
+              <div className="flex gap-6 items-start">
+                <div className="w-3 h-3 rounded-full bg-nebula-pink-500 mt-1 shadow-[0_0_15px_rgba(236,72,153,0.5)]" />
                 <div>
-                  <h3 className="text-sm font-black text-white uppercase tracking-widest mb-1">Academic Status</h3>
-                  <p className="text-xs text-royal-dark-400 font-medium leading-relaxed">Active & Registered Academic Pillar</p>
+                  <h3 className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.3em] mb-2">Pillar Certification</h3>
+                  <p className="text-sm text-white font-bold leading-relaxed tracking-tight">Authorized Instruction Protocol Active</p>
                 </div>
               </div>
            </div>
         </motion.div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4">
-          <p className="text-xs font-black text-gray-500 uppercase tracking-[0.2em] mb-2">
-            My Classes
-          </p>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Class
-          </label>
-          <select
-            value={selectedClass}
-            onChange={(e) => setSelectedClass(e.target.value)}
-            className="input-field"
-          >
-            <option value="All">All Assigned Classes</option>
-            {(teacher?.assignedClasses || []).map((className: string) => (
-              <option key={className} value={className}>
-                {className}
-              </option>
-            ))}
-          </select>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-            Filter students and results by class.
-          </p>
+      {/* Intelligence Filters */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
+        <div className="nebula-card !p-8">
+          <div className="space-y-3">
+            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+              Sector Isolation (Class)
+            </label>
+            <select
+              value={selectedClass}
+              onChange={(e) => setSelectedClass(e.target.value)}
+              className="input-nebula !py-4"
+            >
+              <option value="All">All Operational Sectors</option>
+              {(teacher?.assignedClasses || []).map((className: string) => (
+                <option key={className} value={className}>Sector {className}</option>
+              ))}
+            </select>
+          </div>
         </div>
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4">
-          <p className="text-xs font-black text-gray-500 uppercase tracking-[0.2em] mb-2">
-            My Subjects
-          </p>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Subject
-          </label>
-          <select
-            value={selectedSubject}
-            onChange={(e) => setSelectedSubject(e.target.value)}
-            className="input-field"
-          >
-            <option value="All">All Assigned Subjects</option>
-            {assignedSubjects.map((subject: string) => (
-              <option key={subject} value={subject}>
-                {subject}
-              </option>
-            ))}
-          </select>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-            Filter results by your assigned subjects.
-          </p>
+        <div className="nebula-card !p-8">
+          <div className="space-y-3">
+            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+              Matrix Focus (Subject)
+            </label>
+            <select
+              value={selectedSubject}
+              onChange={(e) => setSelectedSubject(e.target.value)}
+              className="input-nebula !py-4"
+            >
+              <option value="All">Complete Subject Matrix</option>
+              {assignedSubjects.map((subject: string) => (
+                <option key={subject} value={subject}>{subject}</option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
-      {/* Deadlines Section */}
-      {deadlines.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="mb-8 space-y-4"
-        >
-          <div className="flex items-center gap-2 mb-3">
-            <Timer className="w-5 h-5 text-amber-500" />
-            <h2 className="text-sm font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">
-              Upcoming Deadlines
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {deadlines.map((deadline) => (
-              <div
-                key={deadline.id}
-                className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border border-amber-100 dark:border-amber-900/40 rounded-2xl p-5 relative overflow-hidden group"
-              >
-                <div className="absolute top-0 right-0 p-3">
-                  <Clock className="w-12 h-12 text-amber-200/50 dark:text-amber-800/30 -rotate-12 group-hover:scale-110 transition-transform" />
-                </div>
-                <div className="relative z-10">
-                  <div className="px-2 py-0.5 bg-amber-200 dark:bg-amber-800/50 text-amber-700 dark:text-amber-300 text-[10px] font-black rounded-full w-fit mb-3 uppercase tracking-widest">
-                    {deadline.type.replace("_", " ")}
+      {/* Temporal Constraints */}
+      <AnimatePresence>
+        {deadlines.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-6"
+          >
+            <div className="flex items-center gap-3 px-2">
+              <Timer className="w-5 h-5 text-nebula-pink-400" />
+              <h2 className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.3em]">
+                Active Temporal Constraints
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+              {deadlines.map((deadline) => (
+                <div
+                  key={deadline.id}
+                  className="nebula-card group hover:border-nebula-pink-500/30 transition-all !p-8 bg-gradient-to-br from-nebula-pink-500/[0.03] to-transparent"
+                >
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="px-3 py-1 bg-nebula-pink-500/10 text-nebula-pink-400 text-[10px] font-black rounded-full border border-nebula-pink-500/20 uppercase tracking-widest">
+                      {deadline.type.replace("_", " ")}
+                    </div>
+                    <Clock className="w-5 h-5 text-nebula-pink-500/30 group-hover:text-nebula-pink-500 transition-colors" />
                   </div>
-                  <h3 className="text-base font-black text-gray-900 dark:text-white mb-1">
+                  <h3 className="text-lg font-black text-white mb-2 tracking-tight group-hover:text-nebula-pink-400 transition-colors">
                     {deadline.title}
                   </h3>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-4 line-clamp-1">
+                  <p className="text-xs text-nebula-slate-400 mb-6 line-clamp-2 leading-relaxed font-bold">
                     {deadline.description}
                   </p>
-                  <div className="flex items-center gap-2 text-orange-600 dark:text-orange-400 font-bold text-sm">
-                    <Calendar size={14} />
-                    <span>
-                      Due:{" "}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-nebula-pink-400 font-black text-[10px] uppercase tracking-widest">
+                      <Calendar size={14} />
                       {new Date(deadline.deadline_date).toLocaleDateString()}
-                    </span>
-                    <span className="text-[10px] bg-orange-100 dark:bg-orange-900/40 px-2 py-0.5 rounded-md">
-                      {Math.ceil(
-                        (new Date(deadline.deadline_date).getTime() -
-                          new Date().getTime()) /
-                          (1000 * 60 * 60 * 24),
-                      )}{" "}
-                      days left
-                    </span>
+                    </div>
+                    <div className="px-3 py-1 bg-white/5 rounded-lg text-[10px] font-black text-nebula-slate-500">
+                      {Math.ceil((new Date(deadline.deadline_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} DAYS REMAINING
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Metrics Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="nebula-card !p-8 group hover:border-nebula-indigo-500/30 transition-all">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em]">Sectors</p>
+            <Users className="w-5 h-5 text-nebula-indigo-400 opacity-50 group-hover:opacity-100 transition-opacity" />
           </div>
-        </motion.div>
-      )}
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <StatCard
-          icon={<Users className="w-8 h-8" />}
-          label="Classes"
-          value={stats.classesCount}
-          color="blue"
-        />
-        <StatCard
-          icon={<BookOpen className="w-8 h-8" />}
-          label="Students"
-          value={stats.studentsCount}
-          color="green"
-        />
-        <StatCard
-          icon={<AlertCircle className="w-8 h-8" />}
-          label="Results Recorded"
-          value={stats.resultsRecorded}
-          color="orange"
-        />
-        <StatCard
-          icon={<TrendingUp className="w-8 h-8" />}
-          label="Class Average"
-          value={`${stats.averageClassScore}%`}
-          color="purple"
-        />
+          <p className="text-4xl font-black text-white">{stats.classesCount}</p>
+        </div>
+        <div className="nebula-card !p-8 group hover:border-nebula-teal-500/30 transition-all">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-[10px] font-black text-nebula-teal-400 uppercase tracking-[0.3em]">Personnel</p>
+            <BookOpen className="w-5 h-5 text-nebula-teal-400 opacity-50 group-hover:opacity-100 transition-opacity" />
+          </div>
+          <p className="text-4xl font-black text-white">{stats.studentsCount}</p>
+        </div>
+        <div className="nebula-card !p-8 group hover:border-nebula-pink-500/30 transition-all">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-[10px] font-black text-nebula-pink-400 uppercase tracking-[0.3em]">Archives</p>
+            <AlertCircle className="w-5 h-5 text-nebula-pink-400 opacity-50 group-hover:opacity-100 transition-opacity" />
+          </div>
+          <p className="text-4xl font-black text-white">{stats.resultsRecorded}</p>
+        </div>
+        <div className="nebula-card !p-8 group hover:border-nebula-indigo-500/30 transition-all">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em]">Efficiency</p>
+            <TrendingUp className="w-5 h-5 text-nebula-indigo-400 opacity-50 group-hover:opacity-100 transition-opacity" />
+          </div>
+          <p className="text-4xl font-black text-white">{stats.averageClassScore}%</p>
+        </div>
       </div>
 
-      {/* Tab Navigation */}
-      <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-        {(["results", "messages", "insights", "analytics"] as const).map((tab) => (
-          <motion.button
-            key={tab}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 rounded-lg font-semibold whitespace-nowrap transition ${
-              activeTab === tab
-                ? "bg-blue-600 text-white"
-                : "bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700"
-            }`}
-          >
-            {tab === "results" && "Results"}
-            {tab === "messages" && "Messages"}
-            {tab === "insights" && "AI Insights"}
-            {tab === "analytics" && "Performance Metrics"}
-          </motion.button>
-        ))}
-      </div>
+      {/* Tab Interface */}
+      <div className="space-y-10">
+        <div className="flex gap-4 bg-white/5 p-2 rounded-3xl border border-white/5 backdrop-blur-md w-fit mx-auto overflow-x-auto">
+          {(["results", "messages", "insights", "analytics"] as const).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
+                activeTab === tab
+                  ? "bg-nebula-indigo-600 text-white shadow-nebula"
+                  : "text-nebula-slate-400 hover:text-white"
+              }`}
+            >
+              {tab === "results" && "Data Archive"}
+              {tab === "messages" && "Neural Links"}
+              {tab === "insights" && "AI Cortex"}
+              {tab === "analytics" && "Efficiency Metrics"}
+            </button>
+          ))}
+        </div>
 
-      {/* Results Tab */}
-      {activeTab === "results" && (
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          key={activeTab}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6"
+          className="min-h-[400px]"
         >
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-            Squad Results
-          </h2>
-          {tableData.length > 0 ? (
-            <Table columns={columns} data={tableData} />
-          ) : (
-            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-              <p>No results recorded yet for your squad.</p>
+          {activeTab === "results" && (
+            <div className="nebula-card !p-0 overflow-hidden">
+              <div className="p-10 border-b border-white/5">
+                <h2 className="text-2xl font-black text-white tracking-tighter uppercase leading-none">
+                  Squad <br /> <span className="text-white/40">Archive</span>
+                </h2>
+              </div>
+              {tableData.length > 0 ? (
+                <Table columns={columns} data={tableData} />
+              ) : (
+                <div className="text-center py-40">
+                  <p className="text-nebula-slate-500 font-bold uppercase tracking-widest text-sm">Zero data protocols detected in squad.</p>
+                </div>
+              )}
             </div>
           )}
-        </motion.div>
-      )}
 
-      {/* Messages Tab */}
-      {activeTab === "messages" && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6"
-        >
-          <div className="mb-4">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-              Message the Admin
-            </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Send a message to the school admin
-            </p>
-          </div>
-          <ChatSystem />
-        </motion.div>
-      )}
+          {activeTab === "messages" && (
+            <div className="nebula-card !p-10">
+              <div className="mb-10">
+                <h2 className="text-2xl font-black text-white tracking-tighter uppercase leading-none">
+                  Neural <br /> <span className="text-white/40">Interface</span>
+                </h2>
+                <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] mt-4">Direct uplink to High Command</p>
+              </div>
+              <ChatSystem />
+            </div>
+          )}
 
-      {/* Insights Tab */}
-      {activeTab === "insights" && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <PerformanceInsights />
-        </motion.div>
-      )}
+          {activeTab === "insights" && <PerformanceInsights />}
 
-      {/* Analytics Tab */}
-      {activeTab === "analytics" && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <SubjectMetrics 
-            students={students} 
-            results={results} 
-            subjects={subjects} 
-            selectedClass={selectedClass} 
-          />
+          {activeTab === "analytics" && (
+            <SubjectMetrics 
+              students={students} 
+              results={results} 
+              subjects={subjects} 
+              selectedClass={selectedClass} 
+            />
+          )}
         </motion.div>
-      )}
+      </div>
     </div>
   );
 }

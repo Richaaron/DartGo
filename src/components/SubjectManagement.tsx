@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { X, Plus, Trash2, Search, AlertCircle } from 'lucide-react'
+import { X, Plus, Search, AlertCircle } from 'lucide-react'
 import { StudentSubject, Subject, Student } from '../types'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface SubjectManagementProps {
   student: Student
@@ -120,144 +121,157 @@ export default function SubjectManagement({
   const selectedCount = Object.keys(selectedSubjectsMap).length
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-nebula-slate-950/80 backdrop-blur-xl flex items-center justify-center z-[100] p-6">
+      <motion.div 
+        initial={{ scale: 0.9, y: 20 }}
+        animate={{ scale: 1, y: 0 }}
+        className="nebula-card max-w-4xl w-full !p-0 overflow-hidden border-white/10 shadow-nebula-lg"
+      >
         {/* Header */}
-        <div className="sticky top-0 flex justify-between items-start gap-4 p-4 sm:p-6 bg-gradient-to-r from-purple-50 to-blue-50 border-b border-gray-200">
-          <div className="flex-1">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Manage Subjects</h2>
-            <p className="text-xs sm:text-sm text-gray-600 mt-1">
-              {student.firstName} {student.lastName} ({student.registrationNumber})
-            </p>
-            <p className="text-[10px] sm:text-xs text-gray-500">
-              {student.level} · {student.class}
-            </p>
+        <div className="p-10 bg-gradient-to-r from-nebula-indigo-600 to-nebula-indigo-900 text-white flex justify-between items-center">
+          <div>
+            <h2 className="text-3xl font-black uppercase tracking-tighter leading-none">
+              Matrix <br /> <span className="text-white/60">Configuration</span>
+            </h2>
+            <div className="mt-4 flex flex-col gap-1">
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-70">
+                Personnel Unit: {student.firstName} {student.lastName}
+              </p>
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40">
+                Registry: {student.registrationNumber} · {student.level} · {student.class}
+              </p>
+            </div>
           </div>
           <button
             onClick={onCancel}
-            className="p-2 hover:bg-white rounded-lg transition-colors flex-shrink-0"
-            title="Close dialog"
-            aria-label="Close subject management"
+            type="button"
+            className="p-3 hover:bg-white/10 rounded-2xl transition-all"
           >
-            <X size={24} className="text-gray-400" />
+            <X size={28} />
           </button>
         </div>
 
         {/* Content */}
-        <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-6">
+        <div className="p-10 space-y-10 max-h-[70vh] overflow-y-auto custom-scrollbar">
           {/* Error Alert */}
-          {error && (
-            <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex gap-3 items-start">
-              <AlertCircle size={20} className="text-red-600 flex-shrink-0 mt-0.5" />
-              <p className="text-red-800 text-sm">{error}</p>
-            </div>
-          )}
+          <AnimatePresence>
+            {error && (
+              <motion.div 
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="p-6 bg-nebula-pink-500/10 border border-nebula-pink-500/20 rounded-3xl flex gap-4 items-center"
+              >
+                <AlertCircle size={24} className="text-nebula-pink-400 flex-shrink-0" />
+                <p className="text-nebula-pink-400 font-bold tracking-tight">{error}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Academic Period */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Academic Year *
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                Deployment Cycle (Academic Year)
               </label>
               <input
                 type="text"
                 value={academicYear}
                 onChange={(e) => setAcademicYear(e.target.value)}
-                placeholder="e.g., 2024"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                placeholder="2024"
+                className="input-nebula"
               />
             </div>
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Term *
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                Operational Phase (Term)
               </label>
               <select
                 value={term}
                 onChange={(e) => setTerm(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="input-nebula !py-4"
               >
-                <option value="First">First Term</option>
-                <option value="Second">Second Term</option>
-                <option value="Third">Third Term</option>
+                <option value="First">First Phase</option>
+                <option value="Second">Second Phase</option>
+                <option value="Third">Third Phase</option>
               </select>
             </div>
           </div>
 
           {/* Notes */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Notes (Optional)
+          <div className="space-y-3">
+            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+              Strategic Observations (Notes)
             </label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Add any notes about subject assignment..."
+              placeholder="Enter logistical directives..."
               rows={2}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+              className="input-nebula resize-none"
             />
           </div>
 
           {/* Search */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Search Subjects
+          <div className="space-y-3">
+            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+              Matrix Search
             </label>
-            <div className="relative">
-              <Search size={18} className="absolute left-3 top-3 text-gray-400" />
+            <div className="relative group">
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-nebula-indigo-500 group-focus-within:text-white transition-colors" />
               <input
                 type="text"
-                placeholder="Search by name or code..."
+                placeholder="Scan protocols..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="input-nebula pl-14"
               />
             </div>
           </div>
 
           {/* Subjects List */}
-          <div>
-            <div className="flex justify-between items-center mb-4">
-              <label className="block text-sm font-semibold text-gray-700">
-                Select Subjects ({selectedCount} selected)
+          <div className="space-y-6">
+            <div className="flex justify-between items-center px-2">
+              <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em]">
+                Protocol Selection ({selectedCount} active)
               </label>
             </div>
 
             {sortedCategories.length === 0 ? (
-              <div className="text-center py-8 bg-gray-50 rounded-lg">
-                <p className="text-gray-500">No subjects found matching your search</p>
+              <div className="text-center py-20 bg-white/5 rounded-3xl border border-dashed border-white/10">
+                <p className="text-nebula-slate-500 font-bold uppercase tracking-widest text-sm">No protocols detected in search.</p>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-10">
                 {sortedCategories.map((category) => (
-                  <div key={category}>
-                    {isSSSStudent && (
-                      <h4 className="text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider border-l-4 border-purple-500 pl-2 py-1 bg-purple-50 rounded-r">
-                        {category === 'General' ? 'General Subjects' : `${category} Stream`}
-                      </h4>
-                    )}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  <div key={category} className="space-y-4">
+                    <h4 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-4 flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-nebula-indigo-500" />
+                      {category === 'General' ? 'Core Matrix' : `${category} Specialized Matrix`}
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {subjectsByCategory[category].map((subject) => {
                         const isSelected = !!selectedSubjectsMap[subject.id]
                         return (
                           <label
                             key={subject.id}
-                            className={`flex items-center gap-3 p-3 rounded-lg border-2 transition-all cursor-pointer ${
+                            className={`flex items-center gap-4 p-5 rounded-3xl border transition-all cursor-pointer ${
                               isSelected
-                                ? 'bg-purple-50 border-purple-500 shadow-sm'
-                                : 'bg-white border-gray-200 hover:border-purple-300'
+                                ? 'bg-nebula-indigo-500/10 border-nebula-indigo-500/40 shadow-inner'
+                                : 'bg-white/[0.02] border-white/5'
                             }`}
                           >
                             <input
                               type="checkbox"
                               checked={isSelected}
                               onChange={() => toggleSubject(subject.id)}
-                              className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500 border-gray-300"
+                              className="w-5 h-5 bg-nebula-slate-900 border-white/10 text-nebula-indigo-600 rounded-lg focus:ring-nebula-indigo-500"
                             />
                             <div className="flex-1 min-w-0">
-                              <p className="font-semibold text-gray-900 text-sm truncate">
+                              <p className="text-sm font-black text-white truncate">
                                 {subject.name}
                               </p>
-                              <p className="text-xs text-gray-500 uppercase tracking-wide">
+                              <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">
                                 {subject.code}
                               </p>
                             </div>
@@ -270,27 +284,27 @@ export default function SubjectManagement({
               </div>
             )}
           </div>
+        </div>
 
-          {/* Actions */}
-          <div className="flex gap-3 pt-4 border-t">
-            <button
-              type="button"
-              onClick={onCancel}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-semibold hover:bg-gray-50 transition-colors"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={isSubmitting || selectedCount === 0}
-              className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
-            >
-              <Plus size={18} />
-              Save Subjects ({selectedCount})
-            </button>
-          </div>
-        </form>
-      </div>
+        {/* Actions */}
+        <div className="p-10 bg-nebula-slate-900/50 border-t border-white/5 flex gap-6">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="btn-vibrant from-white/5 to-white/10 !text-white border border-white/10 flex-1 shadow-none"
+          >
+            Abort
+          </button>
+          <button
+            onClick={handleSubmit}
+            disabled={isSubmitting || selectedCount === 0}
+            className="btn-vibrant from-nebula-indigo-600 to-nebula-indigo-800 flex-1"
+          >
+            <Plus size={18} />
+            Synchronize ({selectedCount})
+          </button>
+        </div>
+      </motion.div>
     </div>
   )
 }
