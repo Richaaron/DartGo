@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback, memo, useRef } from 'react'
+import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Search, AlertCircle, Filter, User, BookOpen, ClipboardList, ChevronLeft, ChevronRight, LayoutGrid, List, Loader2 } from 'lucide-react'
 import { SubjectResult, Student, Subject, StudentSubject, Teacher } from '../types'
 import SubjectResultForm from '../components/SubjectResultForm'

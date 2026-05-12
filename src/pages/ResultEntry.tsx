@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
+import { motion, AnimatePresence } from "framer-motion";
 
 // Define all standard classes
 const PRIMARY_CLASSES = ['Nursery 1', 'Nursery 2', 'Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6']

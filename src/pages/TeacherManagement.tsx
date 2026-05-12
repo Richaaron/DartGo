@@ -7,7 +7,7 @@ import {
   Download,
   User as UserIcon,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Teacher, SchoolLevel } from "../types";
 import TeacherForm from "../components/TeacherForm";
 import Table from "../components/Table";
