@@ -224,15 +224,15 @@ export default function TeacherDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div className="space-y-10">
           <div className="space-y-6">
-            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-50 border border-folusho-sage-100 text-folusho-sage-500 text-[10px] font-black tracking-[0.35em] uppercase">
+            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-500/10 border border-folusho-sage-500/20 text-folusho-sage-400 text-[10px] font-black tracking-[0.35em] uppercase">
               Faculty Command: {teacher.name}
             </div>
-            <h1 className="text-6xl md:text-8xl font-black text-folusho-slate-900 leading-[0.85] tracking-tighter">
+            <h1 className="text-6xl md:text-8xl font-black text-white leading-[0.85] tracking-tighter">
               Inspire <br />
               The <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-500 via-folusho-coral-400 to-folusho-sage-600">Future.</span>
             </h1>
-            <p className="text-xl text-folusho-slate-400 font-bold max-w-lg leading-relaxed tracking-tight">
+            <p className="text-xl text-folusho-slate-500 font-bold max-w-lg leading-relaxed tracking-tight">
               Managing {(assignedSubjects.length > 0 ? assignedSubjects.join(", ") : "Form Teacher") || "Form Teacher"} | Sector: {teacher.level}
             </p>
           </div>
@@ -249,14 +249,14 @@ export default function TeacherDashboard() {
           </div>
         </div>
 
-        <div className="folusho-card !p-12 group hover:border-folusho-sage-300 transition-all border-folusho-cream-200">
+        <div className="folusho-card !p-12 group hover:border-folusho-sage-500/30 transition-all border-white/5">
            <div className="flex items-center gap-6 mb-12">
-              <div className="w-14 h-14 bg-folusho-sage-50 rounded-2xl flex items-center justify-center border border-folusho-sage-100 shadow-inner">
-                <Users className="w-7 h-7 text-folusho-sage-500" />
+              <div className="w-14 h-14 bg-folusho-sage-500/10 rounded-2xl flex items-center justify-center border border-white/5 shadow-inner">
+                <Users className="w-7 h-7 text-folusho-sage-400" />
               </div>
               <div>
-                <h2 className="text-2xl font-black text-folusho-slate-900 tracking-tighter uppercase">Faculty Pillar</h2>
-                <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-widest mt-1 opacity-80">Operational status: Verified</p>
+                <h2 className="text-2xl font-black text-white tracking-tighter uppercase">Faculty Pillar</h2>
+                <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-widest mt-1 opacity-80">Operational status: Verified</p>
               </div>
            </div>
 
@@ -265,21 +265,21 @@ export default function TeacherDashboard() {
                 <div className="w-3 h-3 rounded-full bg-folusho-sage-500 mt-1 shadow-folusho" />
                 <div>
                   <h3 className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.35em] mb-2">Assigned Sectors</h3>
-                  <p className="text-sm text-folusho-slate-900 font-bold leading-relaxed tracking-tight">{(teacher.assignedClasses || []).join(", ")}</p>
+                  <p className="text-sm text-white font-bold leading-relaxed tracking-tight">{(teacher.assignedClasses || []).join(", ")}</p>
                 </div>
               </div>
               <div className="flex gap-6 items-start">
                 <div className="w-3 h-3 rounded-full bg-folusho-yellow-500 mt-1 shadow-folusho" />
                 <div>
                   <h3 className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.35em] mb-2">Subject Matrix</h3>
-                  <p className="text-sm text-folusho-slate-900 font-bold leading-relaxed tracking-tight">{assignedSubjects.join(", ") || "General Strategic Studies"}</p>
+                  <p className="text-sm text-white font-bold leading-relaxed tracking-tight">{assignedSubjects.join(", ") || "General Strategic Studies"}</p>
                 </div>
               </div>
               <div className="flex gap-6 items-start">
                 <div className="w-3 h-3 rounded-full bg-folusho-coral-500 mt-1 shadow-folusho" />
                 <div>
                   <h3 className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.35em] mb-2">Pillar Certification</h3>
-                  <p className="text-sm text-folusho-slate-900 font-bold leading-relaxed tracking-tight">Authorized Instruction Protocol Active</p>
+                  <p className="text-sm text-white font-bold leading-relaxed tracking-tight">Authorized Instruction Protocol Active</p>
                 </div>
               </div>
            </div>
@@ -288,7 +288,7 @@ export default function TeacherDashboard() {
 
       {/* Intelligence Filters */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
-        <div className="folusho-card !p-8 border-folusho-cream-200">
+        <div className="folusho-card !p-8 border-white/5">
           <div className="space-y-4">
             <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">
               Sector Isolation (Class)
@@ -296,16 +296,16 @@ export default function TeacherDashboard() {
             <select
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
-              className="input-folusho !py-5"
+              className="input-folusho !py-5 !bg-folusho-slate-950/50"
             >
-              <option value="All">All Operational Sectors</option>
+              <option value="All" className="bg-folusho-slate-900">All Operational Sectors</option>
               {(teacher?.assignedClasses || []).map((className: string) => (
-                <option key={className} value={className}>Sector {className}</option>
+                <option key={className} value={className} className="bg-folusho-slate-900">Sector {className}</option>
               ))}
             </select>
           </div>
         </div>
-        <div className="folusho-card !p-8 border-folusho-cream-200">
+        <div className="folusho-card !p-8 border-white/5">
           <div className="space-y-4">
             <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">
               Matrix Focus (Subject)
@@ -313,11 +313,11 @@ export default function TeacherDashboard() {
             <select
               value={selectedSubject}
               onChange={(e) => setSelectedSubject(e.target.value)}
-              className="input-folusho !py-5"
+              className="input-folusho !py-5 !bg-folusho-slate-950/50"
             >
-              <option value="All">Complete Subject Matrix</option>
+              <option value="All" className="bg-folusho-slate-900">Complete Subject Matrix</option>
               {assignedSubjects.map((subject: string) => (
-                <option key={subject} value={subject}>{subject}</option>
+                <option key={subject} value={subject} className="bg-folusho-slate-900">{subject}</option>
               ))}
             </select>
           </div>
@@ -342,15 +342,15 @@ export default function TeacherDashboard() {
               {deadlines.map((deadline) => (
                 <div
                   key={deadline.id}
-                  className="folusho-card group hover:border-folusho-coral-300 transition-all !p-8 bg-gradient-to-br from-folusho-coral-500/[0.03] to-transparent border-folusho-cream-200"
+                  className="folusho-card group hover:border-folusho-coral-500/30 transition-all !p-8 bg-gradient-to-br from-folusho-coral-500/[0.03] to-transparent border-white/5"
                 >
                   <div className="flex justify-between items-start mb-6">
-                    <div className="px-3 py-1 bg-folusho-coral-50 text-folusho-coral-500 text-[10px] font-black rounded-full border border-folusho-coral-100 uppercase tracking-widest">
+                    <div className="px-3 py-1 bg-folusho-coral-500/10 text-folusho-coral-400 text-[10px] font-black rounded-full border border-folusho-coral-500/20 uppercase tracking-widest">
                       {deadline.type.replace("_", " ")}
                     </div>
-                    <Clock className="w-5 h-5 text-folusho-coral-300 group-hover:text-folusho-coral-500 transition-colors" />
+                    <Clock className="w-5 h-5 text-folusho-coral-400/40 group-hover:text-folusho-coral-400 transition-colors" />
                   </div>
-                  <h3 className="text-xl font-black text-folusho-slate-900 mb-2 tracking-tight group-hover:text-folusho-coral-600 transition-colors">
+                  <h3 className="text-xl font-black text-white mb-2 tracking-tight group-hover:text-folusho-coral-400 transition-colors">
                     {deadline.title}
                   </h3>
                   <p className="text-xs text-folusho-slate-400 mb-8 line-clamp-2 leading-relaxed font-bold">
@@ -361,7 +361,7 @@ export default function TeacherDashboard() {
                       <Calendar size={14} />
                       {new Date(deadline.deadline_date).toLocaleDateString()}
                     </div>
-                    <div className="px-4 py-1.5 bg-folusho-cream-50 rounded-xl text-[10px] font-black text-folusho-slate-400 border border-folusho-cream-100">
+                    <div className="px-4 py-1.5 bg-white/5 rounded-xl text-[10px] font-black text-folusho-slate-500 border border-white/5">
                       {Math.ceil((new Date(deadline.deadline_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} DAYS REMAINING
                     </div>
                   </div>
@@ -374,39 +374,39 @@ export default function TeacherDashboard() {
 
       {/* Metrics Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        <div className="folusho-card !p-8 group hover:border-folusho-sage-300 transition-all border-folusho-cream-200">
+        <div className="folusho-card !p-8 group hover:border-folusho-sage-500/30 transition-all border-white/5">
           <div className="flex items-center justify-between mb-6">
-            <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em]">Sectors</p>
-            <Users className="w-5 h-5 text-folusho-sage-400 opacity-60 group-hover:opacity-100 transition-opacity" />
+            <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.35em]">Sectors</p>
+            <Users className="w-5 h-5 text-folusho-sage-400 opacity-40 group-hover:opacity-100 transition-opacity" />
           </div>
-          <p className="text-4xl font-black text-folusho-slate-900 tracking-tighter">{stats.classesCount}</p>
+          <p className="text-4xl font-black text-white tracking-tighter">{stats.classesCount}</p>
         </div>
-        <div className="folusho-card !p-8 group hover:border-folusho-yellow-300 transition-all border-folusho-cream-200">
+        <div className="folusho-card !p-8 group hover:border-folusho-yellow-500/30 transition-all border-white/5">
           <div className="flex items-center justify-between mb-6">
-            <p className="text-[10px] font-black text-folusho-yellow-600 uppercase tracking-[0.35em]">Personnel</p>
-            <BookOpen className="w-5 h-5 text-folusho-yellow-500 opacity-60 group-hover:opacity-100 transition-opacity" />
+            <p className="text-[10px] font-black text-folusho-yellow-500 uppercase tracking-[0.35em]">Personnel</p>
+            <BookOpen className="w-5 h-5 text-folusho-yellow-500 opacity-40 group-hover:opacity-100 transition-opacity" />
           </div>
-          <p className="text-4xl font-black text-folusho-slate-900 tracking-tighter">{stats.studentsCount}</p>
+          <p className="text-4xl font-black text-white tracking-tighter">{stats.studentsCount}</p>
         </div>
-        <div className="folusho-card !p-8 group hover:border-folusho-coral-300 transition-all border-folusho-cream-200">
+        <div className="folusho-card !p-8 group hover:border-folusho-coral-500/30 transition-all border-white/5">
           <div className="flex items-center justify-between mb-6">
-            <p className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.35em]">Archives</p>
-            <AlertCircle className="w-5 h-5 text-folusho-coral-400 opacity-60 group-hover:opacity-100 transition-opacity" />
+            <p className="text-[10px] font-black text-folusho-coral-400 uppercase tracking-[0.35em]">Archives</p>
+            <AlertCircle className="w-5 h-5 text-folusho-coral-400 opacity-40 group-hover:opacity-100 transition-opacity" />
           </div>
-          <p className="text-4xl font-black text-folusho-slate-900 tracking-tighter">{stats.resultsRecorded}</p>
+          <p className="text-4xl font-black text-white tracking-tighter">{stats.resultsRecorded}</p>
         </div>
-        <div className="folusho-card !p-8 group hover:border-folusho-sage-300 transition-all border-folusho-cream-200">
+        <div className="folusho-card !p-8 group hover:border-folusho-sage-500/30 transition-all border-white/5">
           <div className="flex items-center justify-between mb-6">
-            <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em]">Efficiency</p>
-            <TrendingUp className="w-5 h-5 text-folusho-sage-400 opacity-60 group-hover:opacity-100 transition-opacity" />
+            <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.35em]">Efficiency</p>
+            <TrendingUp className="w-5 h-5 text-folusho-sage-400 opacity-40 group-hover:opacity-100 transition-opacity" />
           </div>
-          <p className="text-4xl font-black text-folusho-slate-900 tracking-tighter">{stats.averageClassScore}%</p>
+          <p className="text-4xl font-black text-white tracking-tighter">{stats.averageClassScore}%</p>
         </div>
       </div>
 
       {/* Tab Interface */}
       <div className="space-y-10">
-        <div className="flex gap-4 bg-folusho-cream-50 p-3 rounded-[2rem] border border-folusho-cream-200 w-fit mx-auto overflow-x-auto shadow-sm">
+        <div className="flex gap-4 bg-folusho-slate-900/40 p-2 rounded-3xl border border-white/5 w-fit mx-auto overflow-x-auto shadow-2xl backdrop-blur-md">
           {(["results", "messages", "insights", "analytics"] as const).map((tab) => (
             <button
               key={tab}
@@ -414,7 +414,7 @@ export default function TeacherDashboard() {
               className={`px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
                 activeTab === tab
                   ? "bg-folusho-sage-400 text-white shadow-folusho"
-                  : "text-folusho-slate-400 hover:text-folusho-sage-600 hover:bg-white"
+                  : "text-folusho-slate-500 hover:text-folusho-sage-400"
               }`}
             >
               {tab === "results" && "Data Archive"}
@@ -432,10 +432,10 @@ export default function TeacherDashboard() {
           className="min-h-[400px]"
         >
           {activeTab === "results" && (
-            <div className="folusho-card !p-0 border-folusho-cream-200">
-              <div className="p-10 border-b border-folusho-cream-100 bg-folusho-cream-50/50">
-                <h2 className="text-3xl font-black text-folusho-slate-900 tracking-tighter uppercase leading-none">
-                  Squad <br /> <span className="text-folusho-slate-400">Archive</span>
+            <div className="folusho-card !p-0 border-white/5 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl overflow-hidden">
+              <div className="p-10 border-b border-white/5 bg-folusho-slate-950/50">
+                <h2 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">
+                  Squad <br /> <span className="text-folusho-slate-500">Archive</span>
                 </h2>
               </div>
               {tableData.length > 0 ? (
@@ -449,12 +449,12 @@ export default function TeacherDashboard() {
           )}
 
           {activeTab === "messages" && (
-            <div className="folusho-card !p-12 border-folusho-cream-200">
+            <div className="folusho-card !p-12 border-white/5">
               <div className="mb-12">
-                <h2 className="text-3xl font-black text-folusho-slate-900 tracking-tighter uppercase leading-none">
-                  Neural <br /> <span className="text-folusho-slate-400">Interface</span>
+                <h2 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">
+                  Neural <br /> <span className="text-folusho-slate-500">Interface</span>
                 </h2>
-                <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] mt-6">Direct uplink to High Command</p>
+                <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] mt-6">Direct uplink to High Command</p>
               </div>
               <ChatSystem />
             </div>

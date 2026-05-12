@@ -302,9 +302,9 @@ export default function Dashboard() {
     return (
       <div className="p-8 flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
-          <p className="text-gray-400 font-black uppercase tracking-[0.2em] text-xs">
-            Loading...
+          <div className="w-12 h-12 border-4 border-folusho-sage-500/20 border-t-folusho-sage-500 rounded-full animate-spin"></div>
+          <p className="text-folusho-slate-400 font-black uppercase tracking-[0.2em] text-[10px]">
+            Synchronizing Matrix...
           </p>
         </div>
       </div>
@@ -322,12 +322,12 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <motion.div variants={itemVariants} className="space-y-10">
           <div className="space-y-6">
-            <h1 className="text-5xl md:text-7xl font-black text-folusho-slate-900 leading-[0.85] tracking-tighter">
+            <h1 className="text-5xl md:text-7xl font-black text-white leading-[0.85] tracking-tighter">
               Inspiring <br />
               Excellence <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-500 via-folusho-coral-400 to-folusho-sage-600">Folusho.</span>
             </h1>
-            <p className="text-xl text-folusho-slate-400 font-bold max-w-xl leading-relaxed tracking-tight">
+            <p className="text-xl text-folusho-slate-500 font-bold max-w-xl leading-relaxed tracking-tight">
               A premium academic sanctuary designed for precision, institutional governance, and nurturing the champions of tomorrow.
             </p>
           </div>
@@ -345,41 +345,41 @@ export default function Dashboard() {
                 Academic Matrix
               </Link>
             )}
-            <button className="flex items-center gap-4 text-xs font-black uppercase tracking-[0.35em] text-folusho-sage-500 hover:text-folusho-slate-900 transition-all group">
+            <button className="flex items-center gap-4 text-xs font-black uppercase tracking-[0.35em] text-folusho-sage-400 hover:text-white transition-all group">
               Legacy Vault
               <Check className="w-4 h-4 group-hover:translate-x-3 transition-transform" />
             </button>
           </div>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="folusho-card !p-12 border-folusho-cream-300 shadow-folusho-lg">
+        <motion.div variants={itemVariants} className="folusho-card !p-12 border-white/5 shadow-folusho-lg">
            <div className="flex items-center gap-6 mb-12">
-              <div className="w-16 h-16 bg-folusho-sage-50 rounded-3xl flex items-center justify-center border border-folusho-sage-100 shadow-inner">
+              <div className="w-16 h-16 bg-folusho-sage-500/10 rounded-3xl flex items-center justify-center border border-white/5 shadow-inner">
                 <BookOpen className="w-8 h-8 text-folusho-sage-400" />
               </div>
-              <h2 className="text-xl font-black text-folusho-slate-900 tracking-tighter uppercase leading-none">Global <br /> <span className="text-folusho-sage-500">Infrastructure</span></h2>
+              <h2 className="text-xl font-black text-white tracking-tighter uppercase leading-none">Global <br /> <span className="text-folusho-sage-400">Infrastructure</span></h2>
            </div>
 
            <div className="space-y-10">
-              <div className="flex gap-6 group/item">
-                <div className="w-3.5 h-3.5 rounded-full bg-folusho-sage-400 mt-2.5 flex-shrink-0 shadow-sm group-hover/item:scale-125 transition-transform" />
+               <div className="flex gap-6 group/item">
+                <div className="w-3.5 h-3.5 rounded-full bg-folusho-sage-500 mt-2.5 flex-shrink-0 shadow-sm group-hover/item:scale-125 transition-transform" />
                 <div>
-                  <h3 className="text-xs font-black text-folusho-slate-900 uppercase tracking-[0.25em] mb-2">Elite Governance</h3>
-                  <p className="text-sm text-folusho-slate-400 font-bold leading-relaxed">Centralized intelligence for academic and institutional precision.</p>
+                  <h3 className="text-xs font-black text-white uppercase tracking-[0.25em] mb-2">Elite Governance</h3>
+                  <p className="text-sm text-folusho-slate-500 font-bold leading-relaxed">Centralized intelligence for academic and institutional precision.</p>
                 </div>
               </div>
               <div className="flex gap-6 group/item">
-                <div className="w-3.5 h-3.5 rounded-full bg-folusho-coral-400 mt-2.5 flex-shrink-0 shadow-sm group-hover/item:scale-125 transition-transform" />
+                <div className="w-3.5 h-3.5 rounded-full bg-folusho-coral-500 mt-2.5 flex-shrink-0 shadow-sm group-hover/item:scale-125 transition-transform" />
                 <div>
-                  <h3 className="text-xs font-black text-folusho-slate-900 uppercase tracking-[0.25em] mb-2">Precision Metrics</h3>
-                  <p className="text-sm text-folusho-slate-400 font-bold leading-relaxed">Advanced frameworks for student character and growth analysis.</p>
+                  <h3 className="text-xs font-black text-white uppercase tracking-[0.25em] mb-2">Precision Metrics</h3>
+                  <p className="text-sm text-folusho-slate-500 font-bold leading-relaxed">Advanced frameworks for student character and growth analysis.</p>
                 </div>
               </div>
               <div className="flex gap-6 group/item">
                 <div className="w-3.5 h-3.5 rounded-full bg-folusho-yellow-500 mt-2.5 flex-shrink-0 shadow-sm group-hover/item:scale-125 transition-transform" />
                 <div>
-                  <h3 className="text-xs font-black text-folusho-slate-900 uppercase tracking-[0.25em] mb-2">Strategic Alliance</h3>
-                  <p className="text-sm text-folusho-slate-400 font-bold leading-relaxed">Transparent and real-time engagement for all school stakeholders.</p>
+                  <h3 className="text-xs font-black text-white uppercase tracking-[0.25em] mb-2">Strategic Alliance</h3>
+                  <p className="text-sm text-folusho-slate-500 font-bold leading-relaxed">Transparent and real-time engagement for all school stakeholders.</p>
                 </div>
               </div>
            </div>
@@ -432,7 +432,7 @@ export default function Dashboard() {
                 <CartesianGrid
                   strokeDasharray="4 4"
                   vertical={false}
-                  stroke="rgba(45,42,38,0.05)"
+                  stroke="rgba(255,255,255,0.05)"
                 />
                 <XAxis
                   dataKey="name"
@@ -451,11 +451,11 @@ export default function Dashboard() {
                   content={({ active, payload }) => {
                     if (active && payload && payload.length) {
                       return (
-                        <div className="bg-white border border-folusho-cream-200 p-6 rounded-4xl shadow-folusho-lg">
-                          <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-widest mb-2">
+                        <div className="bg-folusho-slate-900 border border-white/10 p-6 rounded-4xl shadow-folusho-lg">
+                          <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-widest mb-2">
                             {payload[0].payload.name}
                           </p>
-                          <p className="text-3xl font-black text-folusho-slate-900 tracking-tighter">
+                          <p className="text-3xl font-black text-white tracking-tighter">
                             {payload[0].value}%
                           </p>
                         </div>
@@ -509,11 +509,11 @@ export default function Dashboard() {
                   content={({ active, payload }) => {
                     if (active && payload && payload.length) {
                       return (
-                        <div className="bg-white border border-folusho-cream-200 p-6 rounded-4xl shadow-folusho-lg">
-                          <p className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-widest mb-2">
+                        <div className="bg-folusho-slate-900 border border-white/10 p-6 rounded-4xl shadow-folusho-lg">
+                          <p className="text-[10px] font-black text-folusho-coral-400 uppercase tracking-widest mb-2">
                             {payload[0].name}
                           </p>
-                          <p className="text-3xl font-black text-folusho-slate-900 tracking-tighter">
+                          <p className="text-3xl font-black text-white tracking-tighter">
                             {payload[0].value}
                           </p>
                         </div>
@@ -533,10 +533,10 @@ export default function Dashboard() {
                   style={{ backgroundColor: COLORS[index % COLORS.length] }}
                 />
                 <div className="flex flex-col">
-                  <span className="text-[10px] text-folusho-slate-400 font-black uppercase tracking-widest leading-none mb-1">
+                  <span className="text-[10px] text-folusho-slate-500 font-black uppercase tracking-widest leading-none mb-1">
                     {entry.name}
                   </span>
-                  <span className="text-base text-folusho-slate-900 font-black leading-none">
+                  <span className="text-base text-white font-black leading-none">
                     {String(entry.value)}
                   </span>
                 </div>
@@ -548,20 +548,20 @@ export default function Dashboard() {
 
       {/* Performance Insights Matrix */}
       <motion.div variants={itemVariants} className="space-y-12">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-folusho-cream-200 pb-10">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/5 pb-10">
           <h2 className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em]">
             Precision Analytics Engine
           </h2>
-          <div className="flex items-center gap-4 bg-folusho-yellow-200/50 p-2.5 rounded-2xl border border-folusho-yellow-300/30">
-            <span className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest ml-3">Matrix Filter:</span>
+          <div className="flex items-center gap-4 bg-folusho-yellow-500/10 p-2.5 rounded-2xl border border-white/5 backdrop-blur-md">
+            <span className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest ml-3">Matrix Filter:</span>
             <select
               value={selectedAnalyticsClass}
               onChange={(e) => setSelectedAnalyticsClass(e.target.value)}
-              className="bg-white text-folusho-slate-900 rounded-xl px-5 py-2.5 text-xs font-black uppercase tracking-widest outline-none border border-folusho-cream-200 focus:ring-4 focus:ring-folusho-sage-400/20 transition-all"
+              className="bg-folusho-slate-950/50 text-white rounded-xl px-5 py-2.5 text-xs font-black uppercase tracking-widest outline-none border border-white/5 focus:ring-4 focus:ring-folusho-sage-400/20 transition-all"
             >
-              <option value="All">Global View</option>
+              <option value="All" className="bg-folusho-slate-900">Global View</option>
               {[...new Set(students.map(s => s.class))].filter(Boolean).sort().map(c => (
-                <option key={c} value={c}>{c}</option>
+                <option key={c} value={c} className="bg-folusho-slate-900">{c}</option>
               ))}
             </select>
           </div>
@@ -593,23 +593,23 @@ export default function Dashboard() {
               <motion.div
                 key={result.id}
                 whileHover={{ y: -8, scale: 1.02 }}
-                className="p-10 bg-folusho-cream-100/50 rounded-4xl border border-folusho-cream-200 flex justify-between items-center group transition-all duration-500 shadow-sm hover:shadow-folusho"
+                className="p-10 bg-white/5 rounded-4xl border border-white/5 flex justify-between items-center group transition-all duration-500 shadow-sm hover:shadow-folusho"
               >
                 <div className="space-y-3">
-                  <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.25em]">
+                  <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.25em]">
                     {result.term}
                   </p>
-                  <p className="text-xl font-black text-folusho-slate-900 tracking-tighter">
+                  <p className="text-xl font-black text-white tracking-tighter">
                     {result.academicYear}
                   </p>
                 </div>
                 <div className="flex flex-col items-end gap-1">
                   <span
-                    className={`text-4xl font-black ${result.percentage >= 60 ? "text-folusho-sage-500" : "text-folusho-coral-500"} tracking-tighter`}
+                    className={`text-4xl font-black ${result.percentage >= 60 ? "text-folusho-sage-400" : "text-folusho-coral-400"} tracking-tighter`}
                   >
                     {result.grade}
                   </span>
-                  <span className="text-[11px] font-black text-folusho-slate-400 tracking-widest">
+                  <span className="text-[11px] font-black text-folusho-slate-500 tracking-widest">
                     {Math.round(result.percentage)}%
                   </span>
                 </div>
@@ -666,14 +666,14 @@ export default function Dashboard() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             onClick={(e) => e.stopPropagation()}
-            className="bg-white border border-folusho-cream-200 rounded-[3rem] shadow-folusho max-w-lg w-full p-12 overflow-hidden"
+            className="bg-folusho-slate-900 border border-white/5 rounded-[3rem] shadow-2xl max-w-lg w-full p-12 overflow-hidden"
           >
             <div className="flex items-center gap-6 mb-12">
-              <div className="p-5 bg-folusho-sage-50 rounded-[2rem] border border-folusho-sage-100 shadow-sm">
-                <Lock className="w-8 h-8 text-folusho-sage-500" />
+              <div className="p-5 bg-folusho-sage-500/10 rounded-[2rem] border border-white/5 shadow-sm">
+                <Lock className="w-8 h-8 text-folusho-sage-400" />
               </div>
-              <h2 className="text-2xl font-black text-folusho-slate-900 tracking-tighter uppercase leading-none">
-                Update <br /> <span className="text-folusho-sage-500">Credentials</span>
+              <h2 className="text-2xl font-black text-white tracking-tighter uppercase leading-none">
+                Update <br /> <span className="text-folusho-sage-400">Credentials</span>
               </h2>
             </div>
 
@@ -694,7 +694,7 @@ export default function Dashboard() {
                       })
                     }
                     disabled={isChangingPassword}
-                    className="input-folusho !py-5"
+                    className="input-folusho !py-5 !bg-folusho-slate-950/50"
                     placeholder="Enter current password"
                   />
                   <button
@@ -733,7 +733,7 @@ export default function Dashboard() {
                       })
                     }
                     disabled={isChangingPassword}
-                    className="input-folusho !py-5"
+                    className="input-folusho !py-5 !bg-folusho-slate-950/50"
                     placeholder="Enter new password"
                   />
                   <button
@@ -775,7 +775,7 @@ export default function Dashboard() {
                       })
                     }
                     disabled={isChangingPassword}
-                    className="input-folusho !py-5"
+                    className="input-folusho !py-5 !bg-folusho-slate-950/50"
                     placeholder="Confirm new password"
                   />
                   <button

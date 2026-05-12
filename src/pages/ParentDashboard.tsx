@@ -183,16 +183,16 @@ export default function ParentDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div className="space-y-10">
           <div className="space-y-6">
-            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-50 border border-folusho-sage-100 text-folusho-sage-500 text-[10px] font-black tracking-[0.35em] uppercase">
+            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-500/10 border border-folusho-sage-500/20 text-folusho-sage-400 text-[10px] font-black tracking-[0.35em] uppercase">
               Guardian Command: {parent.name}
             </div>
-            <h1 className="text-6xl md:text-8xl font-black text-folusho-slate-900 leading-[0.85] tracking-tighter">
+            <h1 className="text-6xl md:text-8xl font-black text-white leading-[0.85] tracking-tighter">
               Legacy <br />
               Through <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-500 via-folusho-coral-400 to-folusho-sage-600">Excellence.</span>
             </h1>
-            <p className="text-xl text-folusho-slate-400 font-bold max-w-lg leading-relaxed tracking-tight">
-              Monitoring the academic journey of <span className="text-folusho-slate-900 font-black">{child.firstName} {child.lastName}</span>
+            <p className="text-xl text-folusho-slate-500 font-bold max-w-lg leading-relaxed tracking-tight">
+              Monitoring the academic journey of <span className="text-white font-black">{child.firstName} {child.lastName}</span>
             </p>
           </div>
 
@@ -214,9 +214,9 @@ export default function ParentDashboard() {
           </div>
         </div>
 
-        <div className="folusho-card !p-12 group hover:border-folusho-sage-300 transition-all border-folusho-cream-200">
+        <div className="folusho-card !p-12 group hover:border-folusho-sage-500/30 transition-all border-white/5">
            <div className="flex items-center gap-8 mb-12">
-              <div className="w-24 h-24 bg-folusho-sage-50 rounded-[2.5rem] flex items-center justify-center border border-folusho-sage-100 shadow-inner overflow-hidden">
+              <div className="w-24 h-24 bg-folusho-sage-500/10 rounded-[2.5rem] flex items-center justify-center border border-white/5 shadow-inner overflow-hidden">
                 {child.image ? (
                   <img src={child.image} alt={child.firstName} className="w-full h-full object-cover" />
                 ) : (
@@ -224,24 +224,24 @@ export default function ParentDashboard() {
                 )}
               </div>
               <div>
-                <h2 className="text-3xl font-black text-folusho-slate-900 tracking-tighter uppercase">{child.firstName} {child.lastName}</h2>
-                <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-widest mt-2 opacity-80">Sector: {child.class} · {child.level}</p>
+                <h2 className="text-3xl font-black text-white tracking-tighter uppercase">{child.firstName} {child.lastName}</h2>
+                <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-widest mt-2 opacity-80">Sector: {child.class} · {child.level}</p>
               </div>
            </div>
 
-           <div className="space-y-10">
+            <div className="space-y-10">
               <div className="flex gap-6 items-start">
                 <div className="w-3 h-3 rounded-full bg-folusho-sage-500 mt-1.5 shadow-folusho" />
                 <div>
                   <h3 className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.35em] mb-2">Registry Assignment</h3>
-                  <p className="text-base text-folusho-slate-900 font-bold tracking-tight">{child.registrationNumber}</p>
+                  <p className="text-base text-white font-bold tracking-tight">{child.registrationNumber}</p>
                 </div>
               </div>
               <div className="flex gap-6 items-start">
                 <div className="w-3 h-3 rounded-full bg-folusho-yellow-500 mt-1.5 shadow-folusho" />
                 <div>
                   <h3 className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.35em] mb-2">Academic Standing</h3>
-                  <p className="text-base text-folusho-slate-900 font-bold tracking-tight">{stats.classPositionText}</p>
+                  <p className="text-base text-white font-bold tracking-tight">{stats.classPositionText}</p>
                 </div>
               </div>
            </div>
@@ -250,34 +250,34 @@ export default function ParentDashboard() {
 
       {/* Metrics Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-        <div className="folusho-card !p-10 group hover:border-folusho-sage-300 transition-all border-folusho-cream-200">
+        <div className="folusho-card !p-10 group hover:border-folusho-sage-500/30 transition-all border-white/5">
           <div className="flex items-center justify-between mb-6">
-            <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em]">Protocol Units</p>
-            <BookOpen className="w-5 h-5 text-folusho-sage-400 opacity-60" />
+            <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.35em]">Protocol Units</p>
+            <BookOpen className="w-5 h-5 text-folusho-sage-400 opacity-40" />
           </div>
-          <p className="text-5xl font-black text-folusho-slate-900 tracking-tighter">{stats.totalSubjects}</p>
+          <p className="text-5xl font-black text-white tracking-tighter">{stats.totalSubjects}</p>
         </div>
-        <div className="folusho-card !p-10 group hover:border-folusho-yellow-300 transition-all border-folusho-cream-200">
+        <div className="folusho-card !p-10 group hover:border-folusho-yellow-500/30 transition-all border-white/5">
           <div className="flex items-center justify-between mb-6">
-            <p className="text-[10px] font-black text-folusho-yellow-600 uppercase tracking-[0.35em]">Evaluations</p>
-            <TrendingUp className="w-5 h-5 text-folusho-yellow-500 opacity-60" />
+            <p className="text-[10px] font-black text-folusho-yellow-500 uppercase tracking-[0.35em]">Evaluations</p>
+            <TrendingUp className="w-5 h-5 text-folusho-yellow-500 opacity-40" />
           </div>
-          <p className="text-5xl font-black text-folusho-slate-900 tracking-tighter">{stats.totalAssessments}</p>
+          <p className="text-5xl font-black text-white tracking-tighter">{stats.totalAssessments}</p>
         </div>
-        <div className="folusho-card !p-10 group hover:border-folusho-coral-300 transition-all border-folusho-cream-200">
+        <div className="folusho-card !p-10 group hover:border-folusho-coral-500/30 transition-all border-white/5">
           <div className="flex items-center justify-between mb-6">
-            <p className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.35em]">Efficiency Quotient</p>
-            <GraduationCap className="w-5 h-5 text-folusho-coral-400 opacity-60" />
+            <p className="text-[10px] font-black text-folusho-coral-400 uppercase tracking-[0.35em]">Efficiency Quotient</p>
+            <GraduationCap className="w-5 h-5 text-folusho-coral-400 opacity-40" />
           </div>
-          <p className="text-5xl font-black text-folusho-slate-900 tracking-tighter">{stats.averageScore}%</p>
+          <p className="text-5xl font-black text-white tracking-tighter">{stats.averageScore}%</p>
         </div>
       </div>
 
       {/* Results Matrix */}
-      <div className="folusho-card !p-0 border-folusho-cream-200">
-        <div className="p-10 border-b border-folusho-cream-100 bg-folusho-cream-50/50">
-          <h2 className="text-3xl font-black text-folusho-slate-900 tracking-tighter uppercase leading-none">
-            Performance <br /> <span className="text-folusho-slate-400">Matrix</span>
+      <div className="folusho-card !p-0 border-white/5 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl overflow-hidden">
+        <div className="p-10 border-b border-white/5 bg-folusho-slate-950/50">
+          <h2 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">
+            Performance <br /> <span className="text-folusho-slate-500">Matrix</span>
           </h2>
         </div>
 

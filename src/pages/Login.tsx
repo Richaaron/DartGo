@@ -114,41 +114,41 @@ export default function Login({ onLoginSuccess }: LoginProps) {
   };
 
   return (
-    <div className="min-h-screen bg-folusho-cream-100 text-folusho-slate-900 overflow-hidden relative selection:bg-folusho-sage-500/20">
+    <div className="min-h-screen bg-folusho-slate-950 text-white overflow-hidden relative selection:bg-folusho-sage-500/20">
       {/* ── Immersive Background ──────────────────────── */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         {/* Organic Sage Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1400px] h-[1400px] bg-folusho-sage-200/40 rounded-full blur-[180px] animate-folusho-blob" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1400px] h-[1400px] bg-folusho-sage-500/10 rounded-full blur-[180px] animate-folusho-blob" />
         
         {/* Dynamic Blobs */}
         <motion.div 
           animate={{ 
             scale: [1, 1.3, 1],
-            opacity: [0.3, 0.5, 0.3],
+            opacity: [0.1, 0.3, 0.1],
             rotate: [0, 60, 0],
             x: [0, 80, 0],
             y: [0, -40, 0]
           }}
           transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[5%] right-[10%] w-[700px] h-[700px] bg-folusho-yellow-100/30 rounded-full blur-[140px]" 
+          className="absolute top-[5%] right-[10%] w-[700px] h-[700px] bg-folusho-yellow-500/10 rounded-full blur-[140px]" 
         />
         
         <motion.div 
           animate={{ 
             scale: [1, 1.1, 1],
-            opacity: [0.2, 0.4, 0.2],
+            opacity: [0.1, 0.2, 0.1],
             x: [0, -60, 0],
             y: [0, 80, 0]
           }}
           transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-          className="absolute bottom-[15%] left-[5%] w-[600px] h-[600px] bg-folusho-coral-100/30 rounded-full blur-[120px]" 
+          className="absolute bottom-[15%] left-[5%] w-[600px] h-[600px] bg-folusho-coral-500/10 rounded-full blur-[120px]" 
         />
         
         {/* Premium Noise Pattern */}
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')] opacity-[0.6] mix-blend-multiply" />
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')] opacity-[0.1] mix-blend-overlay" />
         
         {/* Subtle Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/20 to-folusho-cream-200/40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-folusho-slate-900/40 to-folusho-slate-950" />
       </div>
 
       <AnimatePresence mode="wait">
@@ -172,14 +172,14 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                   transition={{ duration: 1, delay: 0.2 }}
                   className="space-y-8"
                 >
-                  <div className="inline-flex items-center gap-4 px-6 py-2.5 rounded-full bg-folusho-cream-50 border border-folusho-cream-200 text-folusho-sage-600 text-[10px] font-black tracking-[0.4em] uppercase shadow-sm">
-                    <div className="w-10 h-10 bg-folusho-sage-50 rounded-2xl flex items-center justify-center p-2 shadow-sm border border-folusho-sage-100">
+                  <div className="inline-flex items-center gap-4 px-6 py-2.5 rounded-full bg-white/5 border border-white/5 text-folusho-sage-400 text-[10px] font-black tracking-[0.4em] uppercase shadow-sm">
+                    <div className="w-10 h-10 bg-white/5 rounded-2xl flex items-center justify-center p-2 shadow-sm border border-white/5">
                       <img src="/school_logo.png?v=20260512" alt="Logo" className="w-full h-full object-contain" />
                     </div>
                     FOLUSHO ACADEMIC PORTAL
                   </div>
 
-                  <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.85] text-folusho-slate-900">
+                  <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.85] text-white">
                     Nurturing <br />
                     Intelligence <br />
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-500 via-folusho-coral-400 to-folusho-sage-600">
@@ -187,7 +187,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                     </span>
                   </h1>
 
-                  <p className="text-folusho-slate-400 text-lg md:text-xl max-w-xl font-bold leading-relaxed tracking-tight">
+                  <p className="text-folusho-slate-500 text-lg md:text-xl max-w-xl font-bold leading-relaxed tracking-tight">
                     Welcome to the Folusho Ecosystem. A refined, organic space for academic governance, transparent growth, and educational excellence.
                   </p>
                 </motion.div>
@@ -204,10 +204,10 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                         whileHover={{ y: -8, scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setLoginType(type.id)}
-                        className={`group relative overflow-hidden px-12 py-7 rounded-[2.5rem] font-black text-xs tracking-[0.25em] uppercase transition-all shadow-folusho ${
+                        className={`group relative overflow-hidden px-12 py-7 rounded-[2.5rem] font-black text-xs tracking-[0.25em] uppercase transition-all shadow-2xl ${
                           type.id === 'admin' 
-                            ? 'bg-folusho-sage-400 text-white' 
-                            : 'bg-folusho-yellow-300 text-folusho-slate-900'
+                            ? 'bg-folusho-sage-500 text-white' 
+                            : 'bg-folusho-yellow-500 text-folusho-slate-950'
                         }`}
                       >
                         <div className="relative z-10 flex items-center gap-5">
@@ -241,16 +241,16 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                 transition={{ duration: 1.2, delay: 0.4 }}
                 className="hidden lg:block relative"
               >
-                <div className="relative z-10 p-20 rounded-[4rem] bg-folusho-cream-50 border border-folusho-cream-200 shadow-folusho-lg overflow-hidden group">
+                <div className="relative z-10 p-20 rounded-[4rem] bg-folusho-slate-900/40 border border-white/5 shadow-2xl backdrop-blur-md overflow-hidden group">
                   {/* Internal Shimmer */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-folusho-cream-50/50 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1200" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1200" />
                   
                   <div className="flex items-center gap-8 mb-16">
-                    <div className="w-24 h-24 rounded-[2rem] bg-folusho-sage-50 border border-folusho-sage-100 flex items-center justify-center text-folusho-sage-500 shadow-inner">
+                    <div className="w-24 h-24 rounded-[2rem] bg-folusho-sage-500/10 border border-white/5 flex items-center justify-center text-folusho-sage-400 shadow-inner">
                       <Layers size={44} />
                     </div>
-                    <h2 className="text-3xl font-black text-folusho-slate-900 tracking-tighter uppercase leading-none">
-                      Core <br /> <span className="text-folusho-sage-600">Infrastructure</span>
+                    <h2 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">
+                      Core <br /> <span className="text-folusho-sage-400">Infrastructure</span>
                     </h2>
                   </div>
 
@@ -271,10 +271,10 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                           <div className={`w-3 h-3 rounded-full ${item.color} shadow-[0_0_15px_rgba(255,255,255,0.3)] group-hover:scale-150 transition-transform`} />
                         </div>
                         <div className="space-y-3">
-                          <h3 className="text-lg font-black text-folusho-slate-900 tracking-widest uppercase group-hover:text-folusho-sage-600 transition-colors">
+                          <h3 className="text-lg font-black text-white tracking-widest uppercase group-hover:text-folusho-sage-400 transition-colors">
                             {item.label}
                           </h3>
-                          <p className="text-folusho-slate-400 text-base font-bold leading-relaxed max-w-sm">
+                          <p className="text-folusho-slate-500 text-base font-bold leading-relaxed max-w-sm">
                             {item.desc}
                           </p>
                         </div>
@@ -283,12 +283,12 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                   </div>
 
                   {/* Operational Status */}
-                  <div className="mt-20 pt-12 border-t border-folusho-cream-200 flex items-center justify-between">
+                  <div className="mt-20 pt-12 border-t border-white/5 flex items-center justify-between">
                     <div className="flex gap-4">
-                      <div className="w-3.5 h-3.5 rounded-full bg-folusho-sage-400 animate-pulse" />
-                      <span className="text-[10px] font-black tracking-widest uppercase text-folusho-sage-600">System Online</span>
+                      <div className="w-3.5 h-3.5 rounded-full bg-folusho-sage-500 animate-pulse" />
+                      <span className="text-[10px] font-black tracking-widest uppercase text-folusho-sage-400">System Online</span>
                     </div>
-                    <p className="text-[10px] font-black tracking-widest uppercase text-folusho-slate-400">v1.1.0 PREMIUM</p>
+                    <p className="text-[10px] font-black tracking-widest uppercase text-folusho-slate-500">v1.1.0 PREMIUM</p>
                   </div>
                 </div>
               </motion.div>
@@ -307,38 +307,38 @@ export default function Login({ onLoginSuccess }: LoginProps) {
               {/* Back Navigation */}
               <button 
                 onClick={handleBack}
-                className="flex items-center gap-5 text-folusho-slate-400 hover:text-folusho-slate-900 transition-all group"
+                className="flex items-center gap-5 text-folusho-slate-500 hover:text-white transition-all group"
               >
-                <div className="w-14 h-14 rounded-3xl bg-white flex items-center justify-center group-hover:bg-folusho-sage-50 transition-all border border-folusho-cream-200 shadow-sm">
+                <div className="w-14 h-14 rounded-3xl bg-white/5 flex items-center justify-center group-hover:bg-folusho-sage-500/10 transition-all border border-white/5 shadow-sm">
                   <ArrowRight size={26} className="rotate-180" />
                 </div>
                 <span className="text-xs font-black tracking-[0.35em] uppercase">Return to Orbit</span>
               </button>
 
-              <div className="p-16 rounded-[4rem] bg-folusho-cream-50 border border-folusho-cream-200 shadow-folusho-lg">
+              <div className="p-16 rounded-[4rem] bg-folusho-slate-900/40 border border-white/5 shadow-2xl backdrop-blur-md">
                 <div className="text-center mb-14">
                   <motion.div 
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     className={`w-28 h-28 mx-auto rounded-[2.5rem] flex items-center justify-center mb-10 shadow-inner ${
-                      loginType === 'admin' ? 'bg-folusho-sage-50 text-folusho-sage-500 border border-folusho-sage-100' :
-                      loginType === 'teacher' ? 'bg-folusho-yellow-50 text-folusho-yellow-600 border border-folusho-yellow-200' :
-                      'bg-folusho-coral-50 text-folusho-coral-500 border border-folusho-coral-100'
+                      loginType === 'admin' ? 'bg-folusho-sage-500/10 text-folusho-sage-400 border border-white/5' :
+                      loginType === 'teacher' ? 'bg-folusho-yellow-500/10 text-folusho-yellow-500 border border-white/5' :
+                      'bg-folusho-coral-500/10 text-folusho-coral-400 border border-white/5'
                     }`}
                   >
                     {loginType === 'admin' ? <Shield size={56} /> : 
                      loginType === 'teacher' ? <BookOpen size={56} /> : 
                      <Users size={56} />}
                   </motion.div>
-                  <h2 className="text-3xl font-black text-folusho-slate-900 tracking-tighter uppercase leading-none">
+                  <h2 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">
                     {loginType} <br />
                     <span className={
-                      loginType === 'admin' ? 'text-folusho-sage-500' :
-                      loginType === 'teacher' ? 'text-folusho-yellow-600' :
-                      'text-folusho-coral-500'
+                      loginType === 'admin' ? 'text-folusho-sage-400' :
+                      loginType === 'teacher' ? 'text-folusho-yellow-500' :
+                      'text-folusho-coral-400'
                     }>Portal Access</span>
                   </h2>
-                  <p className="text-folusho-slate-400 text-base font-bold mt-5">
+                  <p className="text-folusho-slate-500 text-base font-bold mt-5">
                     Verify your credentials to access the academic citadel.
                   </p>
                 </div>
@@ -349,12 +349,12 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                       Username
                     </label>
                     <div className="relative group">
-                      <User className="absolute left-6 top-1/2 -translate-y-1/2 text-folusho-sage-400 group-focus-within:text-folusho-sage-600 transition-colors" size={20} />
+                      <User className="absolute left-6 top-1/2 -translate-y-1/2 text-folusho-slate-500 group-focus-within:text-folusho-sage-400 transition-colors" size={20} />
                       <input
                         type="text"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="input-folusho !pl-16"
+                        className="input-folusho !pl-16 !bg-folusho-slate-950/50"
                         placeholder="identity.code"
                       />
                     </div>
@@ -365,18 +365,18 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                       Access Code
                     </label>
                     <div className="relative group">
-                      <Shield className="absolute left-6 top-1/2 -translate-y-1/2 text-folusho-sage-400 group-focus-within:text-folusho-sage-600 transition-colors" size={20} />
+                      <Shield className="absolute left-6 top-1/2 -translate-y-1/2 text-folusho-slate-500 group-focus-within:text-folusho-sage-400 transition-colors" size={20} />
                       <input
                         type={showPassword ? "text" : "password"}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="input-folusho !pl-16 !pr-16"
+                        className="input-folusho !pl-16 !pr-16 !bg-folusho-slate-950/50"
                         placeholder="••••••••••••"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-6 top-1/2 -translate-y-1/2 text-folusho-sage-400 hover:text-folusho-sage-600 transition-colors"
+                        className="absolute right-6 top-1/2 -translate-y-1/2 text-folusho-slate-500 hover:text-folusho-sage-400 transition-colors"
                       >
                         {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
                       </button>
@@ -397,10 +397,10 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className={`btn-vibrant w-full py-7 rounded-[2rem] text-[10px] tracking-[0.4em] ${
-                      loginType === 'admin' ? 'bg-folusho-sage-400 text-white' :
-                      loginType === 'teacher' ? 'bg-folusho-yellow-300 text-folusho-slate-900' :
-                      'bg-folusho-coral-400 text-white'
+                    className={`btn-vibrant w-full py-7 rounded-[2rem] text-[10px] tracking-[0.4em] shadow-2xl ${
+                      loginType === 'admin' ? 'bg-folusho-sage-500 text-white' :
+                      loginType === 'teacher' ? 'bg-folusho-yellow-500 text-folusho-slate-950' :
+                      'bg-folusho-coral-500 text-white'
                     }`}
                   >
                     {isLoading ? (
@@ -421,9 +421,9 @@ export default function Login({ onLoginSuccess }: LoginProps) {
 
       {/* Corporate Footprint */}
       <div className="absolute bottom-12 right-12 z-20 opacity-40 hidden xl:block">
-        <p className="text-[10px] font-black tracking-[0.7em] uppercase text-folusho-slate-900 text-right leading-relaxed">
+        <p className="text-[10px] font-black tracking-[0.7em] uppercase text-white text-right leading-relaxed">
           Folusho Academic <br /> 
-          <span className="text-folusho-sage-500 font-black">Educational Governance © 2026</span>
+          <span className="text-folusho-sage-400 font-black">Educational Governance © 2026</span>
         </p>
       </div>
     </div>

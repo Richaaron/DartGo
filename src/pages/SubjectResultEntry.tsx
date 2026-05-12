@@ -661,28 +661,28 @@ export default function SubjectResultEntry() {
       {/* ── Dynamic Header ────────────────────────────── */}
       <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-10">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-50 border border-folusho-sage-100 text-folusho-sage-500 text-[10px] font-black tracking-[0.35em] uppercase">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-500/10 border border-folusho-sage-500/20 text-folusho-sage-400 text-[10px] font-black tracking-[0.35em] uppercase">
             Evaluation Matrix
           </div>
-          <h1 className="text-3xl md:text-5xl font-black text-folusho-slate-900 tracking-tighter leading-none">
+          <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-none">
             Result <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-500 via-folusho-coral-400 to-folusho-sage-600">Synchronization.</span>
           </h1>
-          <p className="text-folusho-slate-400 text-base font-bold max-w-xl leading-relaxed tracking-tight">
+          <p className="text-folusho-slate-500 text-base font-bold max-w-xl leading-relaxed tracking-tight">
             Input CA and Examination scores for high-fidelity grade synthesis.
           </p>
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-6">
-          <div className="flex bg-folusho-cream-50 p-1.5 rounded-[2rem] border border-folusho-cream-200 shadow-sm">
+          <div className="flex bg-folusho-slate-900/40 p-2 rounded-3xl border border-white/5 shadow-2xl backdrop-blur-md">
             {(["students", "results"] as const).map((mode) => (
               <button
                 key={mode}
                 onClick={() => setViewMode(mode)}
-                className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                className={`px-8 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${
                   viewMode === mode
                     ? "bg-folusho-sage-400 text-white shadow-folusho"
-                    : "text-folusho-slate-400 hover:text-folusho-sage-600 hover:bg-white"
+                    : "text-folusho-slate-500 hover:text-folusho-sage-400"
                 }`}
               >
                 {mode === "students" ? "Identity Matrix" : "Archival List"}
@@ -705,21 +705,21 @@ export default function SubjectResultEntry() {
 
       {/* Message */}
       {message.text && (
-        <div className={`mb-6 p-4 rounded-lg flex items-center gap-3 ${
+        <div className={`p-6 rounded-[2rem] flex items-center gap-5 backdrop-blur-md border ${
           message.type === 'success' 
-            ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800' 
-            : 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800'
+            ? 'bg-folusho-sage-500/10 text-folusho-sage-400 border-folusho-sage-500/20 shadow-[0_0_20px_rgba(34,197,94,0.1)]' 
+            : 'bg-folusho-coral-500/10 text-folusho-coral-400 border-folusho-coral-500/20 shadow-[0_0_20px_rgba(239,68,68,0.1)]'
         }`}>
-          <AlertCircle size={20} />
-          <p className="font-medium">{message.text}</p>
+          <AlertCircle size={24} />
+          <p className="font-bold tracking-tight uppercase text-xs">{message.text}</p>
         </div>
       )}
 
       {/* ── Intelligence Filters ───────────────────────── */}
-      <div className="folusho-card !p-12 border-folusho-cream-200">
+      <div className="folusho-card !p-12 border-white/5">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">Personnel Lookup</label>
+            <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">Personnel Lookup</label>
             <div className="relative group">
               <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-sage-400 group-focus-within:text-folusho-sage-600 transition-colors" />
               <input
@@ -727,55 +727,55 @@ export default function SubjectResultEntry() {
                 placeholder="Scan identities..."
                 value={filterTerm}
                 onChange={(e) => setFilterTerm(e.target.value)}
-                className="input-folusho !pl-16"
+                className="input-folusho !pl-16 !bg-folusho-slate-950/50"
               />
             </div>
           </div>
 
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">Sector Focus</label>
+            <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">Sector Focus</label>
             <select
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
-              className="input-folusho !py-5"
+              className="input-folusho !py-5 !bg-folusho-slate-950/50"
             >
-              <option value="All">Global Sectors</option>
-              {availableClasses.map(cls => <option key={cls} value={cls}>{cls}</option>)}
+              <option value="All" className="bg-folusho-slate-900">Global Sectors</option>
+              {availableClasses.map(cls => <option key={cls} value={cls} className="bg-folusho-slate-900">{cls}</option>)}
             </select>
           </div>
 
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">Matrix Focus (Subject)</label>
+            <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">Matrix Focus (Subject)</label>
             <select
               value={selectedSubject}
               onChange={(e) => setSelectedSubject(e.target.value)}
-              className="input-folusho !py-5"
+              className="input-folusho !py-5 !bg-folusho-slate-950/50"
             >
-              <option value="All">All {isTeacher ? 'My' : ''} Subjects</option>
+              <option value="All" className="bg-folusho-slate-900">All {isTeacher ? 'My' : ''} Subjects</option>
               {teacherSubjects.map((subject) => (
-                <option key={subject.id} value={subject.id}>{subject.name}</option>
+                <option key={subject.id} value={subject.id} className="bg-folusho-slate-900">{subject.name}</option>
               ))}
             </select>
           </div>
 
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">Temporal Phase</label>
+            <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">Temporal Phase</label>
             <select
               value={selectedTerm}
               onChange={(e) => setSelectedTerm(e.target.value)}
-              className="input-folusho !py-5"
+              className="input-folusho !py-5 !bg-folusho-slate-950/50"
             >
-              <option value="All">All Phases</option>
-              <option value="First">First Phase</option>
-              <option value="Second">Second Phase</option>
-              <option value="Third">Third Phase</option>
+              <option value="All" className="bg-folusho-slate-900">All Phases</option>
+              <option value="First" className="bg-folusho-slate-900">First Phase</option>
+              <option value="Second" className="bg-folusho-slate-900">Second Phase</option>
+              <option value="Third" className="bg-folusho-slate-900">Third Phase</option>
             </select>
           </div>
         </div>
       </div>
 
       {/* ── Data Matrix ────────────────────────────────── */}
-      <div className="folusho-card !p-0 border-folusho-cream-200">
+      <div className="folusho-card !p-0 border-white/5">
         {viewMode === "students" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 p-10">
             {displayStudents.map((student) => (
@@ -783,20 +783,20 @@ export default function SubjectResultEntry() {
                 key={student.id}
                 layoutId={student.id}
                 onClick={() => setSelectedStudentForEntry(student)}
-                className="bg-folusho-cream-50/30 border border-folusho-cream-200 rounded-[2.5rem] p-8 hover:bg-white hover:border-folusho-sage-300 hover:shadow-folusho transition-all cursor-pointer group"
+                className="bg-white/5 border border-white/5 rounded-[2.5rem] p-8 hover:bg-white/10 hover:border-folusho-sage-500/30 transition-all cursor-pointer group"
               >
-                <div className="w-16 h-16 bg-folusho-sage-50 rounded-2xl flex items-center justify-center border border-folusho-sage-100 group-hover:border-folusho-sage-300 transition-colors shadow-inner mb-8">
-                  <span className="text-2xl font-black text-folusho-sage-500">{student.firstName[0]}{student.lastName[0]}</span>
+                <div className="w-16 h-16 bg-folusho-sage-500/10 rounded-2xl flex items-center justify-center border border-white/5 group-hover:border-folusho-sage-500/30 transition-colors shadow-inner mb-8">
+                  <span className="text-2xl font-black text-folusho-sage-400">{student.firstName[0]}{student.lastName[0]}</span>
                 </div>
-                <h3 className="text-xl font-black text-folusho-slate-900 mb-1 tracking-tight group-hover:text-folusho-sage-600 transition-colors">
+                <h3 className="text-xl font-black text-white mb-1 tracking-tight group-hover:text-folusho-sage-400 transition-colors">
                   {student.firstName} {student.lastName}
                 </h3>
                 <p className="text-[9px] font-black text-folusho-slate-400 uppercase tracking-widest mb-8">
                   {student.registrationNumber}
                 </p>
-                <div className="pt-6 border-t border-folusho-cream-100 flex items-center justify-between">
+                <div className="pt-6 border-t border-white/5 flex items-center justify-between">
                   <span className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-widest">{student.class}</span>
-                  <ChevronRight size={18} className="text-folusho-sage-400 group-hover:text-folusho-sage-600 group-hover:translate-x-2 transition-all" />
+                  <ChevronRight size={18} className="text-folusho-sage-400 group-hover:text-folusho-sage-300 group-hover:translate-x-2 transition-all" />
                 </div>
               </motion.div>
             ))}
@@ -804,42 +804,42 @@ export default function SubjectResultEntry() {
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full">
-              <thead className="bg-folusho-cream-50/50 border-b border-folusho-cream-100">
+              <thead className="bg-white/5 border-b border-white/5">
                 <tr>
-                  <th className="py-6 px-8 text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em] text-left">Personnel</th>
-                  <th className="py-6 px-6 text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em] text-left">Subject</th>
-                  <th className="py-6 px-6 text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em] text-center">Protocol Status</th>
+                  <th className="py-6 px-8 text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.35em] text-left">Personnel</th>
+                  <th className="py-6 px-6 text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.35em] text-left">Subject</th>
+                  <th className="py-6 px-6 text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.35em] text-center">Protocol Status</th>
                   <th className="py-6 px-6 text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.35em] text-center">Score</th>
                   <th className="py-6 px-8 text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.35em] text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-folusho-cream-100">
+              <tbody className="divide-y divide-white/5">
                 {displayResults.map((item) => (
-                  <tr key={item.id} className="hover:bg-folusho-cream-50/30 transition-colors">
+                  <tr key={item.id} className="hover:bg-white/5 transition-colors">
                     <td className="py-6 px-8">
-                      <div className="font-bold text-folusho-slate-900 text-sm">{item.studentName}</div>
-                      <div className="text-[9px] font-black text-folusho-slate-400 uppercase tracking-widest mt-1">{item.class}</div>
+                      <div className="font-bold text-white text-sm">{item.studentName}</div>
+                      <div className="text-[9px] font-black text-folusho-slate-500 uppercase tracking-widest mt-1">{item.class}</div>
                     </td>
-                    <td className="py-6 px-6 text-sm font-bold text-folusho-slate-600">{item.subjectName}</td>
+                    <td className="py-6 px-6 text-sm font-bold text-folusho-slate-400">{item.subjectName}</td>
                     <td className="py-6 px-6 text-center">
                       <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border ${
-                        item.status === "Completed" ? "bg-folusho-sage-50 text-folusho-sage-600 border-folusho-sage-100" : "bg-folusho-coral-50 text-folusho-coral-500 border-folusho-coral-100"
+                        item.status === "Completed" ? "bg-folusho-sage-500/10 text-folusho-sage-400 border-folusho-sage-500/20" : "bg-folusho-coral-500/10 text-folusho-coral-400 border-folusho-coral-500/20"
                       }`}>
                         {item.status}
                       </span>
                     </td>
-                    <td className="py-6 px-6 text-center font-black text-folusho-slate-900 text-lg">{item.totalScore}</td>
+                    <td className="py-6 px-6 text-center font-black text-white text-lg">{item.totalScore}</td>
                     <td className="py-6 px-8 text-right">
                       <div className="flex justify-end gap-3">
                         <button
                           onClick={() => { setEditingResult(item); setShowForm(true) }}
-                          className="p-3 rounded-xl bg-folusho-sage-50 hover:bg-folusho-sage-100 text-folusho-sage-600 transition-all border border-folusho-sage-100 shadow-sm"
+                          className="p-3 rounded-xl bg-white/5 hover:bg-white/10 text-folusho-sage-400 transition-all border border-white/5 shadow-sm"
                         >
                           <ClipboardList size={18} />
                         </button>
                         <button
                           onClick={() => handleDeleteResult(item.id)}
-                          className="p-3 rounded-xl bg-folusho-coral-50 hover:bg-folusho-coral-100 text-folusho-coral-500 transition-all border border-folusho-coral-100 shadow-sm"
+                          className="p-3 rounded-xl bg-white/5 hover:bg-white/10 text-folusho-coral-400 transition-all border border-white/5 shadow-sm"
                         >
                           <AlertCircle size={18} />
                         </button>
@@ -859,17 +859,17 @@ export default function SubjectResultEntry() {
           <button
             disabled={currentPage === 1}
             onClick={() => setCurrentPage(p => p - 1)}
-            className="p-4 rounded-2xl bg-white border border-folusho-cream-200 text-folusho-sage-500 disabled:opacity-20 hover:bg-folusho-cream-50 transition-all shadow-sm"
+            className="p-4 rounded-2xl bg-white/5 border border-white/5 text-folusho-sage-400 disabled:opacity-20 hover:bg-white/10 transition-all shadow-sm"
           >
             <ChevronLeft size={24} />
           </button>
-          <span className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.45em]">
+          <span className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.45em]">
             Matrix Phase {currentPage} of {totalPages}
           </span>
           <button
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage(p => p + 1)}
-            className="p-4 rounded-2xl bg-white border border-folusho-cream-200 text-folusho-sage-500 disabled:opacity-20 hover:bg-folusho-cream-50 transition-all shadow-sm"
+            className="p-4 rounded-2xl bg-white/5 border border-white/5 text-folusho-sage-400 disabled:opacity-20 hover:bg-white/10 transition-all shadow-sm"
           >
             <ChevronRight size={24} />
           </button>
@@ -889,11 +889,11 @@ export default function SubjectResultEntry() {
               initial={{ scale: 0.98, y: 10 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.98, y: 10 }}
-              className="folusho-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-folusho-cream-200"
+              className="folusho-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/5"
             >
-              <div className="p-10 border-b border-folusho-cream-100 bg-gradient-to-r from-folusho-sage-500/10 to-transparent">
-                <h2 className="text-3xl font-black text-folusho-slate-900 tracking-tighter uppercase leading-none">Protocol Injection</h2>
-                <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em] mt-4">Manual override active</p>
+              <div className="p-10 border-b border-white/5 bg-folusho-sage-500/10">
+                <h2 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">Protocol Injection</h2>
+                <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.35em] mt-4">Manual override active</p>
               </div>
               <div className="p-10">
                 <SubjectResultForm

@@ -191,15 +191,11 @@ export default function SubjectResultForm({
 
   return (
     <motion.div 
-      className="relative overflow-hidden bg-folusho-slate-900/90 backdrop-blur-3xl border border-white/5 rounded-[3rem] shadow-folusho-lg"
+      className="relative overflow-hidden bg-folusho-slate-900 backdrop-blur-3xl border border-white/5 rounded-[3rem] shadow-folusho-lg"
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
-      {/* Decorative Orbs */}
-      <div className="absolute -top-24 -right-24 w-64 h-64 bg-folusho-sage-500/10 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-folusho-coral-500/10 rounded-full blur-[100px] pointer-events-none" />
-
       <div className="p-10 bg-gradient-to-r from-folusho-sage-500 to-folusho-sage-700 text-white flex justify-between items-center relative z-10">
         <div>
           <h2 className="text-4xl font-black uppercase tracking-tighter leading-none text-white">
@@ -220,26 +216,26 @@ export default function SubjectResultForm({
       <form onSubmit={handleSubmit} className="p-10 space-y-12 relative z-10 max-h-[80vh] overflow-y-auto custom-scrollbar">
         {/* Section I: Identity Selection */}
         <section className="space-y-6">
-          <h3 className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2 flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-folusho-sage-500" />
+          <h3 className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.45em] px-2 flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-folusho-sage-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
             I. Target Identification
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-3">
-              <label className="block text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.2em] px-2">
+              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
                 Operational Student
               </label>
               <select
                 name="studentId"
                 value={formData.studentId}
                 onChange={handleChange}
-                className={`input-folusho w-full !py-5 ${errors.studentId ? 'border-folusho-coral-500/50' : ''}`}
+                className={`input-folusho w-full !py-5 !bg-folusho-slate-950/50 ${errors.studentId ? 'border-folusho-coral-500/50' : ''}`}
                 disabled={isEditing || (!!initialData && !!initialData.studentId)}
               >
-                <option value="">Select identity...</option>
+                <option value="" className="bg-folusho-slate-900">Select identity...</option>
                 {filteredStudents.map((student) => (
-                  <option key={student.id} value={student.id}>
+                  <option key={student.id} value={student.id} className="bg-folusho-slate-900">
                     {student.firstName} {student.lastName} ({student.registrationNumber}) - {student.class}
                   </option>
                 ))}
@@ -250,19 +246,19 @@ export default function SubjectResultForm({
             </div>
 
             <div className="space-y-3">
-              <label className="block text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.2em] px-2">
+              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
                 Subject Logic Matrix
               </label>
               <select
                 name="subjectId"
                 value={formData.subjectId}
                 onChange={handleChange}
-                className={`input-folusho w-full !py-5 ${errors.subjectId ? 'border-folusho-coral-500/50' : ''}`}
+                className={`input-folusho w-full !py-5 !bg-folusho-slate-950/50 ${errors.subjectId ? 'border-folusho-coral-500/50' : ''}`}
                 disabled={isEditing || (!!initialData && !!initialData.studentId)}
               >
-                <option value="">Select subject protocol...</option>
+                <option value="" className="bg-folusho-slate-900">Select subject protocol...</option>
                 {filteredSubjects.map((subject) => (
-                  <option key={subject.id} value={subject.id}>
+                  <option key={subject.id} value={subject.id} className="bg-folusho-slate-900">
                     {subject.name} ({subject.code})
                   </option>
                 ))}
@@ -276,14 +272,14 @@ export default function SubjectResultForm({
 
         {/* Section II: Performance Vectors */}
         <section className="space-y-6 pt-6 border-t border-white/5">
-          <h3 className="text-[10px] font-black text-folusho-yellow-600 uppercase tracking-[0.45em] px-2 flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-folusho-yellow-500" />
+          <h3 className="text-[10px] font-black text-folusho-yellow-500 uppercase tracking-[0.45em] px-2 flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-folusho-yellow-500 shadow-[0_0_8px_rgba(234,179,8,0.5)]" />
             II. Performance Vectors
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-3">
-              <label className="block text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.2em] px-2">
+              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
                 1st CA Vector (20)
               </label>
               <input
@@ -291,7 +287,7 @@ export default function SubjectResultForm({
                 name="firstCA"
                 value={formData.firstCA}
                 onChange={handleChange}
-                className={`input-folusho w-full !py-5 ${errors.firstCA ? 'border-folusho-coral-500/50' : ''}`}
+                className={`input-folusho w-full !py-5 !bg-folusho-slate-950/50 ${errors.firstCA ? 'border-folusho-coral-500/50' : ''}`}
               />
               {errors.firstCA && (
                 <p className="text-folusho-coral-500 text-[10px] font-black uppercase tracking-widest px-2">{errors.firstCA}</p>
@@ -299,7 +295,7 @@ export default function SubjectResultForm({
             </div>
 
             <div className="space-y-3">
-              <label className="block text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.2em] px-2">
+              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
                 2nd CA Vector (20)
               </label>
               <input
@@ -307,7 +303,7 @@ export default function SubjectResultForm({
                 name="secondCA"
                 value={formData.secondCA}
                 onChange={handleChange}
-                className={`input-folusho w-full !py-5 ${errors.secondCA ? 'border-folusho-coral-500/50' : ''}`}
+                className={`input-folusho w-full !py-5 !bg-folusho-slate-950/50 ${errors.secondCA ? 'border-folusho-coral-500/50' : ''}`}
               />
               {errors.secondCA && (
                 <p className="text-folusho-coral-500 text-[10px] font-black uppercase tracking-widest px-2">{errors.secondCA}</p>
@@ -315,7 +311,7 @@ export default function SubjectResultForm({
             </div>
 
             <div className="space-y-3">
-              <label className="block text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.2em] px-2">
+              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
                 Final Exam (60)
               </label>
               <input
@@ -323,7 +319,7 @@ export default function SubjectResultForm({
                 name="exam"
                 value={formData.exam}
                 onChange={handleChange}
-                className={`input-folusho w-full !py-5 ${errors.exam ? 'border-folusho-coral-500/50' : ''}`}
+                className={`input-folusho w-full !py-5 !bg-folusho-slate-950/50 ${errors.exam ? 'border-folusho-coral-500/50' : ''}`}
               />
               {errors.exam && (
                 <p className="text-folusho-coral-500 text-[10px] font-black uppercase tracking-widest px-2">{errors.exam}</p>
@@ -332,7 +328,7 @@ export default function SubjectResultForm({
           </div>
 
           {/* Grading Intelligence Dashboard */}
-          <div className="p-10 rounded-[2.5rem] bg-white/5 border border-white/5 shadow-inner">
+          <div className="p-10 rounded-[2.5rem] bg-folusho-slate-950/50 border border-white/5 shadow-inner">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
               <div className="space-y-2">
                 <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest">Total Aggregate</p>
@@ -357,7 +353,7 @@ export default function SubjectResultForm({
               </div>
               <div>
                 <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.2em] mb-2">Automated Intelligence Remark</p>
-                <p className="text-sm font-bold text-folusho-cream-100 leading-relaxed italic">"{preview.remarks}"</p>
+                <p className="text-sm font-bold text-white leading-relaxed italic">"{preview.remarks}"</p>
               </div>
             </div>
           </div>
@@ -365,14 +361,14 @@ export default function SubjectResultForm({
 
         {/* Section III: Operational Sign-off */}
         <section className="space-y-6 pt-6 border-t border-white/5">
-          <h3 className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.45em] px-2 flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-folusho-coral-500" />
+          <h3 className="text-[10px] font-black text-folusho-coral-400 uppercase tracking-[0.45em] px-2 flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-folusho-coral-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
             III. Operational Sign-off
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-3">
-              <label className="block text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.2em] px-2">
+              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
                 Faculty Identity (Recorded By)
               </label>
               <input
@@ -380,7 +376,7 @@ export default function SubjectResultForm({
                 name="recordedBy"
                 value={formData.recordedBy}
                 onChange={handleChange}
-                className={`input-folusho w-full !py-5 ${errors.recordedBy ? 'border-folusho-coral-500/50' : ''}`}
+                className={`input-folusho w-full !py-5 !bg-folusho-slate-950/50 ${errors.recordedBy ? 'border-folusho-coral-500/50' : ''}`}
                 placeholder="Teacher Identity..."
               />
               {errors.recordedBy && (
@@ -389,7 +385,7 @@ export default function SubjectResultForm({
             </div>
 
             <div className="space-y-3">
-              <label className="block text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.2em] px-2">
+              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
                 Deployment Cycle (Academic Year)
               </label>
               <input
@@ -397,7 +393,7 @@ export default function SubjectResultForm({
                 name="academicYear"
                 value={formData.academicYear}
                 onChange={handleChange}
-                className="input-folusho w-full !py-5"
+                className="input-folusho w-full !py-5 !bg-folusho-slate-950/50"
                 placeholder="e.g. 2026"
               />
             </div>
@@ -409,7 +405,7 @@ export default function SubjectResultForm({
           <button
             type="button"
             onClick={onCancel}
-            className="px-10 py-5 text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.35em] hover:text-folusho-sage-400 transition-all"
+            className="px-10 py-5 text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.35em] hover:text-white transition-all"
           >
             Cancel
           </button>

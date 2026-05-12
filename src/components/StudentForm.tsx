@@ -452,21 +452,21 @@ export default function StudentForm({
                   .filter(s => s.name.toLowerCase().includes(subjectSearchTerm.toLowerCase()))
                   .map(subject => (
                     <label
-                      key={subjectId}
+                      key={subject.id}
                       className={`flex items-center gap-5 p-6 rounded-[2rem] border transition-all cursor-pointer ${
-                        selectedSubjects.includes(subjectId)
+                        selectedSubjects.includes(subject.id)
                           ? 'bg-folusho-sage-500/10 border-folusho-sage-400/30 shadow-sm'
                           : 'bg-white/5 border-white/5 hover:border-folusho-sage-500/30'
                       }`}
                     >
                       <input
                         type="checkbox"
-                        checked={selectedSubjects.includes(subjectId)}
-                        onChange={() => toggleSubject(subjectId)}
+                        checked={selectedSubjects.includes(subject.id)}
+                        onChange={() => toggleSubject(subject.id)}
                         className="w-6 h-6 border-white/10 text-folusho-sage-500 rounded-lg focus:ring-folusho-sage-400 bg-transparent"
                       />
                       <div className="flex-1 min-w-0">
-                        <p className={`text-sm font-black truncate transition-colors ${selectedSubjects.includes(subjectId) ? 'text-folusho-sage-400' : 'text-white'}`}>{subject.name}</p>
+                        <p className={`text-sm font-black truncate transition-colors ${selectedSubjects.includes(subject.id) ? 'text-folusho-sage-400' : 'text-white'}`}>{subject.name}</p>
                         <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest mt-1">{subject.code}</p>
                       </div>
                     </label>

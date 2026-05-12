@@ -442,24 +442,24 @@ export default function Reports() {
               setReportType("overview");
               setIsEditingObservation(false);
             }}
-            className="group flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-black text-[10px] uppercase tracking-widest hover:translate-x-[-4px] transition-all"
+            className="group flex items-center gap-2 text-folusho-sage-400 font-black text-[10px] uppercase tracking-widest hover:translate-x-[-4px] transition-all"
           >
             <ChevronLeft size={16} /> Back to Reports
           </button>
           <div className="flex gap-4">
             <button
               onClick={() => setIsEditingObservation(!isEditingObservation)}
-              className={`btn-secondary text-xs`}
+              className="px-6 py-3 bg-white/5 hover:bg-white/10 text-white rounded-2xl text-[10px] font-black tracking-widest uppercase border border-white/5 transition-all"
             >
               {isEditingObservation ? "Cancel Edit" : "Edit Observations"}
             </button>
             <button
               onClick={exportToPDF}
-              className="btn-secondary text-xs flex items-center gap-2"
+              className="px-6 py-3 bg-white/5 hover:bg-white/10 text-white rounded-2xl text-[10px] font-black tracking-widest uppercase border border-white/5 transition-all flex items-center gap-2"
             >
               <Download size={16} /> Download PDF
             </button>
-            <button onClick={handlePrint} className="btn-primary text-xs">
+            <button onClick={handlePrint} className="btn-vibrant bg-folusho-sage-400 shadow-folusho text-xs">
               <Printer size={16} /> Print Report
             </button>
           </div>
@@ -473,8 +473,8 @@ export default function Reports() {
               exit={{ opacity: 0, height: 0 }}
               className="overflow-hidden print:hidden"
             >
-              <div className="card-lg border-indigo-100 dark:border-indigo-900/30 bg-indigo-50/30 dark:bg-indigo-500/5">
-                <h2 className="text-xs font-black text-indigo-900 dark:text-indigo-400 mb-8 uppercase tracking-[0.2em] flex items-center gap-2">
+            <div className="folusho-card border-white/5 !p-12 mb-12 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl">
+                <h2 className="text-[10px] font-black text-folusho-sage-400 mb-10 uppercase tracking-[0.35em] flex items-center gap-3">
                   <FileText size={16} /> Edit Observations
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8">
@@ -487,9 +487,9 @@ export default function Reports() {
                         (key) => (
                           <div
                             key={key}
-                            className="flex justify-between items-center bg-white dark:bg-gray-900 p-3 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm"
+                            className="flex justify-between items-center bg-folusho-slate-950/50 p-4 rounded-2xl border border-white/5 shadow-sm"
                           >
-                            <label className="text-xs font-bold text-gray-600 dark:text-gray-400 capitalize">
+                            <label className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest capitalize">
                               {key.replace(/([A-Z])/g, " $1")}
                             </label>
                             <input
@@ -506,7 +506,7 @@ export default function Reports() {
                                   },
                                 })
                               }
-                              className="w-10 h-8 text-center font-black text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 border-none rounded-lg focus:ring-2 focus:ring-indigo-500"
+                              className="w-12 h-10 text-center font-black text-folusho-sage-400 bg-folusho-sage-500/10 border-none rounded-xl focus:ring-2 focus:ring-folusho-sage-500"
                             />
                           </div>
                         ),
@@ -522,9 +522,9 @@ export default function Reports() {
                         (key) => (
                           <div
                             key={key}
-                            className="flex justify-between items-center bg-white dark:bg-gray-900 p-3 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm"
+                            className="flex justify-between items-center bg-folusho-slate-950/50 p-4 rounded-2xl border border-white/5 shadow-sm"
                           >
-                            <label className="text-xs font-bold text-gray-600 dark:text-gray-400 capitalize">
+                            <label className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest capitalize">
                               {key}
                             </label>
                             <input
@@ -541,7 +541,7 @@ export default function Reports() {
                                   },
                                 })
                               }
-                              className="w-10 h-8 text-center font-black text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 border-none rounded-lg focus:ring-2 focus:ring-indigo-500"
+                              className="w-12 h-10 text-center font-black text-folusho-sage-400 bg-folusho-sage-500/10 border-none rounded-xl focus:ring-2 focus:ring-folusho-sage-500"
                             />
                           </div>
                         ),
@@ -555,7 +555,7 @@ export default function Reports() {
                       Teacher's Narrative
                     </label>
                     <textarea
-                      className="input-field h-32 resize-none text-sm"
+                      className="input-folusho h-32 resize-none text-sm !bg-folusho-slate-950/50"
                       value={editObservation.teacherComment}
                       onChange={(e) =>
                         setEditObservation({
@@ -571,7 +571,7 @@ export default function Reports() {
                       Principal's Narrative
                     </label>
                     <textarea
-                      className="input-field h-32 resize-none text-sm"
+                      className="input-folusho h-32 resize-none text-sm !bg-folusho-slate-950/50"
                       value={editObservation.principalComment}
                       onChange={(e) =>
                         setEditObservation({
@@ -586,9 +586,9 @@ export default function Reports() {
                 <div className="flex justify-end">
                   <button
                     onClick={handleSaveObservation}
-                    className="btn-primary px-10"
+                    className="btn-vibrant bg-folusho-sage-400 shadow-folusho px-12"
                   >
-                    <Save size={18} /> Save
+                    <Save size={18} /> Save Matrix
                   </button>
                 </div>
               </div>
@@ -991,23 +991,26 @@ export default function Reports() {
     >
       <motion.div
         variants={itemVariants}
-        className="flex justify-between items-end"
+        className="flex flex-col lg:flex-row lg:items-center justify-between gap-10"
       >
-        <div>
-          <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight">
-            Reports{" "}
-            <span className="text-indigo-600 dark:text-indigo-400">Vault</span>
+        <div className="space-y-4">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-500/10 border border-folusho-sage-500/20 text-folusho-sage-400 text-[10px] font-black tracking-[0.35em] uppercase">
+            Institutional Registry
+          </div>
+          <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-none">
+            Legacy <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-400 via-folusho-coral-400 to-folusho-sage-500">Vault.</span>
           </h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-2 font-medium tracking-tight">
+          <p className="text-folusho-slate-500 text-sm font-bold max-w-xl leading-relaxed tracking-tight">
             Access and generate high-fidelity performance records.
           </p>
         </div>
         <div className="relative group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-500 transition-colors w-4 h-4" />
+          <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-folusho-sage-500 group-focus-within:text-folusho-sage-400 transition-colors w-5 h-5" />
           <input
             type="text"
             placeholder="Query identification..."
-            className="pl-11 pr-6 py-3 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl w-80 focus:ring-2 focus:ring-indigo-500 outline-none shadow-sm transition-all text-sm font-bold placeholder:text-gray-400"
+            className="input-folusho !pl-16 w-full lg:w-96"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -1016,16 +1019,16 @@ export default function Reports() {
 
       <motion.div
         variants={itemVariants}
-        className="flex flex-col sm:flex-row gap-4 items-center justify-between"
+        className="flex flex-col sm:flex-row gap-8 items-center justify-between"
       >
-        <div className="flex flex-col sm:flex-row gap-4 items-center">
-          <div className="bg-gray-100 dark:bg-royal-black-800 p-1.5 rounded-2xl flex gap-2 w-full sm:w-auto overflow-x-auto no-scrollbar shadow-inner">
+        <div className="flex flex-col sm:flex-row gap-6 items-center">
+          <div className="bg-folusho-slate-900/40 p-2 rounded-3xl flex gap-2 w-full sm:w-auto overflow-x-auto no-scrollbar border border-white/5 shadow-2xl backdrop-blur-md">
             <button
               onClick={() => {
                 setReportType("overview");
                 setSelectedStudentId("");
               }}
-              className={`px-6 py-2.5 rounded-xl text-sm font-black uppercase tracking-widest transition-all duration-300 ${reportType === "overview" ? "bg-white dark:bg-royal-purple-600 text-royal-purple-600 dark:text-white shadow-xl scale-105" : "text-gray-500 hover:text-gray-900 dark:hover:text-white"}`}
+              className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${reportType === "overview" ? "bg-folusho-sage-400 text-white shadow-folusho scale-105" : "text-folusho-slate-500 hover:text-folusho-sage-400"}`}
             >
               Overview
             </button>
@@ -1037,13 +1040,13 @@ export default function Reports() {
                   window.alert("Please select a student from the overview grid first.");
                 }
               }}
-              className={`px-6 py-2.5 rounded-xl text-sm font-black uppercase tracking-widest transition-all duration-300 ${reportType === "report-card" ? "bg-white dark:bg-royal-purple-600 text-royal-purple-600 dark:text-white shadow-xl scale-105" : "text-gray-500 hover:text-gray-900 dark:hover:text-white"}`}
+              className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${reportType === "report-card" ? "bg-folusho-sage-400 text-white shadow-folusho scale-105" : "text-folusho-slate-500 hover:text-folusho-sage-400"}`}
             >
               Report Cards
             </button>
             <button
               onClick={() => setReportType("broadsheet")}
-              className={`px-6 py-2.5 rounded-xl text-sm font-black uppercase tracking-widest transition-all duration-300 ${reportType === "broadsheet" ? "bg-white dark:bg-royal-purple-600 text-royal-purple-600 dark:text-white shadow-xl scale-105" : "text-gray-500 hover:text-gray-900 dark:hover:text-white"}`}
+              className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${reportType === "broadsheet" ? "bg-folusho-sage-400 text-white shadow-folusho scale-105" : "text-folusho-slate-500 hover:text-folusho-sage-400"}`}
             >
               Broadsheet
             </button>
@@ -1059,7 +1062,7 @@ export default function Reports() {
                   setClassFilter(e.target.value);
                 }
               }}
-              className="input-field pl-4 border-2 border-indigo-100 dark:border-indigo-900/30 focus:border-indigo-500"
+              className="input-folusho !py-3.5 !text-xs"
             >
               <option value="">{reportType === "broadsheet" ? "Select Class for Broadsheet..." : "Filter Overview by Class..."}</option>
               {(() => {
@@ -1083,7 +1086,7 @@ export default function Reports() {
               <select
                 value={selectedArm}
                 onChange={(e) => setSelectedArm(e.target.value)}
-                className="input-field pl-4 border-2 border-indigo-100 dark:border-indigo-900/30 focus:border-indigo-500"
+                className="input-folusho !py-3.5 !text-xs"
               >
                 <option value="All">All Departments</option>
                 <option value="Science">Science</option>
@@ -1098,7 +1101,7 @@ export default function Reports() {
       {reportType === "overview" ? (
         <motion.div
           variants={itemVariants}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
         >
           {studentPerformanceData.length > 0 ? (
             studentPerformanceData.map((student) => (
@@ -1109,34 +1112,34 @@ export default function Reports() {
                   setSelectedStudentId(student.id);
                   setReportType("report-card");
                 }}
-                className="professional-card p-6 cursor-pointer group hover:bg-brand-900/60 transition-all duration-300"
+                className="folusho-card !p-8 cursor-pointer group hover:border-folusho-sage-500/30 transition-all duration-300 border-white/5"
               >
                 <div className="flex flex-col items-center text-center">
-                  <div className="w-16 h-16 rounded-2xl bg-indigo-600/20 flex items-center justify-center text-indigo-400 font-black text-2xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                  <div className="w-20 h-20 rounded-[2rem] bg-folusho-sage-500/10 flex items-center justify-center text-folusho-sage-400 font-black text-2xl mb-6 group-hover:bg-folusho-sage-400 group-hover:text-white transition-all duration-300 border border-white/5 shadow-inner">
                     {student.firstName[0]}{student.lastName[0]}
                   </div>
-                  <h3 className="text-white font-black uppercase tracking-tight text-lg mb-1">
+                  <h3 className="text-white font-black uppercase tracking-tight text-xl mb-1">
                     {student.firstName} {student.lastName}
                   </h3>
-                  <p className="text-indigo-400 text-xs font-bold uppercase tracking-widest mb-4">
+                  <p className="text-folusho-sage-400 text-xs font-bold uppercase tracking-widest mb-6">
                     {student.class}
                   </p>
                   
-                  <div className="w-full pt-4 border-t border-indigo-500/10 grid grid-cols-2 gap-4">
+                  <div className="w-full pt-6 border-t border-white/5 grid grid-cols-2 gap-6">
                     <div className="text-left">
-                      <p className="text-[10px] text-gray-500 uppercase font-black">Efficiency</p>
-                      <p className={`text-lg font-black ${student.avgScore >= 50 ? 'text-emerald-500' : 'text-rose-500'}`}>
+                      <p className="text-[10px] text-folusho-slate-500 uppercase font-black tracking-widest">Efficiency</p>
+                      <p className={`text-xl font-black ${student.avgScore >= 50 ? 'text-folusho-sage-400' : 'text-folusho-coral-400'} tracking-tighter`}>
                         {student.avgScore}%
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-[10px] text-gray-500 uppercase font-black">Units</p>
-                      <p className="text-lg font-black text-white">{student.subjectsCount}</p>
+                      <p className="text-[10px] text-folusho-slate-500 uppercase font-black tracking-widest">Units</p>
+                      <p className="text-xl font-black text-white tracking-tighter">{student.subjectsCount}</p>
                     </div>
                   </div>
 
-                  <div className="w-full mt-4 flex justify-center">
-                    <span className="px-4 py-2 bg-indigo-600/10 text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white rounded-xl text-[10px] font-black uppercase tracking-widest border border-indigo-500/20 transition-all">
+                  <div className="w-full mt-8 flex justify-center">
+                    <span className="px-6 py-3 bg-white/5 text-folusho-sage-400 group-hover:bg-folusho-sage-400 group-hover:text-white rounded-2xl text-[10px] font-black uppercase tracking-widest border border-white/5 transition-all shadow-xl">
                       Open Record
                     </span>
                   </div>
@@ -1154,50 +1157,50 @@ export default function Reports() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-royal-black-900 rounded-[2.5rem] shadow-2xl border border-gray-100 dark:border-gray-800 p-8 overflow-hidden"
+          className="folusho-card !p-0 border-white/5 overflow-hidden"
         >
           {broadsheetData ? (
-            <div className="space-y-8">
-              <div className="flex justify-between items-center pb-6 border-b border-gray-100 dark:border-gray-800">
+            <div className="space-y-12">
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10 p-12 border-b border-white/5 bg-white/5">
                 <div>
-                  <h2 className="text-2xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">
+                  <h2 className="text-3xl font-black text-white uppercase tracking-tighter">
                     {selectedClass} Academic Broadsheet
                   </h2>
-                  <p className="text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mt-1">
+                  <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.35em] mt-3">
                     Term: {config?.currentTerm || "2nd Term"} | Session: {config?.currentAcademicYear || "2023/2024"}
                   </p>
                 </div>
-                <div className="flex gap-4">
-                  <button onClick={() => window.print()} className="btn-primary text-xs flex items-center gap-2">
-                    <Printer size={16} /> Print Broadsheet
+                <div className="flex gap-6">
+                  <button onClick={() => window.print()} className="btn-vibrant bg-folusho-sage-400 shadow-folusho">
+                    <Printer size={18} /> Print Broadsheet
                   </button>
                 </div>
               </div>
 
-              <div className="overflow-x-auto relative rounded-2xl border border-gray-100 dark:border-gray-800 shadow-inner">
-                <table className="w-full border-collapse text-xs">
+              <div className="overflow-x-auto relative no-scrollbar">
+                <table className="w-full border-collapse text-[10px] uppercase font-black tracking-widest">
                   <thead className="sticky top-0 z-20">
-                    <tr className="bg-gray-900 text-white">
-                      <th className="p-4 text-left sticky left-0 z-30 bg-gray-900 border-r border-gray-800 min-w-[200px]">
-                        Student Name
+                    <tr className="bg-folusho-slate-900 text-white">
+                      <th className="p-6 text-left sticky left-0 z-30 bg-folusho-slate-900 border-r border-white/5 min-w-[240px]">
+                        Student Identity
                       </th>
                       {broadsheetData.subjects.map(sub => (
-                        <th key={sub.id} className="p-0 border-r border-gray-800 min-w-[300px]" colSpan={5}>
-                          <div className="p-2 border-b border-gray-800 font-black uppercase tracking-widest text-center truncate">
+                        <th key={sub.id} className="p-0 border-r border-white/5 min-w-[350px]" colSpan={5}>
+                          <div className="p-4 border-b border-white/5 font-black uppercase tracking-[0.2em] text-center truncate text-folusho-sage-400">
                             {sub.name}
                           </div>
-                          <div className="grid grid-cols-5 text-[8px] font-black uppercase">
-                            <div className="p-1 border-r border-gray-800">1st CA</div>
-                            <div className="p-1 border-r border-gray-800">2nd CA</div>
-                            <div className="p-1 border-r border-gray-800">Exam</div>
-                            <div className="p-1 border-r border-gray-800 text-royal-gold-400">Total</div>
-                            <div className="p-1">Grd</div>
+                          <div className="grid grid-cols-5 text-[8px] font-black uppercase text-folusho-slate-500">
+                            <div className="p-2 border-r border-white/5">1st CA</div>
+                            <div className="p-2 border-r border-white/5">2nd CA</div>
+                            <div className="p-2 border-r border-white/5">Exam</div>
+                            <div className="p-2 border-r border-white/5 text-folusho-yellow-500">Total</div>
+                            <div className="p-2">Grd</div>
                           </div>
                         </th>
                       ))}
-                      <th className="p-4 bg-indigo-900 min-w-[80px]">Grand Total</th>
-                      <th className="p-4 bg-emerald-900 min-w-[80px]">Avg</th>
-                      <th className="p-4 bg-violet-900 min-w-[80px]">Pos</th>
+                      <th className="p-4 bg-folusho-slate-800 border-r border-white/5 min-w-[100px]">Sum</th>
+                      <th className="p-4 bg-folusho-slate-800 border-r border-white/5 min-w-[100px]">Avg</th>
+                      <th className="p-4 bg-folusho-slate-800 min-w-[100px]">Pos</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -1212,31 +1215,31 @@ export default function Reports() {
                       };
 
                       return (
-                        <tr key={student.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                          <td className="p-4 font-black text-gray-900 dark:text-white sticky left-0 z-10 bg-white dark:bg-royal-black-900 border-r border-gray-100 dark:border-gray-800 uppercase tracking-tighter">
+                        <tr key={student.id} className="hover:bg-white/5 transition-colors border-b border-white/5">
+                          <td className="p-6 font-black text-white sticky left-0 z-10 bg-folusho-slate-950 border-r border-white/5 uppercase tracking-tighter">
                             {student.lastName}, {student.firstName}
                           </td>
                           {broadsheetData.subjects.map(sub => {
                             const res = broadsheetData.results.find(r => r.studentId === student.id && r.subjectId === sub.id);
                             return (
-                              <td key={sub.id} className="p-0 border-r border-gray-100 dark:border-gray-800" colSpan={5}>
+                              <td key={sub.id} className="p-0 border-r border-white/5" colSpan={5}>
                                 <div className="grid grid-cols-5 text-center font-bold h-full">
-                                  <div className="p-2 border-r border-gray-100 dark:border-gray-800 text-gray-500">{res?.firstCA ?? '-'}</div>
-                                  <div className="p-2 border-r border-gray-100 dark:border-gray-800 text-gray-500">{res?.secondCA ?? '-'}</div>
-                                  <div className="p-2 border-r border-gray-100 dark:border-gray-800 text-gray-500">{res?.examScore ?? '-'}</div>
-                                  <div className="p-2 border-r border-gray-100 dark:border-gray-800 bg-royal-gold-50/50 dark:bg-royal-gold-900/10 text-royal-gold-600 dark:text-royal-gold-400 font-black">{res?.totalScore ?? '-'}</div>
-                                  <div className="p-2 font-black text-indigo-600 dark:text-indigo-400">{res?.grade ?? '-'}</div>
+                                  <div className="p-4 border-r border-white/5 text-folusho-slate-500">{res?.firstCA ?? '-'}</div>
+                                  <div className="p-4 border-r border-white/5 text-folusho-slate-500">{res?.secondCA ?? '-'}</div>
+                                  <div className="p-4 border-r border-white/5 text-folusho-slate-500">{res?.examScore ?? '-'}</div>
+                                  <div className="p-4 border-r border-white/5 bg-folusho-yellow-500/10 text-folusho-yellow-500 font-black">{res?.totalScore ?? '-'}</div>
+                                  <div className="p-4 font-black text-folusho-sage-400">{res?.grade ?? '-'}</div>
                                 </div>
                               </td>
                             );
                           })}
-                          <td className="p-4 text-center font-black bg-indigo-50/30 dark:bg-indigo-900/10 text-indigo-700 dark:text-indigo-400">
+                          <td className="p-6 text-center font-black bg-white/5 text-white border-r border-white/5">
                             {studentPerformance?.total ?? 0}
                           </td>
-                          <td className="p-4 text-center font-black bg-emerald-50/30 dark:bg-emerald-900/10 text-emerald-700 dark:text-emerald-400">
+                          <td className="p-6 text-center font-black bg-white/5 text-folusho-sage-400 border-r border-white/5">
                             {studentPerformance?.avg.toFixed(1) ?? "0.0"}
                           </td>
-                          <td className="p-4 text-center font-black bg-violet-50/30 dark:bg-violet-900/10 text-violet-700 dark:text-violet-400">
+                          <td className="p-6 text-center font-black bg-white/5 text-folusho-yellow-500">
                             {position}{suffix(position)}
                           </td>
                         </tr>

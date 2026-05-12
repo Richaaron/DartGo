@@ -428,7 +428,7 @@ export default function ResultEntry() {
           </div>
 
           {activeTab === 'release' && (
-            <div className="folusho-card border-white/5">
+            <div className="folusho-card border-white/5 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl">
               <ReleaseResultsPanel students={students} results={results} onRefresh={loadData} />
             </div>
           )}
@@ -436,42 +436,42 @@ export default function ResultEntry() {
           {activeTab === 'entry' && (
             <div className="space-y-10">
               {/* Intelligence Filters */}
-              <div className="folusho-card !p-10 border-white/5">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em] px-2">
+              <div className="folusho-card !p-12 border-white/5 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                  <div className="space-y-4">
+                    <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">
                       Personnel Search
                     </label>
                     <div className="relative group">
-                      <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-sage-600 group-focus-within:text-folusho-sage-400 transition-colors" />
+                      <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-slate-500 group-focus-within:text-folusho-sage-400 transition-colors" />
                       <input
                         type="text"
                         placeholder="Scan identities..."
                         value={filterTerm}
                         onChange={(e) => setFilterTerm(e.target.value)}
-                        className="input-folusho !pl-16"
+                        className="input-folusho !pl-16 !bg-folusho-slate-950/50"
                       />
                     </div>
                   </div>
-
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em] px-2">
+ 
+                  <div className="space-y-4">
+                    <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">
                       Operational Sector
                     </label>
                     <select
                       value={selectedClass}
                       onChange={(e) => setSelectedClass(e.target.value)}
-                      className="input-folusho"
+                      className="input-folusho !bg-folusho-slate-950/50"
                     >
-                      <option value="All">Global Sectors</option>
-                      {availableClasses.map(cls => <option key={cls} value={cls}>{cls}</option>)}
+                      <option value="All" className="bg-folusho-slate-900">Global Sectors</option>
+                      {availableClasses.map(cls => <option key={cls} value={cls} className="bg-folusho-slate-900">{cls}</option>)}
                     </select>
                   </div>
                 </div>
               </div>
 
               {/* Data Matrix */}
-              <div className="folusho-card !p-0 border-white/5">
+              <div className="folusho-card !p-0 border-white/5 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl overflow-hidden">
                 {viewMode === 'students' ? (
                   <Table
                     columns={[
@@ -524,9 +524,9 @@ export default function ResultEntry() {
 
               {/* Stats Matrix */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div className="folusho-card !p-10 group hover:border-folusho-sage-500/30 transition-all border-white/5">
-                  <div className="flex items-center justify-between mb-6">
-                    <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.35em]">Total Archive</p>
+                <div className="folusho-card !p-12 group hover:border-folusho-sage-400/50 transition-all border-white/5 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl">
+                  <div className="flex items-center justify-between mb-8">
+                    <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em]">Total Archive</p>
                     <BarChart3 className="w-5 h-5 text-folusho-sage-400 opacity-50 group-hover:opacity-100 transition-opacity" />
                   </div>
                   <p className="text-5xl font-black text-white tracking-tighter">{filteredResults.length}</p>
@@ -547,9 +547,9 @@ export default function ResultEntry() {
                   initial={{ scale: 0.9, y: 20 }}
                   animate={{ scale: 1, y: 0 }}
                   exit={{ scale: 0.9, y: 20 }}
-                  className="folusho-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-folusho-cream-300 shadow-folusho-lg"
+                  className="folusho-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/5 shadow-2xl bg-folusho-slate-900"
                 >
-                  <div className="p-12 border-b border-white/5 bg-folusho-sage-500/10">
+                  <div className="p-12 border-b border-white/5 bg-white/5">
                     <h2 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">Protocol Entry</h2>
                     <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.35em] mt-3">Initialize synchronization</p>
                   </div>

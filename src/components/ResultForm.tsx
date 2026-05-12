@@ -88,20 +88,16 @@ export default function ResultForm({
 
   return (
     <motion.div 
-      className="folusho-card border-folusho-cream-200"
+      className="folusho-card !p-0 border-white/5 bg-folusho-slate-900 shadow-2xl overflow-hidden"
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
-      {/* Decorative Orbs */}
-      <div className="absolute -top-24 -right-24 w-64 h-64 bg-folusho-sage-100/40 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-folusho-coral-100/40 rounded-full blur-[100px] pointer-events-none" />
-
-      <div className="relative z-10">
+      <div className="relative z-10 p-12">
         <div className="flex justify-between items-start mb-12">
           <div>
             <motion.h2 
-              className="text-4xl font-black uppercase tracking-tighter leading-none text-folusho-slate-900 mb-3"
+              className="text-4xl font-black uppercase tracking-tighter leading-none text-white mb-3"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
             >
@@ -113,7 +109,7 @@ export default function ResultForm({
           </div>
           <button
             onClick={onCancel}
-            className="p-4 hover:bg-folusho-cream-100 rounded-3xl transition-all border border-folusho-cream-200 text-folusho-slate-400 hover:text-folusho-slate-900"
+            className="p-4 hover:bg-white/5 rounded-3xl transition-all border border-white/5 text-folusho-slate-400 hover:text-white"
           >
             <X size={24} />
           </button>
@@ -122,8 +118,8 @@ export default function ResultForm({
         <form onSubmit={handleSubmit} className="space-y-12">
           {/* Section I: Identity Mapping */}
           <section className="space-y-6">
-            <h3 className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2 flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-folusho-sage-400" />
+            <h3 className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.45em] px-2 flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-folusho-sage-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
               I. Identity Mapping
             </h3>
 
@@ -136,11 +132,11 @@ export default function ResultForm({
                   name="studentId"
                   value={formData.studentId}
                   onChange={handleChange}
-                  className={`input-folusho w-full ${errors.studentId ? 'border-folusho-coral-300' : ''}`}
+                  className={`input-folusho w-full !bg-folusho-slate-950/50 ${errors.studentId ? 'border-folusho-coral-500' : ''}`}
                 >
-                  <option value="">Choose Student Identity...</option>
+                  <option value="" className="bg-folusho-slate-900">Choose Student Identity...</option>
                   {students.map((student) => (
-                    <option key={student.id} value={student.id}>
+                    <option key={student.id} value={student.id} className="bg-folusho-slate-900">
                       {student.firstName} {student.lastName} ({student.registrationNumber})
                     </option>
                   ))}
@@ -158,11 +154,11 @@ export default function ResultForm({
                   name="subjectId"
                   value={formData.subjectId}
                   onChange={handleChange}
-                  className={`input-folusho w-full ${errors.subjectId ? 'border-folusho-coral-300' : ''}`}
+                  className={`input-folusho w-full !bg-folusho-slate-950/50 ${errors.subjectId ? 'border-folusho-coral-500' : ''}`}
                 >
-                  <option value="">Select Subject Protocol...</option>
+                  <option value="" className="bg-folusho-slate-900">Select Subject Protocol...</option>
                   {subjects.map((subject) => (
-                    <option key={subject.id} value={subject.id}>
+                    <option key={subject.id} value={subject.id} className="bg-folusho-slate-900">
                       {subject.name} ({subject.code})
                     </option>
                   ))}
@@ -175,9 +171,9 @@ export default function ResultForm({
           </section>
 
           {/* Section II: Performance Metrics */}
-          <section className="space-y-6 pt-10 border-t border-folusho-cream-200">
-            <h3 className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.45em] px-2 flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-folusho-coral-400" />
+          <section className="space-y-6 pt-10 border-t border-white/5">
+            <h3 className="text-[10px] font-black text-folusho-coral-400 uppercase tracking-[0.45em] px-2 flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-folusho-coral-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
               II. Performance Metrics
             </h3>
 
@@ -190,12 +186,12 @@ export default function ResultForm({
                   name="assessmentType"
                   value={formData.assessmentType}
                   onChange={handleChange}
-                  className="input-folusho w-full"
+                  className="input-folusho w-full !bg-folusho-slate-950/50"
                 >
-                  <option value="Test">Standard Test</option>
-                  <option value="Exam">Global Examination</option>
-                  <option value="Assignment">Cognitive Assignment</option>
-                  <option value="Project">Specialized Project</option>
+                  <option value="Test" className="bg-folusho-slate-900">Standard Test</option>
+                  <option value="Exam" className="bg-folusho-slate-900">Global Examination</option>
+                  <option value="Assignment" className="bg-folusho-slate-900">Cognitive Assignment</option>
+                  <option value="Project" className="bg-folusho-slate-900">Specialized Project</option>
                 </select>
               </div>
 
@@ -209,7 +205,7 @@ export default function ResultForm({
                   value={formData.score}
                   onChange={handleChange}
                   step="0.01"
-                  className={`input-folusho w-full ${errors.score ? 'border-folusho-coral-300' : ''}`}
+                  className={`input-folusho w-full !bg-folusho-slate-950/50 ${errors.score ? 'border-folusho-coral-500' : ''}`}
                 />
                 {errors.score && (
                   <p className="text-folusho-coral-500 text-[10px] font-black uppercase tracking-widest px-2">{errors.score}</p>
@@ -226,7 +222,7 @@ export default function ResultForm({
                   value={formData.totalScore}
                   onChange={handleChange}
                   step="0.01"
-                  className={`input-folusho w-full ${errors.totalScore ? 'border-folusho-coral-300' : ''}`}
+                  className={`input-folusho w-full !bg-folusho-slate-950/50 ${errors.totalScore ? 'border-folusho-coral-500' : ''}`}
                 />
                 {errors.totalScore && (
                   <p className="text-folusho-coral-500 text-[10px] font-black uppercase tracking-widest px-2">{errors.totalScore}</p>
@@ -235,28 +231,28 @@ export default function ResultForm({
             </div>
 
             {/* Score Intelligence Preview */}
-            <div className="p-10 rounded-[3rem] bg-folusho-yellow-100/50 border border-folusho-yellow-200 shadow-inner">
+            <div className="p-10 rounded-[3rem] bg-folusho-slate-950/50 border border-white/5 shadow-inner">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-10">
                 <div className="space-y-2">
-                  <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Efficiency</p>
-                  <p className="text-3xl font-black text-folusho-slate-900 leading-none">{preview.percentage}%</p>
+                  <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest">Efficiency</p>
+                  <p className="text-3xl font-black text-white leading-none">{preview.percentage}%</p>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Classification</p>
-                  <p className="text-3xl font-black text-folusho-sage-500 leading-none">{preview.grade}</p>
+                  <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest">Classification</p>
+                  <p className="text-3xl font-black text-folusho-sage-400 leading-none">{preview.grade}</p>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Fractional Value</p>
-                  <p className="text-3xl font-black text-folusho-coral-500 leading-none">{formData.score} <span className="text-sm opacity-30 text-folusho-slate-900">/ {formData.totalScore}</span></p>
+                  <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest">Fractional Value</p>
+                  <p className="text-3xl font-black text-folusho-coral-400 leading-none">{formData.score} <span className="text-sm opacity-30 text-white">/ {formData.totalScore}</span></p>
                 </div>
               </div>
             </div>
           </section>
 
           {/* Section III: Contextual Data */}
-          <section className="space-y-6 pt-10 border-t border-folusho-cream-200">
-            <h3 className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2 flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-folusho-sage-400" />
+          <section className="space-y-6 pt-10 border-t border-white/5">
+            <h3 className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.45em] px-2 flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-folusho-sage-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
               III. Contextual Intelligence
             </h3>
 
@@ -269,11 +265,11 @@ export default function ResultForm({
                   name="term"
                   value={formData.term}
                   onChange={handleChange}
-                  className="input-folusho w-full"
+                  className="input-folusho w-full !bg-folusho-slate-950/50"
                 >
-                  <option value="First">First Vector</option>
-                  <option value="Second">Second Vector</option>
-                  <option value="Third">Third Vector</option>
+                  <option value="First" className="bg-folusho-slate-900">First Vector</option>
+                  <option value="Second" className="bg-folusho-slate-900">Second Vector</option>
+                  <option value="Third" className="bg-folusho-slate-900">Third Vector</option>
                 </select>
               </div>
 
@@ -286,7 +282,7 @@ export default function ResultForm({
                   name="academicYear"
                   value={formData.academicYear}
                   onChange={handleChange}
-                  className="input-folusho w-full"
+                  className="input-folusho w-full !bg-folusho-slate-950/50"
                   placeholder="e.g. 2026"
                 />
               </div>
@@ -300,7 +296,7 @@ export default function ResultForm({
                   name="dateRecorded"
                   value={formData.dateRecorded}
                   onChange={handleChange}
-                  className="input-folusho w-full"
+                  className="input-folusho w-full !bg-folusho-slate-950/50"
                 />
               </div>
             </div>
@@ -314,7 +310,7 @@ export default function ResultForm({
                 name="recordedBy"
                 value={formData.recordedBy}
                 onChange={handleChange}
-                className={`input-folusho w-full ${errors.recordedBy ? 'border-folusho-coral-300' : ''}`}
+                className={`input-folusho w-full !bg-folusho-slate-950/50 ${errors.recordedBy ? 'border-folusho-coral-500' : ''}`}
                 placeholder="Teacher Identity..."
               />
               {errors.recordedBy && (
@@ -331,18 +327,18 @@ export default function ResultForm({
                 value={formData.notes}
                 onChange={handleChange}
                 rows={3}
-                className="input-folusho w-full resize-none"
+                className="input-folusho w-full resize-none !bg-folusho-slate-950/50"
                 placeholder="Enter specialized observations..."
               />
             </div>
           </section>
 
           {/* Form Actions */}
-          <div className="flex justify-end gap-6 pt-12 border-t border-folusho-cream-200">
+          <div className="flex justify-end gap-6 pt-12 border-t border-white/5">
             <button
               type="button"
               onClick={onCancel}
-              className="px-10 py-5 text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.35em] hover:text-folusho-slate-900 transition-all"
+              className="px-10 py-5 text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.35em] hover:text-white transition-all"
             >
               Abort
             </button>

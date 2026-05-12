@@ -169,14 +169,14 @@ export default function TeacherManagement() {
       {/* ── Dynamic Header ────────────────────────────── */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-50 border border-folusho-sage-100 text-folusho-sage-500 text-[10px] font-black tracking-[0.35em] uppercase">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-500/10 border border-folusho-sage-500/20 text-folusho-sage-400 text-[10px] font-black tracking-[0.35em] uppercase">
             Human Resources
           </div>
-          <h1 className="text-3xl md:text-5xl font-black text-folusho-slate-900 tracking-tighter leading-none">
+          <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-none">
             Faculty <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-500 via-folusho-coral-400 to-folusho-sage-600">Command.</span>
           </h1>
-          <p className="text-folusho-slate-400 text-base font-bold max-w-xl leading-relaxed tracking-tight">
+          <p className="text-folusho-slate-500 text-base font-bold max-w-xl leading-relaxed tracking-tight">
             Orchestrate the elite educators behind the Folusho academic citadel.
           </p>
         </div>
@@ -184,9 +184,9 @@ export default function TeacherManagement() {
         <div className="flex flex-wrap gap-6">
           <button
             onClick={handleExport}
-            className="btn-vibrant bg-white !text-folusho-slate-600 border border-folusho-cream-200 hover:border-folusho-sage-300 shadow-sm"
+            className="btn-vibrant bg-white/5 !text-folusho-slate-400 border border-white/5 hover:border-folusho-sage-500/30 shadow-sm"
           >
-            <Download className="w-5 h-5 text-folusho-sage-500" />
+            <Download className="w-5 h-5 text-folusho-sage-400" />
             Personnel Export
           </button>
           <button
@@ -203,26 +203,26 @@ export default function TeacherManagement() {
       </div>
 
       {/* ── Intelligence Filters ───────────────────────── */}
-      <div className="folusho-card !p-12 border-folusho-cream-200">
+      <div className="folusho-card !p-12 border-white/5 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">
+            <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">
               Personnel Search
             </label>
             <div className="relative group">
-              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-sage-400 group-focus-within:text-folusho-sage-600 transition-colors" />
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-slate-500 group-focus-within:text-folusho-sage-400 transition-colors" />
               <input
                 type="text"
                 placeholder="Name, Email or Specialized Skill..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="input-folusho !pl-16"
+                className="input-folusho !pl-16 !bg-folusho-slate-950/50"
               />
             </div>
           </div>
 
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">
+            <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">
               Operational Level
             </label>
             <select
@@ -230,7 +230,7 @@ export default function TeacherManagement() {
               onChange={(e) =>
                 setSelectedLevel(e.target.value as SchoolLevel | "All")
               }
-              className="input-folusho !py-5"
+              className="input-folusho !py-5 !bg-folusho-slate-950/50"
             >
               <option value="All">Global Operations</option>
               <option value="Pre-Nursery">Pre-Nursery</option>
@@ -243,7 +243,7 @@ export default function TeacherManagement() {
       </div>
 
       {/* ── Data Matrix ────────────────────────────────── */}
-      <div className="folusho-card !p-0 border-folusho-cream-200">
+      <div className="folusho-card !p-0 border-white/5 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl overflow-hidden">
         <Table
           columns={columns}
           data={filteredTeachers.map((teacher) => ({
@@ -254,20 +254,20 @@ export default function TeacherManagement() {
                   getTeacherSubjects(teacher).map((subject) => (
                     <span
                       key={subject}
-                      className="px-3 py-1 bg-folusho-sage-50 text-folusho-sage-600 rounded-lg text-[10px] font-black uppercase tracking-widest border border-folusho-sage-100"
+                      className="px-3 py-1 bg-folusho-sage-500/10 text-folusho-sage-400 rounded-lg text-[10px] font-black uppercase tracking-widest border border-folusho-sage-500/20"
                     >
                       {subject}
                     </span>
                   ))
                 ) : (
-                  <span className="px-3 py-1 bg-folusho-coral-50 text-folusho-coral-600 rounded-lg text-[10px] font-black uppercase tracking-widest border border-folusho-coral-100">
+                  <span className="px-3 py-1 bg-folusho-coral-500/10 text-folusho-coral-400 rounded-lg text-[10px] font-black uppercase tracking-widest border border-folusho-coral-500/20">
                     Lead Mentor
                   </span>
                 )}
               </div>
             ),
             profile: (
-              <div className="w-14 h-14 rounded-2xl bg-folusho-sage-50 flex items-center justify-center overflow-hidden border border-folusho-sage-100 shadow-sm">
+              <div className="w-14 h-14 rounded-2xl bg-folusho-sage-500/10 flex items-center justify-center overflow-hidden border border-white/5 shadow-sm">
                 {teacher.image ? (
                   <img
                     src={teacher.image}
@@ -279,14 +279,14 @@ export default function TeacherManagement() {
                 )}
               </div>
             ),
-            name: <span className="font-bold text-folusho-slate-900 text-lg">{teacher.name}</span>,
-            email: <span className="font-mono text-folusho-slate-400 text-sm">{teacher.email}</span>,
+            name: <span className="font-bold text-white text-lg">{teacher.name}</span>,
+            email: <span className="font-mono text-folusho-slate-500 text-sm">{teacher.email}</span>,
             classes: (
               <div className="flex flex-wrap gap-2">
                 {(teacher.assignedClasses || []).map((c) => (
                   <span
                     key={c}
-                    className="px-3 py-1 bg-folusho-yellow-50 text-folusho-yellow-700 rounded-lg text-[10px] font-black uppercase tracking-widest border border-folusho-yellow-200"
+                    className="px-3 py-1 bg-folusho-yellow-500/10 text-folusho-yellow-500 rounded-lg text-[10px] font-black uppercase tracking-widest border border-folusho-yellow-500/20"
                   >
                     {c}
                   </span>
@@ -300,14 +300,14 @@ export default function TeacherManagement() {
                     setEditingTeacher(teacher);
                     setShowForm(true);
                   }}
-                  className="p-3 rounded-2xl bg-folusho-sage-50 hover:bg-folusho-sage-100 text-folusho-sage-600 transition-all border border-folusho-sage-100 shadow-sm"
+                  className="p-3 rounded-2xl bg-white/5 hover:bg-white/10 text-folusho-sage-400 transition-all border border-white/5 shadow-sm"
                   title="Modify Entry"
                 >
                   <Edit2 size={18} />
                 </button>
                 <button
                   onClick={() => handleDeleteTeacher(teacher.id)}
-                  className="p-3 rounded-2xl bg-folusho-coral-50 hover:bg-folusho-coral-100 text-folusho-coral-500 transition-all border border-folusho-coral-100 shadow-sm"
+                  className="p-3 rounded-2xl bg-white/5 hover:bg-white/10 text-folusho-coral-400 transition-all border border-white/5 shadow-sm"
                   title="Expel Member"
                 >
                   <Trash2 size={18} />
@@ -318,7 +318,7 @@ export default function TeacherManagement() {
         />
         {filteredTeachers.length === 0 && (
           <div className="text-center py-24">
-            <p className="text-folusho-slate-400 font-bold uppercase tracking-widest text-sm">No specialized personnel detected in this sector.</p>
+            <p className="text-folusho-slate-500 font-bold uppercase tracking-widest text-sm">No specialized personnel detected in this sector.</p>
           </div>
         )}
       </div>
@@ -336,7 +336,7 @@ export default function TeacherManagement() {
               initial={{ scale: 0.98, y: 10 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.98, y: 10 }}
-              className="folusho-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-folusho-cream-200"
+              className="folusho-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/5 shadow-2xl bg-folusho-slate-900"
             >
               <TeacherForm
                 onSubmit={handleSubmitTeacher}

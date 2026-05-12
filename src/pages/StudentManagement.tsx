@@ -494,26 +494,26 @@ export default function StudentManagement() {
       </div>
 
       {/* ── Intelligence Filters ───────────────────────── */}
-      <div className="folusho-card !p-10 border-white/5">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          <div className="space-y-3">
-            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em] px-2">
+      <div className="folusho-card !p-12 border-white/5 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="space-y-4">
+            <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">
               Identity Search
             </label>
             <div className="relative group">
-              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-sage-600 group-focus-within:text-folusho-sage-400 transition-colors" />
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-slate-500 group-focus-within:text-folusho-sage-400 transition-colors" />
               <input
                 type="text"
                 placeholder="Name, ID or Registry..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="input-folusho !pl-16"
+                className="input-folusho !pl-16 !bg-folusho-slate-950/50"
               />
             </div>
           </div>
 
-          <div className="space-y-3">
-            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em] px-2">
+          <div className="space-y-4">
+            <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">
               Academic Level
             </label>
             <select
@@ -522,7 +522,7 @@ export default function StudentManagement() {
                 setSelectedLevel(e.target.value as any);
                 setSelectedClass("All");
               }}
-              className="input-folusho"
+              className="input-folusho !bg-folusho-slate-950/50"
             >
               <option value="All">All Operations</option>
               <option value="Pre-Nursery">Pre-Nursery</option>
@@ -532,14 +532,14 @@ export default function StudentManagement() {
             </select>
           </div>
 
-          <div className="space-y-3">
-            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em] px-2">
+          <div className="space-y-4">
+            <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">
               Squad / Class
             </label>
             <select
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
-              className="input-folusho"
+              className="input-folusho !bg-folusho-slate-950/50"
             >
               <option value="All">Global Deployment</option>
               {(isTeacher ? assignedClasses : availableClassesForLevel).map(
@@ -555,7 +555,7 @@ export default function StudentManagement() {
       </div>
 
       {/* ── Data Matrix ────────────────────────────────── */}
-      <div className="folusho-card !p-0 border-white/5">
+      <div className="folusho-card !p-0 border-white/5 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl overflow-hidden">
         <Table
           columns={columns}
           data={filteredStudents}
@@ -621,7 +621,7 @@ export default function StudentManagement() {
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              className="folusho-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-folusho-cream-300 shadow-folusho-lg"
+              className="folusho-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/5 shadow-2xl bg-folusho-slate-900"
             >
               <StudentForm
                 onSubmit={handleSubmitStudent}
@@ -659,7 +659,7 @@ export default function StudentManagement() {
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              className="folusho-card max-w-4xl w-full max-h-[90vh] overflow-y-auto !p-0 border-folusho-cream-300 shadow-folusho-lg"
+              className="folusho-card max-w-4xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/5 shadow-2xl bg-folusho-slate-900"
             >
               <StudentSubjectForm
                 student={selectedStudentForSubjects}
@@ -683,7 +683,7 @@ export default function StudentManagement() {
           <motion.div 
             initial={{ scale: 0.9, y: 20 }}
             animate={{ scale: 1, y: 0 }}
-            className="folusho-card max-w-2xl w-full !p-0 overflow-hidden border-folusho-cream-300 shadow-folusho-lg"
+            className="folusho-card max-w-2xl w-full !p-0 overflow-hidden border-white/5 shadow-2xl bg-folusho-slate-900"
           >
             <div className="p-10 bg-folusho-sage-400 text-white flex justify-between items-center">
               <div>
@@ -714,7 +714,7 @@ export default function StudentManagement() {
                     setBulkAssignArm("");
                     setBulkAssignSubjects([]);
                   }}
-                  className="input-folusho"
+                  className="input-folusho !bg-folusho-slate-950/50"
                 >
                   <option value="">Choose a target...</option>
                   {[
@@ -752,8 +752,8 @@ export default function StudentManagement() {
                           setBulkAssignSubjects(armIds);
                         }}
                         className={`py-4 px-6 rounded-3xl border-2 font-black text-[10px] tracking-widest uppercase transition-all ${bulkAssignArm === arm
-                            ? 'bg-folusho-sage-400 text-white border-folusho-sage-500 shadow-folusho' 
-                            : 'bg-white border-folusho-cream-200 text-folusho-slate-400 hover:border-folusho-sage-300'
+                            ? 'bg-folusho-sage-500 text-white border-folusho-sage-400 shadow-folusho' 
+                            : 'bg-white/5 border-white/5 text-folusho-slate-400 hover:border-folusho-sage-500/30'
                           }`}
                       >
                         {arm}
@@ -782,8 +782,8 @@ export default function StudentManagement() {
                               <label
                                 key={subject.id}
                                 className={`flex items-center gap-5 p-6 rounded-[2rem] border transition-all cursor-pointer ${bulkAssignSubjects.includes(subject.id)
-                                    ? 'bg-folusho-sage-50 border-folusho-sage-300 shadow-inner'
-                                    : 'bg-folusho-cream-50/30 border-folusho-cream-100 opacity-50 hover:opacity-100'
+                                    ? 'bg-folusho-sage-500/10 border-folusho-sage-500/30 shadow-inner'
+                                    : 'bg-white/5 border-white/5 opacity-50 hover:opacity-100'
                                   }`}
                               >
                                 <input
@@ -900,20 +900,20 @@ export default function StudentManagement() {
                 )
               )}
             </div>
-            <div className="flex gap-4 mt-8">
+            <div className="flex gap-6 mt-12">
               <button
                 type="button"
                 onClick={() => setShowBulkAssign(false)}
-                className="flex-1 py-3 px-6 bg-white border-2 border-brand-200 text-brand-600 rounded-full font-black hover:bg-brand-100 transition-all uppercase tracking-widest text-sm"
+                className="flex-1 py-4 px-8 bg-white/5 border border-white/10 text-folusho-slate-400 rounded-[2rem] font-black uppercase tracking-widest text-[10px] hover:bg-white/10 transition-all"
               >
-                Cancel
+                Cancel Protocol
               </button>
               <button
                 onClick={handleBulkAssign}
                 disabled={!bulkAssignClass || bulkAssignSubjects.length === 0}
-                className="flex-1 py-3 px-6 bg-gradient-to-r from-school-blue to-school-green text-white rounded-full font-black shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all uppercase tracking-widest text-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                className="flex-1 py-4 px-8 bg-folusho-sage-400 text-white rounded-[2rem] font-black shadow-2xl hover:bg-folusho-sage-500 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest text-[10px] disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
-                Assign to Class
+                Synchronize Matrix
               </button>
             </div>
           </motion.div>
@@ -939,104 +939,23 @@ export default function StudentManagement() {
         />
       )}
 
-      {/* Table Replacement: Scholar Card Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-        {filteredStudents.length > 0 ? (
-          filteredStudents.map((student) => (
-            <div
-              key={student.id}
-              className="folusho-card p-8 group hover:bg-white hover:border-folusho-sage-300 transition-all duration-300 relative overflow-hidden border-folusho-cream-200"
-            >
-              {/* Status Badge */}
-              <div className="absolute top-6 right-6">
-                <span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest ${student.status === 'Active' ? 'bg-folusho-sage-50 text-folusho-sage-600 border border-folusho-sage-100' : 'bg-folusho-coral-50 text-folusho-coral-500 border border-folusho-coral-100'
-                  }`}>
-                  {student.status}
-                </span>
-              </div>
 
-              <div className="flex flex-col items-center text-center">
-                <div className="w-20 h-20 rounded-2xl bg-folusho-sage-50 flex items-center justify-center text-folusho-sage-500 font-black text-3xl mb-6 group-hover:bg-folusho-sage-500 group-hover:text-white transition-all duration-500 shadow-inner">
-                  {student.firstName[0]}{student.lastName[0]}
-                </div>
-                <h3 className="text-folusho-slate-900 font-black uppercase tracking-tight text-xl mb-1">{student.firstName} {student.lastName}</h3>
-                <p className="text-folusho-slate-400 text-[10px] font-black uppercase tracking-[0.25em] mb-6">{student.registrationNumber}</p>
-
-                <div className="w-full flex justify-center gap-3 mb-8">
-                  <span className="px-4 py-1.5 bg-folusho-cream-50 rounded-xl text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest border border-folusho-cream-100">
-                    {student.class}
-                  </span>
-                  <span className="px-4 py-1.5 bg-folusho-cream-50 rounded-xl text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest border border-folusho-cream-100">
-                    {student.level}
-                  </span>
-                </div>
-
-                <div className="w-full grid grid-cols-3 gap-3 pt-6 border-t border-folusho-cream-100">
-                  <button
-                    onClick={() => handleOpenAdvancedEditor(student)}
-                    disabled={!permissions.canEditStudent && !permissions.canManageSubjects}
-                    className="p-3 bg-folusho-sage-50 text-folusho-sage-600 hover:bg-folusho-sage-500 hover:text-white rounded-2xl transition-all disabled:opacity-30 disabled:cursor-not-allowed border border-folusho-sage-100 shadow-sm"
-                    title="Edit Profile"
-                  >
-                    <Edit2 size={18} className="mx-auto" />
-                  </button>
-                  <button
-                    onClick={() => handleOpenSubjectAssignment(student)}
-                    disabled={!permissions.canAssignSubjectsToStudent}
-                    className="p-3 bg-folusho-yellow-50 text-folusho-yellow-600 hover:bg-folusho-yellow-500 hover:text-white rounded-2xl transition-all disabled:opacity-30 disabled:cursor-not-allowed border border-folusho-yellow-100 shadow-sm"
-                    title="Assign Subjects"
-                  >
-                    <BookOpen size={18} className="mx-auto" />
-                  </button>
-                  <button
-                    onClick={() => handleDeleteStudent(student.id)}
-                    disabled={!permissions.canDeleteStudent}
-                    className="p-3 bg-folusho-coral-50 text-folusho-coral-500 hover:bg-folusho-coral-500 hover:text-white rounded-2xl transition-all disabled:opacity-30 disabled:cursor-not-allowed border border-folusho-coral-100 shadow-sm"
-                    title="Delete Scholar"
-                  >
-                    <Trash2 size={18} className="mx-auto" />
-                  </button>
-                </div>
-
-                {/* Parent Credentials */}
-                <div className="mt-6 pt-6 border-t border-folusho-cream-100 w-full bg-folusho-cream-50/50 rounded-2xl p-4">
-                  <div className="flex flex-col gap-2 text-[10px]">
-                    <div className="flex justify-between items-center">
-                      <span className="text-folusho-slate-400 font-bold uppercase tracking-widest">Username</span>
-                      <span className="text-folusho-slate-700 font-black tracking-tight">{student.parentUsername || 'N/A'}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-folusho-slate-400 font-bold uppercase tracking-widest">Password</span>
-                      <span className="text-folusho-slate-700 font-black tracking-tight">{student.parentPassword || 'N/A'}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="col-span-full py-32 text-center folusho-card border-folusho-cream-200">
-            <Search size={56} className="mx-auto text-folusho-cream-300 mb-6" />
-            <p className="text-folusho-slate-400 font-black uppercase tracking-widest text-sm">No scholars found matching your filters.</p>
-          </div>
-        )}
-      </div>
 
       {/* Stats Section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-        <div className="folusho-card bg-folusho-sage-50/50 text-center border-folusho-sage-100 !p-10">
-          <p className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.25em] mb-3">Total Scholars</p>
-          <p className="text-4xl font-black text-folusho-slate-900 tracking-tighter">{filteredStudents.length}</p>
+        <div className="folusho-card bg-folusho-sage-500/5 text-center border-folusho-sage-500/10 !p-10">
+          <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.25em] mb-4">Total Scholars</p>
+          <p className="text-5xl font-black text-white tracking-tighter">{filteredStudents.length}</p>
         </div>
-        <div className="folusho-card bg-folusho-yellow-50/50 text-center border-folusho-yellow-100 !p-10">
-          <p className="text-[10px] font-black text-folusho-yellow-600 uppercase tracking-[0.25em] mb-3">Active</p>
-          <p className="text-4xl font-black text-folusho-yellow-600 tracking-tighter">
+        <div className="folusho-card bg-folusho-sage-500/5 text-center border-folusho-sage-500/10 !p-10">
+          <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.25em] mb-4">Active Registry</p>
+          <p className="text-5xl font-black text-folusho-sage-400 tracking-tighter">
             {filteredStudents.filter((s) => s.status === "Active").length}
           </p>
         </div>
-        <div className="folusho-card bg-folusho-coral-50/50 text-center border-folusho-coral-100 !p-10">
-          <p className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.25em] mb-3">Inactive</p>
-          <p className="text-4xl font-black text-folusho-coral-500 tracking-tighter">
+        <div className="folusho-card bg-folusho-coral-500/5 text-center border-folusho-coral-500/10 !p-10">
+          <p className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.25em] mb-4">Inactive Protocols</p>
+          <p className="text-5xl font-black text-folusho-coral-400 tracking-tighter">
             {filteredStudents.filter((s) => s.status !== "Active").length}
           </p>
         </div>

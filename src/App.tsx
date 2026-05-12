@@ -95,12 +95,12 @@ function AppContent() {
   // Show a loading state while hydrating
   if (!isHydrated) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-100">
+      <div className="flex items-center justify-center h-screen bg-folusho-slate-950">
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4 animate-pulse">
-            <GraduationCap className="w-8 h-8 text-white" />
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-folusho-sage-500/10 border border-white/5 rounded-[2rem] mb-6 animate-pulse">
+            <GraduationCap className="w-10 h-10 text-folusho-sage-400" />
           </div>
-          <p className="text-gray-600 font-medium">Loading...</p>
+          <p className="text-folusho-sage-400 font-black uppercase tracking-[0.4em] text-[10px]">Initializing Architecture...</p>
         </div>
       </div>
     );
@@ -246,17 +246,17 @@ function AppContent() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="px-8 py-8 border-b border-white/5 bg-folusho-slate-800/20"
+            className="px-8 py-8 border-b border-white/5 bg-folusho-slate-950/30"
           >
-            <p className="text-[10px] uppercase font-black tracking-[0.25em] text-folusho-sage-600/80">
+            <p className="text-[10px] uppercase font-black tracking-[0.25em] text-folusho-sage-500/80">
               Identity Verified
             </p>
-            <p className="font-black text-folusho-slate-900 truncate text-lg mt-1 tracking-tight">
+            <p className="font-black text-white truncate text-lg mt-1 tracking-tight">
               {userName}
             </p>
             <div className="flex items-center gap-2 mt-2">
               <div className="w-2.5 h-2.5 rounded-full bg-folusho-sage-400 shadow-sm"></div>
-              <p className="text-xs font-bold text-folusho-slate-400">{userRole}</p>
+              <p className="text-xs font-bold text-folusho-slate-500">{userRole}</p>
             </div>
           </motion.div>
         )}
@@ -654,7 +654,7 @@ function NavLink({ to, icon, label, isOpen, onClick }: NavLinkProps & { onClick?
         `flex items-center gap-5 px-6 py-4 rounded-2xl transition-all duration-300 text-xs font-black uppercase tracking-widest ${
           isActive
             ? "bg-folusho-sage-400 text-white shadow-folusho scale-[1.02]"
-            : "text-folusho-slate-400 hover:text-folusho-sage-600 hover:bg-folusho-cream-100"
+            : "text-folusho-slate-400 hover:text-folusho-sage-400 hover:bg-white/5"
         }`
       }
     >

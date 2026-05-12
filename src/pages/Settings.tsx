@@ -80,14 +80,14 @@ export default function Settings() {
       {/* ── Dynamic Header ────────────────────────────── */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-50 border border-folusho-sage-100 text-folusho-sage-500 text-[10px] font-black tracking-[0.35em] uppercase">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-500/10 border border-white/5 text-folusho-sage-400 text-[10px] font-black tracking-[0.35em] uppercase">
             System Configuration
           </div>
-          <h1 className="text-3xl md:text-5xl font-black text-folusho-slate-900 tracking-tighter leading-none">
+          <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-none">
             Digital <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-500 via-folusho-coral-400 to-folusho-sage-600">Governance.</span>
           </h1>
-          <p className="text-folusho-slate-400 text-base font-bold max-w-xl leading-relaxed tracking-tight">
+          <p className="text-folusho-slate-500 text-base font-bold max-w-xl leading-relaxed tracking-tight">
             Calibrate the institutional parameters of the Folusho academic citadel.
           </p>
         </div>
@@ -105,10 +105,10 @@ export default function Settings() {
       {/* Save Message */}
       {message.text && (
         <div
-          className={`p-6 rounded-3xl flex items-center gap-4 backdrop-blur-xl border ${
+          className={`p-6 rounded-4xl flex items-center gap-5 backdrop-blur-xl border ${
             message.type === "success"
-              ? "bg-folusho-sage-50 text-folusho-sage-600 border-folusho-sage-100"
-              : "bg-folusho-coral-50 text-folusho-coral-500 border-folusho-coral-100"
+              ? "bg-folusho-sage-500/10 text-folusho-sage-400 border-white/5"
+              : "bg-folusho-coral-500/10 text-folusho-coral-400 border-white/5"
           }`}
         >
           <CheckCircle size={24} />
@@ -118,22 +118,22 @@ export default function Settings() {
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
         {/* Row 1: General Info */}
-        <div className="folusho-card space-y-12 !p-12 border-folusho-cream-200">
+        <div className="folusho-card space-y-12 !p-12 border-white/5">
           <div className="space-y-3">
-            <h2 className="text-3xl font-black text-folusho-slate-900 uppercase tracking-tighter flex items-center gap-4">
-              <Globe size={28} className="text-folusho-sage-500" /> General Logistics
+            <h2 className="text-3xl font-black text-white uppercase tracking-tighter flex items-center gap-4">
+              <Globe size={28} className="text-folusho-sage-400" /> General Logistics
             </h2>
-            <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.25em]">Core institutional identifiers</p>
+            <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.25em]">Core institutional identifiers</p>
           </div>
           
           <div className="space-y-8">
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
+              <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.45em] px-2">
                 Institutional Name
               </label>
               <input
                 type="text"
-                className="input-folusho !py-5"
+                className="input-folusho !py-5 !bg-folusho-slate-950/50"
                 value={config.schoolName || ""}
                 onChange={(e) =>
                   setConfig({ ...config, schoolName: e.target.value })
@@ -144,28 +144,28 @@ export default function Settings() {
 
             <div className="grid grid-cols-2 gap-8">
               <div className="space-y-3">
-                <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
+                <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.45em] px-2">
                   Active Term
                 </label>
                 <select
-                  className="input-folusho !py-5"
+                  className="input-folusho !py-5 !bg-folusho-slate-950/50"
                   value={config.currentTerm || ""}
                   onChange={(e) =>
                     setConfig({ ...config, currentTerm: e.target.value })
                   }
                 >
-                  <option value="1st Term">1st Term</option>
-                  <option value="2nd Term">2nd Term</option>
-                  <option value="3rd Term">3rd Term</option>
+                  <option value="1st Term" className="bg-folusho-slate-900">1st Term</option>
+                  <option value="2nd Term" className="bg-folusho-slate-900">2nd Term</option>
+                  <option value="3rd Term" className="bg-folusho-slate-900">3rd Term</option>
                 </select>
               </div>
               <div className="space-y-3">
-                <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
+                <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.45em] px-2">
                   Academic Cycle
                 </label>
                 <input
                   type="text"
-                  className="input-folusho !py-5"
+                  className="input-folusho !py-5 !bg-folusho-slate-950/50"
                   placeholder="2024/2025"
                   value={config.currentAcademicYear || ""}
                   onChange={(e) =>
@@ -181,41 +181,41 @@ export default function Settings() {
         </div>
 
         {/* Branding */}
-        <div className="folusho-card space-y-12 !p-12 border-folusho-cream-200">
+        <div className="folusho-card space-y-12 !p-12 border-white/5">
           <div className="space-y-3">
-            <h2 className="text-3xl font-black text-folusho-slate-900 uppercase tracking-tighter flex items-center gap-4">
-              <Palette size={28} className="text-folusho-yellow-600" /> Visual Identity
+            <h2 className="text-3xl font-black text-white uppercase tracking-tighter flex items-center gap-4">
+              <Palette size={28} className="text-folusho-yellow-500" /> Visual Identity
             </h2>
-            <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.25em]">Aesthetic parameters & emblems</p>
+            <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.25em]">Aesthetic parameters & emblems</p>
           </div>
 
           <div className="space-y-10">
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
+              <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.45em] px-2">
                 Signature Aesthetic
               </label>
-              <div className="flex gap-8 items-center bg-folusho-cream-50 p-6 rounded-[2rem] border border-folusho-cream-100 shadow-inner">
+              <div className="flex gap-8 items-center bg-white/5 p-6 rounded-4xl border border-white/5 shadow-inner backdrop-blur-md">
                 <input
                   type="color"
-                  className="w-20 h-20 rounded-2xl cursor-pointer border-2 border-white bg-transparent shadow-folusho"
+                  className="w-20 h-20 rounded-2xl cursor-pointer border-2 border-white/10 bg-transparent shadow-folusho"
                   value={config.themeColor || "#2563eb"}
                   onChange={(e) =>
                     setConfig({ ...config, themeColor: e.target.value })
                   }
                 />
-                <code className="text-folusho-slate-900 text-xl font-black tracking-widest font-mono">
+                <code className="text-white text-xl font-black tracking-widest font-mono">
                   {config.themeColor?.toUpperCase() || "#2563EB"}
                 </code>
               </div>
             </div>
 
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
+              <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.45em] px-2">
                 Institutional Motto
               </label>
               <input
                 type="text"
-                className="input-folusho !py-5"
+                className="input-folusho !py-5 !bg-folusho-slate-950/50"
                 placeholder="Fountain of Knowledge"
                 value={config.motto || ""}
                 onChange={(e) =>
@@ -225,18 +225,18 @@ export default function Settings() {
             </div>
 
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
+              <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.45em] px-2">
                 Institutional Emblem
               </label>
-              <div className="flex items-center gap-10 bg-folusho-cream-50 p-8 rounded-[2.5rem] border border-folusho-cream-100 shadow-inner">
-                <div className="w-28 h-28 bg-white rounded-3xl flex items-center justify-center overflow-hidden border border-folusho-cream-200 shadow-folusho">
+              <div className="flex items-center gap-10 bg-white/5 p-8 rounded-4xl border border-white/5 shadow-inner backdrop-blur-md">
+                <div className="w-28 h-28 bg-white rounded-3xl flex items-center justify-center overflow-hidden border border-white/10 shadow-folusho">
                   <img
                     src={config.schoolLogo || "/school_logo.png?v=20260512"}
                     alt="School Logo"
                     className="w-full h-full object-contain p-3"
                   />
                 </div>
-                <label className="btn-vibrant bg-white !text-folusho-slate-600 border border-folusho-cream-200 hover:border-folusho-sage-300 !py-4 !px-8 text-xs cursor-pointer shadow-sm">
+                <label className="btn-vibrant bg-white/5 !text-white border border-white/5 hover:border-folusho-sage-400 !py-4 !px-8 text-xs cursor-pointer shadow-sm">
                   Update Emblem
                   <input
                     type="file"
@@ -251,22 +251,22 @@ export default function Settings() {
         </div>
 
         {/* School Officials */}
-        <div className="folusho-card space-y-12 !p-12 border-folusho-cream-200">
+        <div className="folusho-card space-y-12 !p-12 border-white/5">
           <div className="space-y-3">
-            <h2 className="text-3xl font-black text-folusho-slate-900 uppercase tracking-tighter flex items-center gap-4">
-              <Users size={28} className="text-folusho-coral-500" /> Executive Command
+            <h2 className="text-3xl font-black text-white uppercase tracking-tighter flex items-center gap-4">
+              <Users size={28} className="text-folusho-coral-400" /> Executive Command
             </h2>
-            <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.25em]">Validated signatures for certification</p>
+            <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.25em]">Validated signatures for certification</p>
           </div>
 
           <div className="space-y-8">
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
+              <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.45em] px-2">
                 Lead Administrator / Principal
               </label>
               <input
                 type="text"
-                className="input-folusho !py-5"
+                className="input-folusho !py-5 !bg-folusho-slate-950/50"
                 placeholder="Mr. James Adeyemi"
                 value={config.principalName || ""}
                 onChange={(e) =>
@@ -276,12 +276,12 @@ export default function Settings() {
             </div>
 
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
+              <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.45em] px-2">
                 Supreme Proprietress
               </label>
               <input
                 type="text"
-                className="input-folusho !py-5"
+                className="input-folusho !py-5 !bg-folusho-slate-950/50"
                 placeholder="Mrs. Folusho Adekunle"
                 value={config.proprietressName || ""}
                 onChange={(e) =>
@@ -293,27 +293,27 @@ export default function Settings() {
 
           {/* Signature Preview */}
           {(config.principalName || config.proprietressName) && (
-            <div className="p-10 bg-folusho-cream-50 rounded-[2.5rem] border border-folusho-cream-100 shadow-inner">
-              <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] mb-12 text-center">Certification Validation Preview</p>
+            <div className="p-10 bg-white/5 rounded-4xl border border-white/5 shadow-inner backdrop-blur-md">
+              <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.45em] mb-12 text-center">Certification Validation Preview</p>
               <div className="grid grid-cols-2 gap-12">
                 {config.principalName && (
                   <div className="text-center space-y-5">
-                    <div className="h-px bg-gradient-to-r from-transparent via-folusho-sage-300 to-transparent" />
-                    <p className="text-lg font-black text-folusho-slate-900 uppercase tracking-tighter truncate px-4">
+                    <div className="h-px bg-gradient-to-r from-transparent via-folusho-sage-500/30 to-transparent" />
+                    <p className="text-xl font-black text-white uppercase tracking-tighter truncate px-4">
                       {config.principalName}
                     </p>
-                    <p className="text-[10px] text-folusho-slate-400 font-black uppercase tracking-[0.25em]">
+                    <p className="text-[10px] text-folusho-slate-500 font-black uppercase tracking-[0.25em]">
                       Principal
                     </p>
                   </div>
                 )}
                 {config.proprietressName && (
                   <div className="text-center space-y-5">
-                    <div className="h-px bg-gradient-to-r from-transparent via-folusho-coral-300 to-transparent" />
-                    <p className="text-lg font-black text-folusho-slate-900 uppercase tracking-tighter truncate px-4">
+                    <div className="h-px bg-gradient-to-r from-transparent via-folusho-coral-500/30 to-transparent" />
+                    <p className="text-xl font-black text-white uppercase tracking-tighter truncate px-4">
                       {config.proprietressName}
                     </p>
-                    <p className="text-[10px] text-folusho-slate-400 font-black uppercase tracking-[0.25em]">
+                    <p className="text-[10px] text-folusho-slate-500 font-black uppercase tracking-[0.25em]">
                       Proprietress
                     </p>
                   </div>
@@ -324,22 +324,22 @@ export default function Settings() {
         </div>
 
         {/* Contact Information */}
-        <div className="folusho-card space-y-12 !p-12 border-folusho-cream-200">
+        <div className="folusho-card space-y-12 !p-12 border-white/5">
           <div className="space-y-3">
-            <h2 className="text-3xl font-black text-folusho-slate-900 uppercase tracking-tighter flex items-center gap-4">
-              <MapPin size={28} className="text-folusho-yellow-600" /> Sector Coordinates
+            <h2 className="text-3xl font-black text-white uppercase tracking-tighter flex items-center gap-4">
+              <MapPin size={28} className="text-folusho-yellow-500" /> Sector Coordinates
             </h2>
-            <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.25em]">Global positioning & communications</p>
+            <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.25em]">Global positioning & communications</p>
           </div>
 
           <div className="space-y-8">
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
+              <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.45em] px-2">
                 Institutional Coordinates (Address)
               </label>
               <input
                 type="text"
-                className="input-folusho !py-5"
+                className="input-folusho !py-5 !bg-folusho-slate-950/50"
                 placeholder="12 Victory Close, Ibadan, Nigeria"
                 value={config.schoolAddress || ""}
                 onChange={(e) =>
@@ -348,12 +348,12 @@ export default function Settings() {
               />
             </div>
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
+              <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.45em] px-2">
                 Comm-Link Frequency (Phone)
               </label>
               <input
                 type="text"
-                className="input-folusho !py-5"
+                className="input-folusho !py-5 !bg-folusho-slate-950/50"
                 placeholder="+234 801 234 5678"
                 value={config.schoolPhone || ""}
                 onChange={(e) =>
