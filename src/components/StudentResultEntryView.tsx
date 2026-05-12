@@ -313,15 +313,15 @@ export default function StudentResultEntryView({
   return (
     <div className="space-y-12 relative overflow-hidden">
       {/* Decorative Orbs */}
-      <div className="absolute -top-24 -right-24 w-64 h-64 bg-folusho-sage-100/30 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-folusho-coral-100/30 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -top-24 -right-24 w-64 h-64 bg-folusho-sage-500/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-folusho-coral-500/10 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative z-10">
         <motion.button
           whileHover={{ x: -5 }}
           onClick={onBack}
-          className="flex items-center gap-3 text-folusho-sage-600 font-black uppercase tracking-widest text-[10px] hover:text-folusho-sage-700 transition-all"
+          className="flex items-center gap-3 text-folusho-sage-400 font-black uppercase tracking-widest text-[10px] hover:text-folusho-sage-300 transition-all"
         >
           <ArrowLeft size={16} />
           Back to Personnel Registry
@@ -373,8 +373,8 @@ export default function StudentResultEntryView({
             exit={{ opacity: 0, y: -20 }}
             className={`p-6 rounded-[2.5rem] flex items-center gap-4 border shadow-sm relative z-10 ${
               message.type === 'success' 
-                ? 'bg-folusho-sage-50 text-folusho-sage-700 border-folusho-sage-200' 
-                : 'bg-folusho-coral-50 text-folusho-coral-700 border-folusho-coral-200'
+                ? 'bg-folusho-sage-500/10 text-folusho-sage-400 border-folusho-sage-500/20' 
+                : 'bg-folusho-coral-500/10 text-folusho-coral-400 border-folusho-coral-500/20'
             }`}
           >
             <AlertCircle size={20} className="flex-shrink-0" />
@@ -384,29 +384,29 @@ export default function StudentResultEntryView({
       </AnimatePresence>
 
       {/* Results Table */}
-      <div className="folusho-card !p-0 overflow-hidden relative z-10">
+      <div className="folusho-card !p-0 overflow-hidden relative z-10 border-white/5">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="bg-folusho-cream-50/50 border-b border-folusho-cream-100">
-                <th className="px-10 py-6 text-left text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">Operational Unit</th>
-                <th className="px-6 py-6 text-center text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">Phase I (20)</th>
-                <th className="px-6 py-6 text-center text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">Phase II (20)</th>
-                <th className="px-6 py-6 text-center text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">Logic (60)</th>
-                <th className="px-6 py-6 text-center text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">Fulfillment</th>
-                <th className="px-10 py-6 text-center text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">Grade</th>
+              <tr className="bg-white/5 border-b border-white/5">
+                <th className="px-10 py-6 text-left text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.3em]">Operational Unit</th>
+                <th className="px-6 py-6 text-center text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.3em]">Phase I (20)</th>
+                <th className="px-6 py-6 text-center text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.3em]">Phase II (20)</th>
+                <th className="px-6 py-6 text-center text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.3em]">Logic (60)</th>
+                <th className="px-6 py-6 text-center text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.3em]">Fulfillment</th>
+                <th className="px-10 py-6 text-center text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.3em]">Grade</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-folusho-cream-100">
+            <tbody className="divide-y divide-white/5">
               {bulkData.map((row) => {
                 const subject = subjects.find(s => s.id === row.subjectId)
                 const isTraitBased = subject?.topics?.assessment_type === 'TRAIT'
 
                 return (
-                  <tr key={row.subjectId} className={`group hover:bg-folusho-sage-50/30 transition-all duration-300 ${row.isDirty ? 'bg-folusho-coral-50/20' : ''}`}>
+                  <tr key={row.subjectId} className={`group hover:bg-white/5 transition-all duration-300 ${row.isDirty ? 'bg-folusho-coral-500/5' : ''}`}>
                     <td className="px-10 py-6">
-                      <p className="text-sm font-black text-folusho-slate-900 uppercase tracking-tighter group-hover:text-folusho-sage-600 transition-colors">{row.subjectName}</p>
-                      <p className="text-[9px] text-folusho-slate-400 font-black uppercase tracking-[0.3em] mt-1.5">{row.subjectCode}</p>
+                      <p className="text-sm font-black text-white uppercase tracking-tighter group-hover:text-folusho-sage-400 transition-colors">{row.subjectName}</p>
+                      <p className="text-[9px] text-folusho-slate-500 font-black uppercase tracking-[0.3em] mt-1.5">{row.subjectCode}</p>
                     </td>
                     {!isTraitBased ? (
                       <>
@@ -435,14 +435,14 @@ export default function StudentResultEntryView({
                           />
                         </td>
                         <td className="px-6 py-6 text-center">
-                          <p className="text-lg font-black text-folusho-sage-600 leading-none">{row.totalScore}</p>
-                          <p className="text-[10px] text-folusho-slate-300 font-black uppercase tracking-widest mt-1.5">{row.percentage.toFixed(0)}%</p>
+                          <p className="text-lg font-black text-folusho-sage-400 leading-none">{row.totalScore}</p>
+                          <p className="text-[10px] text-folusho-slate-500 font-black uppercase tracking-widest mt-1.5">{row.percentage.toFixed(0)}%</p>
                         </td>
                         <td className="px-10 py-6 text-center">
                           <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border-2 ${
                             ['A', 'B', 'C'].includes(row.grade) 
-                              ? 'bg-folusho-sage-50 text-folusho-sage-600 border-folusho-sage-100' 
-                              : 'bg-folusho-coral-50 text-folusho-coral-600 border-folusho-coral-100'
+                              ? 'bg-folusho-sage-500/10 text-folusho-sage-400 border-folusho-sage-500/20' 
+                              : 'bg-folusho-coral-500/10 text-folusho-coral-400 border-folusho-coral-500/20'
                           }`}>
                             {row.grade}
                           </span>
@@ -468,8 +468,8 @@ export default function StudentResultEntryView({
               {bulkData.length === 0 && (
                 <tr>
                   <td colSpan={6} className="px-10 py-24 text-center">
-                    <TrendingUp className="w-16 h-16 text-folusho-slate-200 mx-auto mb-6 opacity-30" />
-                    <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.4em]">No Registered Logic Found for Current Cycle</p>
+                    <TrendingUp className="w-16 h-16 text-folusho-slate-700 mx-auto mb-6 opacity-30" />
+                    <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.4em]">No Registered Logic Found for Current Cycle</p>
                   </td>
                 </tr>
               )}
@@ -484,7 +484,7 @@ export default function StudentResultEntryView({
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onBack}
-          className="px-10 py-4 bg-white text-folusho-slate-600 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.4em] border-2 border-folusho-cream-200 hover:bg-folusho-cream-50 transition-all shadow-sm"
+          className="px-10 py-4 bg-folusho-slate-900/40 text-folusho-slate-500 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.4em] border-2 border-white/5 hover:bg-white/5 transition-all shadow-2xl"
         >
           Abort
         </motion.button>

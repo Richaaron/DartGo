@@ -149,10 +149,10 @@ function AppContent() {
 
   return (
     <div
-      className={`flex flex-col md:flex-row h-screen bg-folusho-cream-100 text-folusho-slate-900 selection:bg-folusho-sage-500/30 transition-colors duration-200 ${isDarkMode ? "dark" : ""}`}
+      className={`flex flex-col md:flex-row h-screen bg-folusho-slate-950 text-folusho-cream-100 selection:bg-folusho-sage-500/30 transition-colors duration-200 ${isDarkMode ? "dark" : ""}`}
     >
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(at_0%_0%,rgba(168,198,159,0.1)_0,transparent_50%),radial-gradient(at_100%_100%,rgba(255,138,122,0.05)_0,transparent_50%)]" />
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(at_0%_0%,rgba(168,198,159,0.05)_0,transparent_50%),radial-gradient(at_100%_100%,rgba(255,138,122,0.03)_0,transparent_50%)]" />
       </div>
       <FloatingAcademicBackground />
       {/* Mobile Header */}
@@ -202,7 +202,7 @@ function AppContent() {
           isMobile
             ? "fixed left-4 top-[84px] bottom-4 w-[calc(100%-32px)] max-w-72 z-30"
             : `${isSidebarOpen ? "w-72" : "w-[92px]"} relative m-6 mr-0`
-        } bg-white border border-folusho-cream-300 rounded-[3rem] text-folusho-slate-900 transition-all duration-300 flex flex-col shadow-folusho overflow-y-auto md:overflow-visible`}
+        } bg-folusho-slate-900/60 backdrop-blur-2xl border border-white/5 rounded-[3rem] text-folusho-cream-100 transition-all duration-300 flex flex-col shadow-2xl overflow-y-auto md:overflow-visible`}
       >
         {/* Desktop Logo - Hidden on Mobile */}
         {!isMobile && (
@@ -234,7 +234,7 @@ function AppContent() {
             )}
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className={`p-3 hover:bg-folusho-cream-100 rounded-2xl transition-colors text-folusho-slate-400 hover:text-folusho-sage-600 ${!isSidebarOpen ? "mx-auto" : ""}`}
+              className={`p-3 hover:bg-white/5 rounded-2xl transition-colors text-folusho-slate-400 hover:text-folusho-sage-400 ${!isSidebarOpen ? "mx-auto" : ""}`}
             >
               {isSidebarOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
@@ -246,7 +246,7 @@ function AppContent() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="px-8 py-8 border-b border-folusho-cream-200 bg-folusho-yellow-200/30"
+            className="px-8 py-8 border-b border-white/5 bg-folusho-slate-800/20"
           >
             <p className="text-[10px] uppercase font-black tracking-[0.25em] text-folusho-sage-600/80">
               Identity Verified

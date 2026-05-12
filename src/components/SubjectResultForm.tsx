@@ -191,18 +191,18 @@ export default function SubjectResultForm({
 
   return (
     <motion.div 
-      className="relative overflow-hidden bg-white/80 backdrop-blur-3xl border border-folusho-cream-200 rounded-[3rem] shadow-folusho"
+      className="relative overflow-hidden bg-folusho-slate-900/90 backdrop-blur-3xl border border-white/5 rounded-[3rem] shadow-folusho-lg"
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
       {/* Decorative Orbs */}
-      <div className="absolute -top-24 -right-24 w-64 h-64 bg-folusho-sage-200/30 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-folusho-coral-200/30 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -top-24 -right-24 w-64 h-64 bg-folusho-sage-500/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-folusho-coral-500/10 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="p-10 bg-gradient-to-r from-folusho-sage-500 to-folusho-sage-700 text-white flex justify-between items-center relative z-10">
         <div>
-          <h2 className="text-4xl font-black uppercase tracking-tighter leading-none">
+          <h2 className="text-4xl font-black uppercase tracking-tighter leading-none text-white">
             {isEditing ? 'Sync' : 'Initialize'} <br /> <span className="text-white/70">Matrix Protocol</span>
           </h2>
           <p className="text-[10px] font-black text-white/50 uppercase tracking-[0.35em] mt-4">
@@ -227,7 +227,7 @@ export default function SubjectResultForm({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-3">
-              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
+              <label className="block text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.2em] px-2">
                 Operational Student
               </label>
               <select
@@ -250,7 +250,7 @@ export default function SubjectResultForm({
             </div>
 
             <div className="space-y-3">
-              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
+              <label className="block text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.2em] px-2">
                 Subject Logic Matrix
               </label>
               <select
@@ -275,7 +275,7 @@ export default function SubjectResultForm({
         </section>
 
         {/* Section II: Performance Vectors */}
-        <section className="space-y-6 pt-6 border-t border-folusho-cream-100">
+        <section className="space-y-6 pt-6 border-t border-white/5">
           <h3 className="text-[10px] font-black text-folusho-yellow-600 uppercase tracking-[0.45em] px-2 flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-folusho-yellow-500" />
             II. Performance Vectors
@@ -283,7 +283,7 @@ export default function SubjectResultForm({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-3">
-              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
+              <label className="block text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.2em] px-2">
                 1st CA Vector (20)
               </label>
               <input
@@ -299,7 +299,7 @@ export default function SubjectResultForm({
             </div>
 
             <div className="space-y-3">
-              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
+              <label className="block text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.2em] px-2">
                 2nd CA Vector (20)
               </label>
               <input
@@ -315,7 +315,7 @@ export default function SubjectResultForm({
             </div>
 
             <div className="space-y-3">
-              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
+              <label className="block text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.2em] px-2">
                 Final Exam (60)
               </label>
               <input
@@ -332,39 +332,39 @@ export default function SubjectResultForm({
           </div>
 
           {/* Grading Intelligence Dashboard */}
-          <div className="p-10 rounded-[2.5rem] bg-folusho-cream-50 border border-folusho-cream-200 shadow-inner">
+          <div className="p-10 rounded-[2.5rem] bg-white/5 border border-white/5 shadow-inner">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
               <div className="space-y-2">
-                <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Total Aggregate</p>
-                <p className="text-4xl font-black text-folusho-slate-900 leading-none tracking-tighter">{preview.total}</p>
+                <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest">Total Aggregate</p>
+                <p className="text-4xl font-black text-white leading-none tracking-tighter">{preview.total}</p>
               </div>
               <div className="space-y-2">
-                <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Efficiency</p>
-                <p className="text-4xl font-black text-folusho-sage-500 leading-none tracking-tighter">{preview.percentage}%</p>
+                <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest">Efficiency</p>
+                <p className="text-4xl font-black text-folusho-sage-400 leading-none tracking-tighter">{preview.percentage}%</p>
               </div>
               <div className="space-y-2">
-                <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Classification</p>
-                <p className="text-4xl font-black text-folusho-yellow-600 leading-none tracking-tighter">{preview.grade}</p>
+                <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest">Classification</p>
+                <p className="text-4xl font-black text-folusho-yellow-500 leading-none tracking-tighter">{preview.grade}</p>
               </div>
               <div className="space-y-2">
-                <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Logic Points</p>
-                <p className="text-4xl font-black text-folusho-coral-500 leading-none tracking-tighter">{preview.gradePoint}</p>
+                <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest">Logic Points</p>
+                <p className="text-4xl font-black text-folusho-coral-400 leading-none tracking-tighter">{preview.gradePoint}</p>
               </div>
             </div>
-            <div className="pt-8 border-t border-folusho-cream-200 flex items-start gap-6">
-              <div className="w-12 h-12 rounded-2xl bg-folusho-sage-50 flex items-center justify-center text-folusho-sage-500 border border-folusho-sage-100">
+            <div className="pt-8 border-t border-white/5 flex items-start gap-6">
+              <div className="w-12 h-12 rounded-2xl bg-folusho-sage-500/10 flex items-center justify-center text-folusho-sage-400 border border-white/5">
                 <MessageSquare size={22} />
               </div>
               <div>
-                <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] mb-2">Automated Intelligence Remark</p>
-                <p className="text-sm font-bold text-folusho-slate-700 leading-relaxed italic">"{preview.remarks}"</p>
+                <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.2em] mb-2">Automated Intelligence Remark</p>
+                <p className="text-sm font-bold text-folusho-cream-100 leading-relaxed italic">"{preview.remarks}"</p>
               </div>
             </div>
           </div>
         </section>
 
         {/* Section III: Operational Sign-off */}
-        <section className="space-y-6 pt-6 border-t border-folusho-cream-100">
+        <section className="space-y-6 pt-6 border-t border-white/5">
           <h3 className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.45em] px-2 flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-folusho-coral-500" />
             III. Operational Sign-off
@@ -372,7 +372,7 @@ export default function SubjectResultForm({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-3">
-              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
+              <label className="block text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.2em] px-2">
                 Faculty Identity (Recorded By)
               </label>
               <input
@@ -389,7 +389,7 @@ export default function SubjectResultForm({
             </div>
 
             <div className="space-y-3">
-              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
+              <label className="block text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.2em] px-2">
                 Deployment Cycle (Academic Year)
               </label>
               <input
@@ -405,11 +405,11 @@ export default function SubjectResultForm({
         </section>
 
         {/* Form Actions */}
-        <div className="flex justify-end gap-8 pt-12 border-t border-folusho-cream-100">
+        <div className="flex justify-end gap-8 pt-12 border-t border-white/5">
           <button
             type="button"
             onClick={onCancel}
-            className="px-10 py-5 text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.35em] hover:text-folusho-sage-600 transition-all"
+            className="px-10 py-5 text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.35em] hover:text-folusho-sage-400 transition-all"
           >
             Cancel
           </button>

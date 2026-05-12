@@ -1,8 +1,8 @@
 :root {
-    --folusho-sage: #4ade80;
-    --folusho-coral: #fb7185;
-    --folusho-cream: #fffbeb;
-    --folusho-slate: #0f172a;
+    --folusho-sage: #a8c69f;
+    --folusho-coral: #ff8a7a;
+    --folusho-cream: #faf9f6;
+    --folusho-slate: #1a1816;
 }
 
 /* ── Institutional Scrollbar ──────────────────── */
@@ -11,29 +11,29 @@
     height: 8px;
 }
 .scrollbar-folusho::-webkit-scrollbar-track {
-    background: #fffbeb;
+    background: #1a1816;
 }
 .scrollbar-folusho::-webkit-scrollbar-thumb {
-    background: #e2e8f0;
+    background: #36322d;
     border-radius: 100px;
-    border: 2px solid #fffbeb;
+    border: 2px solid #1a1816;
 }
 .scrollbar-folusho::-webkit-scrollbar-thumb:hover {
-    background: #cbd5e1;
+    background: #4d4740;
 }
 
 /* ── Folusho Layout Utilities ────────────────────── */
 .folusho-card {
-    @apply bg-white border border-folusho-cream-200
-           rounded-[3rem] p-12 shadow-folusho transition-all duration-500
-           hover:border-folusho-sage-200 hover:shadow-folusho-lg;
+    @apply bg-folusho-slate-900/60 backdrop-blur-2xl border border-white/5
+           rounded-[3rem] p-12 shadow-2xl transition-all duration-500
+           hover:border-folusho-sage-400/20 hover:shadow-folusho-lg;
 }
 
 .input-folusho {
-    @apply w-full bg-folusho-cream-50/50 border border-folusho-cream-200 rounded-[1.5rem] px-8 py-5
-           text-folusho-slate-900 text-sm font-bold tracking-tight outline-none
-           transition-all duration-300 placeholder:text-folusho-slate-300
-           focus:bg-white focus:border-folusho-sage-400
+    @apply w-full bg-folusho-slate-900/80 border border-white/5 rounded-[1.5rem] px-8 py-5
+           text-folusho-cream-100 text-sm font-bold tracking-tight outline-none
+           transition-all duration-300 placeholder:text-folusho-slate-500
+           focus:bg-folusho-slate-800 focus:border-folusho-sage-400
            focus:shadow-[0_0_30px_rgba(74,222,128,0.1)]
            disabled:opacity-50 disabled:cursor-not-allowed;
 }
@@ -61,11 +61,11 @@
 
 /* ── Form Controls ────────────────────────────── */
 select {
-    @apply bg-white text-folusho-slate-900 cursor-pointer;
+    @apply bg-folusho-slate-900 text-folusho-cream-100 cursor-pointer;
 }
 
 option {
-    @apply bg-white text-folusho-slate-900 py-4;
+    @apply bg-folusho-slate-900 text-folusho-cream-100 py-4;
 }
 
 /* ── Institutional Print Engine ───────────────── */

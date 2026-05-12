@@ -357,8 +357,8 @@ export default function ResultEntry() {
               animate={{ opacity: 1, y: 0 }}
               className={`p-6 rounded-4xl flex items-center gap-5 backdrop-blur-xl border ${
                 sendMessage.type === 'success' 
-                  ? 'bg-folusho-sage-100 text-folusho-sage-600 border-folusho-sage-200' 
-                  : 'bg-folusho-coral-100 text-folusho-coral-600 border-folusho-coral-200'
+                  ? 'bg-folusho-sage-500/10 text-folusho-sage-400 border-folusho-sage-500/20' 
+                  : 'bg-folusho-coral-500/10 text-folusho-coral-400 border-folusho-coral-500/20'
               }`}
             >
               <AlertCircle size={24} />
@@ -372,23 +372,23 @@ export default function ResultEntry() {
           {/* ── Dynamic Header ────────────────────────────── */}
           <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-10">
             <div className="space-y-4">
-              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-50 border border-folusho-sage-100 text-folusho-sage-500 text-[10px] font-black tracking-[0.35em] uppercase">
+              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-500/10 border border-folusho-sage-500/20 text-folusho-sage-400 text-[10px] font-black tracking-[0.35em] uppercase">
                 Protocol Management
               </div>
-              <h1 className="text-3xl md:text-5xl font-black text-folusho-slate-900 tracking-tighter leading-none">
+              <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-none">
                 Data <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-500 via-folusho-coral-400 to-folusho-sage-600">Archival.</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-400 via-folusho-coral-400 to-folusho-sage-500">Archival.</span>
               </h1>
-              <p className="text-folusho-slate-400 text-sm font-bold max-w-xl leading-relaxed tracking-tight">
+              <p className="text-folusho-slate-500 text-sm font-bold max-w-xl leading-relaxed tracking-tight">
                 {pageDescription}
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-8">
-              <div className="flex bg-folusho-yellow-100/50 p-2 rounded-3xl border border-folusho-yellow-200 shadow-sm">
+              <div className="flex bg-folusho-slate-900/40 p-2 rounded-3xl border border-white/5 shadow-2xl backdrop-blur-md">
                 <button
                   className={`flex items-center gap-3 px-8 py-3.5 rounded-2xl text-[10px] font-black tracking-widest uppercase transition-all ${
-                    viewMode === 'students' && activeTab === 'entry' ? 'bg-folusho-sage-400 text-white shadow-folusho' : 'text-folusho-slate-400 hover:text-folusho-sage-600'
+                    viewMode === 'students' && activeTab === 'entry' ? 'bg-folusho-sage-400 text-white shadow-folusho' : 'text-folusho-slate-500 hover:text-folusho-sage-400'
                   }`}
                   onClick={() => { setViewMode('students'); setActiveTab('entry') }}
                 >
@@ -396,7 +396,7 @@ export default function ResultEntry() {
                 </button>
                 <button
                   className={`flex items-center gap-3 px-8 py-3.5 rounded-2xl text-[10px] font-black tracking-widest uppercase transition-all ${
-                    viewMode === 'results' && activeTab === 'entry' ? 'bg-folusho-sage-400 text-white shadow-folusho' : 'text-folusho-slate-400 hover:text-folusho-sage-600'
+                    viewMode === 'results' && activeTab === 'entry' ? 'bg-folusho-sage-400 text-white shadow-folusho' : 'text-folusho-slate-500 hover:text-folusho-sage-400'
                   }`}
                   onClick={() => { setViewMode('results'); setActiveTab('entry') }}
                 >
@@ -405,7 +405,7 @@ export default function ResultEntry() {
                 {(isFormTeacher || user?.role === 'Admin') && (
                   <button
                     className={`flex items-center gap-3 px-8 py-3.5 rounded-2xl text-[10px] font-black tracking-widest uppercase transition-all ${
-                      activeTab === 'release' ? 'bg-folusho-coral-400 text-white shadow-folusho' : 'text-folusho-slate-400 hover:text-folusho-coral-600'
+                      activeTab === 'release' ? 'bg-folusho-coral-400 text-white shadow-folusho' : 'text-folusho-slate-500 hover:text-folusho-coral-400'
                     }`}
                     onClick={() => setActiveTab('release')}
                   >
@@ -415,8 +415,8 @@ export default function ResultEntry() {
               </div>
               
               <div className="flex gap-4">
-                <button onClick={handleExport} className="btn-vibrant bg-white border border-folusho-cream-200 !text-folusho-slate-900 shadow-sm">
-                  <Download size={20} className="text-folusho-sage-500" /> 
+                <button onClick={handleExport} className="btn-vibrant !bg-folusho-slate-900/40 border border-white/5 !text-white shadow-2xl backdrop-blur-md">
+                  <Download size={20} className="text-folusho-sage-400" /> 
                   <span className="hidden sm:inline">Export</span>
                 </button>
                 <button onClick={() => setShowForm(true)} className="btn-vibrant bg-folusho-sage-400">
@@ -428,7 +428,7 @@ export default function ResultEntry() {
           </div>
 
           {activeTab === 'release' && (
-            <div className="folusho-card border-folusho-cream-200">
+            <div className="folusho-card border-white/5">
               <ReleaseResultsPanel students={students} results={results} onRefresh={loadData} />
             </div>
           )}
@@ -436,14 +436,14 @@ export default function ResultEntry() {
           {activeTab === 'entry' && (
             <div className="space-y-10">
               {/* Intelligence Filters */}
-              <div className="folusho-card !p-10 border-folusho-cream-200">
+              <div className="folusho-card !p-10 border-white/5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.35em] px-2">
+                    <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em] px-2">
                       Personnel Search
                     </label>
                     <div className="relative group">
-                      <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-sage-500 group-focus-within:text-folusho-sage-700 transition-colors" />
+                      <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-sage-600 group-focus-within:text-folusho-sage-400 transition-colors" />
                       <input
                         type="text"
                         placeholder="Scan identities..."
@@ -455,7 +455,7 @@ export default function ResultEntry() {
                   </div>
 
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.35em] px-2">
+                    <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em] px-2">
                       Operational Sector
                     </label>
                     <select
@@ -471,14 +471,14 @@ export default function ResultEntry() {
               </div>
 
               {/* Data Matrix */}
-              <div className="folusho-card !p-0 border-folusho-cream-200">
+              <div className="folusho-card !p-0 border-white/5">
                 {viewMode === 'students' ? (
                   <Table
                     columns={[
                       { 
                         key: 'studentName', 
                         label: 'Identity',
-                        render: (v, row) => <span className="font-bold text-folusho-slate-900">{row.firstName} {row.lastName}</span>
+                        render: (v, row) => <span className="font-bold text-white">{row.firstName} {row.lastName}</span>
                       },
                       { key: 'class', label: 'Sector' },
                       {
@@ -487,7 +487,7 @@ export default function ResultEntry() {
                         render: (v, row: Student) => (
                           <button
                             onClick={() => setSelectedStudentForEntry(row)}
-                            className="px-8 py-3 bg-folusho-sage-50 text-folusho-sage-600 rounded-2xl text-[10px] font-black tracking-widest uppercase border border-folusho-sage-100 hover:bg-folusho-sage-400 hover:text-white transition-all shadow-sm"
+                            className="px-8 py-3 bg-folusho-sage-500/10 text-folusho-sage-400 rounded-2xl text-[10px] font-black tracking-widest uppercase border border-folusho-sage-500/20 hover:bg-folusho-sage-400 hover:text-white transition-all shadow-2xl"
                           >
                             Synchronize Data
                           </button>
@@ -505,13 +505,13 @@ export default function ResultEntry() {
                         <div className="flex gap-3">
                           <button 
                             onClick={() => { setEditingResult(r); setShowForm(true) }} 
-                            className="p-3 rounded-2xl bg-folusho-sage-50 hover:bg-folusho-sage-100 text-folusho-sage-600 transition-all border border-folusho-sage-100"
+                            className="p-3 rounded-2xl bg-folusho-sage-500/10 hover:bg-folusho-sage-500/20 text-folusho-sage-400 transition-all border border-folusho-sage-500/20"
                           >
                             <Plus size={16} />
                           </button>
                           <button 
                             onClick={() => handleDeleteResult(r.id)} 
-                            className="p-3 rounded-2xl bg-folusho-coral-50 hover:bg-folusho-coral-100 text-folusho-coral-600 transition-all border border-folusho-coral-100"
+                            className="p-3 rounded-2xl bg-folusho-coral-500/10 hover:bg-folusho-coral-500/20 text-folusho-coral-400 transition-all border border-folusho-coral-500/20"
                           >
                             <Trash2 size={16} />
                           </button>
@@ -524,12 +524,12 @@ export default function ResultEntry() {
 
               {/* Stats Matrix */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div className="folusho-card !p-10 group hover:border-folusho-sage-300 transition-all border-folusho-cream-200">
+                <div className="folusho-card !p-10 group hover:border-folusho-sage-500/30 transition-all border-white/5">
                   <div className="flex items-center justify-between mb-6">
-                    <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em]">Total Archive</p>
+                    <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.35em]">Total Archive</p>
                     <BarChart3 className="w-5 h-5 text-folusho-sage-400 opacity-50 group-hover:opacity-100 transition-opacity" />
                   </div>
-                  <p className="text-5xl font-black text-folusho-slate-900 tracking-tighter">{filteredResults.length}</p>
+                  <p className="text-5xl font-black text-white tracking-tighter">{filteredResults.length}</p>
                 </div>
               </div>
             </div>
@@ -549,9 +549,9 @@ export default function ResultEntry() {
                   exit={{ scale: 0.9, y: 20 }}
                   className="folusho-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-folusho-cream-300 shadow-folusho-lg"
                 >
-                  <div className="p-12 border-b border-folusho-cream-200 bg-folusho-sage-50">
-                    <h2 className="text-3xl font-black text-folusho-slate-900 tracking-tighter uppercase leading-none">Protocol Entry</h2>
-                    <p className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.35em] mt-3">Initialize synchronization</p>
+                  <div className="p-12 border-b border-white/5 bg-folusho-sage-500/10">
+                    <h2 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">Protocol Entry</h2>
+                    <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.35em] mt-3">Initialize synchronization</p>
                   </div>
                   <div className="p-12">
                     <SubjectResultForm

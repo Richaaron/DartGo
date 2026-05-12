@@ -167,32 +167,32 @@ export default function StudentForm({
 
   return (
     <motion.div 
-      className="relative overflow-hidden bg-white border border-folusho-cream-200 rounded-[3rem] p-12 shadow-folusho"
+      className="relative overflow-hidden bg-folusho-slate-900/90 backdrop-blur-3xl border border-white/5 rounded-[3rem] p-12 shadow-folusho-lg"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
       {/* Decorative Orbs */}
-      <div className="absolute -top-24 -right-24 w-64 h-64 bg-folusho-sage-100/40 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-folusho-coral-100/40 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -top-24 -right-24 w-64 h-64 bg-folusho-sage-500/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-folusho-coral-500/10 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="relative z-10">
         <div className="flex justify-between items-start mb-16">
           <div>
             <motion.h2 
-              className="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-none text-folusho-slate-900 mb-4"
+              className="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-none text-white mb-4"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
             >
-              Student <br /> <span className="text-folusho-sage-500">Registration</span>
+              Student <br /> <span className="text-folusho-sage-400">Registration</span>
             </motion.h2>
-            <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.4em]">
+            <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.4em]">
               Institutional Enrollment Matrix
             </p>
           </div>
           <button
             onClick={onCancel}
-            className="p-4 hover:bg-folusho-cream-50 rounded-2xl transition-all border border-folusho-cream-200 text-folusho-slate-400 hover:text-folusho-slate-900"
+            className="p-4 hover:bg-white/5 rounded-2xl transition-all border border-white/5 text-folusho-slate-400 hover:text-white"
           >
             <X size={24} />
           </button>
@@ -277,7 +277,7 @@ export default function StudentForm({
           </section>
 
           {/* Parent Information */}
-          <section className="space-y-8 pt-8 border-t border-folusho-cream-100">
+          <section className="space-y-8 pt-8 border-t border-white/5">
             <h3 className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.45em] px-2 flex items-center gap-3">
               <div className="w-2 h-2 rounded-full bg-folusho-coral-500" />
               II. Guardian Protocols
@@ -335,7 +335,7 @@ export default function StudentForm({
           </section>
 
           {/* School Information */}
-          <section className="space-y-8 pt-8 border-t border-folusho-cream-100">
+          <section className="space-y-8 pt-8 border-t border-white/5">
             <h3 className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.45em] px-2 flex items-center gap-3">
               <div className="w-2 h-2 rounded-full bg-folusho-sage-500" />
               III. Institutional Mapping
@@ -349,7 +349,7 @@ export default function StudentForm({
                 <input
                   type="text"
                   value={formData.registrationNumber}
-                  className="input-folusho w-full bg-folusho-cream-50/50 opacity-60 cursor-not-allowed"
+                  className="input-folusho w-full bg-white/5 opacity-60 cursor-not-allowed"
                   placeholder="Auto-Matrixed"
                   disabled
                 />
@@ -429,7 +429,7 @@ export default function StudentForm({
 
           {/* Subject Selection */}
           {!isEditing && filteredSubjects.length > 0 && (
-            <section className="space-y-8 pt-8 border-t border-folusho-cream-100">
+            <section className="space-y-8 pt-8 border-t border-white/5">
               <div className="flex flex-col md:flex-row justify-between items-end gap-8">
                 <h3 className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.4em] px-2 flex items-center gap-3">
                   <div className="w-2 h-2 rounded-full bg-folusho-yellow-500" />
@@ -452,22 +452,22 @@ export default function StudentForm({
                   .filter(s => s.name.toLowerCase().includes(subjectSearchTerm.toLowerCase()))
                   .map(subject => (
                     <label
-                      key={subject.id}
+                      key={subjectId}
                       className={`flex items-center gap-5 p-6 rounded-[2rem] border transition-all cursor-pointer ${
-                        selectedSubjects.includes(subject.id)
-                          ? 'bg-folusho-sage-50 border-folusho-sage-200 shadow-sm'
-                          : 'bg-white border-folusho-cream-100 hover:border-folusho-sage-100'
+                        selectedSubjects.includes(subjectId)
+                          ? 'bg-folusho-sage-500/10 border-folusho-sage-400/30 shadow-sm'
+                          : 'bg-white/5 border-white/5 hover:border-folusho-sage-500/30'
                       }`}
                     >
                       <input
                         type="checkbox"
-                        checked={selectedSubjects.includes(subject.id)}
-                        onChange={() => toggleSubject(subject.id)}
-                        className="w-6 h-6 border-folusho-cream-200 text-folusho-sage-500 rounded-lg focus:ring-folusho-sage-400"
+                        checked={selectedSubjects.includes(subjectId)}
+                        onChange={() => toggleSubject(subjectId)}
+                        className="w-6 h-6 border-white/10 text-folusho-sage-500 rounded-lg focus:ring-folusho-sage-400 bg-transparent"
                       />
                       <div className="flex-1 min-w-0">
-                        <p className={`text-sm font-black truncate transition-colors ${selectedSubjects.includes(subject.id) ? 'text-folusho-sage-600' : 'text-folusho-slate-900'}`}>{subject.name}</p>
-                        <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest mt-1">{subject.code}</p>
+                        <p className={`text-sm font-black truncate transition-colors ${selectedSubjects.includes(subjectId) ? 'text-folusho-sage-400' : 'text-white'}`}>{subject.name}</p>
+                        <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest mt-1">{subject.code}</p>
                       </div>
                     </label>
                   ))}
@@ -478,30 +478,30 @@ export default function StudentForm({
           {/* Credentials Display */}
           {formData.parentUsername && (
             <motion.div 
-              className="p-10 rounded-[3rem] bg-folusho-cream-50/50 border border-folusho-cream-200 space-y-8"
+              className="p-10 rounded-[3rem] bg-white/5 border border-white/5 space-y-8"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
             >
               <div className="flex items-center gap-5">
-                <div className="p-4 bg-folusho-sage-50 rounded-2xl text-folusho-sage-500 border border-folusho-sage-100">
+                <div className="p-4 bg-folusho-sage-500/10 rounded-2xl text-folusho-sage-400 border border-white/5">
                   <BookOpen size={24} />
                 </div>
                 <div>
-                  <h4 className="text-sm font-black text-folusho-slate-900 uppercase tracking-tighter">Access Credentials</h4>
-                  <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest mt-1">Parent Portal Protocols</p>
+                  <h4 className="text-sm font-black text-white uppercase tracking-tighter">Access Credentials</h4>
+                  <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest mt-1">Parent Portal Protocols</p>
                 </div>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-3">
-                  <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">Access Key (User)</p>
-                  <div className="p-5 bg-white rounded-[1.5rem] border border-folusho-cream-200 text-sm font-mono font-bold text-folusho-sage-600 shadow-sm">
+                  <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest px-2">Access Key (User)</p>
+                  <div className="p-5 bg-folusho-slate-950 rounded-[1.5rem] border border-white/5 text-sm font-mono font-bold text-folusho-sage-400 shadow-sm">
                     {formData.parentUsername}
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">Secure Cipher (Pass)</p>
-                  <div className="p-5 bg-white rounded-[1.5rem] border border-folusho-cream-200 text-sm font-mono font-bold text-folusho-coral-500 shadow-sm">
+                  <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest px-2">Secure Cipher (Pass)</p>
+                  <div className="p-5 bg-folusho-slate-950 rounded-[1.5rem] border border-white/5 text-sm font-mono font-bold text-folusho-coral-400 shadow-sm">
                     {formData.parentPassword}
                   </div>
                 </div>
@@ -510,7 +510,7 @@ export default function StudentForm({
           )}
 
           {/* Form Actions */}
-          <div className="flex justify-end gap-8 pt-12 border-t border-folusho-cream-100">
+          <div className="flex justify-end gap-8 pt-12 border-t border-white/5">
             <button
               type="button"
               onClick={onCancel}

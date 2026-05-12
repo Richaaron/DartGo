@@ -448,14 +448,14 @@ export default function StudentManagement() {
       {/* ── Dynamic Header ────────────────────────────── */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-50 border border-folusho-sage-100 text-folusho-sage-500 text-[10px] font-black tracking-[0.3em] uppercase">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-500/10 border border-folusho-sage-500/20 text-folusho-sage-400 text-[10px] font-black tracking-[0.3em] uppercase">
             Academic Governance
           </div>
-          <h1 className="text-3xl md:text-5xl font-black text-folusho-slate-900 tracking-tighter leading-none">
+          <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-none">
             Champion <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-500 via-folusho-coral-400 to-folusho-sage-600">Inventory.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-400 via-folusho-coral-400 to-folusho-sage-500">Inventory.</span>
           </h1>
-          <p className="text-folusho-slate-400 text-sm font-bold max-w-xl leading-relaxed tracking-tight">
+          <p className="text-folusho-slate-500 text-sm font-bold max-w-xl leading-relaxed tracking-tight">
             {isTeacher
               ? isFormCapableTeacher
                 ? "Oversee the development and academic journey of your assigned champions."
@@ -467,16 +467,16 @@ export default function StudentManagement() {
         <div className="flex flex-wrap gap-6">
           <button
             onClick={() => setShowBulkAssign(true)}
-            className="btn-vibrant bg-white border border-folusho-cream-200 !text-folusho-slate-900 shadow-sm"
+            className="btn-vibrant !bg-folusho-slate-900/40 border border-white/5 !text-white shadow-2xl backdrop-blur-md"
           >
-            <BookOpen className="w-5 h-5 text-folusho-sage-500" />
+            <BookOpen className="w-5 h-5 text-folusho-sage-400" />
             Bulk Matrix
           </button>
           <button
             onClick={handleExport}
-            className="btn-vibrant bg-white border border-folusho-cream-200 !text-folusho-slate-900 shadow-sm"
+            className="btn-vibrant !bg-folusho-slate-900/40 border border-white/5 !text-white shadow-2xl backdrop-blur-md"
           >
-            <Download className="w-5 h-5 text-folusho-coral-500" />
+            <Download className="w-5 h-5 text-folusho-coral-400" />
             Vault Export
           </button>
           <button
@@ -494,14 +494,14 @@ export default function StudentManagement() {
       </div>
 
       {/* ── Intelligence Filters ───────────────────────── */}
-      <div className="folusho-card !p-10 border-folusho-cream-200">
+      <div className="folusho-card !p-10 border-white/5">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div className="space-y-3">
             <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em] px-2">
               Identity Search
             </label>
             <div className="relative group">
-              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-sage-400 group-focus-within:text-folusho-sage-600 transition-colors" />
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-sage-600 group-focus-within:text-folusho-sage-400 transition-colors" />
               <input
                 type="text"
                 placeholder="Name, ID or Registry..."
@@ -555,7 +555,7 @@ export default function StudentManagement() {
       </div>
 
       {/* ── Data Matrix ────────────────────────────────── */}
-      <div className="folusho-card !p-0 border-folusho-cream-200">
+      <div className="folusho-card !p-0 border-white/5">
         <Table
           columns={columns}
           data={filteredStudents}
@@ -565,14 +565,14 @@ export default function StudentManagement() {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => handleOpenAdvancedEditor(student)}
-                    className="p-3 rounded-2xl bg-folusho-sage-50 hover:bg-folusho-sage-100 text-folusho-sage-600 transition-all border border-folusho-sage-100"
+                    className="p-3 rounded-2xl bg-folusho-sage-500/10 hover:bg-folusho-sage-500/20 text-folusho-sage-400 transition-all border border-white/5"
                     title="Intelligence Editor"
                   >
                     <Edit2 size={16} />
                   </button>
                   <button
                     onClick={() => handleOpenSubjectAssignment(student)}
-                    className="p-3 rounded-2xl bg-folusho-yellow-50 hover:bg-folusho-yellow-100 text-folusho-yellow-700 transition-all border border-folusho-yellow-100"
+                    className="p-3 rounded-2xl bg-folusho-yellow-500/10 hover:bg-folusho-yellow-500/20 text-folusho-yellow-500 transition-all border border-white/5"
                     title="Matrix Assignment"
                   >
                     <BookOpen size={16} />
@@ -580,7 +580,7 @@ export default function StudentManagement() {
                   {permissions.canDelete && (
                     <button
                       onClick={() => handleDeleteStudent(student.id)}
-                      className="p-3 rounded-2xl bg-folusho-coral-50 hover:bg-folusho-coral-100 text-folusho-coral-600 transition-all border border-folusho-coral-100"
+                      className="p-3 rounded-2xl bg-folusho-coral-500/10 hover:bg-folusho-coral-500/20 text-folusho-coral-400 transition-all border border-white/5"
                       title="Terminate Identity"
                     >
                       <Trash2 size={16} />
@@ -593,17 +593,17 @@ export default function StudentManagement() {
               return (
                 <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${
                   student.status === "Active" 
-                    ? "bg-folusho-sage-100 text-folusho-sage-600 border border-folusho-sage-200" 
-                    : "bg-folusho-cream-200 text-folusho-slate-400 border border-folusho-cream-300"
+                    ? "bg-folusho-sage-500/10 text-folusho-sage-400 border border-folusho-sage-500/20" 
+                    : "bg-white/5 text-folusho-slate-500 border border-white/5"
                 }`}>
                   {student.status}
                 </span>
               );
             }
             if (key === "registrationNumber") {
-              return <span className="font-mono font-black text-folusho-sage-600">{student[key]}</span>;
+              return <span className="font-mono font-black text-folusho-sage-400">{student[key]}</span>;
             }
-            return <span className="font-bold text-folusho-slate-900">{student[key]}</span>;
+            return <span className="font-bold text-white">{student[key]}</span>;
           }}
         />
       </div>

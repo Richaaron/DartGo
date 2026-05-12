@@ -16,18 +16,18 @@ body,
 }
 
 body {
-    @apply bg-folusho-cream-100 text-folusho-slate-900;
+    @apply bg-folusho-slate-950 text-folusho-cream-100;
     font-family: 'Outfit', 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.6;
     overflow-x: hidden;
     background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
-    background-blend-mode: multiply;
+    background-blend-mode: overlay;
 }
 
 .dark body {
-    @apply bg-folusho-cream-100;
+    @apply bg-folusho-slate-950;
 }
 
 html {
@@ -37,11 +37,11 @@ html {
 /* ── FOLUSHO ACADEMIC DESIGN SYSTEM ────────────────── */
 @layer components {
   .folusho-card {
-    @apply bg-folusho-cream-50 border border-folusho-cream-300 rounded-5xl p-10 shadow-folusho relative overflow-hidden transition-all duration-500 hover:shadow-folusho-lg hover:-translate-y-1;
+    @apply bg-folusho-slate-900/40 backdrop-blur-2xl border border-white/5 rounded-5xl p-10 shadow-2xl relative overflow-hidden transition-all duration-500 hover:shadow-folusho-lg hover:-translate-y-1;
   }
   
   .bento-surface {
-    @apply bg-folusho-yellow-200/50 border border-folusho-yellow-300/30 rounded-4xl shadow-inner;
+    @apply bg-folusho-slate-800/40 border border-white/5 rounded-4xl shadow-inner backdrop-blur-md;
   }
 
   .btn-vibrant {
@@ -49,11 +49,11 @@ html {
   }
 
   .input-folusho {
-    @apply w-full px-8 py-5 bg-folusho-cream-50 text-folusho-slate-900 border-2 border-folusho-cream-200 rounded-3xl font-medium focus:ring-4 focus:ring-folusho-sage-400/20 focus:border-folusho-sage-400 outline-none transition-all duration-300 placeholder:text-folusho-cream-500;
+    @apply w-full px-8 py-5 bg-folusho-slate-900/80 text-folusho-cream-50 border-2 border-white/5 rounded-3xl font-medium focus:ring-4 focus:ring-folusho-sage-400/20 focus:border-folusho-sage-400 outline-none transition-all duration-300 placeholder:text-folusho-slate-500;
   }
 
   .text-gradient-folusho {
-    @apply bg-gradient-to-r from-folusho-sage-600 to-folusho-coral-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-folusho-sage-400 to-folusho-coral-400 bg-clip-text text-transparent;
   }
 }
 
@@ -78,8 +78,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 select, option {
-    background-color: #ffffff !important;
-    color: #0f172a !important;
+    background-color: #1a1816 !important; /* folusho-slate-950 */
+    color: #faf9f6 !important; /* folusho-cream-100 */
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
 }
 
 @keyframes folusho-shimmer {
