@@ -103,7 +103,7 @@ const PrintResult = forwardRef<HTMLDivElement, PrintResultProps>(({
       <div className="text-center border-b-8 border-double border-royal-gold-500 pb-12 mb-12 flex items-center justify-between relative z-10">
         <div className="flex items-center gap-8">
           <img
-            src={config?.schoolLogo || "/school_logo.png"}
+            src={config?.schoolLogo || "/school_logo.png?v=20260512"}
             alt="Logo"
             className="w-28 h-28 object-contain shadow-xl rounded-3xl p-3 bg-white border-2 border-royal-gold-500"
           />

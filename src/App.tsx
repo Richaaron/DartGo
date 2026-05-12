@@ -164,7 +164,7 @@ function AppContent() {
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center p-1.5 shadow-lg ring-1 ring-white/10">
               <img
-                src={config?.schoolLogo || "/school_logo.png"}
+                src={config?.schoolLogo || "/school_logo.png?v=20260512"}
                 alt="Logo"
                 className="w-full h-full object-contain"
               />
@@ -212,7 +212,7 @@ function AppContent() {
               >
                 <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center p-2 shadow-2xl ring-1 ring-white/10">
                   <img
-                    src={config?.schoolLogo || "/school_logo.png"}
+                    src={config?.schoolLogo || "/school_logo.png?v=20260512"}
                     alt="Logo"
                     className="w-full h-full object-contain"
                   />

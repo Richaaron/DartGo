@@ -230,7 +230,7 @@ export default function Settings() {
               <div className="flex items-center gap-8 bg-white/5 p-6 rounded-3xl border border-white/5">
                 <div className="w-24 h-24 bg-nebula-slate-900 rounded-2xl flex items-center justify-center overflow-hidden border border-white/10 shadow-nebula">
                   <img
-                    src={config.schoolLogo || "/school_logo.png"}
+                    src={config.schoolLogo || "/school_logo.png?v=20260512"}
                     alt="School Logo"
                     className="w-full h-full object-contain p-2"
                   />

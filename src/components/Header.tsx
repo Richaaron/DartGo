@@ -20,7 +20,7 @@ export const Header: React.FC<HeaderProps> = ({ isDarkMode, showMobileMenu, setS
       </button>
       
       <div className="flex items-center gap-2">
-        <img src={config?.schoolLogo || "/school_logo.png"} alt="Logo" className="w-8 h-8 object-contain rounded-lg" />
+        <img src={config?.schoolLogo || "/school_logo.png?v=20260512"} alt="Logo" className="w-8 h-8 object-contain rounded-lg" />
         <span className="text-xs font-black uppercase bg-gradient-to-r from-gold-300 to-gold-200 bg-clip-text text-transparent">
           {config?.schoolName?.split(' ')[0] || 'FOLUSHO'}
         </span>

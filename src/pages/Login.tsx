@@ -171,7 +171,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                 >
                   <div className="inline-flex items-center gap-4 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-nebula-indigo-400 text-[10px] font-black tracking-[0.3em] uppercase backdrop-blur-md">
                     <div className="w-8 h-8 bg-white rounded-xl flex items-center justify-center p-1.5 shadow-2xl ring-1 ring-white/20">
-                      <img src="/school_logo.png" alt="Logo" className="w-full h-full object-contain" />
+                      <img src="/school_logo.png?v=20260512" alt="Logo" className="w-full h-full object-contain" />
                     </div>
                     FOLUSHO VICTORY SCHOOLS
                   </div>
