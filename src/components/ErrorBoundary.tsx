@@ -35,6 +35,25 @@ export class ErrorBoundary extends Component<Props, State> {
     console.error('ErrorBoundary caught an error:', error, errorInfo)
     this.setState({ errorInfo })
     
+    // Auto-reload on chunk load failures (common after new deployments)
+    const isChunkLoadError = 
+      error.message.includes('chunk') || 
+      error.message.includes('dynamically imported module') ||
+      error.name === 'ChunkLoadError';
+      
+    if (isChunkLoadError) {
+      const lastReload = sessionStorage.getItem('folusho_last_chunk_reload');
+      const now = Date.now();
+      
+      // Prevent infinite reload loops (only reload if last reload was > 5s ago)
+      if (!lastReload || (now - parseInt(lastReload)) > 5000) {
+        sessionStorage.setItem('folusho_last_chunk_reload', now.toString());
+        console.warn('Chunk load error detected, forcing page reload to sync with deployment...');
+        window.location.reload();
+        return;
+      }
+    }
+
     // Call custom error handler if provided
     if (this.props.onError) {
       this.props.onError(error, errorInfo)
@@ -78,55 +97,54 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-900 via-slate-800 to-purple-900 dark:from-brand-950 dark:via-slate-900 dark:to-purple-950 p-4">
-          <div className="max-w-md w-full bg-gradient-to-br from-white to-brand-50 dark:from-brand-800/95 dark:to-brand-900/95 dark:backdrop-blur-md rounded-2xl shadow-2xl p-8 text-center border border-purple-200/50 dark:border-purple-600/30">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-rose-500 to-rose-600 dark:from-rose-600 dark:to-rose-700 flex items-center justify-center shadow-lg shadow-rose-500/40 animate-pulse">
-              <AlertTriangle className="w-10 h-10 text-white" />
+        <div className="min-h-screen flex items-center justify-center bg-folusho-slate-950 p-4">
+          <div className="max-w-md w-full bg-folusho-slate-900/80 backdrop-blur-3xl rounded-[3rem] shadow-2xl p-12 text-center border border-white/5">
+            <div className="w-24 h-24 mx-auto mb-10 rounded-full bg-folusho-coral-500/20 flex items-center justify-center shadow-2xl animate-pulse border border-folusho-coral-500/30">
+              <AlertTriangle className="w-10 h-10 text-folusho-coral-400" />
             </div>
-            <h2 className="text-2xl font-black bg-gradient-to-r from-rose-600 to-purple-600 bg-clip-text text-transparent mb-3">Oops! Something went wrong</h2>
-            <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed font-medium">
+            <h2 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">Oops! Something went wrong</h2>
+            <p className="text-folusho-slate-400 mb-10 leading-relaxed font-bold">
               We encountered an unexpected error. Don't worry, our team has been notified and is working on it.
             </p>
             {(import.meta.env.DEV || this.props.showDetails) && this.state.error && (
-              <div className="mb-6 p-4 bg-rose-50 dark:bg-rose-900/20 rounded-xl text-left border border-rose-200 dark:border-rose-800/40">
-                <p className="font-mono text-xs text-rose-700 dark:text-rose-300 break-all">
+              <div className="mb-10 p-6 bg-folusho-coral-500/5 rounded-3xl text-left border border-folusho-coral-500/10">
+                <p className="font-mono text-xs text-folusho-coral-400 break-all leading-relaxed">
                   {this.state.error.message}
                 </p>
                 {this.state.errorInfo && (
-                  <p className="font-mono text-xs text-gray-500 dark:text-gray-400 mt-2 line-clamp-3">
+                  <p className="font-mono text-[9px] text-folusho-slate-500 mt-4 line-clamp-3 uppercase tracking-wider">
                     {this.state.errorInfo.componentStack}
                   </p>
                 )}
               </div>
             )}
-            <div className="flex gap-3 justify-center">
+            <div className="flex flex-col gap-4 w-full">
               {this.props.enableRetry !== false && (
                 <button
                   onClick={this.handleRetry}
-                  className="btn-primary flex items-center gap-2"
+                  className="px-10 py-4 bg-folusho-sage-400 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-folusho-sage-500 transition-all flex items-center justify-center gap-3 shadow-lg"
                 >
                   <RefreshCw className="w-4 h-4" />
                   Try Again
                 </button>
               )}
-              <div className="flex flex-col sm:flex-row items-center gap-4">
-            <button
-              onClick={() => (window.location.href = "/")}
-              className="px-8 py-3 bg-white text-brand-900 rounded-xl font-bold hover:bg-slate-100 transition-all flex items-center gap-2"
-            >
-              <RefreshCw className="w-5 h-5" />
-              Return Home
-            </button>
-            <button
-              onClick={() => {
-                localStorage.clear();
-                window.location.href = "/";
-              }}
-              className="px-8 py-3 bg-red-600/20 border border-red-500/50 text-red-100 rounded-xl font-bold hover:bg-red-600/30 transition-all"
-            >
-              Reset Application State
-            </button>
-          </div>
+              <div className="flex gap-4">
+                <button
+                  onClick={() => (window.location.href = "/")}
+                  className="flex-1 px-6 py-4 bg-folusho-slate-800 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-folusho-slate-700 transition-all border border-white/5"
+                >
+                  Return Home
+                </button>
+                <button
+                  onClick={() => {
+                    localStorage.clear();
+                    window.location.href = "/";
+                  }}
+                  className="flex-1 px-6 py-4 bg-folusho-coral-500/10 text-folusho-coral-400 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-folusho-coral-500/20 transition-all border border-folusho-coral-500/20"
+                >
+                  Reset State
+                </button>
+              </div>
             </div>
           </div>
         </div>
