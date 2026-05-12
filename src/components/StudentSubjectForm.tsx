@@ -95,206 +95,191 @@ export default function StudentSubjectForm({
   const categoryOrder = ['Science', 'Art', 'Commercial', 'General']
 
   return (
-    <div className="p-6 bg-slate-800 text-white">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6 pb-4 border-b border-slate-600">
-        <div>
-          <h2 className="text-2xl font-bold text-white">Manage Subjects</h2>
-          <p className="text-sm text-slate-300 mt-1">
-            {student.firstName} {student.lastName} ({student.registrationNumber})
-          </p>
-          <p className="text-xs text-slate-400">{student.level} · {student.class}</p>
-          {isSecondary && (
-            <p className="text-xs text-royal-gold-400 mt-1 font-semibold">
-              Min {MIN_SUBJECTS} – Max {MAX_SUBJECTS} subjects required
-            </p>
-          )}
-        </div>
-        <button
-          onClick={onCancel}
-          className="p-1.5 hover:bg-slate-700 rounded-lg transition-colors text-slate-400 hover:text-white"
-        >
-          <X size={22} />
-        </button>
-      </div>
+    <motion.div 
+      className="relative overflow-hidden bg-nebula-slate-950/40 backdrop-blur-3xl border border-white/10 rounded-[3rem] p-10 shadow-nebula-lg"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
+      {/* Decorative Orbs */}
+      <div className="absolute -top-24 -right-24 w-64 h-64 bg-nebula-indigo-500/20 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-nebula-pink-500/20 rounded-full blur-[100px] pointer-events-none" />
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Academic Period */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="relative z-10">
+        <div className="flex justify-between items-start mb-12">
           <div>
-            <label className="block text-sm font-semibold text-slate-300 mb-1.5">Academic Year *</label>
-            <input
-              type="text"
-              value={academicYear}
-              onChange={(e) => setAcademicYear(e.target.value)}
-              placeholder="e.g., 2026"
-              className="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white placeholder-slate-400 rounded-lg focus:ring-2 focus:ring-royal-gold-400 focus:border-transparent outline-none"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-slate-300 mb-1.5">Term *</label>
-            <select
-              value={term}
-              onChange={(e) => setTerm(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:ring-2 focus:ring-royal-gold-400 focus:border-transparent outline-none"
+            <motion.h2 
+              className="text-4xl font-black uppercase tracking-tighter leading-none text-white mb-3"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
             >
-              <option value="First">First Term</option>
-              <option value="Second">Second Term</option>
-              <option value="Third">Third Term</option>
-            </select>
+              Subject <br /> <span className="text-nebula-indigo-400">Matrix</span>
+            </motion.h2>
+            <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.3em]">
+              Academic Allocation Protocol
+            </p>
           </div>
+          <button
+            onClick={onCancel}
+            className="p-4 hover:bg-white/5 rounded-2xl transition-all border border-white/5 hover:border-white/10 text-nebula-slate-400 hover:text-white"
+          >
+            <X size={24} />
+          </button>
         </div>
 
-        {/* Notes */}
-        <div>
-          <label className="block text-sm font-semibold text-slate-300 mb-1.5">Notes (Optional)</label>
-          <textarea
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            placeholder="Add any notes about subject assignment..."
-            rows={2}
-            className="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white placeholder-slate-400 rounded-lg focus:ring-2 focus:ring-royal-gold-400 focus:border-transparent outline-none resize-none"
-          />
-        </div>
+        <form onSubmit={handleSubmit} className="space-y-12">
+          {/* Institutional Intelligence */}
+          <section className="space-y-6">
+            <h3 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em] px-2 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-nebula-indigo-500" />
+              I. Target Subject Detail
+            </h3>
 
-        {/* Subject Selection */}
-        <div>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-3">
-            <div>
-              <h3 className="text-base font-bold text-white">
-                Select Subjects
-                <span className={`ml-2 text-sm font-semibold ${
-                  selectedSubjects.length > MAX_SUBJECTS ? 'text-red-400' :
-                  isSecondary && selectedSubjects.length < MIN_SUBJECTS ? 'text-orange-400' :
-                  'text-emerald-400'
-                }`}>
-                  ({selectedSubjects.length} selected)
-                </span>
-              </h3>
-              {isSecondary && (
-                <div className="w-48 bg-slate-700 rounded-full h-1.5 mt-1.5">
-                  <div
-                    className={`h-1.5 rounded-full transition-all ${
-                      selectedSubjects.length > MAX_SUBJECTS ? 'bg-red-500' :
-                      selectedSubjects.length >= MIN_SUBJECTS ? 'bg-emerald-500' : 'bg-orange-500'
-                    }`}
-                    style={{ width: `${Math.min((selectedSubjects.length / MAX_SUBJECTS) * 100, 100)}%` }}
-                  />
-                </div>
-              )}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Academic Cycle
+                </label>
+                <input
+                  type="text"
+                  value={academicYear}
+                  onChange={(e) => setAcademicYear(e.target.value)}
+                  className="input-nebula w-full"
+                  placeholder="e.g. 2026"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Session Term
+                </label>
+                <select
+                  value={term}
+                  onChange={(e) => setTerm(e.target.value)}
+                  className="input-nebula w-full"
+                >
+                  <option value="First">First Vector</option>
+                  <option value="Second">Second Vector</option>
+                  <option value="Third">Third Vector</option>
+                </select>
+              </div>
             </div>
-            <div className="relative w-full sm:w-56">
-              <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
-              <input
-                type="text"
-                placeholder="Search subjects..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 text-sm bg-slate-700 border border-slate-600 text-white placeholder-slate-400 rounded-lg focus:ring-2 focus:ring-royal-gold-400 outline-none"
+
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                Intelligence Memo (Notes)
+              </label>
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                rows={2}
+                className="input-nebula w-full resize-none"
+                placeholder="Institutional notes for this assignment..."
               />
             </div>
-          </div>
+          </section>
 
-          {errors.subjects && (
-            <p className="text-red-400 text-sm mb-3 font-medium">{errors.subjects}</p>
-          )}
-
-          {(() => {
-            const searched = availableSubjects.filter(s =>
-              s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              s.code.toLowerCase().includes(searchTerm.toLowerCase())
-            )
-            const byCategory = searched.reduce((acc, subject) => {
-              const cat = isSSSStudent ? (subject.subjectCategory || 'General') : 'General'
-              if (!acc[cat]) acc[cat] = []
-              acc[cat].push(subject)
-              return acc
-            }, {} as Record<string, Subject[]>)
-
-            const sortedCats = Object.keys(byCategory).sort(
-              (a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b)
-            )
-
-            return sortedCats.map(category => (
-              <div key={category} className="mb-4 border border-slate-600 rounded-xl p-4 bg-slate-700/50">
-                <h4 className="text-xs font-black text-royal-gold-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-                  <span className="px-2 py-0.5 bg-royal-gold-500/20 border border-royal-gold-400/30 rounded-full">
-                    {category} {isSSSStudent ? 'Stream' : 'Subjects'}
-                  </span>
-                  <span className="text-slate-500 font-medium normal-case">({byCategory[category].length})</span>
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                  {byCategory[category].map(subject => {
-                    const isSelected = selectedSubjects.includes(subject.id)
-                    const isDisabled = !isSelected && isSecondary && selectedSubjects.length >= MAX_SUBJECTS
-                    return (
-                      <label
-                        key={subject.id}
-                        className={`flex items-start gap-3 p-3 rounded-lg transition-all border ${
-                          isSelected
-                            ? 'bg-royal-purple-600/30 border-royal-purple-400/60 cursor-pointer'
-                            : isDisabled
-                            ? 'bg-slate-800/50 border-slate-700 opacity-50 cursor-not-allowed'
-                            : 'bg-slate-800/50 border-slate-600 hover:border-royal-gold-400/50 hover:bg-slate-700 cursor-pointer'
-                        }`}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={isSelected}
-                          disabled={isDisabled}
-                          onChange={() => toggleSubject(subject.id)}
-                          className="mt-0.5 w-4 h-4 accent-purple-500 border-slate-500 rounded"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-white text-sm">{subject.name}</p>
-                          <p className="text-xs text-slate-400">{subject.code}</p>
-                        </div>
-                      </label>
-                    )
-                  })}
-                </div>
+          {/* Subject Matrix Selection */}
+          <section className="space-y-8 pt-6 border-t border-white/5">
+            <div className="flex flex-col md:flex-row justify-between items-end gap-6">
+              <div>
+                <h3 className="text-[10px] font-black text-nebula-pink-400 uppercase tracking-[0.4em] px-2 flex items-center gap-2 mb-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-nebula-pink-500" />
+                  II. Specialization Matrix
+                </h3>
+                <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Status: <span className="text-white">{selectedSubjects.length}</span> Active Protocols
+                </p>
               </div>
-            ))
-          })()}
-        </div>
-
-        {/* Selected summary */}
-        {selectedSubjects.length > 0 && (
-          <div className="bg-royal-purple-900/30 border border-royal-purple-600/40 rounded-lg p-4">
-            <p className="text-sm font-bold text-royal-gold-300 mb-2">
-              Selected ({selectedSubjects.length}):
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {selectedSubjects.map(subjectId => {
-                const subject = availableSubjects.find(s => s.id === subjectId)
-                return subject ? (
-                  <span key={subjectId} className="px-3 py-1 bg-royal-purple-600/40 text-royal-purple-200 border border-royal-purple-500/30 rounded-full text-xs font-semibold">
-                    {subject.name}
-                  </span>
-                ) : null
-              })}
+              <div className="relative w-full md:w-64">
+                <input
+                  type="text"
+                  placeholder="Filter Matrix..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="input-nebula w-full pl-10 text-xs"
+                />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-nebula-slate-500" />
+              </div>
             </div>
-          </div>
-        )}
 
-        {/* Actions */}
-        <div className="flex gap-3 pt-4 border-t border-slate-600">
-          <button
-            type="submit"
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-royal-purple-500 to-royal-purple-600 hover:from-royal-purple-600 hover:to-royal-purple-700 text-white rounded-lg font-bold transition-all shadow-lg"
-          >
-            <Plus size={18} />
-            Assign Subjects
-          </button>
-          <button
-            type="button"
-            onClick={onCancel}
-            className="px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white border border-slate-600 rounded-lg font-semibold transition-colors"
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
+            <div className="space-y-10">
+              {(() => {
+                const searched = availableSubjects.filter(s =>
+                  s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  s.code.toLowerCase().includes(searchTerm.toLowerCase())
+                )
+                const byCategory = searched.reduce((acc, subject) => {
+                  const cat = isSSSStudent ? (subject.subjectCategory || 'General') : 'General'
+                  if (!acc[cat]) acc[cat] = []
+                  acc[cat].push(subject)
+                  return acc
+                }, {} as Record<string, Subject[]>)
+
+                const sortedCats = Object.keys(byCategory).sort(
+                  (a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b)
+                )
+
+                return sortedCats.map(category => (
+                  <div key={category} className="space-y-4">
+                    <h4 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em] px-2 flex items-center gap-2">
+                      <div className="w-1 h-1 rounded-full bg-white/20" />
+                      {category} Logic
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {byCategory[category].map(subject => {
+                        const isSelected = selectedSubjects.includes(subject.id)
+                        const isDisabled = !isSelected && isSecondary && selectedSubjects.length >= MAX_SUBJECTS
+                        return (
+                          <label
+                            key={subject.id}
+                            className={`flex items-center gap-4 p-5 rounded-3xl border transition-all cursor-pointer ${
+                              isSelected
+                                ? 'bg-nebula-indigo-500/10 border-nebula-indigo-500/40 shadow-inner'
+                                : isDisabled
+                                ? 'bg-white/[0.01] border-white/5 opacity-30 cursor-not-allowed'
+                                : 'bg-white/[0.02] border-white/5 hover:bg-white/[0.05] hover:border-white/10'
+                            }`}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={isSelected}
+                              disabled={isDisabled}
+                              onChange={() => toggleSubject(subject.id)}
+                              className="w-5 h-5 bg-nebula-slate-900 border-white/10 text-nebula-indigo-600 rounded-lg focus:ring-nebula-indigo-500"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-black text-white truncate">{subject.name}</p>
+                              <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">{subject.code}</p>
+                            </div>
+                          </label>
+                        )
+                      })}
+                    </div>
+                  </div>
+                ))
+              })()}
+            </div>
+          </section>
+
+          {/* Form Actions */}
+          <div className="flex justify-end gap-6 pt-10 border-t border-white/5">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="px-8 py-4 text-[10px] font-black text-nebula-slate-400 uppercase tracking-[0.3em] hover:text-white transition-all"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-10 py-4 bg-white text-black rounded-full font-black text-[10px] uppercase tracking-[0.3em] shadow-lg hover:shadow-white/10 hover:scale-105 active:scale-95 transition-all"
+            >
+              Initialize Assignment
+            </button>
+          </div>
+        </form>
+      </div>
+    </motion.div>
   )
 }

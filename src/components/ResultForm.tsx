@@ -86,249 +86,275 @@ export default function ResultForm({
   }
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">
-          {isEditing ? 'Edit Result' : 'Record New Result'}
-        </h2>
-        <button
-          onClick={onCancel}
-          className="p-1 hover:bg-gray-100 rounded transition-colors"
-        >
-          <X size={24} />
-        </button>
-      </div>
+    <motion.div 
+      className="relative overflow-hidden bg-nebula-slate-950/40 backdrop-blur-3xl border border-white/10 rounded-[3rem] p-10 shadow-nebula-lg"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
+      {/* Decorative Orbs */}
+      <div className="absolute -top-24 -right-24 w-64 h-64 bg-nebula-indigo-500/20 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-nebula-pink-500/20 rounded-full blur-[100px] pointer-events-none" />
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Selection Section */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">Selection</h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Student *
-              </label>
-              <select
-                name="studentId"
-                value={formData.studentId}
-                onChange={handleChange}
-                className={`input-field ${errors.studentId ? 'border-red-500' : ''}`}
-              >
-                <option value="">Select a student...</option>
-                {students.map((student) => (
-                  <option key={student.id} value={student.id}>
-                    {student.firstName} {student.lastName} ({student.registrationNumber})
-                  </option>
-                ))}
-              </select>
-              {errors.studentId && (
-                <p className="text-red-500 text-sm mt-1">{errors.studentId}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Subject *
-              </label>
-              <select
-                name="subjectId"
-                value={formData.subjectId}
-                onChange={handleChange}
-                className={`input-field ${errors.subjectId ? 'border-red-500' : ''}`}
-              >
-                <option value="">Select a subject...</option>
-                {subjects.map((subject) => (
-                  <option key={subject.id} value={subject.id}>
-                    {subject.name} ({subject.code})
-                  </option>
-                ))}
-              </select>
-              {errors.subjectId && (
-                <p className="text-red-500 text-sm mt-1">{errors.subjectId}</p>
-              )}
-            </div>
+      <div className="relative z-10">
+        <div className="flex justify-between items-start mb-12">
+          <div>
+            <motion.h2 
+              className="text-4xl font-black uppercase tracking-tighter leading-none text-white mb-3"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+            >
+              {isEditing ? 'Sync' : 'Initialize'} <br /> <span className="text-nebula-indigo-400">Result</span>
+            </motion.h2>
+            <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.3em]">
+              Academic Evaluation Protocol
+            </p>
           </div>
+          <button
+            onClick={onCancel}
+            className="p-4 hover:bg-white/5 rounded-2xl transition-all border border-white/5 hover:border-white/10 text-nebula-slate-400 hover:text-white"
+          >
+            <X size={24} />
+          </button>
         </div>
 
-        {/* Assessment Details */}
-        <div className="space-y-4 border-t pt-4">
-          <h3 className="text-lg font-semibold text-gray-900">Assessment Details</h3>
+        <form onSubmit={handleSubmit} className="space-y-12">
+          {/* Section I: Identity Mapping */}
+          <section className="space-y-6">
+            <h3 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em] px-2 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-nebula-indigo-500" />
+              I. Identity Mapping
+            </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Assessment Type
-              </label>
-              <select
-                name="assessmentType"
-                value={formData.assessmentType}
-                onChange={handleChange}
-                className="input-field"
-              >
-                <option value="Test">Test</option>
-                <option value="Exam">Exam</option>
-                <option value="Assignment">Assignment</option>
-                <option value="Project">Project</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Score *
-              </label>
-              <input
-                type="number"
-                name="score"
-                value={formData.score}
-                onChange={handleChange}
-                step="0.01"
-                className={`input-field ${errors.score ? 'border-red-500' : ''}`}
-              />
-              {errors.score && (
-                <p className="text-red-500 text-sm mt-1">{errors.score}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Total Score *
-              </label>
-              <input
-                type="number"
-                name="totalScore"
-                value={formData.totalScore}
-                onChange={handleChange}
-                step="0.01"
-                className={`input-field ${errors.totalScore ? 'border-red-500' : ''}`}
-              />
-              {errors.totalScore && (
-                <p className="text-red-500 text-sm mt-1">{errors.totalScore}</p>
-              )}
-            </div>
-          </div>
-
-          {/* Score Preview */}
-          <div className="bg-blue-50 p-4 rounded-lg">
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <p className="text-gray-600 text-sm">Percentage</p>
-                <p className="text-2xl font-bold text-blue-600">{preview.percentage}%</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Target Student
+                </label>
+                <select
+                  name="studentId"
+                  value={formData.studentId}
+                  onChange={handleChange}
+                  className={`input-nebula w-full ${errors.studentId ? 'border-nebula-pink-500/50' : ''}`}
+                >
+                  <option value="">Choose Student Identity...</option>
+                  {students.map((student) => (
+                    <option key={student.id} value={student.id}>
+                      {student.firstName} {student.lastName} ({student.registrationNumber})
+                    </option>
+                  ))}
+                </select>
+                {errors.studentId && (
+                  <p className="text-nebula-pink-400 text-[10px] font-black uppercase tracking-widest px-2">{errors.studentId}</p>
+                )}
               </div>
-              <div>
-                <p className="text-gray-600 text-sm">Grade</p>
-                <p className="text-2xl font-bold text-blue-600">{preview.grade}</p>
-              </div>
-              <div>
-                <p className="text-gray-600 text-sm">Score</p>
-                <p className="text-2xl font-bold text-blue-600">
-                  {formData.score}/{formData.totalScore}
-                </p>
+
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Subject Matrix
+                </label>
+                <select
+                  name="subjectId"
+                  value={formData.subjectId}
+                  onChange={handleChange}
+                  className={`input-nebula w-full ${errors.subjectId ? 'border-nebula-pink-500/50' : ''}`}
+                >
+                  <option value="">Select Subject Protocol...</option>
+                  {subjects.map((subject) => (
+                    <option key={subject.id} value={subject.id}>
+                      {subject.name} ({subject.code})
+                    </option>
+                  ))}
+                </select>
+                {errors.subjectId && (
+                  <p className="text-nebula-pink-400 text-[10px] font-black uppercase tracking-widest px-2">{errors.subjectId}</p>
+                )}
               </div>
             </div>
-          </div>
-        </div>
+          </section>
 
-        {/* Academic Period */}
-        <div className="space-y-4 border-t pt-4">
-          <h3 className="text-lg font-semibold text-gray-900">Academic Period</h3>
+          {/* Section II: Performance Metrics */}
+          <section className="space-y-6 pt-6 border-t border-white/5">
+            <h3 className="text-[10px] font-black text-nebula-teal-400 uppercase tracking-[0.4em] px-2 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-nebula-teal-500" />
+              II. Performance Metrics
+            </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Term
-              </label>
-              <select
-                name="term"
-                value={formData.term}
-                onChange={handleChange}
-                className="input-field"
-              >
-                <option value="First">First Term</option>
-                <option value="Second">Second Term</option>
-                <option value="Third">Third Term</option>
-              </select>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Evaluation Category
+                </label>
+                <select
+                  name="assessmentType"
+                  value={formData.assessmentType}
+                  onChange={handleChange}
+                  className="input-nebula w-full"
+                >
+                  <option value="Test">Standard Test</option>
+                  <option value="Exam">Global Examination</option>
+                  <option value="Assignment">Cognitive Assignment</option>
+                  <option value="Project">Specialized Project</option>
+                </select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Raw Score
+                </label>
+                <input
+                  type="number"
+                  name="score"
+                  value={formData.score}
+                  onChange={handleChange}
+                  step="0.01"
+                  className={`input-nebula w-full ${errors.score ? 'border-nebula-pink-500/50' : ''}`}
+                />
+                {errors.score && (
+                  <p className="text-nebula-pink-400 text-[10px] font-black uppercase tracking-widest px-2">{errors.score}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Max Potential
+                </label>
+                <input
+                  type="number"
+                  name="totalScore"
+                  value={formData.totalScore}
+                  onChange={handleChange}
+                  step="0.01"
+                  className={`input-nebula w-full ${errors.totalScore ? 'border-nebula-pink-500/50' : ''}`}
+                />
+                {errors.totalScore && (
+                  <p className="text-nebula-pink-400 text-[10px] font-black uppercase tracking-widest px-2">{errors.totalScore}</p>
+                )}
+              </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Academic Year
+            {/* Score Intelligence Preview */}
+            <div className="p-8 rounded-[2rem] bg-nebula-indigo-500/5 border border-nebula-indigo-500/10 shadow-inner">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+                <div className="space-y-1">
+                  <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">Efficiency</p>
+                  <p className="text-3xl font-black text-white leading-none">{preview.percentage}%</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">Classification</p>
+                  <p className="text-3xl font-black text-nebula-indigo-400 leading-none">{preview.grade}</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">Fractional Value</p>
+                  <p className="text-3xl font-black text-nebula-teal-400 leading-none">{formData.score} <span className="text-sm opacity-30 text-white">/ {formData.totalScore}</span></p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Section III: Contextual Data */}
+          <section className="space-y-6 pt-6 border-t border-white/5">
+            <h3 className="text-[10px] font-black text-nebula-pink-400 uppercase tracking-[0.4em] px-2 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-nebula-pink-500" />
+              III. Contextual Intelligence
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Session Vector (Term)
+                </label>
+                <select
+                  name="term"
+                  value={formData.term}
+                  onChange={handleChange}
+                  className="input-nebula w-full"
+                >
+                  <option value="First">First Vector</option>
+                  <option value="Second">Second Vector</option>
+                  <option value="Third">Third Vector</option>
+                </select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Academic Cycle
+                </label>
+                <input
+                  type="text"
+                  name="academicYear"
+                  value={formData.academicYear}
+                  onChange={handleChange}
+                  className="input-nebula w-full"
+                  placeholder="e.g. 2026"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Execution Date
+                </label>
+                <input
+                  type="date"
+                  name="dateRecorded"
+                  value={formData.dateRecorded}
+                  onChange={handleChange}
+                  className="input-nebula w-full"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                Institutional Sign-off
               </label>
               <input
                 type="text"
-                name="academicYear"
-                value={formData.academicYear}
+                name="recordedBy"
+                value={formData.recordedBy}
                 onChange={handleChange}
-                placeholder="e.g., 2024"
-                className="input-field"
+                className={`input-nebula w-full ${errors.recordedBy ? 'border-nebula-pink-500/50' : ''}`}
+                placeholder="Teacher Identity..."
               />
+              {errors.recordedBy && (
+                <p className="text-nebula-pink-400 text-[10px] font-black uppercase tracking-widest px-2">{errors.recordedBy}</p>
+              )}
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Date Recorded
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                Evaluation Memo (Notes)
               </label>
-              <input
-                type="date"
-                name="dateRecorded"
-                value={formData.dateRecorded}
+              <textarea
+                name="notes"
+                value={formData.notes}
                 onChange={handleChange}
-                className="input-field"
+                rows={3}
+                className="input-nebula w-full resize-none"
+                placeholder="Enter specialized observations..."
               />
             </div>
+          </section>
+
+          {/* Form Actions */}
+          <div className="flex justify-end gap-6 pt-10 border-t border-white/5">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="px-8 py-4 text-[10px] font-black text-nebula-slate-400 uppercase tracking-[0.3em] hover:text-white transition-all"
+            >
+              Abort
+            </button>
+            <button
+              type="submit"
+              className="px-10 py-4 bg-white text-black rounded-full font-black text-[10px] uppercase tracking-[0.3em] shadow-lg hover:shadow-white/10 hover:scale-105 active:scale-95 transition-all"
+            >
+              {isEditing ? 'Sync Matrix' : 'Commit Result'}
+            </button>
           </div>
-        </div>
-
-        {/* Additional Information */}
-        <div className="space-y-4 border-t pt-4">
-          <h3 className="text-lg font-semibold text-gray-900">Additional Information</h3>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Recorded By *
-            </label>
-            <input
-              type="text"
-              name="recordedBy"
-              value={formData.recordedBy}
-              onChange={handleChange}
-              placeholder="Teacher name"
-              className={`input-field ${errors.recordedBy ? 'border-red-500' : ''}`}
-            />
-            {errors.recordedBy && (
-              <p className="text-red-500 text-sm mt-1">{errors.recordedBy}</p>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Notes
-            </label>
-            <textarea
-              name="notes"
-              value={formData.notes}
-              onChange={handleChange}
-              placeholder="Additional notes (optional)"
-              rows={3}
-              className="input-field"
-            />
-          </div>
-        </div>
-
-        {/* Form Actions */}
-        <div className="flex gap-4 pt-4 border-t">
-          <button type="submit" className="btn-primary">
-            {isEditing ? 'Update Result' : 'Record Result'}
-          </button>
-          <button
-            type="button"
-            onClick={onCancel}
-            className="btn-secondary"
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
+    </motion.div>
+  )
   )
 }

@@ -1,338 +1,125 @@
 :root {
-    --brand: #663399;
-    --brand-dark: #5a2d8a;
-    --gold: #D4AF37;
-    --black: #1a1a1a;
-    --sidebar-bg: #1a1a1a;
-    --sidebar-item: rgba(212, 175, 55, 0.1);
+    --nebula-slate-900: #0f172a;
+    --nebula-slate-950: #020617;
+    --nebula-indigo-500: #6366f1;
+    --nebula-teal-500: #14b8a6;
+    --nebula-pink-500: #ec4899;
 }
 
-/* ── Sidebar scrollbar ───────────────────────────– */
+/* ── Digital Citadel Scrollbar ──────────────────── */
 .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(212, 175, 55, 0.05);
-    border-radius: 10px;
+    background: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #D4AF37 0%, #663399 100%);
-    border-radius: 3px;
+    background: linear-gradient(180deg, rgba(99, 102, 241, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
+    border-radius: 100px;
+    border: 2px solid transparent;
+    background-clip: content-box;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #E5C158 0%, #7f3fb3 100%);
+    background: linear-gradient(180deg, rgba(99, 102, 241, 0.4) 0%, rgba(236, 72, 153, 0.4) 100%);
 }
 
-/* ── Cards ───────────────────────────────────── */
-.card {
-    @apply bg-slate-800 dark:bg-slate-900 rounded-xl border border-royal-gold-400/20 dark:border-royal-purple-700/30
-         shadow-lg p-4 transition-all duration-300
-         hover:shadow-xl hover:border-royal-gold-400/50 dark:hover:border-royal-purple-500/50
-         hover:translate-y-[-2px];
+/* ── Nebula Layout Utilities ────────────────────── */
+.nebula-card {
+    @apply bg-nebula-slate-950/40 backdrop-blur-3xl border border-white/5 
+           rounded-[2.5rem] p-10 shadow-nebula transition-all duration-500
+           hover:border-white/10 hover:shadow-nebula-lg;
 }
 
-.card-lg {
-    @apply bg-slate-800 dark:bg-slate-900 rounded-xl border border-royal-gold-400/20 dark:border-royal-purple-700/30
-         shadow-lg p-4 sm:p-6 transition-all duration-300
-         hover:shadow-xl hover:border-royal-gold-400/50 dark:hover:border-royal-purple-500/50
-         hover:translate-y-[-2px];
+.input-nebula {
+    @apply w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4
+           text-white text-sm font-bold tracking-tight outline-none
+           transition-all duration-300 placeholder:text-nebula-slate-600
+           focus:bg-white/[0.08] focus:border-nebula-indigo-500/50 
+           focus:shadow-[0_0_20px_rgba(99,102,241,0.1)]
+           disabled:opacity-50 disabled:cursor-not-allowed;
 }
 
-.card-animated {
-    @apply card animate-fadeInUp;
+.btn-vibrant {
+    @apply inline-flex items-center justify-center gap-3 px-8 py-4
+           bg-gradient-to-br from-nebula-indigo-500 to-nebula-indigo-700
+           text-white text-[10px] font-black uppercase tracking-[0.2em]
+           rounded-2xl transition-all duration-300 shadow-nebula
+           hover:shadow-nebula-lg hover:scale-[1.02] active:scale-[0.98]
+           disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed;
 }
 
-/* ── Buttons ─────────────────────────────────── */
-.btn-primary {
-    @apply inline-flex items-center justify-center gap-2
-         px-4 py-2.5 bg-gradient-to-r from-royal-purple-500 to-royal-purple-600 
-         hover:from-royal-purple-600 hover:to-royal-purple-700
-         active:from-royal-purple-700 active:to-royal-purple-800
-         text-white text-sm font-semibold rounded-lg
-         transition-all duration-200 shadow-lg shadow-royal-purple-500/30
-         hover:shadow-xl hover:shadow-royal-purple-500/40
-         disabled:opacity-50 disabled:cursor-not-allowed;
+/* ── Specialized Components ─────────────────────── */
+.glow-indigo {
+    @apply shadow-[0_0_30px_rgba(99,102,241,0.3)];
 }
 
-.btn-secondary {
-    @apply inline-flex items-center justify-center gap-2
-         px-4 py-2.5 bg-white dark:bg-slate-700
-         hover:bg-royal-gold-50 dark:hover:bg-slate-600
-         active:bg-royal-gold-100 dark:active:bg-slate-500
-         text-royal-purple-700 dark:text-royal-gold-300 text-sm font-semibold rounded-lg
-         border-2 border-royal-gold-400 dark:border-royal-purple-600
-         transition-all duration-200 shadow-md
-         disabled:opacity-50 disabled:cursor-not-allowed;
+.glow-teal {
+    @apply shadow-[0_0_30px_rgba(20,184,166,0.3)];
 }
 
-.btn-danger {
-    @apply inline-flex items-center justify-center gap-2
-         px-4 py-2.5 bg-red-600 hover:bg-red-700 active:bg-red-800
-         text-white text-sm font-semibold rounded-lg
-         transition-colors duration-150 shadow-sm
-         disabled:opacity-50 disabled:cursor-not-allowed;
+.glow-pink {
+    @apply shadow-[0_0_30px_rgba(236,72,153,0.3)];
 }
 
-.btn-accent {
-    @apply inline-flex items-center justify-center gap-2
-         px-4 py-2.5 bg-gradient-to-r from-royal-gold-400 to-royal-gold-500
-         hover:from-royal-gold-500 hover:to-royal-gold-600
-         active:from-royal-gold-600 active:to-royal-gold-700
-         text-royal-black-900 dark:text-royal-black-900 text-sm font-semibold rounded-lg
-         transition-all duration-200 shadow-lg shadow-royal-gold-500/30
-         hover:shadow-xl hover:shadow-royal-gold-500/40
-         disabled:opacity-50 disabled:cursor-not-allowed;
+/* ── Matrix Table System ───────────────────────── */
+.matrix-table {
+    @apply w-full border-separate border-spacing-0;
 }
 
-.btn-gold {
-    @apply inline-flex items-center justify-center gap-2
-         px-4 py-2.5 bg-gradient-to-r from-royal-gold-400 to-royal-gold-500
-         hover:from-royal-gold-500 hover:to-royal-gold-600
-         text-royal-black-900 text-sm font-semibold rounded-lg
-         transition-all duration-200 shadow-lg shadow-royal-gold-500/30
-         hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed;
+.matrix-th {
+    @apply px-8 py-6 text-left text-[10px] font-black text-nebula-indigo-400
+           uppercase tracking-[0.3em] border-b border-white/5 bg-white/[0.02];
 }
 
-.btn-purple {
-    @apply btn-primary;
+.matrix-td {
+    @apply px-8 py-6 text-sm font-bold text-white border-b border-white/5
+           transition-colors duration-200 group-hover:bg-white/[0.02];
 }
 
-/* ── Input fields ───────────────────────────– */
-.input-field {
-    @apply w-full px-4 py-2.5
-         bg-white dark:bg-slate-800/80
-         border-2 border-royal-gold-200 dark:border-royal-purple-700/50
-         text-royal-black-900 dark:text-white rounded-lg text-sm
-         focus:outline-none focus:ring-2 focus:ring-royal-purple-500 focus:border-royal-purple-500
-         dark:focus:ring-royal-gold-400 dark:focus:border-royal-gold-400
-         transition-all duration-200
-         placeholder:text-slate-400 dark:placeholder:text-slate-500
-         disabled:bg-slate-50 dark:disabled:bg-slate-700/50
-         disabled:text-slate-500 dark:disabled:text-slate-400
-         disabled:cursor-not-allowed;
-}
-
-.input-field:hover {
-    @apply border-royal-gold-300 dark:border-royal-purple-600;
-}
-
-/* ── Table ───────────────────────────────── */
-.table-header {
-    @apply px-3 py-2 text-left text-[10px] font-bold
-         text-royal-purple-700 dark:text-royal-gold-400 uppercase tracking-wider
-         bg-gradient-to-r from-royal-gold-50 to-royal-purple-50 dark:from-royal-black-800 dark:to-royal-purple-900/30
-         border-b-2 border-royal-gold-200 dark:border-royal-purple-700;
-}
-
-.table-cell {
-    @apply px-3 py-1.5 text-[13px] text-royal-black-700 dark:text-royal-gold-200
-         border-b border-royal-gold-100 dark:border-royal-purple-700/30
-         transition-colors duration-100 hover:bg-royal-gold-50/30 dark:hover:bg-royal-purple-900/20;
-}
-
-/* ── Badges ────────────────────────────────– */
-.badge-purple {
-    @apply inline-flex items-center gap-2 px-3 py-1 
-         bg-gradient-to-r from-royal-purple-100 to-royal-purple-50 
-         dark:from-royal-purple-900/30 dark:to-royal-purple-800/20
-         text-royal-purple-700 dark:text-royal-purple-300 
-         rounded-full text-xs font-semibold;
-}
-
-.badge-gold {
-    @apply inline-flex items-center gap-2 px-3 py-1 
-         bg-gradient-to-r from-royal-gold-100 to-royal-gold-50 
-         dark:from-royal-gold-900/30 dark:to-royal-gold-800/20
-         text-royal-gold-700 dark:text-royal-gold-300 
-         rounded-full text-xs font-semibold;
-}
-
-/* ── Gradient text ────────────────────────– */
-.gradient-text {
-    @apply bg-gradient-to-r from-royal-purple-600 via-royal-gold-500 to-royal-purple-600
-         bg-clip-text text-transparent bg-size-200 animate-gradient;
-}
-
-/* ── Sections ────────────────────────────– */
-.section-animated {
-    @apply animate-fadeInUp;
-}
-
-.header-gradient {
-    @apply bg-gradient-to-r from-royal-purple-600 via-royal-black-500 to-royal-purple-700
-         text-white shadow-xl;
-}
-
-/* ── Loading animations ──────────────────– */
-.skeleton {
-    @apply bg-gradient-to-r from-royal-gold-200 to-royal-purple-200 
-         dark:from-royal-black-700 dark:to-royal-purple-800
-         rounded-lg animate-shimmer;
-}
-
-/* ── Hover effects ────────────────────────– */
-.hover-lift {
-    @apply transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl;
-}
-
-.hover-glow {
-    @apply transition-all duration-300 hover:shadow-lg hover:shadow-royal-gold-500/50;
-}
-
-/* ── Gold accent line ───────────────────– */
-.accent-line {
-    @apply h-1 bg-gradient-to-r from-royal-gold-400 via-royal-purple-500 to-royal-gold-400
-         rounded-full;
-}
-
-/* ── Mobile Utilities ────────────────────────── */
-.hidden-mobile {
-    display: none !important;
-}
-@media (min-width: 640px) {
-    .hidden-mobile {
-        display: table-cell !important;
-    }
-}
-
-.visible-mobile {
-    display: table-cell !important;
-}
-@media (min-width: 640px) {
-    .visible-mobile {
-        display: none !important;
-    }
-}
-
-.mobile-grid-cols-1 {
-    display: grid;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-}
-@media (min-width: 640px) {
-    .mobile-grid-cols-1 {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
-@media (min-width: 768px) {
-    .mobile-grid-cols-1 {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-}
-@media (min-width: 1024px) {
-    .mobile-grid-cols-1 {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-}
-
-/* ── Badges ──────────────────────────────────────── */
-.badge {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
-}
-
-.badge-success {
-    @apply bg-emerald-50 dark:bg-emerald-900/30
-         text-emerald-700 dark:text-emerald-300
-         ring-1 ring-inset ring-emerald-200 dark:ring-emerald-800/50;
-}
-
-.badge-warning {
-    @apply bg-amber-50 dark:bg-amber-900/30
-         text-amber-700 dark:text-amber-300
-         ring-1 ring-inset ring-amber-200 dark:ring-amber-800/50;
-}
-
-.badge-danger {
-    @apply bg-red-50 dark:bg-red-900/30
-         text-red-700 dark:text-red-300
-         ring-1 ring-inset ring-red-200 dark:ring-red-800/50;
-}
-
-/* ── Skeleton loader ─────────────────────────────── */
-.skeleton {
-    @apply bg-slate-200 dark:bg-slate-700 animate-pulse rounded-lg;
-}
-
-/* ── Shimmer ─────────────────────────────────────── */
-@keyframes shimmer {
-    0% {
-        background-position: -200% 0;
-    }
-    100% {
-        background-position: 200% 0;
-    }
-}
-
-/* ── Print Styles ───────────────────────────── */
+/* ── Institutional Print Engine ───────────────── */
 @media print {
-    aside, nav, .print\:hidden, button, .no-print {
+    .no-print, aside, nav, button, .btn-vibrant {
         display: none !important;
     }
     
-    main {
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        background: white !important;
-        color: black !important;
-        overflow: visible !important;
-    }
-
     body {
         background: white !important;
-        color: black !important;
+        color: #020617 !important;
     }
 
-    .card, .card-lg, .professional-card, .bg-white, .bg-gray-50 {
-        box-shadow: none !important;
-        border: 1px solid #eee !important;
+    .nebula-card {
         background: white !important;
-        color: black !important;
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        padding: 2rem !important;
     }
 
-    /* Preserve colors for tables and headers */
-    .bg-gray-900 {
-        background-color: #111 !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+    .text-white, .text-nebula-slate-400, .text-nebula-indigo-400 {
+        color: #020617 !important;
     }
 
-    .bg-indigo-600, .bg-indigo-900, .bg-emerald-900, .bg-violet-900 {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+    .bg-nebula-slate-950, .bg-white\/5 {
+        background: transparent !important;
     }
 
     table {
-        border-collapse: collapse !important;
-        width: 100% !important;
+        border: 1px solid #e2e8f0 !important;
     }
 
-    th, td {
-        border: 1px solid #ddd !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+    th {
+        background: #f8fafc !important;
+        color: #020617 !important;
+        border-bottom: 2px solid #e2e8f0 !important;
     }
 
-    .sticky {
-        position: static !important;
+    td {
+        border-bottom: 1px solid #f1f5f9 !important;
     }
 
     @page {
-        margin: 1cm;
-        size: landscape;
+        margin: 1.5cm;
+        size: auto;
     }
-}
-
-/* ── Fade-in page transition ─────────────────────── */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(6px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-.animate-fade-in {
-    animation: fadeIn 0.25s ease-out;
 }

@@ -167,457 +167,366 @@ export default function StudentForm({
 
   return (
     <motion.div 
-      className="p-6 bg-gradient-to-br from-royal-gold-50 via-white to-royal-purple-50 dark:bg-gradient-to-br dark:from-royal-black-900 dark:via-royal-purple-900/10 dark:to-royal-black-900"
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
+      className="relative overflow-hidden bg-nebula-slate-950/40 backdrop-blur-3xl border border-white/10 rounded-[3rem] p-10 shadow-nebula-lg"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
     >
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <motion.h2 
-            className="text-3xl font-black bg-gradient-to-r from-royal-purple-600 to-royal-gold-500 bg-clip-text text-transparent"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-          >
-            {isEditing ? 'Edit Student' : 'Add New Student'}
-          </motion.h2>
-          <p className="text-gray-600 dark:text-gray-400 text-sm mt-1 font-medium">
-            {isEditing ? 'Update student information' : 'Register a new student in the system'}
-          </p>
-        </div>
-        <motion.button
-          onClick={onCancel}
-          className="p-2 hover:bg-royal-purple-100 dark:hover:bg-royal-purple-900/30 rounded-lg transition-colors"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <X size={24} className="text-royal-purple-600 dark:text-royal-gold-400" />
-        </motion.button>
-      </div>
+      {/* Decorative Orbs */}
+      <div className="absolute -top-24 -right-24 w-64 h-64 bg-nebula-indigo-500/20 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-nebula-teal-500/20 rounded-full blur-[100px] pointer-events-none" />
 
-      <motion.form onSubmit={handleSubmit} className="space-y-6">
-        {/* Personal Information */}
-        <motion.div 
-          className="space-y-4"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <h3 className="text-sm font-black text-royal-purple-600 dark:text-royal-gold-400 uppercase tracking-widest">
-            Personal Information
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
-                First Name *
-              </label>
-              <input
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                className={`input-field border-2 ${errors.firstName ? 'border-red-500' : 'border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500'}`}
-              />
-              {errors.firstName && (
-                <p className="text-red-500 text-sm mt-1 font-semibold">{errors.firstName}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
-                Last Name *
-              </label>
-              <input
-                type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                className={`input-field border-2 ${errors.lastName ? 'border-red-500' : 'border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500'}`}
-              />
-              {errors.lastName && (
-                <p className="text-red-500 text-sm mt-1 font-semibold">{errors.lastName}</p>
-              )}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
-                Date of Birth *
-              </label>
-              <input
-                type="date"
-                name="dateOfBirth"
-                value={formData.dateOfBirth}
-                onChange={handleChange}
-                className={`input-field border-2 ${errors.dateOfBirth ? 'border-red-500' : 'border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500'}`}
-              />
-              {errors.dateOfBirth && (
-                <p className="text-red-500 text-sm mt-1 font-semibold">{errors.dateOfBirth}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
-                Gender
-              </label>
-              <select
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-                className="input-field border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"
-              >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Parent Information */}
-        <motion.div 
-          className="space-y-4 border-t-2 border-royal-gold-200 dark:border-royal-purple-700/50 pt-6"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          <h3 className="text-sm font-black text-royal-purple-600 dark:text-royal-gold-400 uppercase tracking-widest">
-            Parent/Guardian Information
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
-                Parent/Guardian Name *
-              </label>
-              <input
-                type="text"
-                name="parentName"
-                value={formData.parentName}
-                onChange={handleChange}
-                className={`input-field border-2 ${errors.parentName ? 'border-red-500' : 'border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500'}`}
-              />
-              {errors.parentName && (
-                <p className="text-red-500 text-sm mt-1 font-semibold">{errors.parentName}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
-                Parent/Guardian Phone *
-              </label>
-              <input
-                type="tel"
-                name="parentPhone"
-                value={formData.parentPhone}
-                onChange={handleChange}
-                className={`input-field border-2 ${errors.parentPhone ? 'border-red-500' : 'border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500'}`}
-              />
-              {errors.parentPhone && (
-                <p className="text-red-500 text-sm mt-1 font-semibold">{errors.parentPhone}</p>
-              )}
-            </div>
-          </div>
-
+      <div className="relative z-10">
+        <div className="flex justify-between items-start mb-12">
           <div>
-            <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
-              Parent Email (Optional)
-            </label>
-            <input
-              type="email"
-              name="parentEmail"
-              value={formData.parentEmail}
-              onChange={handleChange}
-              placeholder="parent@example.com (Optional)"
-              className={`input-field border-2 ${errors.parentEmail ? 'border-red-500' : 'border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500'}`}
-            />
-            {errors.parentEmail && (
-              <p className="text-red-500 text-sm mt-1 font-semibold">{errors.parentEmail}</p>
-            )}
+            <motion.h2 
+              className="text-4xl font-black uppercase tracking-tighter leading-none text-white mb-3"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+            >
+              Student <br /> <span className="text-nebula-indigo-400">Registration</span>
+            </motion.h2>
+            <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.3em]">
+              Institutional Enrollment Matrix
+            </p>
           </div>
-        </motion.div>
+          <button
+            onClick={onCancel}
+            className="p-4 hover:bg-white/5 rounded-2xl transition-all border border-white/5 hover:border-white/10 text-nebula-slate-400 hover:text-white"
+          >
+            <X size={24} />
+          </button>
+        </div>
 
-        {/* School Information */}
-        <motion.div 
-          className="space-y-4 border-t-2 border-royal-gold-200 dark:border-royal-purple-700/50 pt-6"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          <h3 className="text-sm font-black text-royal-purple-600 dark:text-royal-gold-400 uppercase tracking-widest">
-            School Information
-          </h3>
+        <form onSubmit={handleSubmit} className="space-y-12">
+          {/* Personal Information */}
+          <section className="space-y-6">
+            <h3 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em] px-2 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-nebula-indigo-500" />
+              I. Personal Intelligence
+            </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
-                Registration Number
-              </label>
-              <input
-                type="text"
-                name="registrationNumber"
-                value={formData.registrationNumber}
-                onChange={handleChange}
-                placeholder="Auto-generated"
-                className="input-field border-2 border-royal-gold-200 dark:border-royal-purple-700/50 bg-royal-black-50 dark:bg-royal-purple-900/20"
-                disabled
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
-                Level
-              </label>
-              <select
-                name="level"
-                value={formData.level}
-                onChange={handleChange}
-                className="input-field border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"
-              >
-                <option value="Pre-Nursery">Pre-Nursery</option>
-                <option value="Nursery">Nursery</option>
-                <option value="Primary">Primary</option>
-                <option value="Secondary">Secondary</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
-                Class *
-              </label>
-              {allowedClasses.length > 0 ? (
-                <select
-                  name="class"
-                  value={formData.class}
-                  onChange={handleChange}
-                  className={`input-field border-2 ${errors.class ? 'border-red-500' : 'border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500'}`}
-                  disabled={lockClass}
-                >
-                  <option value="">Select class</option>
-                  {allowedClasses.map((className) => (
-                    <option key={className} value={className}>
-                      {className}
-                    </option>
-                  ))}
-                </select>
-              ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  First Name
+                </label>
                 <input
                   type="text"
-                  name="class"
-                  value={formData.class}
+                  name="firstName"
+                  value={formData.firstName}
                   onChange={handleChange}
-                  placeholder="e.g., Primary 1"
-                  className={`input-field border-2 ${errors.class ? 'border-red-500' : 'border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500'}`}
+                  className={`input-nebula w-full ${errors.firstName ? 'border-red-500/50' : ''}`}
+                  placeholder="e.g. Olayinka"
                 />
-              )}
-              {errors.class && (
-                <p className="text-red-500 text-sm mt-1 font-semibold">{errors.class}</p>
-              )}
+                {errors.firstName && (
+                  <p className="text-[10px] font-black text-red-500 uppercase tracking-widest px-2">{errors.firstName}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className={`input-nebula w-full ${errors.lastName ? 'border-red-500/50' : ''}`}
+                  placeholder="e.g. Adeyemi"
+                />
+                {errors.lastName && (
+                  <p className="text-[10px] font-black text-red-500 uppercase tracking-widest px-2">{errors.lastName}</p>
+                )}
+              </div>
             </div>
 
-            {/* Department/Arm selector for SSS students */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Date of Birth
+                </label>
+                <input
+                  type="date"
+                  name="dateOfBirth"
+                  value={formData.dateOfBirth}
+                  onChange={handleChange}
+                  className={`input-nebula w-full ${errors.dateOfBirth ? 'border-red-500/50' : ''}`}
+                />
+                {errors.dateOfBirth && (
+                  <p className="text-[10px] font-black text-red-500 uppercase tracking-widest px-2">{errors.dateOfBirth}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Biological Gender
+                </label>
+                <select
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                  className="input-nebula w-full"
+                >
+                  <option value="Male">Alpha (Male)</option>
+                  <option value="Female">Beta (Female)</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          {/* Parent Information */}
+          <section className="space-y-6 pt-6 border-t border-white/5">
+            <h3 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em] px-2 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-nebula-pink-500" />
+              II. Guardian Protocols
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Guardian Name
+                </label>
+                <input
+                  type="text"
+                  name="parentName"
+                  value={formData.parentName}
+                  onChange={handleChange}
+                  className={`input-nebula w-full ${errors.parentName ? 'border-red-500/50' : ''}`}
+                  placeholder="Enter full name..."
+                />
+                {errors.parentName && (
+                  <p className="text-[10px] font-black text-red-500 uppercase tracking-widest px-2">{errors.parentName}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Contact Frequency (Phone)
+                </label>
+                <input
+                  type="tel"
+                  name="parentPhone"
+                  value={formData.parentPhone}
+                  onChange={handleChange}
+                  className={`input-nebula w-full ${errors.parentPhone ? 'border-red-500/50' : ''}`}
+                  placeholder="+234..."
+                />
+                {errors.parentPhone && (
+                  <p className="text-[10px] font-black text-red-500 uppercase tracking-widest px-2">{errors.parentPhone}</p>
+                )}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                Digital Contact (Email)
+              </label>
+              <input
+                type="email"
+                name="parentEmail"
+                value={formData.parentEmail}
+                onChange={handleChange}
+                className="input-nebula w-full"
+                placeholder="optional@nebula.com"
+              />
+            </div>
+          </section>
+
+          {/* School Information */}
+          <section className="space-y-6 pt-6 border-t border-white/5">
+            <h3 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em] px-2 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-nebula-teal-500" />
+              III. Institutional Mapping
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Reg Code
+                </label>
+                <input
+                  type="text"
+                  value={formData.registrationNumber}
+                  className="input-nebula w-full bg-white/5 opacity-50 cursor-not-allowed"
+                  placeholder="Auto-Matrixed"
+                  disabled
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Academic Level
+                </label>
+                <select
+                  name="level"
+                  value={formData.level}
+                  onChange={handleChange}
+                  className="input-nebula w-full"
+                >
+                  <option value="Pre-Nursery">Pre-Nursery</option>
+                  <option value="Nursery">Nursery</option>
+                  <option value="Primary">Primary</option>
+                  <option value="Secondary">Secondary</option>
+                </select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Target Class
+                </label>
+                {allowedClasses.length > 0 ? (
+                  <select
+                    name="class"
+                    value={formData.class}
+                    onChange={handleChange}
+                    className="input-nebula w-full"
+                    disabled={lockClass}
+                  >
+                    <option value="">Select...</option>
+                    {allowedClasses.map((className) => (
+                      <option key={className} value={className}>{className}</option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type="text"
+                    name="class"
+                    value={formData.class}
+                    onChange={handleChange}
+                    className="input-nebula w-full"
+                    placeholder="e.g. Primary 1"
+                  />
+                )}
+              </div>
+            </div>
+
+            {/* Department selector for SSS students */}
             {formData.level === 'Secondary' && (formData.class.toUpperCase().startsWith('SSS') || formData.class.toUpperCase().startsWith('SS')) && (
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
+                className="space-y-2"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
               >
-                <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
-                  Department/Stream *
+                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                  Strategic Department
                 </label>
                 <select
                   name="arm"
                   value={formData.arm || ''}
                   onChange={handleChange}
-                  className={`input-field border-2 ${errors.arm ? 'border-red-500' : 'border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500'}`}
+                  className={`input-nebula w-full ${errors.arm ? 'border-red-500/50' : ''}`}
                 >
                   <option value="">Select Department</option>
-                  <option value="Science">Science</option>
-                  <option value="Art">Art</option>
-                  <option value="Commercial">Commerce</option>
+                  <option value="Science">Science Matrix</option>
+                  <option value="Art">Creative Arts</option>
+                  <option value="Commercial">Commercial Logistics</option>
                 </select>
-                {errors.arm && (
-                  <p className="text-red-500 text-sm mt-1 font-semibold">{errors.arm}</p>
-                )}
               </motion.div>
             )}
-          </div>
+          </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
-                Enrollment Date
-              </label>
-              <input
-                type="date"
-                name="enrollmentDate"
-                value={formData.enrollmentDate}
-                onChange={handleChange}
-                className="input-field border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 mb-2">
-                Status
-              </label>
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                className="input-field border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500"
-              >
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-                <option value="Suspended">Suspended</option>
-              </select>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Subject Selection (Only for New Students) */}
-        {!isEditing && filteredSubjects.length > 0 && (
-          <motion.div 
-            className="space-y-4 pt-6 border-t-2 border-royal-gold-200 dark:border-royal-purple-700/50"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-          >
-            <h3 className="text-sm font-black text-royal-purple-600 dark:text-royal-gold-400 uppercase tracking-widest flex items-center gap-2">
-              <BookOpen size={16} className="text-royal-purple-500" />
-              Assign Subjects (Optional)
-            </h3>
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
-                Assign subjects to the student now for immediate result recording.
-              </p>
-              <div className="relative w-full sm:w-64">
-                <input
-                  type="text"
-                  placeholder="Search subjects..."
-                  value={subjectSearchTerm}
-                  onChange={(e) => setSubjectSearchTerm(e.target.value)}
-                  className="input-field pl-9 border-2 border-royal-gold-200 dark:border-royal-purple-700/50 focus:border-royal-purple-500 w-full"
-                />
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-royal-purple-400 dark:text-royal-gold-400" />
+          {/* Subject Selection */}
+          {!isEditing && filteredSubjects.length > 0 && (
+            <section className="space-y-8 pt-6 border-t border-white/5">
+              <div className="flex flex-col md:flex-row justify-between items-end gap-6">
+                <h3 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em] px-2 flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-nebula-amber-500" />
+                  IV. Subject Synchronization
+                </h3>
+                <div className="relative w-full md:w-64">
+                  <input
+                    type="text"
+                    placeholder="Search Protocols..."
+                    value={subjectSearchTerm}
+                    onChange={(e) => setSubjectSearchTerm(e.target.value)}
+                    className="input-nebula w-full pl-10 text-xs"
+                  />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-nebula-slate-500" />
+                </div>
               </div>
-            </div>
-            
-            {(() => {
-              const isSSSStudent = 
-                formData.level === 'Secondary' && 
-                (formData.class.toUpperCase().startsWith('SSS') || formData.class.toUpperCase().startsWith('SS'))
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filteredSubjects
+                  .filter(s => s.name.toLowerCase().includes(subjectSearchTerm.toLowerCase()))
+                  .map(subject => (
+                    <label
+                      key={subject.id}
+                      className={`flex items-center gap-4 p-5 rounded-3xl border transition-all cursor-pointer ${
+                        selectedSubjects.includes(subject.id)
+                          ? 'bg-nebula-indigo-500/10 border-nebula-indigo-500/40 shadow-inner'
+                          : 'bg-white/[0.02] border-white/5 hover:bg-white/[0.05] hover:border-white/10'
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedSubjects.includes(subject.id)}
+                        onChange={() => toggleSubject(subject.id)}
+                        className="w-5 h-5 bg-nebula-slate-900 border-white/10 text-nebula-indigo-600 rounded-lg focus:ring-nebula-indigo-500"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-black text-white truncate">{subject.name}</p>
+                        <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">{subject.code}</p>
+                      </div>
+                    </label>
+                  ))}
+              </div>
+            </section>
+          )}
+
+          {/* Credentials Display */}
+          {formData.parentUsername && (
+            <motion.div 
+              className="p-8 rounded-[2rem] bg-nebula-slate-900/40 border border-nebula-indigo-500/20 space-y-6"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-nebula-indigo-500/10 rounded-2xl text-nebula-indigo-400">
+                  <BookOpen size={24} />
+                </div>
+                <div>
+                  <h4 className="text-sm font-black text-white uppercase tracking-tighter">Access Credentials</h4>
+                  <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">Parent Portal Protocols</p>
+                </div>
+              </div>
               
-              const categoryOrder = ['Science', 'Art', 'Commercial', 'General']
-              
-              const searchedSubjects = filteredSubjects.filter(s => 
-                s.name.toLowerCase().includes(subjectSearchTerm.toLowerCase()) ||
-                s.code.toLowerCase().includes(subjectSearchTerm.toLowerCase())
-              )
-
-              const subjectsByCategory = searchedSubjects.reduce((acc, subject) => {
-                const category = isSSSStudent ? (subject.subjectCategory || 'General') : 'General'
-                if (!acc[category]) {
-                  acc[category] = []
-                }
-                acc[category].push(subject)
-                return acc
-              }, {} as Record<string, Subject[]>)
-
-              const sortedCategories = Object.keys(subjectsByCategory).sort(
-                (a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b)
-              )
-
-              return sortedCategories.map(category => (
-                <div key={category} className="space-y-3">
-                  <h4 className="text-sm font-bold text-royal-purple-700 dark:text-royal-gold-300 uppercase tracking-widest flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-royal-gold-500"></span>
-                    {category} {isSSSStudent ? 'Stream' : 'Subjects'}
-                  </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                    {subjectsByCategory[category].map(subject => (
-                      <label
-                        key={subject.id}
-                        className={`flex items-start gap-3 p-3 rounded-lg cursor-pointer transition-all border-2 shadow-sm ${
-                          selectedSubjects.includes(subject.id)
-                            ? 'bg-royal-purple-50 dark:bg-royal-purple-900/30 border-royal-purple-500'
-                            : 'bg-white dark:bg-royal-black-800 border-royal-gold-200 dark:border-royal-purple-700/50 hover:border-royal-purple-500'
-                        }`}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedSubjects.includes(subject.id)}
-                          onChange={() => toggleSubject(subject.id)}
-                          className="mt-1 w-4 h-4 text-royal-purple-600 border-royal-gold-300 rounded focus:ring-royal-purple-500 cursor-pointer"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <p className="font-bold text-royal-purple-900 dark:text-white text-sm truncate">{subject.name}</p>
-                          <p className="text-xs text-royal-purple-600 dark:text-royal-gold-400 font-semibold uppercase tracking-widest">{subject.code}</p>
-                        </div>
-                      </label>
-                    ))}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">Access Key (User)</p>
+                  <div className="p-4 bg-black/20 rounded-2xl border border-white/5 text-xs font-mono text-nebula-indigo-300">
+                    {formData.parentUsername}
                   </div>
                 </div>
-              ))
-            })()}
-          </motion.div>
-        )}
-
-        {formData.parentUsername && (
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 bg-gradient-to-r from-royal-gold-50 to-royal-purple-50 dark:from-royal-gold-900/20 dark:to-royal-purple-900/20 border-2 border-dashed border-royal-gold-400 dark:border-royal-purple-600/50 rounded-lg p-4"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-          >
-            <div>
-              <label className="block text-xs font-bold text-royal-purple-700 dark:text-royal-gold-300 uppercase tracking-widest mb-1">
-                Parent Portal Username
-              </label>
-              <div className="font-mono text-sm bg-white dark:bg-royal-black-800 p-2 rounded-lg border border-royal-gold-200 dark:border-royal-purple-700/50">
-                {formData.parentUsername}
+                <div className="space-y-2">
+                  <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">Secure Cipher (Pass)</p>
+                  <div className="p-4 bg-black/20 rounded-2xl border border-white/5 text-xs font-mono text-nebula-teal-300">
+                    {formData.parentPassword}
+                  </div>
+                </div>
               </div>
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-royal-purple-700 dark:text-royal-gold-300 uppercase tracking-widest mb-1">
-                Parent Portal Password
-              </label>
-              <div className="font-mono text-sm bg-white dark:bg-royal-black-800 p-2 rounded-lg border border-royal-gold-200 dark:border-royal-purple-700/50">
-                {formData.parentPassword}
-              </div>
-            </div>
-            <p className="text-xs text-royal-purple-600 dark:text-royal-gold-400 col-span-2 mt-2 font-medium">
-              Share these auto-generated credentials with the parent to allow them to view their child's results.
-            </p>
-          </motion.div>
-        )}
+            </motion.div>
+          )}
 
-        {/* Form Actions */}
-        <motion.div 
-          className="flex justify-end gap-4 mt-8 pt-6 border-t-2 border-royal-gold-200 dark:border-royal-purple-700/50"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-        >
-          <motion.button
-            type="button"
-            onClick={onCancel}
-            className="px-6 py-2 border-2 border-royal-gold-300 dark:border-royal-purple-600 text-royal-purple-700 dark:text-royal-gold-300 rounded-lg hover:bg-royal-gold-50 dark:hover:bg-royal-purple-900/30 transition-colors font-bold"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            Cancel
-          </motion.button>
-          <motion.button
-            type="submit"
-            className="px-8 py-2 bg-gradient-to-r from-royal-purple-600 to-royal-purple-700 text-white rounded-lg hover:from-royal-purple-700 hover:to-royal-purple-800 transition-all font-bold shadow-lg shadow-royal-purple-500/30"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            {isEditing ? 'Save Changes' : 'Create Student'}
-          </motion.button>
-        </motion.div>
-      </motion.form>
+          {/* Form Actions */}
+          <div className="flex justify-end gap-6 pt-10">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="px-8 py-4 text-[10px] font-black text-nebula-slate-400 uppercase tracking-[0.3em] hover:text-white transition-all"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-10 py-4 bg-white text-black rounded-full font-black text-[10px] uppercase tracking-[0.3em] shadow-lg hover:shadow-white/10 hover:scale-105 active:scale-95 transition-all"
+            >
+              {isEditing ? 'Sync Matrix' : 'Initialize Student'}
+            </button>
+          </div>
+        </form>
+      </div>
     </motion.div>
   )
 }

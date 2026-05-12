@@ -58,87 +58,117 @@ export default function StudentEditor({
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-        {/* Header with Tabs */}
-        <div className="flex justify-between items-center p-6 bg-gradient-to-r from-blue-50 to-purple-50 border-b border-gray-200">
-          <div className="flex-1">
-            <h2 className="text-2xl font-bold text-gray-900">Edit Student</h2>
-            <p className="text-sm text-gray-600 mt-1">
-              {student.firstName} {student.lastName} ({student.registrationNumber})
-            </p>
+    <div className="fixed inset-0 bg-nebula-slate-950/80 backdrop-blur-xl flex items-center justify-center z-[100] p-6">
+      <motion.div 
+        className="relative overflow-hidden bg-nebula-slate-950/40 backdrop-blur-3xl border border-white/10 rounded-[3rem] shadow-nebula-lg max-w-5xl w-full max-h-[90vh] flex flex-col"
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
+        {/* Decorative Orbs */}
+        <div className="absolute -top-24 -right-24 w-64 h-64 bg-nebula-indigo-500/20 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-nebula-pink-500/20 rounded-full blur-[100px] pointer-events-none" />
+
+        {/* Dynamic Header */}
+        <div className="p-10 border-b border-white/5 relative z-10">
+          <div className="flex justify-between items-start mb-10">
+            <div>
+              <motion.h2 
+                className="text-4xl font-black uppercase tracking-tighter leading-none text-white mb-3"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+              >
+                Intelligence <br /> <span className="text-nebula-indigo-400">Modifier</span>
+              </motion.h2>
+              <div className="flex items-center gap-4">
+                <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.3em]">
+                  Unit: {student.firstName} {student.lastName}
+                </p>
+                <div className="w-1 h-1 rounded-full bg-white/20" />
+                <p className="text-[10px] font-black text-nebula-indigo-500 uppercase tracking-[0.3em]">
+                  Registry: {student.registrationNumber}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={onCancel}
+              className="p-4 hover:bg-white/5 rounded-2xl transition-all border border-white/5 hover:border-white/10 text-nebula-slate-400 hover:text-white"
+            >
+              <X size={24} />
+            </button>
           </div>
-          <button
-            onClick={onCancel}
-            className="p-2 hover:bg-white rounded-lg transition-colors flex-shrink-0"
-            title="Close dialog"
-            aria-label="Close edit student dialog"
-          >
-            <X size={24} className="text-gray-400" />
-          </button>
+
+          {/* Institutional Tab Navigation */}
+          <div className="flex gap-4">
+            {[
+              { id: 'info', label: 'Primary Intelligence', icon: <UserIcon size={16} /> },
+              { id: 'subjects', label: 'Subject Matrix', icon: <BookOpen size={16} /> }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setEditMode(tab.id as EditMode)}
+                className={`relative px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all flex items-center gap-3 ${
+                  editMode === tab.id 
+                    ? 'text-white' 
+                    : 'text-nebula-slate-500 hover:text-nebula-slate-300'
+                }`}
+              >
+                {editMode === tab.id && (
+                  <motion.div 
+                    layoutId="active-tab-editor"
+                    className="absolute inset-0 bg-nebula-indigo-500/10 border border-nebula-indigo-500/30 rounded-2xl shadow-nebula-sm"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+                <span className="relative z-10">{tab.icon}</span>
+                <span className="relative z-10">{tab.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex gap-0 border-b border-gray-200 bg-gray-50">
-          <button
-            onClick={() => setEditMode('info')}
-            className={`flex-1 py-4 px-6 font-semibold flex items-center justify-center gap-2 transition-colors ${
-              editMode === 'info'
-                ? 'text-blue-600 border-b-2 border-blue-600 bg-white'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            <UserIcon size={18} />
-            <span>Student Information</span>
-          </button>
-          <button
-            onClick={() => setEditMode('subjects')}
-            className={`flex-1 py-4 px-6 font-semibold flex items-center justify-center gap-2 transition-colors ${
-              editMode === 'subjects'
-                ? 'text-purple-600 border-b-2 border-purple-600 bg-white'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            <BookOpen size={18} />
-            <span>Manage Subjects</span>
-          </button>
-        </div>
-
-        {/* Error Alert */}
+        {/* Error Feedback */}
         {error && (
-          <div className="m-6 p-4 bg-red-50 border border-red-200 rounded-lg flex gap-3 items-start">
-            <AlertCircle size={20} className="text-red-600 flex-shrink-0 mt-0.5" />
-            <p className="text-red-800 text-sm">{error}</p>
+          <div className="mx-10 mt-6 p-6 bg-nebula-pink-500/10 border border-nebula-pink-500/20 rounded-3xl flex gap-4 items-center">
+            <AlertCircle size={24} className="text-nebula-pink-400" />
+            <p className="text-nebula-pink-400 font-black text-[10px] uppercase tracking-widest">{error}</p>
           </div>
         )}
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto">
-          {editMode === 'info' ? (
-            <div className="p-6">
-              <StudentForm
-                onSubmit={handleUpdateStudent}
-                initialData={student}
-                onCancel={onCancel}
-                isEditing={true}
-                allowedClasses={allowedClasses}
-                lockClass={false}
-                availableSubjects={subjects}
-              />
-            </div>
-          ) : (
-            <div className="p-6">
-              <SubjectManagement
-                student={student}
-                availableSubjects={subjects}
-                currentSubjects={studentSubjects}
-                onUpdate={handleUpdateSubjects}
-                onCancel={onCancel}
-              />
-            </div>
-          )}
+        {/* Main Operational Context */}
+        <div className="flex-1 overflow-y-auto custom-scrollbar relative z-10">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={editMode}
+              initial={{ opacity: 0, x: editMode === 'info' ? -20 : 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: editMode === 'info' ? 20 : -20 }}
+              transition={{ duration: 0.3 }}
+              className="p-10"
+            >
+              {editMode === 'info' ? (
+                <StudentForm
+                  onSubmit={handleUpdateStudent}
+                  initialData={student}
+                  onCancel={onCancel}
+                  isEditing={true}
+                  allowedClasses={allowedClasses}
+                  lockClass={false}
+                  availableSubjects={subjects}
+                />
+              ) : (
+                <SubjectManagement
+                  student={student}
+                  availableSubjects={subjects}
+                  currentSubjects={studentSubjects}
+                  onUpdate={handleUpdateSubjects}
+                  onCancel={onCancel}
+                />
+              )}
+            </motion.div>
+          </AnimatePresence>
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }

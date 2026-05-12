@@ -189,43 +189,54 @@ export default function SubjectResultForm({
   }
 
   return (
-    <div className="bg-white dark:bg-brand-900 rounded-3xl overflow-hidden border-4 border-dashed border-school-blue dark:border-indigo-500/40 shadow-2xl">
-      <div className="p-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white flex justify-between items-center">
+    <motion.div 
+      className="relative overflow-hidden bg-nebula-slate-950/40 backdrop-blur-3xl border border-white/10 rounded-[3rem] shadow-nebula-lg"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
+      {/* Decorative Orbs */}
+      <div className="absolute -top-24 -right-24 w-64 h-64 bg-nebula-indigo-500/20 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-nebula-pink-500/20 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="p-10 bg-gradient-to-r from-nebula-indigo-600 to-nebula-indigo-900 text-white flex justify-between items-center relative z-10">
         <div>
-          <h2 className="text-2xl font-black uppercase tracking-tight">
-            {isEditing ? '✏️ Edit Result' : '📝 Enter Result'}
+          <h2 className="text-4xl font-black uppercase tracking-tighter leading-none">
+            {isEditing ? 'Sync' : 'Initialize'} <br /> <span className="text-white/60">Matrix Protocol</span>
           </h2>
-          <p className="text-xs font-medium opacity-90">Recording scores for automated grading</p>
+          <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mt-3">
+            Institutional Result Management Context
+          </p>
         </div>
         <button
           onClick={onCancel}
-          className="p-2 hover:bg-white/20 rounded-full transition-all"
+          className="p-4 hover:bg-white/10 rounded-2xl transition-all border border-white/10"
         >
-          <X size={24} />
+          <X size={28} />
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="p-8 space-y-8 max-h-[80vh] overflow-y-auto">
-        {/* Selection Section */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-2 text-school-blue dark:text-indigo-400 font-black uppercase tracking-widest text-sm">
-            <Award size={18} />
-            <span>Student & Subject Selection</span>
-          </div>
+      <form onSubmit={handleSubmit} className="p-10 space-y-12 relative z-10 max-h-[80vh] overflow-y-auto custom-scrollbar">
+        {/* Section I: Identity Selection */}
+        <section className="space-y-6">
+          <h3 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em] px-2 flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-nebula-indigo-500" />
+            I. Target Identification
+          </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
-                Student *
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                Operational Student
               </label>
               <select
                 name="studentId"
                 value={formData.studentId}
                 onChange={handleChange}
-                className={`input-field ${errors.studentId ? 'border-red-500' : ''}`}
+                className={`input-nebula w-full ${errors.studentId ? 'border-nebula-pink-500/50' : ''}`}
                 disabled={isEditing || (!!initialData && !!initialData.studentId)}
               >
-                <option value="">Select a student...</option>
+                <option value="">Select identity...</option>
                 {filteredStudents.map((student) => (
                   <option key={student.id} value={student.id}>
                     {student.firstName} {student.lastName} ({student.registrationNumber}) - {student.class}
@@ -233,22 +244,22 @@ export default function SubjectResultForm({
                 ))}
               </select>
               {errors.studentId && (
-                <p className="text-red-500 text-xs mt-1 font-bold">{errors.studentId}</p>
+                <p className="text-nebula-pink-400 text-[10px] font-black uppercase tracking-widest px-2">{errors.studentId}</p>
               )}
             </div>
 
-            <div>
-              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
-                Subject *
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                Subject Logic Matrix
               </label>
               <select
                 name="subjectId"
                 value={formData.subjectId}
                 onChange={handleChange}
-                className={`input-field ${errors.subjectId ? 'border-red-500' : ''}`}
+                className={`input-nebula w-full ${errors.subjectId ? 'border-nebula-pink-500/50' : ''}`}
                 disabled={isEditing || (!!initialData && !!initialData.studentId)}
               >
-                <option value="">Select a subject...</option>
+                <option value="">Select subject protocol...</option>
                 {filteredSubjects.map((subject) => (
                   <option key={subject.id} value={subject.id}>
                     {subject.name} ({subject.code})
@@ -256,159 +267,161 @@ export default function SubjectResultForm({
                 ))}
               </select>
               {errors.subjectId && (
-                <p className="text-red-500 text-xs mt-1 font-bold">{errors.subjectId}</p>
+                <p className="text-nebula-pink-400 text-[10px] font-black uppercase tracking-widest px-2">{errors.subjectId}</p>
               )}
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Scores Section */}
-        <div className="space-y-4 pt-6 border-t-2 border-dashed border-brand-100 dark:border-brand-800">
-          <div className="flex items-center gap-2 text-school-blue dark:text-indigo-400 font-black uppercase tracking-widest text-sm">
-            <TrendingUp size={18} />
-            <span>Academic Scores</span>
-          </div>
+        {/* Section II: Performance Vectors */}
+        <section className="space-y-6 pt-6 border-t border-white/5">
+          <h3 className="text-[10px] font-black text-nebula-teal-400 uppercase tracking-[0.4em] px-2 flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-nebula-teal-500" />
+            II. Performance Vectors
+          </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
-                1st CA (Max 20) *
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                1st CA Vector (20)
               </label>
               <input
                 type="number"
                 name="firstCA"
                 value={formData.firstCA}
                 onChange={handleChange}
-                min="0"
-                max="20"
-                step="0.01"
-                className={`input-field ${errors.firstCA ? 'border-red-500' : ''}`}
+                className={`input-nebula w-full ${errors.firstCA ? 'border-nebula-pink-500/50' : ''}`}
               />
               {errors.firstCA && (
-                <p className="text-red-500 text-xs mt-1 font-bold">{errors.firstCA}</p>
+                <p className="text-nebula-pink-400 text-[10px] font-black uppercase tracking-widest px-2">{errors.firstCA}</p>
               )}
             </div>
 
-            <div>
-              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
-                2nd CA (Max 20) *
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                2nd CA Vector (20)
               </label>
               <input
                 type="number"
                 name="secondCA"
                 value={formData.secondCA}
                 onChange={handleChange}
-                min="0"
-                max="20"
-                step="0.01"
-                className={`input-field ${errors.secondCA ? 'border-red-500' : ''}`}
+                className={`input-nebula w-full ${errors.secondCA ? 'border-nebula-pink-500/50' : ''}`}
               />
               {errors.secondCA && (
-                <p className="text-red-500 text-xs mt-1 font-bold">{errors.secondCA}</p>
+                <p className="text-nebula-pink-400 text-[10px] font-black uppercase tracking-widest px-2">{errors.secondCA}</p>
               )}
             </div>
 
-            <div>
-              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
-                Exam (Max 60) *
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                Final Exam (60)
               </label>
               <input
                 type="number"
                 name="exam"
                 value={formData.exam}
                 onChange={handleChange}
-                min="0"
-                max="60"
-                step="0.01"
-                className={`input-field ${errors.exam ? 'border-red-500' : ''}`}
+                className={`input-nebula w-full ${errors.exam ? 'border-nebula-pink-500/50' : ''}`}
               />
               {errors.exam && (
-                <p className="text-red-500 text-xs mt-1 font-bold">{errors.exam}</p>
+                <p className="text-nebula-pink-400 text-[10px] font-black uppercase tracking-widest px-2">{errors.exam}</p>
               )}
             </div>
           </div>
-        </div>
 
-        {/* Grading Preview */}
-        <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-3xl p-6 border-2 border-indigo-100 dark:border-indigo-800/50">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Total Score</p>
-              <p className="text-2xl font-black text-indigo-600 dark:text-indigo-400">{preview.total}</p>
+          {/* Grading Intelligence Dashboard */}
+          <div className="p-8 rounded-[2rem] bg-nebula-indigo-500/5 border border-nebula-indigo-500/10 shadow-inner">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+              <div className="space-y-1">
+                <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">Total Aggregate</p>
+                <p className="text-3xl font-black text-white leading-none">{preview.total}</p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">Efficiency</p>
+                <p className="text-3xl font-black text-nebula-indigo-400 leading-none">{preview.percentage}%</p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">Classification</p>
+                <p className="text-3xl font-black text-nebula-teal-400 leading-none">{preview.grade}</p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">Logic Points</p>
+                <p className="text-3xl font-black text-nebula-pink-400 leading-none">{preview.gradePoint}</p>
+              </div>
             </div>
-            <div className="text-center">
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Percentage</p>
-              <p className="text-2xl font-black text-indigo-600 dark:text-indigo-400">{preview.percentage}%</p>
-            </div>
-            <div className="text-center">
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Grade</p>
-              <p className="text-2xl font-black text-indigo-600 dark:text-indigo-400">{preview.grade}</p>
-            </div>
-            <div className="text-center">
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Grade Point</p>
-              <p className="text-2xl font-black text-indigo-600 dark:text-indigo-400">{preview.gradePoint}</p>
+            <div className="pt-6 border-t border-white/5 flex items-start gap-4">
+              <div className="w-10 h-10 rounded-xl bg-nebula-indigo-500/20 flex items-center justify-center text-nebula-indigo-400">
+                <MessageSquare size={20} />
+              </div>
+              <div>
+                <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest mb-1">Automated Intelligence Remark</p>
+                <p className="text-xs font-black text-white leading-relaxed italic opacity-80">"{preview.remarks}"</p>
+              </div>
             </div>
           </div>
-          <div className="mt-4 pt-4 border-t border-indigo-100 dark:border-indigo-800/50 flex items-start gap-3">
-            <MessageSquare className="w-5 h-5 text-indigo-500 mt-1 shrink-0" />
-            <div>
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Automated Remarks</p>
-              <p className="text-xs font-bold text-gray-700 dark:text-gray-300 italic">{preview.remarks}</p>
-            </div>
-          </div>
-        </div>
+        </section>
 
-        {/* Meta Info */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t-2 border-dashed border-brand-100 dark:border-brand-800">
-          <div>
-            <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
-              Recorded By *
-            </label>
-            <input
-              type="text"
-              name="recordedBy"
-              value={formData.recordedBy}
-              onChange={handleChange}
-              placeholder="Your name..."
-              className={`input-field ${errors.recordedBy ? 'border-red-500' : ''}`}
-            />
-            {errors.recordedBy && (
-              <p className="text-red-500 text-xs mt-1 font-bold">{errors.recordedBy}</p>
-            )}
-          </div>
-          <div>
-            <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
-              Academic Year
-            </label>
-            <input
-              type="text"
-              name="academicYear"
-              value={formData.academicYear}
-              onChange={handleChange}
-              placeholder="e.g. 2024"
-              className="input-field"
-            />
-          </div>
-        </div>
+        {/* Section III: Operational Sign-off */}
+        <section className="space-y-6 pt-6 border-t border-white/5">
+          <h3 className="text-[10px] font-black text-nebula-pink-400 uppercase tracking-[0.4em] px-2 flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-nebula-pink-500" />
+            III. Operational Sign-off
+          </h3>
 
-        {/* Actions */}
-        <div className="flex gap-4 pt-4">
-          <button
-            type="submit"
-            className="flex-1 btn-primary"
-          >
-            <Save size={20} />
-            {isEditing ? 'Update Result' : 'Save Result'}
-          </button>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                Faculty Identity (Recorded By)
+              </label>
+              <input
+                type="text"
+                name="recordedBy"
+                value={formData.recordedBy}
+                onChange={handleChange}
+                className={`input-nebula w-full ${errors.recordedBy ? 'border-nebula-pink-500/50' : ''}`}
+                placeholder="Teacher Identity..."
+              />
+              {errors.recordedBy && (
+                <p className="text-nebula-pink-400 text-[10px] font-black uppercase tracking-widest px-2">{errors.recordedBy}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                Deployment Cycle (Academic Year)
+              </label>
+              <input
+                type="text"
+                name="academicYear"
+                value={formData.academicYear}
+                onChange={handleChange}
+                className="input-nebula w-full"
+                placeholder="e.g. 2026"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Form Actions */}
+        <div className="flex justify-end gap-6 pt-10 border-t border-white/5">
           <button
             type="button"
             onClick={onCancel}
-            className="px-8 py-4 bg-brand-100 dark:bg-brand-800 text-brand-600 dark:text-brand-400 rounded-full font-black uppercase tracking-widest text-sm hover:bg-brand-200 dark:hover:bg-brand-700 transition-all"
+            className="px-8 py-4 text-[10px] font-black text-nebula-slate-400 uppercase tracking-[0.3em] hover:text-white transition-all"
           >
             Cancel
           </button>
+          <button
+            type="submit"
+            className="px-10 py-4 bg-white text-black rounded-full font-black text-[10px] uppercase tracking-[0.3em] shadow-lg hover:shadow-white/10 hover:scale-105 active:scale-95 transition-all flex items-center gap-3"
+          >
+            <Save size={18} />
+            {isEditing ? 'Synchronize Data' : 'Establish Record'}
+          </button>
         </div>
       </form>
-    </div>
+    </motion.div>
+  )
   )
 }
