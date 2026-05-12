@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion } from "framer-motion";
 import type { ChangeEvent, FormEvent } from 'react'
 import { X } from 'lucide-react'
 import { Result, Student, Subject } from '../types'

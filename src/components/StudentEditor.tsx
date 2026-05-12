@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { motion } from "framer-motion";
 import { X, AlertCircle, BookOpen, User as UserIcon } from 'lucide-react'
 import { Student, Subject, StudentSubject } from '../types'
 import StudentForm from './StudentForm'

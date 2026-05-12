@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { motion } from "framer-motion";
 import { X, Plus, Search } from 'lucide-react'
 import { StudentSubject, Subject, Student } from '../types'
 

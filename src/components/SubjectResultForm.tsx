@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
+import { motion } from "framer-motion";
 import type { ChangeEvent, FormEvent } from 'react'
 import { X, Save, AlertCircle, TrendingUp, Award, MessageSquare } from 'lucide-react'
 import { SubjectResult, Student, Subject, StudentSubject } from '../types'
