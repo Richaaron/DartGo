@@ -268,7 +268,6 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                           <div className={`w-3 h-3 rounded-full ${item.color} shadow-[0_0_15px_rgba(255,255,255,0.3)] group-hover/item:scale-150 transition-transform`} />
                         </div>
                         <div className="space-y-3">
-                         <div className="space-y-3">
                           <h3 className="text-lg font-black text-folusho-slate-900 tracking-widest uppercase group-hover/item:text-folusho-sage-600 transition-colors">
                             {item.label}
                           </h3>
@@ -276,9 +275,10 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                             {item.desc}
                           </p>
                         </div>
-                      </motion.div>
-                    ))}
-                  </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
 
                   {/* Operational Status */}
                   <div className="mt-20 pt-12 border-t border-folusho-cream-200 flex items-center justify-between">
