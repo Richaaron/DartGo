@@ -262,23 +262,22 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.8 + i * 0.1 }}
-                        className="flex gap-8 group/item"
+                        className="flex gap-8 group"
                       >
                         <div className="mt-3">
-                          <div className={`w-3 h-3 rounded-full ${item.color} shadow-[0_0_15px_rgba(255,255,255,0.3)] group-hover/item:scale-150 transition-transform`} />
+                          <div className={`w-3 h-3 rounded-full ${item.color} shadow-[0_0_15px_rgba(255,255,255,0.3)] group-hover:scale-150 transition-transform`} />
                         </div>
                         <div className="space-y-3">
-                          <h3 className="text-lg font-black text-folusho-slate-900 tracking-widest uppercase group-hover/item:text-folusho-sage-600 transition-colors">
+                          <h3 className="text-lg font-black text-folusho-slate-900 tracking-widest uppercase group-hover:text-folusho-sage-600 transition-colors">
                             {item.label}
                           </h3>
                           <p className="text-folusho-slate-400 text-base font-bold leading-relaxed max-w-sm">
                             {item.desc}
                           </p>
                         </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
+                      </motion.div>
+                    ))}
+                  </div>
 
                   {/* Operational Status */}
                   <div className="mt-20 pt-12 border-t border-folusho-cream-200 flex items-center justify-between">
