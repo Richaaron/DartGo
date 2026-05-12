@@ -825,16 +825,21 @@ export default function Dashboard() {
               )}
 
               <div className="flex gap-6 pt-6">
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   type="button"
+                  onClick={() => {
+                    setPasswordForm({
                       currentPassword: "",
                       newPassword: "",
                       confirmPassword: "",
                     });
                     setPasswordError("");
+                    setShowPasswordModal(false);
                   }}
                   disabled={isChangingPassword}
-                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-semibold transition-colors disabled:opacity-50"
+                  className="flex-1 px-8 py-4 bg-folusho-cream-100 border border-folusho-cream-200 rounded-2xl text-folusho-slate-600 font-black text-[10px] uppercase tracking-widest hover:bg-folusho-cream-200 transition-all disabled:opacity-50"
                 >
                   Cancel
                 </motion.button>
@@ -843,12 +848,12 @@ export default function Dashboard() {
                   whileTap={{ scale: 0.98 }}
                   type="submit"
                   disabled={isChangingPassword}
-                  className="flex-1 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="flex-1 px-8 py-4 bg-folusho-sage-400 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-folusho-sage-500 transition-all shadow-folusho disabled:opacity-50 flex items-center justify-center gap-4"
                 >
                   {isChangingPassword ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Updating...
+                      Processing...
                     </>
                   ) : (
                     <>
