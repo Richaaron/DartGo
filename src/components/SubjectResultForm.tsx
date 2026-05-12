@@ -191,27 +191,27 @@ export default function SubjectResultForm({
 
   return (
     <motion.div 
-      className="relative overflow-hidden bg-nebula-slate-950/40 backdrop-blur-3xl border border-white/10 rounded-[3rem] shadow-nebula-lg"
-      initial={{ opacity: 0, scale: 0.95 }}
+      className="relative overflow-hidden bg-white/80 backdrop-blur-3xl border border-folusho-cream-200 rounded-[3rem] shadow-folusho"
+      initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
       {/* Decorative Orbs */}
-      <div className="absolute -top-24 -right-24 w-64 h-64 bg-nebula-indigo-500/20 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-nebula-pink-500/20 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -top-24 -right-24 w-64 h-64 bg-folusho-sage-200/30 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-folusho-coral-200/30 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="p-10 bg-gradient-to-r from-nebula-indigo-600 to-nebula-indigo-900 text-white flex justify-between items-center relative z-10">
+      <div className="p-10 bg-gradient-to-r from-folusho-sage-500 to-folusho-sage-700 text-white flex justify-between items-center relative z-10">
         <div>
           <h2 className="text-4xl font-black uppercase tracking-tighter leading-none">
-            {isEditing ? 'Sync' : 'Initialize'} <br /> <span className="text-white/60">Matrix Protocol</span>
+            {isEditing ? 'Sync' : 'Initialize'} <br /> <span className="text-white/70">Matrix Protocol</span>
           </h2>
-          <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mt-3">
+          <p className="text-[10px] font-black text-white/50 uppercase tracking-[0.35em] mt-4">
             Institutional Result Management Context
           </p>
         </div>
         <button
           onClick={onCancel}
-          className="p-4 hover:bg-white/10 rounded-2xl transition-all border border-white/10"
+          className="p-4 hover:bg-white/10 rounded-2xl transition-all border border-white/20"
         >
           <X size={28} />
         </button>
@@ -220,21 +220,21 @@ export default function SubjectResultForm({
       <form onSubmit={handleSubmit} className="p-10 space-y-12 relative z-10 max-h-[80vh] overflow-y-auto custom-scrollbar">
         {/* Section I: Identity Selection */}
         <section className="space-y-6">
-          <h3 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em] px-2 flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-nebula-indigo-500" />
+          <h3 className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2 flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-folusho-sage-500" />
             I. Target Identification
           </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-3">
+              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
                 Operational Student
               </label>
               <select
                 name="studentId"
                 value={formData.studentId}
                 onChange={handleChange}
-                className={`input-nebula w-full ${errors.studentId ? 'border-nebula-pink-500/50' : ''}`}
+                className={`input-folusho w-full !py-5 ${errors.studentId ? 'border-folusho-coral-500/50' : ''}`}
                 disabled={isEditing || (!!initialData && !!initialData.studentId)}
               >
                 <option value="">Select identity...</option>
@@ -245,19 +245,19 @@ export default function SubjectResultForm({
                 ))}
               </select>
               {errors.studentId && (
-                <p className="text-nebula-pink-400 text-[10px] font-black uppercase tracking-widest px-2">{errors.studentId}</p>
+                <p className="text-folusho-coral-500 text-[10px] font-black uppercase tracking-widest px-2">{errors.studentId}</p>
               )}
             </div>
 
-            <div className="space-y-2">
-              <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+            <div className="space-y-3">
+              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
                 Subject Logic Matrix
               </label>
               <select
                 name="subjectId"
                 value={formData.subjectId}
                 onChange={handleChange}
-                className={`input-nebula w-full ${errors.subjectId ? 'border-nebula-pink-500/50' : ''}`}
+                className={`input-folusho w-full !py-5 ${errors.subjectId ? 'border-folusho-coral-500/50' : ''}`}
                 disabled={isEditing || (!!initialData && !!initialData.studentId)}
               >
                 <option value="">Select subject protocol...</option>
@@ -268,22 +268,22 @@ export default function SubjectResultForm({
                 ))}
               </select>
               {errors.subjectId && (
-                <p className="text-nebula-pink-400 text-[10px] font-black uppercase tracking-widest px-2">{errors.subjectId}</p>
+                <p className="text-folusho-coral-500 text-[10px] font-black uppercase tracking-widest px-2">{errors.subjectId}</p>
               )}
             </div>
           </div>
         </section>
 
         {/* Section II: Performance Vectors */}
-        <section className="space-y-6 pt-6 border-t border-white/5">
-          <h3 className="text-[10px] font-black text-nebula-teal-400 uppercase tracking-[0.4em] px-2 flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-nebula-teal-500" />
+        <section className="space-y-6 pt-6 border-t border-folusho-cream-100">
+          <h3 className="text-[10px] font-black text-folusho-yellow-600 uppercase tracking-[0.45em] px-2 flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-folusho-yellow-500" />
             II. Performance Vectors
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="space-y-2">
-              <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+            <div className="space-y-3">
+              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
                 1st CA Vector (20)
               </label>
               <input
@@ -291,15 +291,15 @@ export default function SubjectResultForm({
                 name="firstCA"
                 value={formData.firstCA}
                 onChange={handleChange}
-                className={`input-nebula w-full ${errors.firstCA ? 'border-nebula-pink-500/50' : ''}`}
+                className={`input-folusho w-full !py-5 ${errors.firstCA ? 'border-folusho-coral-500/50' : ''}`}
               />
               {errors.firstCA && (
-                <p className="text-nebula-pink-400 text-[10px] font-black uppercase tracking-widest px-2">{errors.firstCA}</p>
+                <p className="text-folusho-coral-500 text-[10px] font-black uppercase tracking-widest px-2">{errors.firstCA}</p>
               )}
             </div>
 
-            <div className="space-y-2">
-              <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+            <div className="space-y-3">
+              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
                 2nd CA Vector (20)
               </label>
               <input
@@ -307,15 +307,15 @@ export default function SubjectResultForm({
                 name="secondCA"
                 value={formData.secondCA}
                 onChange={handleChange}
-                className={`input-nebula w-full ${errors.secondCA ? 'border-nebula-pink-500/50' : ''}`}
+                className={`input-folusho w-full !py-5 ${errors.secondCA ? 'border-folusho-coral-500/50' : ''}`}
               />
               {errors.secondCA && (
-                <p className="text-nebula-pink-400 text-[10px] font-black uppercase tracking-widest px-2">{errors.secondCA}</p>
+                <p className="text-folusho-coral-500 text-[10px] font-black uppercase tracking-widest px-2">{errors.secondCA}</p>
               )}
             </div>
 
-            <div className="space-y-2">
-              <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+            <div className="space-y-3">
+              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
                 Final Exam (60)
               </label>
               <input
@@ -323,56 +323,56 @@ export default function SubjectResultForm({
                 name="exam"
                 value={formData.exam}
                 onChange={handleChange}
-                className={`input-nebula w-full ${errors.exam ? 'border-nebula-pink-500/50' : ''}`}
+                className={`input-folusho w-full !py-5 ${errors.exam ? 'border-folusho-coral-500/50' : ''}`}
               />
               {errors.exam && (
-                <p className="text-nebula-pink-400 text-[10px] font-black uppercase tracking-widest px-2">{errors.exam}</p>
+                <p className="text-folusho-coral-500 text-[10px] font-black uppercase tracking-widest px-2">{errors.exam}</p>
               )}
             </div>
           </div>
 
           {/* Grading Intelligence Dashboard */}
-          <div className="p-8 rounded-[2rem] bg-nebula-indigo-500/5 border border-nebula-indigo-500/10 shadow-inner">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-              <div className="space-y-1">
-                <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">Total Aggregate</p>
-                <p className="text-3xl font-black text-white leading-none">{preview.total}</p>
+          <div className="p-10 rounded-[2.5rem] bg-folusho-cream-50 border border-folusho-cream-200 shadow-inner">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+              <div className="space-y-2">
+                <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Total Aggregate</p>
+                <p className="text-4xl font-black text-folusho-slate-900 leading-none tracking-tighter">{preview.total}</p>
               </div>
-              <div className="space-y-1">
-                <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">Efficiency</p>
-                <p className="text-3xl font-black text-nebula-indigo-400 leading-none">{preview.percentage}%</p>
+              <div className="space-y-2">
+                <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Efficiency</p>
+                <p className="text-4xl font-black text-folusho-sage-500 leading-none tracking-tighter">{preview.percentage}%</p>
               </div>
-              <div className="space-y-1">
-                <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">Classification</p>
-                <p className="text-3xl font-black text-nebula-teal-400 leading-none">{preview.grade}</p>
+              <div className="space-y-2">
+                <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Classification</p>
+                <p className="text-4xl font-black text-folusho-yellow-600 leading-none tracking-tighter">{preview.grade}</p>
               </div>
-              <div className="space-y-1">
-                <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">Logic Points</p>
-                <p className="text-3xl font-black text-nebula-pink-400 leading-none">{preview.gradePoint}</p>
+              <div className="space-y-2">
+                <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Logic Points</p>
+                <p className="text-4xl font-black text-folusho-coral-500 leading-none tracking-tighter">{preview.gradePoint}</p>
               </div>
             </div>
-            <div className="pt-6 border-t border-white/5 flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl bg-nebula-indigo-500/20 flex items-center justify-center text-nebula-indigo-400">
-                <MessageSquare size={20} />
+            <div className="pt-8 border-t border-folusho-cream-200 flex items-start gap-6">
+              <div className="w-12 h-12 rounded-2xl bg-folusho-sage-50 flex items-center justify-center text-folusho-sage-500 border border-folusho-sage-100">
+                <MessageSquare size={22} />
               </div>
               <div>
-                <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest mb-1">Automated Intelligence Remark</p>
-                <p className="text-xs font-black text-white leading-relaxed italic opacity-80">"{preview.remarks}"</p>
+                <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] mb-2">Automated Intelligence Remark</p>
+                <p className="text-sm font-bold text-folusho-slate-700 leading-relaxed italic">"{preview.remarks}"</p>
               </div>
             </div>
           </div>
         </section>
 
         {/* Section III: Operational Sign-off */}
-        <section className="space-y-6 pt-6 border-t border-white/5">
-          <h3 className="text-[10px] font-black text-nebula-pink-400 uppercase tracking-[0.4em] px-2 flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-nebula-pink-500" />
+        <section className="space-y-6 pt-6 border-t border-folusho-cream-100">
+          <h3 className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.45em] px-2 flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-folusho-coral-500" />
             III. Operational Sign-off
           </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-3">
+              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
                 Faculty Identity (Recorded By)
               </label>
               <input
@@ -380,16 +380,16 @@ export default function SubjectResultForm({
                 name="recordedBy"
                 value={formData.recordedBy}
                 onChange={handleChange}
-                className={`input-nebula w-full ${errors.recordedBy ? 'border-nebula-pink-500/50' : ''}`}
+                className={`input-folusho w-full !py-5 ${errors.recordedBy ? 'border-folusho-coral-500/50' : ''}`}
                 placeholder="Teacher Identity..."
               />
               {errors.recordedBy && (
-                <p className="text-nebula-pink-400 text-[10px] font-black uppercase tracking-widest px-2">{errors.recordedBy}</p>
+                <p className="text-folusho-coral-500 text-[10px] font-black uppercase tracking-widest px-2">{errors.recordedBy}</p>
               )}
             </div>
 
-            <div className="space-y-2">
-              <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+            <div className="space-y-3">
+              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.2em] px-2">
                 Deployment Cycle (Academic Year)
               </label>
               <input
@@ -397,7 +397,7 @@ export default function SubjectResultForm({
                 name="academicYear"
                 value={formData.academicYear}
                 onChange={handleChange}
-                className="input-nebula w-full"
+                className="input-folusho w-full !py-5"
                 placeholder="e.g. 2026"
               />
             </div>
@@ -405,19 +405,19 @@ export default function SubjectResultForm({
         </section>
 
         {/* Form Actions */}
-        <div className="flex justify-end gap-6 pt-10 border-t border-white/5">
+        <div className="flex justify-end gap-8 pt-12 border-t border-folusho-cream-100">
           <button
             type="button"
             onClick={onCancel}
-            className="px-8 py-4 text-[10px] font-black text-nebula-slate-400 uppercase tracking-[0.3em] hover:text-white transition-all"
+            className="px-10 py-5 text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.35em] hover:text-folusho-sage-600 transition-all"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-10 py-4 bg-white text-black rounded-full font-black text-[10px] uppercase tracking-[0.3em] shadow-lg hover:shadow-white/10 hover:scale-105 active:scale-95 transition-all flex items-center gap-3"
+            className="px-12 py-5 bg-folusho-sage-400 text-white rounded-full font-black text-[10px] uppercase tracking-[0.35em] shadow-folusho hover:bg-folusho-sage-500 hover:scale-105 active:scale-95 transition-all flex items-center gap-4"
           >
-            <Save size={18} />
+            <Save size={20} />
             {isEditing ? 'Synchronize Data' : 'Establish Record'}
           </button>
         </div>

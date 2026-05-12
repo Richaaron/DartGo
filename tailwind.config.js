@@ -5,6 +5,53 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Folusho Academic Theme: Sage, Coral, Cream, and Slate Coffee
+        folusho: {
+          sage: {
+            50: "#f4f7f3",
+            100: "#e9f0e7",
+            200: "#d3e1cf",
+            300: "#b8cdb1",
+            400: "#a8c69f", // Primary
+            500: "#8fb185",
+            600: "#708d66",
+            700: "#586f51",
+            800: "#465841",
+            900: "#3a4936",
+          },
+          coral: {
+            50: "#fff5f4",
+            100: "#ffebe8",
+            200: "#ffd6d1",
+            300: "#ffb4aa",
+            400: "#ff8a7a", // Accent
+            500: "#ff6350",
+            600: "#f03e29",
+            700: "#ca2d1a",
+            800: "#a72718",
+            900: "#8b2418",
+          },
+          cream: {
+            50: "#ffffff",
+            100: "#faf9f6", // BG
+            200: "#f3f1eb",
+            300: "#e6e2d6",
+            400: "#d1c9b6",
+            500: "#bdae93",
+          },
+          yellow: {
+            50: "#fffef0",
+            100: "#fffcd9",
+            200: "#fff4d1", // Surface
+            300: "#ffea9e",
+            400: "#ffda5c",
+            500: "#ffc42b",
+          },
+          slate: {
+            900: "#2d2a26", // Text
+            950: "#1a1816",
+          }
+        },
         // Nebula Premium Theme: Deep Midnight, Stellar Indigo, Aurora Teal, Cosmic Pink
         nebula: {
           indigo: {
@@ -150,10 +197,13 @@ export default {
       borderRadius: {
         "4xl": "2rem",
         "5xl": "3rem",
+        "6xl": "4rem",
       },
       boxShadow: {
         nebula: "0 0 50px -12px rgba(99, 102, 241, 0.25)",
         "nebula-lg": "0 0 80px -15px rgba(99, 102, 241, 0.4)",
+        folusho: "0 20px 40px -15px rgba(45, 42, 38, 0.05)",
+        "folusho-lg": "0 30px 60px -20px rgba(45, 42, 38, 0.1)",
       },
     },
   },

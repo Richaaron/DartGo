@@ -1,91 +1,71 @@
 :root {
-    --nebula-slate-900: #0f172a;
-    --nebula-slate-950: #020617;
-    --nebula-indigo-500: #6366f1;
-    --nebula-teal-500: #14b8a6;
-    --nebula-pink-500: #ec4899;
+    --folusho-sage: #4ade80;
+    --folusho-coral: #fb7185;
+    --folusho-cream: #fffbeb;
+    --folusho-slate: #0f172a;
 }
 
-/* ── Digital Citadel Scrollbar ──────────────────── */
-.custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+/* ── Institutional Scrollbar ──────────────────── */
+.scrollbar-folusho::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
 }
-.custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
+.scrollbar-folusho::-webkit-scrollbar-track {
+    background: #fffbeb;
 }
-.custom-scrollbar::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, rgba(99, 102, 241, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
+.scrollbar-folusho::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
     border-radius: 100px;
-    border: 2px solid transparent;
-    background-clip: content-box;
+    border: 2px solid #fffbeb;
 }
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, rgba(99, 102, 241, 0.4) 0%, rgba(236, 72, 153, 0.4) 100%);
-}
-
-/* ── Nebula Layout Utilities ────────────────────── */
-.nebula-card {
-    @apply bg-nebula-slate-950/40 backdrop-blur-3xl border border-white/5 
-           rounded-[2.5rem] p-10 shadow-nebula transition-all duration-500
-           hover:border-white/10 hover:shadow-nebula-lg;
+.scrollbar-folusho::-webkit-scrollbar-thumb:hover {
+    background: #cbd5e1;
 }
 
-.input-nebula {
-    @apply w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4
-           text-white text-sm font-bold tracking-tight outline-none
-           transition-all duration-300 placeholder:text-nebula-slate-600
-           focus:bg-white/[0.08] focus:border-nebula-indigo-500/50 
-           focus:shadow-[0_0_20px_rgba(99,102,241,0.1)]
+/* ── Folusho Layout Utilities ────────────────────── */
+.folusho-card {
+    @apply bg-white border border-folusho-cream-200
+           rounded-[3rem] p-12 shadow-folusho transition-all duration-500
+           hover:border-folusho-sage-200 hover:shadow-folusho-lg;
+}
+
+.input-folusho {
+    @apply w-full bg-folusho-cream-50/50 border border-folusho-cream-200 rounded-[1.5rem] px-8 py-5
+           text-folusho-slate-900 text-sm font-bold tracking-tight outline-none
+           transition-all duration-300 placeholder:text-folusho-slate-300
+           focus:bg-white focus:border-folusho-sage-400
+           focus:shadow-[0_0_30px_rgba(74,222,128,0.1)]
            disabled:opacity-50 disabled:cursor-not-allowed;
 }
 
 .btn-vibrant {
-    @apply inline-flex items-center justify-center gap-3 px-8 py-4
-           bg-gradient-to-br from-nebula-indigo-500 to-nebula-indigo-700
-           text-white text-[10px] font-black uppercase tracking-[0.2em]
-           rounded-2xl transition-all duration-300 shadow-nebula
-           hover:shadow-nebula-lg hover:scale-[1.02] active:scale-[0.98]
-           disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-4 px-10 py-5
+           bg-folusho-slate-900 text-white text-[11px] font-black uppercase tracking-[0.3em]
+           rounded-[1.5rem] transition-all duration-300 shadow-folusho
+           hover:shadow-folusho-lg hover:scale-[1.03] active:scale-[0.97]
+           disabled:opacity-40 disabled:grayscale disabled:cursor-not-allowed;
 }
 
 /* ── Specialized Components ─────────────────────── */
-.glow-indigo {
-    @apply shadow-[0_0_30px_rgba(99,102,241,0.3)];
+.glow-sage {
+    @apply shadow-[0_0_40px_rgba(74,222,128,0.25)];
 }
 
-.glow-teal {
-    @apply shadow-[0_0_30px_rgba(20,184,166,0.3)];
+.glow-coral {
+    @apply shadow-[0_0_40px_rgba(251,113,133,0.25)];
 }
 
-.glow-pink {
-    @apply shadow-[0_0_30px_rgba(236,72,153,0.3)];
+.glow-cream {
+    @apply shadow-[0_0_40px_rgba(255,251,235,0.8)];
 }
 
 /* ── Form Controls ────────────────────────────── */
 select {
-    @apply bg-nebula-slate-900 text-white cursor-pointer;
+    @apply bg-white text-folusho-slate-900 cursor-pointer;
 }
 
 option {
-    @apply bg-nebula-slate-950 text-white py-4;
-    background-color: #020617; /* Fallback for some browsers */
-    color: white;
-}
-
-/* ── Matrix Table System ───────────────────────── */
-.matrix-table {
-    @apply w-full border-separate border-spacing-0;
-}
-
-.matrix-th {
-    @apply px-8 py-6 text-left text-[10px] font-black text-nebula-indigo-400
-           uppercase tracking-[0.3em] border-b border-white/5 bg-white/[0.02];
-}
-
-.matrix-td {
-    @apply px-8 py-6 text-sm font-bold text-white border-b border-white/5
-           transition-colors duration-200 group-hover:bg-white/[0.02];
+    @apply bg-white text-folusho-slate-900 py-4;
 }
 
 /* ── Institutional Print Engine ───────────────── */
@@ -96,37 +76,33 @@ option {
     
     body {
         background: white !important;
-        color: #020617 !important;
+        color: #0f172a !important;
     }
 
-    .nebula-card {
+    .folusho-card {
         background: white !important;
-        border: 1px solid #e2e8f0 !important;
+        border: 1px solid #f1f5f9 !important;
         box-shadow: none !important;
         border-radius: 0 !important;
-        padding: 2rem !important;
+        padding: 3rem !important;
     }
 
-    .text-white, .text-nebula-slate-400, .text-nebula-indigo-400 {
-        color: #020617 !important;
-    }
-
-    .bg-nebula-slate-950, .bg-white\/5 {
-        background: transparent !important;
+    .text-folusho-slate-900, .text-folusho-sage-500 {
+        color: #0f172a !important;
     }
 
     table {
-        border: 1px solid #e2e8f0 !important;
+        border: 1px solid #f1f5f9 !important;
     }
 
     th {
         background: #f8fafc !important;
-        color: #020617 !important;
-        border-bottom: 2px solid #e2e8f0 !important;
+        color: #0f172a !important;
+        border-bottom: 2px solid #f1f5f9 !important;
     }
 
     td {
-        border-bottom: 1px solid #f1f5f9 !important;
+        border-bottom: 1px solid #f8fafc !important;
     }
 
     @page {

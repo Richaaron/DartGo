@@ -289,48 +289,48 @@ export default function TeacherForm({
 
   return (
     <motion.div 
-      className="relative overflow-hidden bg-nebula-slate-950/40 backdrop-blur-3xl border border-white/10 rounded-[3rem] p-10 shadow-nebula-lg"
+      className="relative overflow-hidden bg-white border border-folusho-cream-200 rounded-[3rem] p-12 shadow-folusho"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
       {/* Decorative Orbs */}
-      <div className="absolute -top-24 -right-24 w-64 h-64 bg-nebula-purple-500/20 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-nebula-pink-500/20 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -top-24 -right-24 w-64 h-64 bg-folusho-sage-100/40 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-folusho-coral-100/40 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="relative z-10">
-        <div className="flex justify-between items-start mb-12">
+        <div className="flex justify-between items-start mb-16">
           <div>
             <motion.h2 
-              className="text-4xl font-black uppercase tracking-tighter leading-none text-white mb-3"
+              className="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-none text-folusho-slate-900 mb-4"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
             >
-              Squad <br /> <span className="text-nebula-purple-400">Assignment</span>
+              Squad <br /> <span className="text-folusho-sage-500">Assignment</span>
             </motion.h2>
-            <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.3em]">
+            <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.4em]">
               Faculty Intelligence Mapping
             </p>
           </div>
           <button
             onClick={onCancel}
-            className="p-4 hover:bg-white/5 rounded-2xl transition-all border border-white/5 hover:border-white/10 text-nebula-slate-400 hover:text-white"
+            className="p-4 hover:bg-folusho-cream-50 rounded-2xl transition-all border border-folusho-cream-200 text-folusho-slate-400 hover:text-folusho-slate-900"
           >
             <X size={24} />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-12">
+        <form onSubmit={handleSubmit} className="space-y-16">
           {/* Account Information */}
-          <section className="space-y-6">
-            <h3 className="text-[10px] font-black text-nebula-purple-400 uppercase tracking-[0.4em] px-2 flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-nebula-purple-500" />
+          <section className="space-y-8">
+            <h3 className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.45em] px-2 flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-folusho-sage-500" />
               I. Identity Protocol
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-3">
+                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
                   Full Name
                 </label>
                 <input
@@ -338,13 +338,13 @@ export default function TeacherForm({
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className={`input-nebula w-full ${errors.name ? "border-red-500/50" : ""}`}
+                  className={`input-folusho w-full ${errors.name ? "border-folusho-coral-300" : ""}`}
                   placeholder="e.g. Dr. Emmanuel"
                 />
               </div>
 
-              <div className="space-y-2">
-                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+              <div className="space-y-3">
+                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
                   Digital Identity (Email)
                 </label>
                 <input
@@ -352,15 +352,15 @@ export default function TeacherForm({
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`input-nebula w-full ${errors.email ? "border-red-500/50" : ""}`}
+                  className={`input-folusho w-full ${errors.email ? "border-folusho-coral-300" : ""}`}
                   placeholder="name@institution.edu"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-3">
+                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
                   Access Key (User)
                 </label>
                 <input
@@ -370,12 +370,12 @@ export default function TeacherForm({
                   onChange={handleChange}
                   placeholder={isEditing ? "" : "Auto-Generated"}
                   disabled={!isEditing}
-                  className={`input-nebula w-full ${!isEditing ? "bg-white/5 opacity-50" : ""}`}
+                  className={`input-folusho w-full ${!isEditing ? "bg-folusho-cream-50/50 opacity-60" : ""}`}
                 />
               </div>
 
-              <div className="space-y-2">
-                <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+              <div className="space-y-3">
+                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
                   Secure Cipher (Pass)
                 </label>
                 <input
@@ -385,39 +385,39 @@ export default function TeacherForm({
                   onChange={handleChange}
                   placeholder={isEditing ? "Keep Existing" : "Auto-Generated"}
                   disabled={!isEditing}
-                  className={`input-nebula w-full ${!isEditing ? "bg-white/5 opacity-50" : ""}`}
+                  className={`input-folusho w-full ${!isEditing ? "bg-folusho-cream-50/50 opacity-60" : ""}`}
                 />
               </div>
             </div>
           </section>
 
           {/* Professional Information */}
-          <section className="space-y-8 pt-6 border-t border-white/5">
-            <h3 className="text-[10px] font-black text-nebula-purple-400 uppercase tracking-[0.4em] px-2 flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-nebula-pink-500" />
+          <section className="space-y-10 pt-10 border-t border-folusho-cream-100">
+            <h3 className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.45em] px-2 flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-folusho-coral-500" />
               II. Professional Matrix
             </h3>
 
-            <div className="space-y-4">
-              <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+            <div className="space-y-6">
+              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
                 Teaching Assignment Protocols
               </label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {/* Form Teacher Toggle */}
                 <button
                   type="button"
                   onClick={() => setIsFormTeacher((prev) => !prev)}
-                  className={`flex flex-col items-start p-6 rounded-[2rem] border transition-all text-left ${
+                  className={`flex flex-col items-start p-8 rounded-[2.5rem] border transition-all text-left ${
                     isFormTeacher
-                      ? "bg-nebula-purple-500/10 border-nebula-purple-500/40 shadow-inner"
-                      : "bg-white/[0.02] border-white/5 hover:border-white/10"
+                      ? "bg-folusho-sage-50 border-folusho-sage-200 shadow-sm"
+                      : "bg-white border-folusho-cream-100 hover:border-folusho-sage-100"
                   }`}
                 >
-                  <div className="flex justify-between items-center w-full mb-4">
-                    <p className="text-xs font-black text-white uppercase tracking-tighter">Form Governance</p>
-                    <div className={`w-3 h-3 rounded-full ${isFormTeacher ? 'bg-nebula-purple-500 nebula-pulse' : 'bg-white/10'}`} />
+                  <div className="flex justify-between items-center w-full mb-6">
+                    <p className={`text-xs font-black uppercase tracking-tighter ${isFormTeacher ? 'text-folusho-sage-600' : 'text-folusho-slate-900'}`}>Form Governance</p>
+                    <div className={`w-3 h-3 rounded-full ${isFormTeacher ? 'bg-folusho-sage-500 shadow-[0_0_12px_rgba(107,142,35,0.4)]' : 'bg-folusho-cream-200'}`} />
                   </div>
-                  <p className="text-[10px] font-black text-nebula-slate-500 uppercase leading-relaxed">
+                  <p className="text-[10px] font-black text-folusho-slate-400 uppercase leading-relaxed tracking-wide">
                     Institutional oversight and student welfare synchronization for assigned cohorts.
                   </p>
                 </button>
@@ -426,34 +426,34 @@ export default function TeacherForm({
                 <button
                   type="button"
                   onClick={() => setIsSubjectTeacher((prev) => !prev)}
-                  className={`flex flex-col items-start p-6 rounded-[2rem] border transition-all text-left ${
+                  className={`flex flex-col items-start p-8 rounded-[2.5rem] border transition-all text-left ${
                     isSubjectTeacher
-                      ? "bg-nebula-teal-500/10 border-nebula-teal-500/40 shadow-inner"
-                      : "bg-white/[0.02] border-white/5 hover:border-white/10"
+                      ? "bg-folusho-coral-50 border-folusho-coral-200 shadow-sm"
+                      : "bg-white border-folusho-cream-100 hover:border-folusho-sage-100"
                   }`}
                 >
-                  <div className="flex justify-between items-center w-full mb-4">
-                    <p className="text-xs font-black text-white uppercase tracking-tighter">Subject Specialist</p>
-                    <div className={`w-3 h-3 rounded-full ${isSubjectTeacher ? 'bg-nebula-teal-500 nebula-pulse' : 'bg-white/10'}`} />
+                  <div className="flex justify-between items-center w-full mb-6">
+                    <p className={`text-xs font-black uppercase tracking-tighter ${isSubjectTeacher ? 'text-folusho-coral-600' : 'text-folusho-slate-900'}`}>Subject Specialist</p>
+                    <div className={`w-3 h-3 rounded-full ${isSubjectTeacher ? 'bg-folusho-coral-500 shadow-[0_0_12px_rgba(255,127,80,0.4)]' : 'bg-folusho-cream-200'}`} />
                   </div>
-                  <p className="text-[10px] font-black text-nebula-slate-500 uppercase leading-relaxed">
+                  <p className="text-[10px] font-black text-folusho-slate-400 uppercase leading-relaxed tracking-wide">
                     Precision instruction and academic matrix evaluation for specialized subjects.
                   </p>
                 </button>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <div className="space-y-8">
+                <div className="space-y-3">
+                  <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
                     Institutional Level
                   </label>
                   <select
                     name="level"
                     value={formData.level}
                     onChange={handleChange}
-                    className="input-nebula w-full"
+                    className="input-folusho w-full"
                   >
                     <option value="Pre-Nursery">Pre-Nursery</option>
                     <option value="Nursery">Nursery</option>
@@ -464,14 +464,14 @@ export default function TeacherForm({
 
                 {(formData.level !== "Secondary" || isFormTeacher) && (
                   <div className="space-y-4">
-                    <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                    <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
                       Cohort Allocation (Classes)
                     </label>
-                    <div className="flex gap-2">
+                    <div className="flex gap-4">
                       <select
                         value={selectedClass}
                         onChange={(e) => setSelectedClass(e.target.value)}
-                        className="input-nebula flex-1"
+                        className="input-folusho flex-1"
                       >
                         <option value="">Select Cohort...</option>
                         {levelClasses.map((className) => (
@@ -481,19 +481,19 @@ export default function TeacherForm({
                       <button
                         type="button"
                         onClick={addClass}
-                        className="p-4 bg-white text-black rounded-2xl hover:scale-105 active:scale-95 transition-all"
+                        className="p-4 bg-folusho-sage-400 text-white rounded-2xl hover:bg-folusho-sage-500 shadow-folusho transition-all"
                       >
                         <Plus size={20} />
                       </button>
                     </div>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-3">
                       {formData.assignedClasses.map((c) => (
                         <span
                           key={c}
-                          className="inline-flex items-center gap-2 px-4 py-2 bg-nebula-purple-500/10 border border-nebula-purple-500/30 text-nebula-purple-300 rounded-full text-[10px] font-black uppercase tracking-widest"
+                          className="inline-flex items-center gap-3 px-5 py-2.5 bg-folusho-sage-50 border border-folusho-sage-100 text-folusho-sage-600 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm"
                         >
                           {c}
-                          <button onClick={() => removeClass(c)} className="hover:text-white">
+                          <button onClick={() => removeClass(c)} className="hover:text-folusho-coral-500 transition-colors">
                             <X size={12} />
                           </button>
                         </span>
@@ -503,59 +503,59 @@ export default function TeacherForm({
                 )}
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-8">
                 {formData.level === "Secondary" ? (
                   isSubjectTeacher ? (
-                    <div className="space-y-4">
-                      <label className="block text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest px-2">
+                    <div className="space-y-6">
+                      <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
                         Subject Specialization Matrix
                       </label>
-                      <div className="relative">
+                      <div className="relative group">
                         <input
                           type="text"
                           placeholder="Search Protocols..."
                           value={subjectSearchTerm}
                           onChange={(e) => setSubjectSearchTerm(e.target.value)}
-                          className="input-nebula w-full pl-10 text-xs"
+                          className="input-folusho w-full !pl-14 text-xs"
                         />
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-nebula-slate-500" />
+                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-slate-300 group-focus-within:text-folusho-sage-500 transition-colors" />
                       </div>
-                      <div className="max-h-64 overflow-y-auto custom-scrollbar space-y-2 pr-2">
+                      <div className="max-h-72 overflow-y-auto custom-scrollbar space-y-3 pr-2">
                         {levelSubjects
                           .filter(s => s.name.toLowerCase().includes(subjectSearchTerm.toLowerCase()))
                           .map(subject => (
                             <label
                               key={subject.id}
-                              className={`flex items-center gap-4 p-4 rounded-2xl border transition-all cursor-pointer ${
+                              className={`flex items-center gap-5 p-5 rounded-3xl border transition-all cursor-pointer ${
                                 (formData.assignedSubjects || []).includes(subject.name)
-                                  ? 'bg-nebula-teal-500/10 border-nebula-teal-500/40 shadow-inner'
-                                  : 'bg-white/[0.02] border-white/5 hover:border-white/10'
+                                  ? 'bg-folusho-coral-50 border-folusho-coral-200 shadow-sm'
+                                  : 'bg-white border-folusho-cream-100 hover:border-folusho-sage-100'
                               }`}
                             >
                               <input
                                 type="checkbox"
                                 checked={(formData.assignedSubjects || []).includes(subject.name)}
                                 onChange={() => toggleSubject(subject.name)}
-                                className="w-4 h-4 bg-nebula-slate-900 border-white/10 text-nebula-teal-600 rounded focus:ring-nebula-teal-500"
+                                className="w-5 h-5 border-folusho-cream-200 text-folusho-coral-500 rounded-lg focus:ring-folusho-coral-400"
                               />
-                              <p className="text-xs font-black text-white">{subject.name}</p>
+                              <p className={`text-xs font-black transition-colors ${(formData.assignedSubjects || []).includes(subject.name) ? 'text-folusho-coral-600' : 'text-folusho-slate-900'}`}>{subject.name}</p>
                             </label>
                           ))}
                       </div>
                     </div>
                   ) : (
-                    <div className="p-8 rounded-[2rem] bg-nebula-slate-900/40 border border-white/5 flex flex-col items-center text-center justify-center h-full">
-                      <AlertCircle className="text-nebula-slate-500 mb-4" size={32} />
-                      <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest leading-relaxed">
+                    <div className="p-10 rounded-[3rem] bg-folusho-cream-50 border border-folusho-cream-200 flex flex-col items-center text-center justify-center h-full">
+                      <AlertCircle className="text-folusho-slate-300 mb-6" size={40} />
+                      <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest leading-relaxed max-w-[200px]">
                         Governance only. Subject instruction protocols disabled.
                       </p>
                     </div>
                   )
                 ) : (
-                  <div className="p-8 rounded-[2rem] bg-nebula-teal-500/5 border border-nebula-teal-500/20 h-full">
-                    <p className="text-[10px] font-black text-nebula-teal-400 uppercase tracking-[0.3em] mb-4">Global Matrix Sync</p>
-                    <p className="text-[10px] font-black text-nebula-slate-500 uppercase leading-relaxed">
-                      As a <span className="text-white">{formData.level}</span> specialist, instruction protocols for all level-relevant subjects are auto-synchronized.
+                  <div className="p-10 rounded-[3rem] bg-folusho-sage-50/50 border border-folusho-sage-100 h-full flex flex-col justify-center">
+                    <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] mb-6">Global Matrix Sync</p>
+                    <p className="text-[10px] font-black text-folusho-slate-400 uppercase leading-relaxed tracking-wide">
+                      As a <span className="text-folusho-slate-900">{formData.level}</span> specialist, instruction protocols for all level-relevant subjects are auto-synchronized.
                     </p>
                   </div>
                 )}
@@ -564,17 +564,17 @@ export default function TeacherForm({
           </section>
 
           {/* Form Actions */}
-          <div className="flex justify-end gap-6 pt-10 border-t border-white/5">
+          <div className="flex justify-end gap-8 pt-12 border-t border-folusho-cream-100">
             <button
               type="button"
               onClick={onCancel}
-              className="px-8 py-4 text-[10px] font-black text-nebula-slate-400 uppercase tracking-[0.3em] hover:text-white transition-all"
+              className="px-10 py-5 text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.35em] hover:text-folusho-sage-600 transition-all"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-10 py-4 bg-white text-black rounded-full font-black text-[10px] uppercase tracking-[0.3em] shadow-lg hover:shadow-white/10 hover:scale-105 active:scale-95 transition-all"
+              className="px-14 py-5 bg-folusho-sage-400 text-white rounded-full font-black text-[10px] uppercase tracking-[0.35em] shadow-folusho hover:bg-folusho-sage-500 hover:scale-105 active:scale-95 transition-all"
             >
               {isEditing ? 'Sync Profile' : 'Initialize Squad Member'}
             </button>

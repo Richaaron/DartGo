@@ -66,20 +66,20 @@ function humanizeAction(action: string): { label: string; category: string } {
 
 function getActionBadgeStyle(action: string): string {
   if (action.startsWith("DELETE"))
-    return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300";
+    return "bg-folusho-coral-50 text-folusho-coral-500 border-folusho-coral-100";
   if (action.startsWith("POST"))
-    return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300";
+    return "bg-folusho-sage-50 text-folusho-sage-600 border-folusho-sage-100";
   if (action.startsWith("PUT") || action.startsWith("PATCH"))
-    return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300";
-  return "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300";
+    return "bg-folusho-yellow-50 text-folusho-yellow-600 border-folusho-yellow-100";
+  return "bg-folusho-cream-50 text-folusho-slate-500 border-folusho-cream-100";
 }
 
 function getActionDotColor(action: string): string {
-  if (action.startsWith("DELETE")) return "bg-red-500";
-  if (action.startsWith("POST")) return "bg-green-500";
+  if (action.startsWith("DELETE")) return "bg-folusho-coral-500";
+  if (action.startsWith("POST")) return "bg-folusho-sage-500";
   if (action.startsWith("PUT") || action.startsWith("PATCH"))
-    return "bg-blue-500";
-  return "bg-gray-400";
+    return "bg-folusho-yellow-500";
+  return "bg-folusho-slate-300";
 }
 
 const FILTER_TABS = [
@@ -163,23 +163,23 @@ export default function TeacherActivityLog() {
   });
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-800">
+    <div className="bg-white rounded-[2.5rem] shadow-folusho overflow-hidden border border-folusho-cream-200">
       {/* Header */}
-      <div className="p-5 border-b border-gray-200 dark:border-gray-800 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/40 dark:to-indigo-950/40">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-600 rounded-lg">
-              <Eye className="w-5 h-5 text-white" />
+      <div className="p-8 border-b border-folusho-cream-100 bg-folusho-cream-50/30">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="flex items-center gap-5">
+            <div className="p-4 bg-folusho-sage-500 rounded-2xl shadow-folusho">
+              <Eye className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h2 className="text-base font-black text-gray-900 dark:text-white">
-                Teacher Activity Monitor
+              <h2 className="text-xl font-black text-folusho-slate-900 tracking-tight">
+                Academic Surveillance
               </h2>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                Real-time log of all teacher actions — auto-refreshes every 30s
+              <p className="text-xs font-bold text-folusho-slate-400 mt-1">
+                Real-time tactical log of institutional maneuvers
                 {" · "}
-                <span className="text-blue-600 dark:text-blue-400 font-medium">
-                  Last updated{" "}
+                <span className="text-folusho-sage-500 font-black">
+                  SYNC: {" "}
                   {lastRefreshed.toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
@@ -189,29 +189,28 @@ export default function TeacherActivityLog() {
             </div>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             {/* Send Digest Button */}
             <button
               onClick={handleSendDigest}
               disabled={sendingDigest || digestSent}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all ${
+              className={`flex items-center gap-3 px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-sm ${
                 digestSent
-                  ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
-                  : "bg-indigo-600 text-white hover:bg-indigo-700"
-              } disabled:opacity-60`}
-              title="Send today's activity summary to the admin email"
+                  ? "bg-folusho-sage-50 text-folusho-sage-600 border border-folusho-sage-100"
+                  : "bg-folusho-sage-500 text-white hover:bg-folusho-sage-600 shadow-folusho"
+              } disabled:opacity-40`}
             >
               {digestSent ? (
                 <>
-                  <CheckCircle className="w-3.5 h-3.5" /> Digest Sent!
+                  <CheckCircle className="w-4 h-4" /> Sent
                 </>
               ) : sendingDigest ? (
                 <>
-                  <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Sending...
+                  <RefreshCw className="w-4 h-4 animate-spin" /> ...
                 </>
               ) : (
                 <>
-                  <Mail className="w-3.5 h-3.5" /> Send Digest
+                  <Mail className="w-4 h-4" /> Dispatch Digest
                 </>
               )}
             </button>
@@ -220,64 +219,62 @@ export default function TeacherActivityLog() {
             <button
               onClick={handleClearLog}
               disabled={clearing || activities.length === 0}
-              className="flex items-center gap-2 px-3 py-2 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/30 rounded-lg text-xs font-bold hover:bg-red-100 dark:hover:bg-red-900/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-              title="Clear all activities"
+              className="flex items-center gap-3 px-5 py-2.5 bg-folusho-coral-50 text-folusho-coral-500 border border-folusho-coral-100 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-folusho-coral-100 transition-all disabled:opacity-30"
             >
               {clearing ? (
-                <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                <RefreshCw className="w-4 h-4 animate-spin" />
               ) : (
-                <Trash2 className="w-3.5 h-3.5" />
+                <Trash2 className="w-4 h-4" />
               )}
-              Clear Log
+              Purge Log
             </button>
 
             {/* Refresh Button */}
             <button
               onClick={loadActivities}
               disabled={loading}
-              className="p-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-              title="Refresh"
+              className="p-3 bg-white border border-folusho-cream-200 rounded-2xl hover:bg-folusho-cream-50 transition-all shadow-sm group"
             >
               <RefreshCw
-                className={`w-4 h-4 text-gray-600 dark:text-gray-400 ${loading ? "animate-spin" : ""}`}
+                className={`w-5 h-5 text-folusho-slate-400 group-hover:text-folusho-sage-500 ${loading ? "animate-spin" : ""}`}
               />
             </button>
           </div>
         </div>
 
-        {/* Search */}
-        <div className="mt-4 relative">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search by teacher name, action or details..."
-            className="w-full pl-9 pr-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:text-white dark:placeholder-gray-500"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
+        {/* Search & Filter */}
+        <div className="mt-8 flex flex-col lg:flex-row gap-6">
+          <div className="flex-1 relative group">
+            <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-folusho-slate-400 group-focus-within:text-folusho-sage-500 transition-colors" />
+            <input
+              type="text"
+              placeholder="Locate specific maneuvers by teacher or action..."
+              className="input-folusho !pl-12 !py-3.5 !rounded-2xl shadow-inner !text-xs"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
 
-        {/* Filter Tabs */}
-        <div className="flex gap-1.5 mt-3 overflow-x-auto pb-1">
-          <Filter className="w-4 h-4 text-gray-400 flex-shrink-0 mt-1" />
-          {FILTER_TABS.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveFilter(tab.id)}
-              className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
-                activeFilter === tab.id
-                  ? "bg-blue-600 text-white shadow-sm"
-                  : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hover:border-blue-300"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+          <div className="flex gap-2 p-1.5 bg-folusho-cream-100 rounded-2xl border border-folusho-cream-200 shadow-inner overflow-x-auto scrollbar-none">
+            {FILTER_TABS.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveFilter(tab.id)}
+                className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${
+                  activeFilter === tab.id
+                    ? "bg-white text-folusho-sage-600 shadow-folusho"
+                    : "text-folusho-slate-400 hover:text-folusho-slate-600"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Stats Row */}
-      <div className="grid grid-cols-3 divide-x divide-gray-100 dark:divide-gray-800 border-b border-gray-100 dark:border-gray-800">
+      <div className="grid grid-cols-3 divide-x divide-folusho-cream-100 border-b border-folusho-cream-100 bg-white">
         {[
           {
             label: "Total Today",
@@ -286,24 +283,24 @@ export default function TeacherActivityLog() {
                 new Date(a.createdAt).toDateString() ===
                 new Date().toDateString(),
             ).length,
-            color: "text-gray-900 dark:text-white",
+            color: "text-folusho-slate-900",
           },
           {
             label: "Results Entered",
             value: activities.filter((a) => a.action.includes("results"))
               .length,
-            color: "text-green-600",
+            color: "text-folusho-sage-500",
           },
           {
             label: "Deletions",
             value: activities.filter((a) => a.action.startsWith("DELETE"))
               .length,
-            color: "text-red-600",
+            color: "text-folusho-coral-500",
           },
         ].map((stat) => (
-          <div key={stat.label} className="px-4 py-3 text-center">
-            <p className={`text-xl font-black ${stat.color}`}>{stat.value}</p>
-            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+          <div key={stat.label} className="px-6 py-5 text-center">
+            <p className={`text-2xl font-black ${stat.color} tracking-tighter`}>{stat.value}</p>
+            <p className="text-[9px] text-folusho-slate-400 font-black uppercase tracking-[0.2em] mt-1">
               {stat.label}
             </p>
           </div>
@@ -313,41 +310,43 @@ export default function TeacherActivityLog() {
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full text-left">
-          <thead className="bg-gray-50 dark:bg-gray-800/60 border-b border-gray-200 dark:border-gray-700">
+          <thead className="bg-folusho-cream-50/50 border-b border-folusho-cream-100">
             <tr>
-              <th className="px-5 py-3 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">
-                Teacher
+              <th className="px-8 py-5 text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">
+                Tactical Unit
               </th>
-              <th className="px-5 py-3 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">
-                Action
+              <th className="px-8 py-5 text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">
+                Operational Action
               </th>
-              <th className="px-5 py-3 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">
-                Details
+              <th className="px-8 py-5 text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">
+                Data Payload
               </th>
-              <th className="px-5 py-3 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">
+              <th className="px-8 py-5 text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">
                 Time
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+          <tbody className="divide-y divide-folusho-cream-50 bg-white">
             {loading && activities.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-5 py-16 text-center">
-                  <RefreshCw className="w-6 h-6 border-blue-600 text-blue-600 animate-spin mx-auto mb-3" />
-                  <p className="text-sm text-gray-400">
-                    Loading activity log...
+                <td colSpan={4} className="px-8 py-24 text-center">
+                  <RefreshCw className="w-10 h-10 text-folusho-sage-500 animate-spin mx-auto mb-6" />
+                  <p className="text-xs font-black text-folusho-slate-400 uppercase tracking-widest">
+                    Retrieving Institutional Logs...
                   </p>
                 </td>
               </tr>
             ) : filteredActivities.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-5 py-16 text-center">
-                  <Eye className="w-10 h-10 text-gray-200 dark:text-gray-700 mx-auto mb-3" />
-                  <p className="text-sm font-bold text-gray-400">
-                    No activity found
+                <td colSpan={4} className="px-8 py-24 text-center">
+                  <div className="w-20 h-20 bg-folusho-cream-50 rounded-[2.5rem] flex items-center justify-center mx-auto mb-6 border border-folusho-cream-100 shadow-inner">
+                    <Eye className="w-10 h-10 text-folusho-slate-200" />
+                  </div>
+                  <p className="text-sm font-black text-folusho-slate-900 uppercase tracking-tight">
+                    Logs Empty
                   </p>
-                  <p className="text-xs text-gray-400 mt-1">
-                    Teacher actions will appear here as they happen.
+                  <p className="text-[10px] font-bold text-folusho-slate-400 mt-2 uppercase tracking-widest">
+                    Operational silence detected in current filter.
                   </p>
                 </td>
               </tr>
@@ -375,45 +374,45 @@ export default function TeacherActivityLog() {
                 return (
                   <tr
                     key={activity._id}
-                    className="hover:bg-blue-50/30 dark:hover:bg-blue-950/20 transition-colors group"
+                    className="hover:bg-folusho-sage-50/20 transition-all group"
                   >
-                    <td className="px-5 py-4 whitespace-nowrap">
-                      <div className="flex items-center gap-3">
+                    <td className="px-8 py-6 whitespace-nowrap">
+                      <div className="flex items-center gap-4">
                         <div className="relative">
-                          <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/40 rounded-full flex items-center justify-center text-blue-700 dark:text-blue-300 font-black text-sm">
+                          <div className="w-12 h-12 bg-folusho-sage-50 border border-folusho-sage-100 rounded-2xl flex items-center justify-center text-folusho-sage-600 font-black text-base shadow-sm">
                             {activity.userName.charAt(0).toUpperCase()}
                           </div>
                           <span
-                            className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 ${dotColor} rounded-full border-2 border-white dark:border-gray-900`}
+                            className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 ${dotColor} rounded-full border-[3px] border-white shadow-sm`}
                           />
                         </div>
                         <div>
-                          <p className="text-sm font-bold text-gray-900 dark:text-white leading-none">
+                          <p className="text-base font-black text-folusho-slate-900 leading-none">
                             {activity.userName}
                           </p>
-                          <p className="text-[10px] text-gray-400 mt-0.5 uppercase tracking-wide">
+                          <p className="text-[10px] font-black text-folusho-slate-400 mt-2 uppercase tracking-widest">
                             {activity.role}
                           </p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-5 py-4 whitespace-nowrap">
+                    <td className="px-8 py-6 whitespace-nowrap">
                       <span
-                        className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold ${badgeStyle}`}
+                        className={`inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border ${badgeStyle} shadow-sm`}
                       >
                         {actionLabel}
                       </span>
                     </td>
-                    <td className="px-5 py-4 max-w-xs">
-                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                    <td className="px-8 py-6 max-w-sm">
+                      <p className="text-xs font-bold text-folusho-slate-500 truncate leading-relaxed">
                         {detailSnippet || "—"}
                       </p>
                     </td>
-                    <td className="px-5 py-4 whitespace-nowrap">
-                      <p className="text-xs font-bold text-gray-700 dark:text-gray-300">
+                    <td className="px-8 py-6 whitespace-nowrap">
+                      <p className="text-xs font-black text-folusho-slate-900 uppercase tracking-tighter">
                         {new Date(activity.createdAt).toLocaleDateString()}
                       </p>
-                      <p className="text-[10px] text-gray-400 mt-0.5">
+                      <p className="text-[10px] font-black text-folusho-sage-500 mt-1 uppercase tracking-widest">
                         {new Date(activity.createdAt).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit",
@@ -429,12 +428,11 @@ export default function TeacherActivityLog() {
       </div>
 
       {activities.length > 0 && (
-        <div className="px-5 py-3 bg-gray-50 dark:bg-gray-800/40 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
-          <p className="text-[10px] text-gray-400">
-            Showing {filteredActivities.length} of {activities.length}{" "}
-            activities
+        <div className="px-8 py-5 bg-folusho-cream-50/50 border-t border-folusho-cream-100 flex items-center justify-between">
+          <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">
+            Displaying {filteredActivities.length} of {activities.length}{" "}
+            Operational Records
           </p>
-
         </div>
       )}
     </div>

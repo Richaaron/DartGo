@@ -52,7 +52,7 @@ const FloatingAcademicBackground: React.FC = () => {
             delay,
             ease: "linear"
           }}
-          className="absolute pointer-events-none text-royal-purple-500/20 dark:text-royal-purple-400/10"
+          className="absolute pointer-events-none text-folusho-sage-400/20"
           style={{
             left: `${left}%`,
             top: `${top}%`,

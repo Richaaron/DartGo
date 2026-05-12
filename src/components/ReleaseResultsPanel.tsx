@@ -108,205 +108,229 @@ export default function ReleaseResultsPanel({ students, results, onRefresh }: Pr
   const totalStudents = studentReleaseStatus.length
 
   return (
-    <div className="space-y-6 animate-fadeInUp">
+    <div className="space-y-10 relative overflow-hidden">
+      {/* Decorative Orbs */}
+      <div className="absolute -top-24 -right-24 w-64 h-64 bg-folusho-sage-100/30 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-folusho-coral-100/30 rounded-full blur-[100px] pointer-events-none" />
+
       {/* Header & Progress Bar */}
-      <div className="professional-card p-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
-          <div>
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <Unlock className="w-5 h-5 text-yellow-400" />
-              Release Results to Parents
-            </h2>
-            <p className="text-sm text-white/60 mt-1">
-              Select students below, then click "Release" to make results visible to parents.
-            </p>
+      <div className="folusho-card !p-12 relative z-10">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-10">
+          <div className="flex items-center gap-6">
+            <div className="p-4 bg-folusho-coral-100/50 rounded-2xl text-folusho-coral-500 border border-folusho-coral-200 shadow-sm">
+              <Unlock size={28} />
+            </div>
+            <div>
+              <h2 className="text-3xl font-black uppercase tracking-tighter text-folusho-slate-900 leading-none">
+                Governance <br /> <span className="text-folusho-coral-500">Release</span>
+              </h2>
+              <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.4em] mt-2">
+                External Publication Protocol
+              </p>
+            </div>
           </div>
 
           {/* Term & Year Filters */}
-          <div className="flex gap-3 flex-wrap">
-            <div className="relative">
+          <div className="flex gap-4 flex-wrap">
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">Cycle Phase</label>
               <select
                 value={selectedTerm}
                 onChange={e => { setSelectedTerm(e.target.value); setSelectedIds(new Set()) }}
-                className="input-field pr-8 pl-4 py-2 text-sm min-w-[130px]"
+                className="input-folusho !py-4 !px-6 text-xs min-w-[150px]"
               >
-                {TERMS.map(t => <option key={t} value={t}>{t} Term</option>)}
+                {TERMS.map(t => <option key={t} value={t}>{t} Phase</option>)}
               </select>
-              <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 pointer-events-none" />
             </div>
-            <div className="relative">
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">Session Vector</label>
               <select
                 value={selectedYear}
                 onChange={e => { setSelectedYear(e.target.value); setSelectedIds(new Set()) }}
-                className="input-field pr-8 pl-4 py-2 text-sm min-w-[130px]"
+                className="input-folusho !py-4 !px-6 text-xs min-w-[150px]"
               >
                 {ACADEMIC_YEARS.map(y => <option key={y} value={y}>{y}</option>)}
               </select>
-              <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 pointer-events-none" />
             </div>
           </div>
         </div>
 
         {/* Progress summary */}
-        <div className="flex items-center gap-4">
-          <div className="flex-1 bg-white/10 rounded-full h-3 overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-700"
-              style={{ width: totalStudents > 0 ? `${(totalReleased / totalStudents) * 100}%` : '0%' }}
-            />
+        <div className="space-y-4">
+          <div className="flex justify-between items-end px-2">
+            <span className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Global Diffusion Progress</span>
+            <span className="text-xs font-black text-folusho-sage-600 uppercase tracking-tighter">
+              {totalReleased} / {totalStudents} Personnel Published
+            </span>
           </div>
-          <span className="text-sm font-semibold text-white/80 whitespace-nowrap">
-            {totalReleased} / {totalStudents} Released
-          </span>
+          <div className="bg-folusho-cream-100 rounded-full h-4 overflow-hidden border border-folusho-cream-200 shadow-inner">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: totalStudents > 0 ? `${(totalReleased / totalStudents) * 100}%` : '0%' }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+              className="h-full bg-gradient-to-r from-folusho-sage-400 to-folusho-sage-600 rounded-full shadow-lg relative"
+            >
+              <div className="absolute inset-0 bg-white/20 animate-pulse" />
+            </motion.div>
+          </div>
         </div>
       </div>
 
       {/* Feedback Message */}
-      {message && (
-        <div className={`flex items-center gap-3 p-4 rounded-xl border animate-fadeInDown ${
-          message.type === 'success'
-            ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
-            : 'bg-red-500/20 border-red-500/40 text-red-300'
-        }`}>
-          {message.type === 'success'
-            ? <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
-            : <AlertCircle className="w-5 h-5 flex-shrink-0" />}
-          <span className="text-sm font-medium">{message.text}</span>
-        </div>
-      )}
+      <AnimatePresence>
+        {message && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className={`flex items-center gap-4 p-6 rounded-[2rem] border relative z-10 shadow-sm ${
+              message.type === 'success'
+                ? 'bg-folusho-sage-50 border-folusho-sage-200 text-folusho-sage-700'
+                : 'bg-folusho-coral-50 border-folusho-coral-200 text-folusho-coral-700'
+            }`}
+          >
+            {message.type === 'success'
+              ? <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
+              : <AlertCircle className="w-5 h-5 flex-shrink-0" />}
+            <span className="text-[10px] font-black uppercase tracking-widest leading-relaxed">{message.text}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Action Bar */}
-      <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+      <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between relative z-10">
         {/* Search */}
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+        <div className="relative w-full max-w-md group">
+          <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-slate-400 group-focus-within:text-folusho-sage-500 transition-colors" />
           <input
             type="text"
-            placeholder="Search by name or class..."
+            placeholder="Scan Personnel Registry..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-            className="input-field pl-10 py-2 text-sm w-full"
+            className="input-folusho !pl-16 !py-4 text-xs"
           />
         </div>
 
         {/* Bulk Action Buttons */}
-        <div className="flex gap-3">
+        <div className="flex gap-4 w-full lg:w-auto">
           <button
             onClick={handleRelease}
             disabled={selectedIds.size === 0 || isReleasing}
-            className="btn-primary flex items-center gap-2 py-2 px-5 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+            className="btn-vibrant !py-4 flex-1 lg:flex-none shadow-folusho"
           >
             {isReleasing ? (
               <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
             ) : (
               <Unlock className="w-4 h-4" />
             )}
-            Release {selectedIds.size > 0 ? `(${selectedIds.size})` : ''}
+            Publish {selectedIds.size > 0 ? `(${selectedIds.size})` : ''}
           </button>
           <button
             onClick={handleUnrelease}
             disabled={selectedIds.size === 0 || isUnreleasing}
-            className="btn-secondary flex items-center gap-2 py-2 px-5 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+            className="btn-vibrant !bg-white !text-folusho-coral-500 border border-folusho-coral-200 !py-4 flex-1 lg:flex-none hover:bg-folusho-coral-50"
           >
             {isUnreleasing ? (
               <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
             ) : (
               <Lock className="w-4 h-4" />
             )}
-            Unrelease {selectedIds.size > 0 ? `(${selectedIds.size})` : ''}
+            Recall {selectedIds.size > 0 ? `(${selectedIds.size})` : ''}
           </button>
         </div>
       </div>
 
       {/* Student List */}
-      {filteredStudents.length === 0 ? (
-        <div className="professional-card p-12 text-center">
-          <Users className="w-12 h-12 text-white/20 mx-auto mb-3" />
-          <p className="text-white/40 text-sm">
-            No students with results found for <strong>{selectedTerm} Term {selectedYear}</strong>
-          </p>
-        </div>
-      ) : (
-        <div className="professional-card overflow-hidden">
-          {/* Table Header */}
-          <div className="flex items-center gap-4 px-5 py-3 border-b border-white/10 bg-white/5">
-            <input
-              type="checkbox"
-              checked={selectedIds.size === filteredStudents.length && filteredStudents.length > 0}
-              onChange={toggleAll}
-              className="w-4 h-4 rounded accent-yellow-400 cursor-pointer"
-              title="Select all"
-            />
-            <span className="text-xs font-semibold text-white/50 uppercase tracking-wider flex-1">Student</span>
-            <span className="text-xs font-semibold text-white/50 uppercase tracking-wider w-28 text-center hidden sm:block">Class</span>
-            <span className="text-xs font-semibold text-white/50 uppercase tracking-wider w-28 text-center hidden sm:block">Subjects</span>
-            <span className="text-xs font-semibold text-white/50 uppercase tracking-wider w-28 text-center">Status</span>
+      <div className="folusho-card !p-0 overflow-hidden relative z-10">
+        {filteredStudents.length === 0 ? (
+          <div className="p-24 text-center bg-folusho-cream-50/20">
+            <Users className="w-16 h-16 text-folusho-slate-200 mx-auto mb-6 opacity-50" />
+            <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.4em]">
+              No Personnel Intel for <span className="text-folusho-slate-900">{selectedTerm} Vector {selectedYear}</span>
+            </p>
           </div>
+        ) : (
+          <>
+            {/* Table Header */}
+            <div className="flex items-center gap-6 px-10 py-6 border-b border-folusho-cream-100 bg-folusho-cream-50/50">
+              <input
+                type="checkbox"
+                checked={selectedIds.size === filteredStudents.length && filteredStudents.length > 0}
+                onChange={toggleAll}
+                className="w-6 h-6 rounded-xl border-folusho-cream-300 text-folusho-sage-500 focus:ring-folusho-sage-400 cursor-pointer"
+                title="Select all"
+              />
+              <span className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em] flex-1">Personnel Detail</span>
+              <span className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em] w-32 text-center hidden sm:block">Cohort</span>
+              <span className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em] w-32 text-center hidden sm:block">Logics</span>
+              <span className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em] w-32 text-center">Status</span>
+            </div>
 
-          {/* Student Rows */}
-          <div className="divide-y divide-white/5">
-            {filteredStudents.map(({ student, totalSubjects, released, isFullyReleased, isPartiallyReleased }) => (
-              <div
-                key={student.id}
-                onClick={() => toggleSelect(student.id)}
-                className={`flex items-center gap-4 px-5 py-4 cursor-pointer transition-all duration-200 hover:bg-white/5 ${
-                  selectedIds.has(student.id) ? 'bg-yellow-500/10 border-l-2 border-yellow-400' : ''
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedIds.has(student.id)}
-                  onChange={() => toggleSelect(student.id)}
-                  onClick={e => e.stopPropagation()}
-                  className="w-4 h-4 rounded accent-yellow-400 cursor-pointer flex-shrink-0"
-                />
-                {/* Avatar */}
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-yellow-400/30 to-purple-500/30 flex items-center justify-center flex-shrink-0 border border-white/10">
-                  {student.image
-                    ? <img src={student.image} alt="" className="w-full h-full rounded-full object-cover" />
-                    : <span className="text-xs font-bold text-white/80">
-                        {student.firstName?.[0]}{student.lastName?.[0]}
+            {/* Student Rows */}
+            <div className="divide-y divide-folusho-cream-100">
+              {filteredStudents.map(({ student, totalSubjects, released, isFullyReleased, isPartiallyReleased }) => (
+                <div
+                  key={student.id}
+                  onClick={() => toggleSelect(student.id)}
+                  className={`group flex items-center gap-6 px-10 py-6 cursor-pointer transition-all duration-300 hover:bg-folusho-sage-50/30 ${
+                    selectedIds.has(student.id) ? 'bg-folusho-sage-50/50 shadow-inner' : ''
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.has(student.id)}
+                    onChange={() => toggleSelect(student.id)}
+                    onClick={e => e.stopPropagation()}
+                    className="w-6 h-6 rounded-xl border-folusho-cream-300 text-folusho-sage-500 focus:ring-folusho-sage-400 cursor-pointer flex-shrink-0"
+                  />
+                  {/* Avatar */}
+                  <div className="w-12 h-12 rounded-3xl bg-folusho-cream-100 flex items-center justify-center flex-shrink-0 border-2 border-white shadow-sm overflow-hidden group-hover:scale-110 transition-transform">
+                    {student.image
+                      ? <img src={student.image} alt="" className="w-full h-full object-cover" />
+                      : <span className="text-xs font-black text-folusho-slate-400">
+                          {student.firstName?.[0]}{student.lastName?.[0]}
+                        </span>
+                    }
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-black text-folusho-slate-900 leading-none group-hover:text-folusho-sage-600 transition-colors">
+                      {student.firstName} {student.lastName}
+                    </p>
+                    <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest mt-2">{student.registrationNumber}</p>
+                  </div>
+
+                  <span className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest w-32 text-center hidden sm:block">{student.class}</span>
+
+                  <span className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest w-32 text-center hidden sm:block">
+                    {released}/{totalSubjects} Logics
+                  </span>
+
+                  {/* Status Badge */}
+                  <div className="w-32 flex justify-center">
+                    {isFullyReleased ? (
+                      <span className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-folusho-sage-600 bg-folusho-sage-50 border border-folusho-sage-100 rounded-full px-4 py-2 shadow-sm">
+                        <CheckCircle2 size={12} />
+                        Published
                       </span>
-                  }
+                    ) : isPartiallyReleased ? (
+                      <span className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-folusho-coral-500 bg-folusho-coral-50 border border-folusho-coral-100 rounded-full px-4 py-2 shadow-sm">
+                        <Clock size={12} />
+                        Partial
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-folusho-slate-300 bg-folusho-cream-50 border border-folusho-cream-100 rounded-full px-4 py-2">
+                        <Lock size={12} />
+                        Registry
+                      </span>
+                    )}
+                  </div>
                 </div>
-
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-white truncate">
-                    {student.firstName} {student.lastName}
-                  </p>
-                  <p className="text-xs text-white/40">{student.registrationNumber}</p>
-                </div>
-
-                <span className="text-xs text-white/60 w-28 text-center hidden sm:block">{student.class}</span>
-
-                <span className="text-xs text-white/60 w-28 text-center hidden sm:block">
-                  {released}/{totalSubjects} subjects
-                </span>
-
-                {/* Status Badge */}
-                <div className="w-28 flex justify-center">
-                  {isFullyReleased ? (
-                    <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 rounded-full px-3 py-1">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                      Released
-                    </span>
-                  ) : isPartiallyReleased ? (
-                    <span className="flex items-center gap-1.5 text-xs font-semibold text-yellow-400 bg-yellow-500/15 border border-yellow-500/30 rounded-full px-3 py-1">
-                      <Clock className="w-3.5 h-3.5" />
-                      Partial
-                    </span>
-                  ) : (
-                    <span className="flex items-center gap-1.5 text-xs font-semibold text-white/50 bg-white/5 border border-white/10 rounded-full px-3 py-1">
-                      <Lock className="w-3.5 h-3.5" />
-                      Draft
-                    </span>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+              ))}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   )
 }

@@ -311,138 +311,151 @@ export default function StudentResultEntryView({
   const dirtyCount = bulkData.filter(r => r.isDirty || r.isNew).length
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-12 relative overflow-hidden">
+      {/* Decorative Orbs */}
+      <div className="absolute -top-24 -right-24 w-64 h-64 bg-folusho-sage-100/30 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-folusho-coral-100/30 rounded-full blur-[100px] pointer-events-none" />
+
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <button
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative z-10">
+        <motion.button
+          whileHover={{ x: -5 }}
           onClick={onBack}
-          className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold hover:underline"
+          className="flex items-center gap-3 text-folusho-sage-600 font-black uppercase tracking-widest text-[10px] hover:text-folusho-sage-700 transition-all"
         >
-          <ArrowLeft size={20} />
-          Back to Student List
-        </button>
+          <ArrowLeft size={16} />
+          Back to Personnel Registry
+        </motion.button>
         <div className="flex gap-4">
           <select
             value={selectedTerm}
             onChange={(e) => setSelectedTerm(e.target.value)}
-            className="input-field py-1 text-sm"
+            className="input-folusho !py-2 !px-4 text-[10px] min-w-[140px]"
           >
-            <option value="First">First Term</option>
-            <option value="Second">Second Term</option>
-            <option value="Third">Third Term</option>
+            <option value="First">First Phase</option>
+            <option value="Second">Second Phase</option>
+            <option value="Third">Third Phase</option>
           </select>
           <select
             value={selectedYear}
             onChange={(e) => setSelectedYear(e.target.value)}
-            className="input-field py-1 text-sm"
+            className="input-folusho !py-2 !px-4 text-[10px] min-w-[120px]"
           >
-            <option value={new Date().getFullYear().toString()}>{new Date().getFullYear()}</option>
-            <option value={(new Date().getFullYear() - 1).toString()}>{new Date().getFullYear() - 1}</option>
+            <option value={new Date().getFullYear().toString()}>{new Date().getFullYear()} Cycle</option>
+            <option value={(new Date().getFullYear() - 1).toString()}>{new Date().getFullYear() - 1} Cycle</option>
           </select>
         </div>
       </div>
 
       {/* Student Profile Info */}
-      <div className="card-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white border-none">
-        <div className="flex items-center gap-6">
-          <div className="w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-3xl font-black border-2 border-white/30 shadow-xl">
+      <div className="folusho-card !p-10 bg-gradient-to-br from-folusho-sage-500 to-folusho-sage-700 text-white border-none shadow-folusho-lg relative overflow-hidden">
+        <div className="flex flex-col md:flex-row items-center gap-10 relative z-10">
+          <div className="w-24 h-24 rounded-[2.5rem] bg-white/20 backdrop-blur-xl flex items-center justify-center text-4xl font-black border-2 border-white/30 shadow-2xl group-hover:scale-105 transition-transform">
             {student.firstName[0]}{student.lastName[0]}
           </div>
-          <div>
-            <h2 className="text-3xl font-black uppercase tracking-tight">{student.firstName} {student.lastName}</h2>
-            <div className="flex gap-4 mt-2 opacity-90 font-bold text-sm">
-              <span className="flex items-center gap-1"><User size={16} /> {student.registrationNumber}</span>
-              <span className="flex items-center gap-1"><BookOpen size={16} /> {student.class}</span>
+          <div className="text-center md:text-left">
+            <h2 className="text-4xl font-black uppercase tracking-tighter leading-none">{student.firstName} {student.lastName}</h2>
+            <div className="flex flex-wrap justify-center md:justify-start gap-6 mt-4">
+              <span className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] opacity-80"><User size={14} className="opacity-60" /> {student.registrationNumber}</span>
+              <span className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] opacity-80"><BookOpen size={14} className="opacity-60" /> {student.class}</span>
             </div>
           </div>
         </div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3" />
       </div>
 
       {/* Message */}
-      {message.text && (
-        <div className={`p-4 rounded-xl flex items-center gap-3 border-2 ${
-          message.type === 'success' 
-            ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 border-green-200 dark:border-green-800' 
-            : 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border-red-200 dark:border-red-800'
-        }`}>
-          <AlertCircle size={20} />
-          <p className="font-bold">{message.text}</p>
-        </div>
-      )}
+      <AnimatePresence>
+        {message.text && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className={`p-6 rounded-[2.5rem] flex items-center gap-4 border shadow-sm relative z-10 ${
+              message.type === 'success' 
+                ? 'bg-folusho-sage-50 text-folusho-sage-700 border-folusho-sage-200' 
+                : 'bg-folusho-coral-50 text-folusho-coral-700 border-folusho-coral-200'
+            }`}
+          >
+            <AlertCircle size={20} className="flex-shrink-0" />
+            <p className="text-[10px] font-black uppercase tracking-widest">{message.text}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Results Table */}
-      <div className="card-lg overflow-hidden p-0">
+      <div className="folusho-card !p-0 overflow-hidden relative z-10">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="bg-slate-50 dark:bg-brand-800/50 border-b border-slate-200 dark:border-indigo-500/30">
-                <th className="px-6 py-4 text-left text-xs font-black text-gray-500 dark:text-gray-300 uppercase tracking-widest">Subject</th>
-                <th className="px-6 py-4 text-center text-xs font-black text-gray-500 dark:text-gray-300 uppercase tracking-widest">1st CA (20)</th>
-                <th className="px-6 py-4 text-center text-xs font-black text-gray-500 dark:text-gray-300 uppercase tracking-widest">2nd CA (20)</th>
-                <th className="px-6 py-4 text-center text-xs font-black text-gray-500 dark:text-gray-300 uppercase tracking-widest">Exam (60)</th>
-                <th className="px-6 py-4 text-center text-xs font-black text-gray-500 dark:text-gray-300 uppercase tracking-widest">Total</th>
-                <th className="px-6 py-4 text-center text-xs font-black text-gray-500 dark:text-gray-300 uppercase tracking-widest">Grade</th>
+              <tr className="bg-folusho-cream-50/50 border-b border-folusho-cream-100">
+                <th className="px-10 py-6 text-left text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">Operational Unit</th>
+                <th className="px-6 py-6 text-center text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">Phase I (20)</th>
+                <th className="px-6 py-6 text-center text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">Phase II (20)</th>
+                <th className="px-6 py-6 text-center text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">Logic (60)</th>
+                <th className="px-6 py-6 text-center text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">Fulfillment</th>
+                <th className="px-10 py-6 text-center text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">Grade</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+            <tbody className="divide-y divide-folusho-cream-100">
               {bulkData.map((row) => {
                 const subject = subjects.find(s => s.id === row.subjectId)
                 const isTraitBased = subject?.topics?.assessment_type === 'TRAIT'
 
                 return (
-                  <tr key={row.subjectId} className={`hover:bg-indigo-50/50 dark:hover:bg-indigo-900/10 transition-colors ${row.isDirty ? 'bg-yellow-50/50 dark:bg-yellow-900/10' : ''}`}>
-                    <td className="px-6 py-4">
-                      <p className="font-black text-gray-900 dark:text-white uppercase tracking-tight">{row.subjectName}</p>
-                      <p className="text-[10px] text-indigo-500 font-bold uppercase tracking-widest">{row.subjectCode}</p>
+                  <tr key={row.subjectId} className={`group hover:bg-folusho-sage-50/30 transition-all duration-300 ${row.isDirty ? 'bg-folusho-coral-50/20' : ''}`}>
+                    <td className="px-10 py-6">
+                      <p className="text-sm font-black text-folusho-slate-900 uppercase tracking-tighter group-hover:text-folusho-sage-600 transition-colors">{row.subjectName}</p>
+                      <p className="text-[9px] text-folusho-slate-400 font-black uppercase tracking-[0.3em] mt-1.5">{row.subjectCode}</p>
                     </td>
                     {!isTraitBased ? (
                       <>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-6">
                           <input
                             type="number"
                             value={row.firstCA}
                             onChange={(e) => handleScoreChange(row.subjectId, 'firstCA', parseFloat(e.target.value) || 0)}
-                            className={`w-20 mx-auto block text-center font-bold input-field py-1 ${errors[`${row.subjectId}-ca1`] ? 'border-red-500' : ''}`}
+                            className={`w-20 mx-auto block text-center font-black input-folusho !py-2 !px-0 ${errors[`${row.subjectId}-ca1`] ? '!border-folusho-coral-500' : ''}`}
                           />
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-6">
                           <input
                             type="number"
                             value={row.secondCA}
                             onChange={(e) => handleScoreChange(row.subjectId, 'secondCA', parseFloat(e.target.value) || 0)}
-                            className={`w-20 mx-auto block text-center font-bold input-field py-1 ${errors[`${row.subjectId}-ca2`] ? 'border-red-500' : ''}`}
+                            className={`w-20 mx-auto block text-center font-black input-folusho !py-2 !px-0 ${errors[`${row.subjectId}-ca2`] ? '!border-folusho-coral-500' : ''}`}
                           />
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-6">
                           <input
                             type="number"
                             value={row.exam}
                             onChange={(e) => handleScoreChange(row.subjectId, 'exam', parseFloat(e.target.value) || 0)}
-                            className={`w-20 mx-auto block text-center font-bold input-field py-1 ${errors[`${row.subjectId}-exam`] ? 'border-red-500' : ''}`}
+                            className={`w-20 mx-auto block text-center font-black input-folusho !py-2 !px-0 ${errors[`${row.subjectId}-exam`] ? '!border-folusho-coral-500' : ''}`}
                           />
                         </td>
-                        <td className="px-6 py-4 text-center">
-                          <p className="text-lg font-black text-indigo-600 dark:text-indigo-400">{row.totalScore}</p>
-                          <p className="text-[10px] text-gray-400 font-bold">{row.percentage.toFixed(1)}%</p>
+                        <td className="px-6 py-6 text-center">
+                          <p className="text-lg font-black text-folusho-sage-600 leading-none">{row.totalScore}</p>
+                          <p className="text-[10px] text-folusho-slate-300 font-black uppercase tracking-widest mt-1.5">{row.percentage.toFixed(0)}%</p>
                         </td>
-                        <td className="px-6 py-4 text-center">
-                          <span className={`px-3 py-1 rounded-full text-xs font-black border-2 ${
+                        <td className="px-10 py-6 text-center">
+                          <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border-2 ${
                             ['A', 'B', 'C'].includes(row.grade) 
-                              ? 'bg-emerald-50 text-emerald-600 border-emerald-100 dark:bg-emerald-900/20 dark:border-emerald-800' 
-                              : 'bg-orange-50 text-orange-600 border-orange-100 dark:bg-orange-900/20 dark:border-orange-800'
+                              ? 'bg-folusho-sage-50 text-folusho-sage-600 border-folusho-sage-100' 
+                              : 'bg-folusho-coral-50 text-folusho-coral-600 border-folusho-coral-100'
                           }`}>
                             {row.grade}
                           </span>
                         </td>
                       </>
                     ) : (
-                      <td colSpan={5} className="px-6 py-4">
+                      <td colSpan={5} className="px-10 py-6">
                         <select
                           value={row.remarks || ''}
                           onChange={(e) => handleScoreChange(row.subjectId, 'remarks', e.target.value)}
-                          className="w-full max-w-xs mx-auto block px-3 py-1.5 font-bold rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-brand-700 text-sm"
+                          className="w-full max-w-xs mx-auto block input-folusho !py-3"
                         >
-                          <option value="">Select Trait Assessment...</option>
+                          <option value="">Assess Trait Fulfillment...</option>
                           {TRAIT_OPTIONS.map(opt => (
                             <option key={opt} value={opt}>{opt}</option>
                           ))}
@@ -454,9 +467,9 @@ export default function StudentResultEntryView({
               })}
               {bulkData.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
-                    <TrendingUp className="w-12 h-12 mx-auto mb-4 opacity-20" />
-                    <p className="font-bold">No registered subjects found for this student in the selected term.</p>
+                  <td colSpan={6} className="px-10 py-24 text-center">
+                    <TrendingUp className="w-16 h-16 text-folusho-slate-200 mx-auto mb-6 opacity-30" />
+                    <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.4em]">No Registered Logic Found for Current Cycle</p>
                   </td>
                 </tr>
               )}
@@ -466,21 +479,29 @@ export default function StudentResultEntryView({
       </div>
 
       {/* Footer Actions */}
-      <div className="flex justify-end gap-4 sticky bottom-8">
-        <button
+      <div className="flex justify-end gap-6 relative z-20">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={onBack}
-          className="px-8 py-3 bg-white dark:bg-brand-800 text-gray-700 dark:text-gray-300 rounded-2xl font-black uppercase tracking-widest text-sm border-2 border-slate-200 dark:border-brand-700 hover:bg-slate-50 transition-all shadow-xl"
+          className="px-10 py-4 bg-white text-folusho-slate-600 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.4em] border-2 border-folusho-cream-200 hover:bg-folusho-cream-50 transition-all shadow-sm"
         >
-          Cancel
-        </button>
-        <button
+          Abort
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={handleSaveAll}
           disabled={isSaving || dirtyCount === 0}
-          className="flex items-center gap-2 px-10 py-3 bg-emerald-600 text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-xl shadow-emerald-600/20"
+          className="btn-vibrant !px-12 !py-4 shadow-folusho-lg"
         >
-          <Save size={20} />
-          {isSaving ? 'Saving...' : `Save Changes (${dirtyCount})`}
-        </button>
+          {isSaving ? (
+            <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+          ) : (
+            <Save size={18} />
+          )}
+          <span>Commit {dirtyCount > 0 ? `(${dirtyCount})` : ''}</span>
+        </motion.button>
       </div>
     </div>
   )

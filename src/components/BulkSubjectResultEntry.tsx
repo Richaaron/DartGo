@@ -390,28 +390,37 @@ export default function BulkSubjectResultEntry({
   const dirtyCount = useMemo(() => bulkData.filter(r => r.isDirty || r.isNew).length, [bulkData])
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-12 relative overflow-hidden">
+      {/* Decorative Orbs */}
+      <div className="absolute -top-24 -right-24 w-64 h-64 bg-folusho-sage-100/30 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-folusho-coral-100/30 rounded-full blur-[100px] pointer-events-none" />
+
       {/* Header */}
-      <div className="flex items-center gap-3 text-school-blue dark:text-indigo-400 font-black uppercase tracking-widest">
-        <BookOpen size={20} />
-        <h3 className="text-lg">Bulk Result Entry</h3>
+      <div className="relative z-10 flex items-center gap-5">
+        <div className="p-4 bg-folusho-sage-100/50 rounded-2xl text-folusho-sage-600 border border-folusho-sage-200 shadow-sm">
+          <BookOpen size={24} />
+        </div>
+        <div>
+          <h3 className="text-3xl font-black uppercase tracking-tighter text-folusho-slate-900 leading-none">Bulk Entry <br /> <span className="text-folusho-sage-500">Matrix</span></h3>
+          <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.4em] mt-1">Institutional Academic Ledger</p>
+        </div>
       </div>
 
       {/* Selection Controls */}
-      <div className="card-lg space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-          <div>
-            <label htmlFor="bulk-subject-select" className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
-              Subject *
+      <div className="folusho-card !p-12 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+          <div className="space-y-3">
+            <label htmlFor="bulk-subject-select" className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
+              Subject Matrix *
             </label>
             <select
               id="bulk-subject-select"
               value={selectedSubjectId}
               onChange={(e) => setSelectedSubjectId(e.target.value)}
-              className="input-field"
+              className="input-folusho"
               aria-label="Select a subject"
             >
-              <option value="">Select a subject...</option>
+              <option value="">Select Protocol...</option>
               {availableSubjects.map((subject) => (
                 <option key={subject.id} value={subject.id}>
                   {subject.name} ({subject.code})
@@ -419,18 +428,18 @@ export default function BulkSubjectResultEntry({
               ))}
             </select>
           </div>
-          <div>
-            <label htmlFor="bulk-class-select" className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
-              Class *
+          <div className="space-y-3">
+            <label htmlFor="bulk-class-select" className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
+              Target Class *
             </label>
             <select
               id="bulk-class-select"
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
-              className="input-field"
+              className="input-folusho"
               aria-label="Select class"
             >
-              <option value="">Select a class...</option>
+              <option value="">Select Cohort...</option>
               {availableClasses.map((className) => (
                 <option key={className} value={className}>
                   {className}
@@ -438,56 +447,56 @@ export default function BulkSubjectResultEntry({
               ))}
             </select>
           </div>
-          <div>
-            <label htmlFor="bulk-arm-select" className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
-              Department/Arm
+          <div className="space-y-3">
+            <label htmlFor="bulk-arm-select" className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
+              Strategic Dept
             </label>
             <select
               id="bulk-arm-select"
               value={selectedArm}
               onChange={(e) => setSelectedArm(e.target.value)}
               disabled={!(selectedClass && (selectedClass.toUpperCase().startsWith('SSS') || selectedClass.toUpperCase().startsWith('SS')))}
-              className="input-field disabled:opacity-50"
+              className="input-folusho disabled:opacity-40 disabled:bg-folusho-cream-50"
               aria-label="Select arm"
             >
-              <option value="All">All Departments</option>
-              <option value="Science">Science</option>
-              <option value="Art">Art</option>
-              <option value="Commercial">Commerce</option>
+              <option value="All">All Sectors</option>
+              <option value="Science">Science Matrix</option>
+              <option value="Art">Creative Arts</option>
+              <option value="Commercial">Commercial Logistics</option>
             </select>
           </div>
-          <div>
-            <label htmlFor="bulk-term-select" className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
-              Term
+          <div className="space-y-3">
+            <label htmlFor="bulk-term-select" className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
+              Academic Term
             </label>
             <select
               id="bulk-term-select"
               value={selectedTerm}
               onChange={(e) => setSelectedTerm(e.target.value)}
-              className="input-field"
+              className="input-folusho"
               aria-label="Select term"
             >
-              <option value="First">First Term</option>
-              <option value="Second">Second Term</option>
-              <option value="Third">Third Term</option>
+              <option value="First">First Vector</option>
+              <option value="Second">Second Vector</option>
+              <option value="Third">Third Vector</option>
             </select>
           </div>
-          <div>
-            <label htmlFor="bulk-year-select" className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">
-              Academic Year
+          <div className="space-y-3">
+            <label htmlFor="bulk-year-select" className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
+              Session Cycle
             </label>
             <select
               id="bulk-year-select"
               value={selectedYear}
               onChange={(e) => setSelectedYear(e.target.value)}
-              className="input-field"
+              className="input-folusho"
               aria-label="Select academic year"
             >
               <option value={new Date().getFullYear().toString()}>
-                {new Date().getFullYear()}
+                {new Date().getFullYear()} Cycle
               </option>
               <option value={(new Date().getFullYear() - 1).toString()}>
-                {new Date().getFullYear() - 1}
+                {new Date().getFullYear() - 1} Cycle
               </option>
             </select>
           </div>
@@ -496,31 +505,35 @@ export default function BulkSubjectResultEntry({
 
       {/* Message */}
       {message.text && (
-        <div className={`p-4 rounded-lg flex items-center gap-3 ${
-          message.type === 'success' 
-            ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800' 
-            : message.type === 'error'
-            ? 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800'
-            : 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800'
-        }`}>
+        <motion.div 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`p-6 rounded-[2rem] flex items-center gap-4 relative z-10 border ${
+            message.type === 'success' 
+              ? 'bg-folusho-sage-50 text-folusho-sage-700 border-folusho-sage-200' 
+              : message.type === 'error'
+              ? 'bg-folusho-coral-50 text-folusho-coral-700 border-folusho-coral-200'
+              : 'bg-folusho-cream-50 text-folusho-slate-700 border-folusho-cream-200'
+          }`}
+        >
           <AlertCircle size={20} />
-          <p className="font-medium">{message.text}</p>
-        </div>
+          <p className="text-xs font-black uppercase tracking-widest">{message.text}</p>
+        </motion.div>
       )}
 
       {/* Bulk Entry Table */}
       {selectedSubjectId && selectedSubject && (
-        <div className="card-lg space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-              <Users size={18} />
-              <span className="font-bold">
-                {bulkData.length} {bulkData.length === 1 ? 'student' : 'students'} registered
+        <div className="folusho-card !p-0 overflow-hidden relative z-10">
+          <div className="flex items-center justify-between p-10 bg-folusho-cream-50/50 border-b border-folusho-cream-100">
+            <div className="flex items-center gap-4 text-folusho-slate-900">
+              <Users size={20} className="text-folusho-sage-500" />
+              <span className="text-sm font-black uppercase tracking-tighter">
+                {bulkData.length} {bulkData.length === 1 ? 'Intel Unit' : 'Intel Units'} Identified
               </span>
             </div>
             {dirtyCount > 0 && (
-              <span className="px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded-full text-xs font-bold">
-                {dirtyCount} unsaved changes
+              <span className="px-5 py-2 bg-folusho-coral-100/50 text-folusho-coral-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-folusho-coral-200 shadow-sm">
+                {dirtyCount} Pending Synchronizations
               </span>
             )}
           </div>
@@ -529,67 +542,55 @@ export default function BulkSubjectResultEntry({
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-200 dark:border-indigo-500/30 bg-gray-50 dark:bg-brand-800/50">
-                    <th className="px-4 py-3 text-left text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
-                      Student Name
+                  <tr className="bg-folusho-cream-50/30">
+                    <th className="px-8 py-5 text-left text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">
+                      Personnel ID
                     </th>
                     {!isTraitBased ? (
                       <>
-                        <th className="px-4 py-3 text-left text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest hidden-mobile">
-                          Reg. No.
-                        </th>
-                        <th className="px-4 py-3 text-left text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest hidden-mobile">
-                          Class
-                        </th>
-                        <th className="px-4 py-3 text-center text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
+                        <th className="px-6 py-5 text-center text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">
                           1st CA (20)
                         </th>
-                        <th className="px-4 py-3 text-center text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
+                        <th className="px-6 py-5 text-center text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">
                           2nd CA (20)
                         </th>
-                        <th className="px-4 py-3 text-center text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
+                        <th className="px-6 py-5 text-center text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">
                           Exam (60)
                         </th>
-                        <th className="px-4 py-3 text-center text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
+                        <th className="px-6 py-5 text-center text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">
                           Total
                         </th>
-                        <th className="px-4 py-3 text-center text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
+                        <th className="px-6 py-5 text-center text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">
                           %
                         </th>
-                        <th className="px-4 py-3 text-center text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
+                        <th className="px-6 py-5 text-center text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">
                           Grade
                         </th>
                       </>
                     ) : (
-                      <th className="px-4 py-3 text-left text-xs font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest">
-                        Trait Assessment
+                      <th className="px-8 py-5 text-left text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">
+                        Trait Assessment Matrix
                       </th>
                     )}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+                <tbody className="divide-y divide-folusho-cream-100">
                   {bulkData.map((row) => (
                     <tr
                       key={row.studentId}
-                      className={`hover:bg-indigo-50 dark:hover:bg-indigo-900/10 transition-colors ${
-                        row.isDirty ? 'bg-yellow-50 dark:bg-yellow-900/10' : ''
+                      className={`group hover:bg-folusho-cream-50/50 transition-all duration-300 ${
+                        row.isDirty ? 'bg-folusho-yellow-50/30' : ''
                       }`}
                     >
-                      <td className="px-4 py-3 font-bold text-gray-900 dark:text-white">
+                      <td className="px-8 py-5">
                         <div>
-                          <p>{row.studentName}</p>
-                          <p className="text-[10px] text-gray-400 font-normal">{row.registrationNumber}</p>
+                          <p className="text-sm font-black text-folusho-slate-900 leading-none group-hover:text-folusho-sage-600 transition-colors">{row.studentName}</p>
+                          <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest mt-1.5">{row.registrationNumber}</p>
                         </div>
                       </td>
                       {!isTraitBased ? (
                         <>
-                          <td className="px-4 py-3 text-sm font-bold text-gray-600 dark:text-gray-400 hidden-mobile">
-                            {row.registrationNumber}
-                          </td>
-                          <td className="px-4 py-3 text-sm font-bold text-gray-600 dark:text-gray-400 hidden-mobile">
-                            {row.class}
-                          </td>
-                          <td className="px-4 py-3">
+                          <td className="px-6 py-5 text-center">
                             <input
                               type="number"
                               value={row.firstCA}
@@ -597,18 +598,14 @@ export default function BulkSubjectResultEntry({
                               min="0"
                               max="20"
                               step="0.01"
-                              aria-label={`1st CA for ${row.studentName}`}
-                              className={`w-20 px-2 py-1 text-center font-bold rounded border text-sm ${
+                              className={`w-24 px-4 py-2 text-center font-black rounded-2xl border text-sm transition-all focus:ring-4 ${
                                 errors[`${row.studentId}-ca1`]
-                                  ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
-                                  : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-brand-700'
+                                  ? 'border-folusho-coral-300 bg-folusho-coral-50 text-folusho-coral-700'
+                                  : 'border-folusho-cream-200 bg-white focus:border-folusho-sage-400 focus:ring-folusho-sage-100'
                               }`}
                             />
-                            {errors[`${row.studentId}-ca1`] && (
-                              <p className="text-red-500 text-xs mt-0.5">{errors[`${row.studentId}-ca1`]}</p>
-                            )}
                           </td>
-                          <td className="px-4 py-3">
+                          <td className="px-6 py-5 text-center">
                             <input
                               type="number"
                               value={row.secondCA}
@@ -616,18 +613,14 @@ export default function BulkSubjectResultEntry({
                               min="0"
                               max="20"
                               step="0.01"
-                              aria-label={`2nd CA for ${row.studentName}`}
-                              className={`w-20 px-2 py-1 text-center font-bold rounded border text-sm ${
+                              className={`w-24 px-4 py-2 text-center font-black rounded-2xl border text-sm transition-all focus:ring-4 ${
                                 errors[`${row.studentId}-ca2`]
-                                  ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
-                                  : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-brand-700'
+                                  ? 'border-folusho-coral-300 bg-folusho-coral-50 text-folusho-coral-700'
+                                  : 'border-folusho-cream-200 bg-white focus:border-folusho-sage-400 focus:ring-folusho-sage-100'
                               }`}
                             />
-                            {errors[`${row.studentId}-ca2`] && (
-                              <p className="text-red-500 text-xs mt-0.5">{errors[`${row.studentId}-ca2`]}</p>
-                            )}
                           </td>
-                          <td className="px-4 py-3">
+                          <td className="px-6 py-5 text-center">
                             <input
                               type="number"
                               value={row.exam}
@@ -635,31 +628,27 @@ export default function BulkSubjectResultEntry({
                               min="0"
                               max="60"
                               step="0.01"
-                              aria-label={`Exam for ${row.studentName}`}
-                              className={`w-20 px-2 py-1 text-center font-bold rounded border text-sm ${
+                              className={`w-24 px-4 py-2 text-center font-black rounded-2xl border text-sm transition-all focus:ring-4 ${
                                 errors[`${row.studentId}-exam`]
-                                  ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
-                                  : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-brand-700'
+                                  ? 'border-folusho-coral-300 bg-folusho-coral-50 text-folusho-coral-700'
+                                  : 'border-folusho-cream-200 bg-white focus:border-folusho-sage-400 focus:ring-folusho-sage-100'
                               }`}
                             />
-                            {errors[`${row.studentId}-exam`] && (
-                              <p className="text-red-500 text-xs mt-0.5">{errors[`${row.studentId}-exam`]}</p>
-                            )}
                           </td>
-                          <td className="px-4 py-3 text-center font-bold text-indigo-600 dark:text-indigo-400">
-                            {row.totalScore}
+                          <td className="px-6 py-5 text-center">
+                            <span className="text-sm font-black text-folusho-sage-600">{row.totalScore}</span>
                           </td>
-                          <td className="px-4 py-3 text-center font-bold">
-                            {row.percentage.toFixed(1)}%
+                          <td className="px-6 py-5 text-center">
+                            <span className="text-xs font-black text-folusho-slate-400 uppercase tracking-widest">{row.percentage.toFixed(1)}%</span>
                           </td>
-                          <td className="px-4 py-3 text-center font-black">
+                          <td className="px-6 py-5 text-center">
                             <span
-                              className={`px-2 py-1 rounded text-xs font-black ${
+                              className={`px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm border ${
                                 ['A', 'B', 'C'].includes(row.grade)
-                                  ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
+                                  ? 'bg-folusho-sage-50 border-folusho-sage-100 text-folusho-sage-600'
                                   : ['D', 'E'].includes(row.grade)
-                                  ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400'
-                                  : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+                                  ? 'bg-folusho-yellow-50 border-folusho-yellow-100 text-folusho-yellow-700'
+                                  : 'bg-folusho-coral-50 border-folusho-coral-100 text-folusho-coral-600'
                               }`}
                             >
                               {row.grade}
@@ -667,15 +656,15 @@ export default function BulkSubjectResultEntry({
                           </td>
                         </>
                       ) : (
-                        <td className="px-4 py-3">
+                        <td className="px-8 py-5">
                           <select
                             value={row.remarks || ''}
                             onChange={(e) => handleScoreChange(row.studentId, 'remarks', e.target.value)}
-                            className="w-full px-3 py-1.5 font-bold rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-brand-700 text-sm"
+                            className="w-full max-w-xs px-6 py-3 font-black rounded-2xl border border-folusho-cream-200 bg-white text-[10px] uppercase tracking-widest focus:ring-4 focus:ring-folusho-sage-100 focus:border-folusho-sage-400 outline-none transition-all"
                           >
-                            <option value="">Select Trait...</option>
+                            <option value="">Choose Trait...</option>
                             {TRAIT_OPTIONS.map(opt => (
-                              <option key={opt} value={opt}>{opt}</option>
+                              <option key={opt} value={opt}>{opt} Efficiency</option>
                             ))}
                           </select>
                         </td>
@@ -686,9 +675,11 @@ export default function BulkSubjectResultEntry({
               </table>
             </div>
           ) : (
-            <div className="text-center py-12 text-gray-500 dark:text-gray-400">
-              <Users className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p className="font-medium">No students registered for this subject yet</p>
+            <div className="text-center py-24 bg-folusho-cream-50/20">
+              <div className="p-8 bg-folusho-cream-50 rounded-full w-fit mx-auto mb-8 border border-folusho-cream-100 shadow-inner">
+                <Users className="w-12 h-12 text-folusho-slate-300" />
+              </div>
+              <p className="text-sm font-black text-folusho-slate-400 uppercase tracking-[0.4em]">No Personnel Identities Found</p>
             </div>
           )}
         </div>
@@ -696,14 +687,14 @@ export default function BulkSubjectResultEntry({
 
       {/* Save Button */}
       {selectedSubjectId && bulkData.length > 0 && (
-        <div className="flex gap-4">
+        <div className="flex gap-6 relative z-10">
           <button
             onClick={handleSaveAll}
             disabled={isSaving || dirtyCount === 0}
-            className="flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-lg font-bold hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg"
+            className="btn-vibrant disabled:opacity-40 disabled:scale-100 disabled:bg-folusho-slate-300 !px-12 !py-6"
           >
             <Save size={20} />
-            Save All Changes ({dirtyCount})
+            Sync All Logic ({dirtyCount})
           </button>
         </div>
       )}

@@ -149,12 +149,15 @@ function AppContent() {
 
   return (
     <div
-      className={`flex flex-col md:flex-row h-screen bg-nebula-slate-950 text-white selection:bg-nebula-indigo-500/30 transition-colors duration-200 ${isDarkMode ? "dark" : ""}`}
+      className={`flex flex-col md:flex-row h-screen bg-folusho-cream-100 text-folusho-slate-900 selection:bg-folusho-sage-500/30 transition-colors duration-200 ${isDarkMode ? "dark" : ""}`}
     >
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(at_0%_0%,rgba(168,198,159,0.1)_0,transparent_50%),radial-gradient(at_100%_100%,rgba(255,138,122,0.05)_0,transparent_50%)]" />
+      </div>
       <FloatingAcademicBackground />
       {/* Mobile Header */}
       {isMobile && (
-        <div className="bg-nebula-slate-950/80 backdrop-blur-xl border-b border-white/5 text-white px-6 py-4 flex items-center justify-between z-40 shadow-2xl">
+        <div className="bg-folusho-slate-900/80 backdrop-blur-xl border-b border-white/5 text-white px-6 py-4 flex items-center justify-between z-40 shadow-2xl">
           <button
             onClick={() => setShowMobileMenu(!showMobileMenu)}
             className="p-2.5 hover:bg-white/5 rounded-2xl transition-all active:scale-90"
@@ -198,8 +201,8 @@ function AppContent() {
         className={`${
           isMobile
             ? "fixed left-4 top-[84px] bottom-4 w-[calc(100%-32px)] max-w-72 z-30"
-            : `${isSidebarOpen ? "w-72" : "w-[88px]"} relative m-4 mr-0`
-        } bg-nebula-slate-900/60 backdrop-blur-3xl border border-white/5 rounded-[2.5rem] text-white transition-all duration-300 flex flex-col shadow-nebula overflow-y-auto md:overflow-visible`}
+            : `${isSidebarOpen ? "w-72" : "w-[92px]"} relative m-6 mr-0`
+        } bg-white border border-folusho-cream-300 rounded-[3rem] text-folusho-slate-900 transition-all duration-300 flex flex-col shadow-folusho overflow-y-auto md:overflow-visible`}
       >
         {/* Desktop Logo - Hidden on Mobile */}
         {!isMobile && (
@@ -223,7 +226,7 @@ function AppContent() {
                       ? config.schoolName.split(" ")[0] 
                       : (config?.schoolName || "FOLUSHO")}
                   </h1>
-                  <p className="text-[10px] text-nebula-indigo-400 font-black uppercase tracking-[0.2em] truncate mt-1">
+                  <p className="text-[10px] text-folusho-sage-400 font-black uppercase tracking-[0.2em] truncate mt-1">
                     Excellence Defined
                   </p>
                 </div>
@@ -231,9 +234,9 @@ function AppContent() {
             )}
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className={`p-2 hover:bg-white/5 rounded-xl transition-colors text-nebula-slate-400 hover:text-white ${!isSidebarOpen ? "mx-auto" : ""}`}
+              className={`p-3 hover:bg-folusho-cream-100 rounded-2xl transition-colors text-folusho-slate-400 hover:text-folusho-sage-600 ${!isSidebarOpen ? "mx-auto" : ""}`}
             >
-              {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
+              {isSidebarOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         )}
@@ -243,17 +246,17 @@ function AppContent() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="px-6 py-6 border-b border-white/5 bg-white/[0.02]"
+            className="px-8 py-8 border-b border-folusho-cream-200 bg-folusho-yellow-200/30"
           >
-            <p className="text-[10px] uppercase font-black tracking-[0.2em] text-nebula-indigo-400/60">
+            <p className="text-[10px] uppercase font-black tracking-[0.25em] text-folusho-sage-600/80">
               Identity Verified
             </p>
-            <p className="font-black text-white truncate text-base mt-1 tracking-tight">
+            <p className="font-black text-folusho-slate-900 truncate text-lg mt-1 tracking-tight">
               {userName}
             </p>
             <div className="flex items-center gap-2 mt-2">
-              <div className="w-2 h-2 rounded-full bg-nebula-teal-500 shadow-[0_0_10px_rgba(20,184,166,0.5)]"></div>
-              <p className="text-xs font-bold text-nebula-slate-400">{userRole}</p>
+              <div className="w-2.5 h-2.5 rounded-full bg-folusho-sage-400 shadow-sm"></div>
+              <p className="text-xs font-bold text-folusho-slate-400">{userRole}</p>
             </div>
           </motion.div>
         )}
@@ -388,7 +391,7 @@ function AppContent() {
           {/* Dark Mode Toggle */}
           <button
             onClick={() => setIsDarkMode(!isDarkMode)}
-            className="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-nebula-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200"
+            className="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-folusho-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200"
           >
             {isDarkMode ? (
               <Sun size={20} />
@@ -406,7 +409,7 @@ function AppContent() {
           <div className="relative">
             <button
               onClick={() => setShowLogout(!showLogout)}
-              className="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-nebula-slate-400 hover:text-nebula-pink-400 hover:bg-nebula-pink-500/10 transition-all duration-200"
+              className="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-folusho-slate-400 hover:text-folusho-coral-400 hover:bg-folusho-coral-500/10 transition-all duration-200"
             >
               <LogOut size={20} />
               {(isMobile || isSidebarOpen) && (
@@ -419,11 +422,11 @@ function AppContent() {
                   initial={{ opacity: 0, scale: 0.95, y: 10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                  className="absolute bottom-full mb-3 left-0 right-0 bg-nebula-slate-900 border border-white/10 rounded-3xl shadow-nebula-lg z-50 p-3"
+                  className="absolute bottom-full mb-3 left-0 right-0 bg-folusho-slate-900 border border-white/10 rounded-3xl shadow-folusho-lg z-50 p-3"
                 >
                   <button
                     onClick={handleLogout}
-                    className="w-full text-xs font-black uppercase tracking-widest text-white bg-nebula-pink-600 hover:bg-nebula-pink-700 px-4 py-3.5 rounded-2xl transition-all shadow-lg active:scale-95"
+                    className="w-full text-xs font-black uppercase tracking-widest text-white bg-folusho-coral-500 hover:bg-folusho-coral-600 px-4 py-3.5 rounded-2xl transition-all shadow-lg active:scale-95"
                   >
                     Confirm Exit
                   </button>
@@ -432,17 +435,17 @@ function AppContent() {
             </AnimatePresence>
           </div>
           {(isMobile || isSidebarOpen) && (
-            <p className="text-[10px] text-nebula-slate-600 mt-4 text-center font-black tracking-[0.3em] uppercase">
-              NEBULA © 2026
+            <p className="text-[10px] text-folusho-cream-500 mt-6 text-center font-black tracking-[0.35em] uppercase">
+              FOLUSHO ACADEMIC © 2026
             </p>
           )}
         </div>
       </motion.aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto bg-nebula-slate-950 text-white">
+      <main className="flex-1 overflow-auto bg-transparent">
         <div
-          className={`max-w-7xl mx-auto ${isMobile ? "p-6 pt-2" : "p-8 md:p-12"}`}
+          className={`max-w-7xl mx-auto ${isMobile ? "p-6 pt-2" : "p-10 md:p-16"}`}
         >
           <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
@@ -648,14 +651,14 @@ function NavLink({ to, icon, label, isOpen, onClick }: NavLinkProps & { onClick?
       to={to}
       onClick={onClick}
       className={({ isActive }: { isActive: boolean }) =>
-        `flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 text-xs font-black uppercase tracking-widest ${
+        `flex items-center gap-5 px-6 py-4 rounded-2xl transition-all duration-300 text-xs font-black uppercase tracking-widest ${
           isActive
-            ? "bg-gradient-to-r from-nebula-indigo-600 to-nebula-indigo-800 text-white shadow-nebula glow-indigo"
-            : "text-nebula-slate-400 hover:text-white hover:bg-white/5"
+            ? "bg-folusho-sage-400 text-white shadow-folusho scale-[1.02]"
+            : "text-folusho-slate-400 hover:text-folusho-sage-600 hover:bg-folusho-cream-100"
         }`
       }
     >
-      <span className="flex-shrink-0 w-5 flex items-center justify-center">
+      <span className="flex-shrink-0 w-6 flex items-center justify-center">
         {icon}
       </span>
       {isOpen && <span className="truncate">{label}</span>}
@@ -668,9 +671,9 @@ export default function App() {
     <ErrorBoundary showDetails={true}>
       <Router>
         <React.Suspense fallback={
-          <div className="fixed inset-0 bg-royal-dark-950 flex flex-col items-center justify-center z-[9999]">
-            <div className="w-16 h-16 border-4 border-royal-purple-500/20 border-t-royal-purple-500 rounded-full animate-spin mb-6" />
-            <p className="text-royal-purple-400 font-black uppercase tracking-[0.3em] text-xs animate-pulse">Initializing Digital Citadel...</p>
+          <div className="fixed inset-0 bg-folusho-slate-900 flex flex-col items-center justify-center z-[9999]">
+            <div className="w-16 h-16 border-4 border-folusho-sage-500/20 border-t-folusho-sage-500 rounded-full animate-spin mb-6" />
+            <p className="text-folusho-sage-400 font-black uppercase tracking-[0.3em] text-xs animate-pulse">Initializing Digital Citadel...</p>
           </div>
         }>
           <AppContent />

@@ -76,25 +76,26 @@ export default function Settings() {
 
   return (
     <div className="space-y-12">
+    <div className="space-y-12">
       {/* ── Dynamic Header ────────────────────────────── */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-nebula-indigo-500/10 border border-nebula-indigo-500/20 text-nebula-indigo-400 text-[10px] font-black tracking-[0.3em] uppercase backdrop-blur-md">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-50 border border-folusho-sage-100 text-folusho-sage-500 text-[10px] font-black tracking-[0.35em] uppercase">
             System Configuration
           </div>
-          <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-none">
+          <h1 className="text-3xl md:text-5xl font-black text-folusho-slate-900 tracking-tighter leading-none">
             Digital <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-nebula-indigo-400 via-nebula-teal-400 to-nebula-pink-400">Governance.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-500 via-folusho-coral-400 to-folusho-sage-600">Governance.</span>
           </h1>
-          <p className="text-nebula-slate-400 text-sm font-bold max-w-xl leading-relaxed tracking-tight">
-            Calibrate the institutional parameters of the digital citadel.
+          <p className="text-folusho-slate-400 text-base font-bold max-w-xl leading-relaxed tracking-tight">
+            Calibrate the institutional parameters of the Folusho academic citadel.
           </p>
         </div>
 
         <button
           onClick={handleSave}
           disabled={isSaving}
-          className="btn-vibrant from-nebula-indigo-600 to-nebula-indigo-800 px-10 py-4 shadow-nebula"
+          className="btn-vibrant bg-folusho-sage-400 shadow-folusho"
         >
           <Save size={20} /> 
           {isSaving ? "Synchronizing..." : "Execute Updates"}
@@ -106,8 +107,8 @@ export default function Settings() {
         <div
           className={`p-6 rounded-3xl flex items-center gap-4 backdrop-blur-xl border ${
             message.type === "success"
-              ? "bg-nebula-teal-500/10 text-nebula-teal-400 border-nebula-teal-500/20"
-              : "bg-nebula-pink-500/10 text-nebula-pink-400 border-nebula-pink-500/20"
+              ? "bg-folusho-sage-50 text-folusho-sage-600 border-folusho-sage-100"
+              : "bg-folusho-coral-50 text-folusho-coral-500 border-folusho-coral-100"
           }`}
         >
           <CheckCircle size={24} />
@@ -117,22 +118,22 @@ export default function Settings() {
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
         {/* Row 1: General Info */}
-        <div className="nebula-card space-y-10">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-black text-white uppercase tracking-tighter flex items-center gap-3">
-              <Globe size={24} className="text-nebula-indigo-400" /> General Logistics
+        <div className="folusho-card space-y-12 !p-12 border-folusho-cream-200">
+          <div className="space-y-3">
+            <h2 className="text-3xl font-black text-folusho-slate-900 uppercase tracking-tighter flex items-center gap-4">
+              <Globe size={28} className="text-folusho-sage-500" /> General Logistics
             </h2>
-            <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.2em]">Core institutional identifiers</p>
+            <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.25em]">Core institutional identifiers</p>
           </div>
           
           <div className="space-y-8">
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+              <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
                 Institutional Name
               </label>
               <input
                 type="text"
-                className="input-nebula"
+                className="input-folusho !py-5"
                 value={config.schoolName || ""}
                 onChange={(e) =>
                   setConfig({ ...config, schoolName: e.target.value })
@@ -143,11 +144,11 @@ export default function Settings() {
 
             <div className="grid grid-cols-2 gap-8">
               <div className="space-y-3">
-                <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
                   Active Term
                 </label>
                 <select
-                  className="input-nebula !py-4"
+                  className="input-folusho !py-5"
                   value={config.currentTerm || ""}
                   onChange={(e) =>
                     setConfig({ ...config, currentTerm: e.target.value })
@@ -159,12 +160,12 @@ export default function Settings() {
                 </select>
               </div>
               <div className="space-y-3">
-                <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
                   Academic Cycle
                 </label>
                 <input
                   type="text"
-                  className="input-nebula"
+                  className="input-folusho !py-5"
                   placeholder="2024/2025"
                   value={config.currentAcademicYear || ""}
                   onChange={(e) =>
@@ -180,41 +181,41 @@ export default function Settings() {
         </div>
 
         {/* Branding */}
-        <div className="nebula-card space-y-10">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-black text-white uppercase tracking-tighter flex items-center gap-3">
-              <Palette size={24} className="text-nebula-teal-400" /> Visual Identity
+        <div className="folusho-card space-y-12 !p-12 border-folusho-cream-200">
+          <div className="space-y-3">
+            <h2 className="text-3xl font-black text-folusho-slate-900 uppercase tracking-tighter flex items-center gap-4">
+              <Palette size={28} className="text-folusho-yellow-600" /> Visual Identity
             </h2>
-            <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.2em]">Aesthetic parameters & emblems</p>
+            <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.25em]">Aesthetic parameters & emblems</p>
           </div>
 
           <div className="space-y-10">
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+              <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
                 Signature Aesthetic
               </label>
-              <div className="flex gap-6 items-center bg-white/5 p-4 rounded-3xl border border-white/5">
+              <div className="flex gap-8 items-center bg-folusho-cream-50 p-6 rounded-[2rem] border border-folusho-cream-100 shadow-inner">
                 <input
                   type="color"
-                  className="w-16 h-16 rounded-2xl cursor-pointer border-2 border-white/10 bg-transparent"
+                  className="w-20 h-20 rounded-2xl cursor-pointer border-2 border-white bg-transparent shadow-folusho"
                   value={config.themeColor || "#2563eb"}
                   onChange={(e) =>
                     setConfig({ ...config, themeColor: e.target.value })
                   }
                 />
-                <code className="text-nebula-indigo-400 text-lg font-black tracking-widest font-mono">
+                <code className="text-folusho-slate-900 text-xl font-black tracking-widest font-mono">
                   {config.themeColor?.toUpperCase() || "#2563EB"}
                 </code>
               </div>
             </div>
 
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+              <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
                 Institutional Motto
               </label>
               <input
                 type="text"
-                className="input-nebula"
+                className="input-folusho !py-5"
                 placeholder="Fountain of Knowledge"
                 value={config.motto || ""}
                 onChange={(e) =>
@@ -224,18 +225,18 @@ export default function Settings() {
             </div>
 
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+              <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
                 Institutional Emblem
               </label>
-              <div className="flex items-center gap-8 bg-white/5 p-6 rounded-3xl border border-white/5">
-                <div className="w-24 h-24 bg-nebula-slate-900 rounded-2xl flex items-center justify-center overflow-hidden border border-white/10 shadow-nebula">
+              <div className="flex items-center gap-10 bg-folusho-cream-50 p-8 rounded-[2.5rem] border border-folusho-cream-100 shadow-inner">
+                <div className="w-28 h-28 bg-white rounded-3xl flex items-center justify-center overflow-hidden border border-folusho-cream-200 shadow-folusho">
                   <img
                     src={config.schoolLogo || "/school_logo.png?v=20260512"}
                     alt="School Logo"
-                    className="w-full h-full object-contain p-2"
+                    className="w-full h-full object-contain p-3"
                   />
                 </div>
-                <label className="btn-vibrant from-white/5 to-white/10 !text-white border border-white/10 !py-3 !px-6 text-xs cursor-pointer">
+                <label className="btn-vibrant bg-white !text-folusho-slate-600 border border-folusho-cream-200 hover:border-folusho-sage-300 !py-4 !px-8 text-xs cursor-pointer shadow-sm">
                   Update Emblem
                   <input
                     type="file"
@@ -250,22 +251,22 @@ export default function Settings() {
         </div>
 
         {/* School Officials */}
-        <div className="nebula-card space-y-10">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-black text-white uppercase tracking-tighter flex items-center gap-3">
-              <Users size={24} className="text-nebula-pink-400" /> Executive Command
+        <div className="folusho-card space-y-12 !p-12 border-folusho-cream-200">
+          <div className="space-y-3">
+            <h2 className="text-3xl font-black text-folusho-slate-900 uppercase tracking-tighter flex items-center gap-4">
+              <Users size={28} className="text-folusho-coral-500" /> Executive Command
             </h2>
-            <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.2em]">Validated signatures for certification</p>
+            <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.25em]">Validated signatures for certification</p>
           </div>
 
           <div className="space-y-8">
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+              <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
                 Lead Administrator / Principal
               </label>
               <input
                 type="text"
-                className="input-nebula"
+                className="input-folusho !py-5"
                 placeholder="Mr. James Adeyemi"
                 value={config.principalName || ""}
                 onChange={(e) =>
@@ -275,12 +276,12 @@ export default function Settings() {
             </div>
 
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+              <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
                 Supreme Proprietress
               </label>
               <input
                 type="text"
-                className="input-nebula"
+                className="input-folusho !py-5"
                 placeholder="Mrs. Folusho Adekunle"
                 value={config.proprietressName || ""}
                 onChange={(e) =>
@@ -292,27 +293,27 @@ export default function Settings() {
 
           {/* Signature Preview */}
           {(config.principalName || config.proprietressName) && (
-            <div className="p-8 bg-nebula-indigo-500/5 rounded-3xl border border-nebula-indigo-500/10">
-              <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em] mb-10 text-center">Certification Validation Preview</p>
-              <div className="grid grid-cols-2 gap-10">
+            <div className="p-10 bg-folusho-cream-50 rounded-[2.5rem] border border-folusho-cream-100 shadow-inner">
+              <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] mb-12 text-center">Certification Validation Preview</p>
+              <div className="grid grid-cols-2 gap-12">
                 {config.principalName && (
-                  <div className="text-center space-y-4">
-                    <div className="h-px bg-gradient-to-r from-transparent via-nebula-indigo-500/40 to-transparent" />
-                    <p className="text-sm font-black text-white uppercase tracking-tighter truncate px-4">
+                  <div className="text-center space-y-5">
+                    <div className="h-px bg-gradient-to-r from-transparent via-folusho-sage-300 to-transparent" />
+                    <p className="text-lg font-black text-folusho-slate-900 uppercase tracking-tighter truncate px-4">
                       {config.principalName}
                     </p>
-                    <p className="text-[10px] text-nebula-slate-500 font-black uppercase tracking-[0.2em]">
+                    <p className="text-[10px] text-folusho-slate-400 font-black uppercase tracking-[0.25em]">
                       Principal
                     </p>
                   </div>
                 )}
                 {config.proprietressName && (
-                  <div className="text-center space-y-4">
-                    <div className="h-px bg-gradient-to-r from-transparent via-nebula-pink-500/40 to-transparent" />
-                    <p className="text-sm font-black text-white uppercase tracking-tighter truncate px-4">
+                  <div className="text-center space-y-5">
+                    <div className="h-px bg-gradient-to-r from-transparent via-folusho-coral-300 to-transparent" />
+                    <p className="text-lg font-black text-folusho-slate-900 uppercase tracking-tighter truncate px-4">
                       {config.proprietressName}
                     </p>
-                    <p className="text-[10px] text-nebula-slate-500 font-black uppercase tracking-[0.2em]">
+                    <p className="text-[10px] text-folusho-slate-400 font-black uppercase tracking-[0.25em]">
                       Proprietress
                     </p>
                   </div>
@@ -323,22 +324,22 @@ export default function Settings() {
         </div>
 
         {/* Contact Information */}
-        <div className="nebula-card space-y-10">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-black text-white uppercase tracking-tighter flex items-center gap-3">
-              <MapPin size={24} className="text-nebula-teal-400" /> Sector Coordinates
+        <div className="folusho-card space-y-12 !p-12 border-folusho-cream-200">
+          <div className="space-y-3">
+            <h2 className="text-3xl font-black text-folusho-slate-900 uppercase tracking-tighter flex items-center gap-4">
+              <MapPin size={28} className="text-folusho-yellow-600" /> Sector Coordinates
             </h2>
-            <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-[0.2em]">Global positioning & communications</p>
+            <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.25em]">Global positioning & communications</p>
           </div>
 
           <div className="space-y-8">
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+              <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
                 Institutional Coordinates (Address)
               </label>
               <input
                 type="text"
-                className="input-nebula"
+                className="input-folusho !py-5"
                 placeholder="12 Victory Close, Ibadan, Nigeria"
                 value={config.schoolAddress || ""}
                 onChange={(e) =>
@@ -347,12 +348,12 @@ export default function Settings() {
               />
             </div>
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+              <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
                 Comm-Link Frequency (Phone)
               </label>
               <input
                 type="text"
-                className="input-nebula"
+                className="input-folusho !py-5"
                 placeholder="+234 801 234 5678"
                 value={config.schoolPhone || ""}
                 onChange={(e) =>
@@ -362,6 +363,7 @@ export default function Settings() {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

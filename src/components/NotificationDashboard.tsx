@@ -58,24 +58,24 @@ export const NotificationDashboard: React.FC = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'sent':
-        return 'bg-green-50 border-green-200'
+        return 'bg-folusho-sage-50/50 border-folusho-sage-100'
       case 'failed':
-        return 'bg-red-50 border-red-200'
+        return 'bg-folusho-coral-50/50 border-folusho-coral-100'
       case 'pending':
-        return 'bg-yellow-50 border-yellow-200'
+        return 'bg-folusho-yellow-50/50 border-folusho-yellow-100'
       default:
-        return 'bg-gray-50 border-gray-200'
+        return 'bg-folusho-cream-50/50 border-folusho-cream-100'
     }
   }
 
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'sent':
-        return <CheckCircle className="w-5 h-5 text-green-600" />
+        return <CheckCircle className="w-5 h-5 text-folusho-sage-500" />
       case 'failed':
-        return <AlertCircle className="w-5 h-5 text-red-600" />
+        return <AlertCircle className="w-5 h-5 text-folusho-coral-500" />
       case 'pending':
-        return <Bell className="w-5 h-5 text-yellow-600" />
+        return <Bell className="w-5 h-5 text-folusho-yellow-500" />
       default:
         return null
     }
@@ -96,58 +96,66 @@ export const NotificationDashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="card-lg bg-gradient-to-br from-emerald-50 dark:from-emerald-900/20 to-emerald-100/50 dark:to-emerald-800/10 border-l-4 border-emerald-500">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="folusho-card bg-folusho-sage-50 border-folusho-sage-100 !p-8">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-widest">Total Sent</p>
-              <p className="text-3xl font-black text-emerald-700 dark:text-emerald-300 mt-1">{stats.totalSent}</p>
+            <div className="space-y-1">
+              <p className="text-folusho-sage-600 text-[10px] font-black uppercase tracking-widest">Total Sent</p>
+              <p className="text-4xl font-black text-folusho-slate-900 tracking-tighter">{stats.totalSent}</p>
             </div>
-            <CheckCircle className="w-10 h-10 text-emerald-500 opacity-30" />
+            <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-folusho-sage-400 border border-folusho-sage-100 shadow-sm">
+              <CheckCircle className="w-6 h-6" />
+            </div>
           </div>
         </div>
 
-        <div className="card-lg bg-gradient-to-br from-rose-50 dark:from-rose-900/20 to-rose-100/50 dark:to-rose-800/10 border-l-4 border-rose-500">
+        <div className="folusho-card bg-folusho-coral-50 border-folusho-coral-100 !p-8">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-rose-600 dark:text-rose-400 text-xs font-bold uppercase tracking-widest">Failed</p>
-              <p className="text-3xl font-black text-rose-700 dark:text-rose-300 mt-1">{stats.totalFailed}</p>
+            <div className="space-y-1">
+              <p className="text-folusho-coral-500 text-[10px] font-black uppercase tracking-widest">Failed</p>
+              <p className="text-4xl font-black text-folusho-slate-900 tracking-tighter">{stats.totalFailed}</p>
             </div>
-            <AlertCircle className="w-10 h-10 text-rose-500 opacity-30" />
+            <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-folusho-coral-400 border border-folusho-coral-100 shadow-sm">
+              <AlertCircle className="w-6 h-6" />
+            </div>
           </div>
         </div>
 
-        <div className="card-lg bg-gradient-to-br from-amber-50 dark:from-amber-900/20 to-amber-100/50 dark:to-amber-800/10 border-l-4 border-amber-500">
+        <div className="folusho-card bg-folusho-yellow-50 border-folusho-yellow-100 !p-8">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-amber-600 dark:text-amber-400 text-xs font-bold uppercase tracking-widest">Pending</p>
-              <p className="text-3xl font-black text-amber-700 dark:text-amber-300 mt-1">{stats.totalPending}</p>
+            <div className="space-y-1">
+              <p className="text-folusho-yellow-600 text-[10px] font-black uppercase tracking-widest">Pending</p>
+              <p className="text-4xl font-black text-folusho-slate-900 tracking-tighter">{stats.totalPending}</p>
             </div>
-            <Bell className="w-10 h-10 text-amber-500 opacity-30" />
+            <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-folusho-yellow-500 border border-folusho-yellow-100 shadow-sm">
+              <Bell className="w-6 h-6" />
+            </div>
           </div>
         </div>
 
-        <div className="card-lg bg-gradient-to-br from-purple-50 dark:from-purple-900/20 to-purple-100/50 dark:to-purple-800/10 border-l-4 border-purple-500">
+        <div className="folusho-card bg-folusho-cream-50 border-folusho-cream-200 !p-8">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-purple-600 dark:text-purple-400 text-xs font-bold uppercase tracking-widest">Total</p>
-              <p className="text-3xl font-black text-purple-700 dark:text-purple-300 mt-1">{stats.totalSent + stats.totalFailed + stats.totalPending}</p>
+            <div className="space-y-1">
+              <p className="text-folusho-slate-400 text-[10px] font-black uppercase tracking-widest">Total</p>
+              <p className="text-4xl font-black text-folusho-slate-900 tracking-tighter">{stats.totalSent + stats.totalFailed + stats.totalPending}</p>
             </div>
-            <Bell className="w-10 h-10 text-purple-500 opacity-30" />
+            <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-folusho-slate-400 border border-folusho-cream-200 shadow-sm">
+              <Bell className="w-6 h-6" />
+            </div>
           </div>
         </div>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex gap-2 border-b-2 border-purple-200 dark:border-purple-800/50 pb-0">
+      <div className="flex gap-4 border-b border-folusho-cream-100 pb-0">
         {(['all', 'sent', 'failed', 'pending'] as const).map(f => (
           <button
             key={f}
             onClick={() => { setFilter(f); setPage(1) }}
-            className={`px-4 py-2 font-medium text-sm border-b-2 transition-colors ${
+            className={`px-8 py-4 text-[10px] font-black uppercase tracking-[0.3em] border-b-2 transition-all ${
               filter === f
-                ? 'border-blue-600 text-blue-600'
-                : 'border-transparent text-gray-600 hover:text-gray-900'
+                ? 'border-folusho-sage-500 text-folusho-sage-600 bg-folusho-sage-50/50'
+                : 'border-transparent text-folusho-slate-400 hover:text-folusho-slate-600 hover:bg-folusho-cream-50'
             }`}
           >
             {f.charAt(0).toUpperCase() + f.slice(1)}
@@ -156,50 +164,58 @@ export const NotificationDashboard: React.FC = () => {
       </div>
 
       {/* Notifications List */}
-      <div className="space-y-3">
+      <div className="space-y-4">
         {loading ? (
-          <div className="text-center py-8 text-gray-500">Loading notifications...</div>
+          <div className="text-center py-12 text-folusho-slate-400 font-bold uppercase tracking-widest text-xs">Loading notifications...</div>
         ) : notifications.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">No notifications found</div>
+          <div className="text-center py-12 text-folusho-slate-400 font-bold uppercase tracking-widest text-xs">No notifications found</div>
         ) : (
           notifications.map(notif => (
-            <div key={notif._id} className={`border rounded-lg p-4 ${getStatusColor(notif.status)}`}>
-              <div className="flex items-start justify-between">
-                <div className="flex items-start gap-3 flex-1">
-                  {getStatusIcon(notif.status)}
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-semibold text-gray-900">{notif.subject}</h3>
-                      <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded">
+            <div key={notif._id} className={`border rounded-[2rem] p-6 transition-all hover:shadow-folusho ${getStatusColor(notif.status)}`}>
+              <div className="flex items-start justify-between gap-6">
+                <div className="flex items-start gap-5 flex-1 min-w-0">
+                  <div className="mt-1">
+                    {getStatusIcon(notif.status)}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-4 flex-wrap">
+                      <h3 className="font-black text-folusho-slate-900 text-lg tracking-tight truncate">{notif.subject}</h3>
+                      <span className="text-[9px] font-black bg-white/60 text-folusho-slate-500 px-3 py-1 rounded-full uppercase tracking-widest border border-folusho-cream-100 shadow-sm">
                         {getTypeLabel(notif.type)}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600 mt-1">To: {notif.recipientEmail}</p>
+                    <p className="text-sm font-bold text-folusho-slate-600 mt-2 flex items-center gap-2">
+                      <span className="text-[10px] text-folusho-slate-400 uppercase tracking-widest">Recipient:</span>
+                      {notif.recipientEmail}
+                    </p>
                     {notif.errorMessage && (
-                      <p className="text-sm text-red-600 mt-1">Error: {notif.errorMessage}</p>
+                      <div className="mt-3 p-3 rounded-xl bg-folusho-coral-50 border border-folusho-coral-100 flex items-center gap-3 text-folusho-coral-600">
+                        <AlertCircle size={14} />
+                        <p className="text-xs font-black uppercase tracking-widest leading-none">Error: {notif.errorMessage}</p>
+                      </div>
                     )}
-                    <p className="text-xs text-gray-500 mt-2">
+                    <p className="text-[10px] font-black text-folusho-slate-400 mt-4 uppercase tracking-widest">
                       {new Date(notif.sentAt || notif.createdAt).toLocaleString()}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                   {notif.status === 'failed' && (
                     <button
                       onClick={() => handleResend(notif._id)}
-                      className="p-2 hover:bg-yellow-100 rounded transition-colors"
+                      className="p-3 bg-white hover:bg-folusho-yellow-50 text-folusho-yellow-600 rounded-2xl transition-all border border-folusho-yellow-100 shadow-sm"
                       title="Resend"
                     >
-                      <RotateCcw className="w-4 h-4 text-yellow-600" />
+                      <RotateCcw className="w-4 h-4" />
                     </button>
                   )}
                   <button
                     onClick={() => handleDelete(notif._id)}
-                    className="p-2 hover:bg-red-100 rounded transition-colors"
+                    className="p-3 bg-white hover:bg-folusho-coral-50 text-folusho-coral-500 rounded-2xl transition-all border border-folusho-coral-100 shadow-sm"
                     title="Delete"
                   >
-                    <Trash2 className="w-4 h-4 text-red-600" />
+                    <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
               </div>
@@ -210,20 +226,20 @@ export const NotificationDashboard: React.FC = () => {
 
       {/* Pagination */}
       {notifications.length > 0 && (
-        <div className="flex justify-center gap-2">
+        <div className="flex justify-center items-center gap-6 pt-8">
           <button
             onClick={() => setPage(p => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50"
+            className="p-4 rounded-2xl bg-white border border-folusho-cream-200 text-folusho-sage-500 disabled:opacity-20 hover:bg-folusho-cream-50 transition-all shadow-sm"
           >
             Previous
           </button>
-          <span className="px-4 py-2">Page {page}</span>
+          <span className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.4em]">Matrix Phase {page}</span>
           <button
             onClick={() => setPage(p => p + 1)}
-            className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50"
+            className="p-4 rounded-2xl bg-white border border-folusho-cream-200 text-folusho-sage-500 hover:bg-folusho-cream-50 transition-all shadow-sm"
           >
-            Next
+            Next Phase
           </button>
         </div>
       )}

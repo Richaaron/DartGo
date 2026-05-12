@@ -661,28 +661,28 @@ export default function SubjectResultEntry() {
       {/* ── Dynamic Header ────────────────────────────── */}
       <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-10">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-nebula-indigo-500/10 border border-nebula-indigo-500/20 text-nebula-indigo-400 text-[10px] font-black tracking-[0.3em] uppercase backdrop-blur-md">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-50 border border-folusho-sage-100 text-folusho-sage-500 text-[10px] font-black tracking-[0.35em] uppercase">
             Evaluation Matrix
           </div>
-          <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-none">
+          <h1 className="text-3xl md:text-5xl font-black text-folusho-slate-900 tracking-tighter leading-none">
             Result <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-nebula-indigo-400 via-nebula-teal-400 to-nebula-pink-400">Synchronization.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-500 via-folusho-coral-400 to-folusho-sage-600">Synchronization.</span>
           </h1>
-          <p className="text-nebula-slate-400 text-sm font-bold max-w-xl leading-relaxed tracking-tight">
+          <p className="text-folusho-slate-400 text-base font-bold max-w-xl leading-relaxed tracking-tight">
             Input CA and Examination scores for high-fidelity grade synthesis.
           </p>
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-6">
-          <div className="flex bg-white/5 p-1.5 rounded-3xl border border-white/5 backdrop-blur-md">
+          <div className="flex bg-folusho-cream-50 p-1.5 rounded-[2rem] border border-folusho-cream-200 shadow-sm">
             {(["students", "results"] as const).map((mode) => (
               <button
                 key={mode}
                 onClick={() => setViewMode(mode)}
                 className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${
                   viewMode === mode
-                    ? "bg-nebula-indigo-600 text-white shadow-nebula"
-                    : "text-nebula-slate-500 hover:text-white"
+                    ? "bg-folusho-sage-400 text-white shadow-folusho"
+                    : "text-folusho-slate-400 hover:text-folusho-sage-600 hover:bg-white"
                 }`}
               >
                 {mode === "students" ? "Identity Matrix" : "Archival List"}
@@ -695,7 +695,7 @@ export default function SubjectResultEntry() {
               setEditingResult(null)
               setShowForm(true)
             }}
-            className="btn-vibrant from-nebula-indigo-600 to-nebula-indigo-800 shadow-nebula"
+            className="btn-vibrant bg-folusho-sage-400 shadow-folusho"
           >
             <Plus size={20} />
             Initialize Entry
@@ -716,40 +716,40 @@ export default function SubjectResultEntry() {
       )}
 
       {/* ── Intelligence Filters ───────────────────────── */}
-      <div className="nebula-card !p-10">
+      <div className="folusho-card !p-12 border-folusho-cream-200">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div className="space-y-3">
-            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">Personnel Lookup</label>
+          <div className="space-y-4">
+            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">Personnel Lookup</label>
             <div className="relative group">
-              <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-nebula-indigo-500 group-focus-within:text-white transition-colors" />
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-sage-400 group-focus-within:text-folusho-sage-600 transition-colors" />
               <input
                 type="text"
                 placeholder="Scan identities..."
                 value={filterTerm}
                 onChange={(e) => setFilterTerm(e.target.value)}
-                className="input-nebula pl-14"
+                className="input-folusho !pl-16"
               />
             </div>
           </div>
 
-          <div className="space-y-3">
-            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">Sector Focus</label>
+          <div className="space-y-4">
+            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">Sector Focus</label>
             <select
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
-              className="input-nebula !py-4"
+              className="input-folusho !py-5"
             >
               <option value="All">Global Sectors</option>
               {availableClasses.map(cls => <option key={cls} value={cls}>{cls}</option>)}
             </select>
           </div>
 
-          <div className="space-y-3">
-            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">Matrix Focus (Subject)</label>
+          <div className="space-y-4">
+            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">Matrix Focus (Subject)</label>
             <select
               value={selectedSubject}
               onChange={(e) => setSelectedSubject(e.target.value)}
-              className="input-nebula !py-4"
+              className="input-folusho !py-5"
             >
               <option value="All">All {isTeacher ? 'My' : ''} Subjects</option>
               {teacherSubjects.map((subject) => (
@@ -758,12 +758,12 @@ export default function SubjectResultEntry() {
             </select>
           </div>
 
-          <div className="space-y-3">
-            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">Temporal Phase</label>
+          <div className="space-y-4">
+            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">Temporal Phase</label>
             <select
               value={selectedTerm}
               onChange={(e) => setSelectedTerm(e.target.value)}
-              className="input-nebula !py-4"
+              className="input-folusho !py-5"
             >
               <option value="All">All Phases</option>
               <option value="First">First Phase</option>
@@ -775,7 +775,7 @@ export default function SubjectResultEntry() {
       </div>
 
       {/* ── Data Matrix ────────────────────────────────── */}
-      <div className="nebula-card !p-0 overflow-hidden">
+      <div className="folusho-card !p-0 border-folusho-cream-200">
         {viewMode === "students" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 p-10">
             {displayStudents.map((student) => (
@@ -783,20 +783,20 @@ export default function SubjectResultEntry() {
                 key={student.id}
                 layoutId={student.id}
                 onClick={() => setSelectedStudentForEntry(student)}
-                className="bg-white/[0.02] border border-white/5 rounded-3xl p-8 hover:bg-white/[0.04] hover:border-nebula-indigo-500/30 transition-all cursor-pointer group"
+                className="bg-folusho-cream-50/30 border border-folusho-cream-200 rounded-[2.5rem] p-8 hover:bg-white hover:border-folusho-sage-300 hover:shadow-folusho transition-all cursor-pointer group"
               >
-                <div className="w-14 h-14 bg-nebula-slate-900 rounded-2xl flex items-center justify-center border border-white/10 group-hover:border-nebula-indigo-500/40 transition-colors shadow-inner mb-6">
-                  <span className="text-xl font-black text-nebula-indigo-400">{student.firstName[0]}{student.lastName[0]}</span>
+                <div className="w-16 h-16 bg-folusho-sage-50 rounded-2xl flex items-center justify-center border border-folusho-sage-100 group-hover:border-folusho-sage-300 transition-colors shadow-inner mb-8">
+                  <span className="text-2xl font-black text-folusho-sage-500">{student.firstName[0]}{student.lastName[0]}</span>
                 </div>
-                <h3 className="text-lg font-black text-white mb-1 tracking-tight group-hover:text-nebula-indigo-400 transition-colors">
+                <h3 className="text-xl font-black text-folusho-slate-900 mb-1 tracking-tight group-hover:text-folusho-sage-600 transition-colors">
                   {student.firstName} {student.lastName}
                 </h3>
-                <p className="text-[9px] font-black text-nebula-slate-500 uppercase tracking-widest mb-6">
+                <p className="text-[9px] font-black text-folusho-slate-400 uppercase tracking-widest mb-8">
                   {student.registrationNumber}
                 </p>
-                <div className="pt-4 border-t border-white/5 flex items-center justify-between">
-                  <span className="text-[10px] font-black text-nebula-slate-400 uppercase tracking-widest">{student.class}</span>
-                  <ChevronRight size={16} className="text-nebula-indigo-500 group-hover:translate-x-1 transition-transform" />
+                <div className="pt-6 border-t border-folusho-cream-100 flex items-center justify-between">
+                  <span className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-widest">{student.class}</span>
+                  <ChevronRight size={18} className="text-folusho-sage-400 group-hover:text-folusho-sage-600 group-hover:translate-x-2 transition-all" />
                 </div>
               </motion.div>
             ))}
@@ -804,44 +804,44 @@ export default function SubjectResultEntry() {
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full">
-              <thead className="bg-white/5 border-b border-white/5">
+              <thead className="bg-folusho-cream-50/50 border-b border-folusho-cream-100">
                 <tr>
-                  <th className="py-5 px-8 text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] text-left">Personnel</th>
-                  <th className="py-5 px-6 text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] text-left">Subject</th>
-                  <th className="py-5 px-6 text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] text-center">Protocol Status</th>
-                  <th className="py-5 px-6 text-[10px] font-black text-nebula-teal-400 uppercase tracking-[0.3em] text-center">Score</th>
-                  <th className="py-5 px-8 text-[10px] font-black text-nebula-teal-400 uppercase tracking-[0.3em] text-right">Actions</th>
+                  <th className="py-6 px-8 text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em] text-left">Personnel</th>
+                  <th className="py-6 px-6 text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em] text-left">Subject</th>
+                  <th className="py-6 px-6 text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em] text-center">Protocol Status</th>
+                  <th className="py-6 px-6 text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.35em] text-center">Score</th>
+                  <th className="py-6 px-8 text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.35em] text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody className="divide-y divide-folusho-cream-100">
                 {displayResults.map((item) => (
-                  <tr key={item.id} className="hover:bg-white/[0.02] transition-colors">
+                  <tr key={item.id} className="hover:bg-folusho-cream-50/30 transition-colors">
                     <td className="py-6 px-8">
-                      <div className="font-bold text-white text-sm">{item.studentName}</div>
-                      <div className="text-[9px] font-black text-nebula-slate-500 uppercase tracking-widest mt-1">{item.class}</div>
+                      <div className="font-bold text-folusho-slate-900 text-sm">{item.studentName}</div>
+                      <div className="text-[9px] font-black text-folusho-slate-400 uppercase tracking-widest mt-1">{item.class}</div>
                     </td>
-                    <td className="py-6 px-6 text-sm font-bold text-nebula-slate-300">{item.subjectName}</td>
+                    <td className="py-6 px-6 text-sm font-bold text-folusho-slate-600">{item.subjectName}</td>
                     <td className="py-6 px-6 text-center">
-                      <span className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${
-                        item.status === "Completed" ? "bg-nebula-teal-500/10 text-nebula-teal-400 border-nebula-teal-500/20" : "bg-nebula-pink-500/10 text-nebula-pink-400 border-nebula-pink-500/20"
+                      <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border ${
+                        item.status === "Completed" ? "bg-folusho-sage-50 text-folusho-sage-600 border-folusho-sage-100" : "bg-folusho-coral-50 text-folusho-coral-500 border-folusho-coral-100"
                       }`}>
                         {item.status}
                       </span>
                     </td>
-                    <td className="py-6 px-6 text-center font-black text-white text-lg">{item.totalScore}</td>
+                    <td className="py-6 px-6 text-center font-black text-folusho-slate-900 text-lg">{item.totalScore}</td>
                     <td className="py-6 px-8 text-right">
                       <div className="flex justify-end gap-3">
                         <button
                           onClick={() => { setEditingResult(item); setShowForm(true) }}
-                          className="p-2.5 rounded-xl bg-white/5 hover:bg-nebula-indigo-500/20 text-nebula-indigo-400 transition-all border border-white/5"
+                          className="p-3 rounded-xl bg-folusho-sage-50 hover:bg-folusho-sage-100 text-folusho-sage-600 transition-all border border-folusho-sage-100 shadow-sm"
                         >
-                          <ClipboardList size={16} />
+                          <ClipboardList size={18} />
                         </button>
                         <button
                           onClick={() => handleDeleteResult(item.id)}
-                          className="p-2.5 rounded-xl bg-white/5 hover:bg-nebula-pink-500/20 text-nebula-pink-400 transition-all border border-white/5"
+                          className="p-3 rounded-xl bg-folusho-coral-50 hover:bg-folusho-coral-100 text-folusho-coral-500 transition-all border border-folusho-coral-100 shadow-sm"
                         >
-                          <AlertCircle size={16} />
+                          <AlertCircle size={18} />
                         </button>
                       </div>
                     </td>
@@ -855,21 +855,21 @@ export default function SubjectResultEntry() {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-6 pb-12">
+        <div className="flex items-center justify-center gap-8 pb-12">
           <button
             disabled={currentPage === 1}
             onClick={() => setCurrentPage(p => p - 1)}
-            className="p-3 rounded-2xl bg-white/5 border border-white/10 text-nebula-indigo-400 disabled:opacity-20 hover:bg-white/10 transition-all"
+            className="p-4 rounded-2xl bg-white border border-folusho-cream-200 text-folusho-sage-500 disabled:opacity-20 hover:bg-folusho-cream-50 transition-all shadow-sm"
           >
             <ChevronLeft size={24} />
           </button>
-          <span className="text-[10px] font-black text-nebula-slate-400 uppercase tracking-[0.4em]">
+          <span className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.45em]">
             Matrix Phase {currentPage} of {totalPages}
           </span>
           <button
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage(p => p + 1)}
-            className="p-3 rounded-2xl bg-white/5 border border-white/10 text-nebula-indigo-400 disabled:opacity-20 hover:bg-white/10 transition-all"
+            className="p-4 rounded-2xl bg-white border border-folusho-cream-200 text-folusho-sage-500 disabled:opacity-20 hover:bg-folusho-cream-50 transition-all shadow-sm"
           >
             <ChevronRight size={24} />
           </button>
@@ -883,17 +883,17 @@ export default function SubjectResultEntry() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-nebula-slate-950/80 backdrop-blur-xl flex items-center justify-center z-50 p-6"
+            className="fixed inset-0 bg-folusho-slate-900/60 backdrop-blur-md flex items-center justify-center z-50 p-8"
           >
             <motion.div
-              initial={{ scale: 0.9, y: 20 }}
+              initial={{ scale: 0.98, y: 10 }}
               animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              className="nebula-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/10"
+              exit={{ scale: 0.98, y: 10 }}
+              className="folusho-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-folusho-cream-200"
             >
-              <div className="p-10 border-b border-white/5 bg-gradient-to-r from-nebula-indigo-600/20 to-transparent">
-                <h2 className="text-2xl font-black text-white tracking-tighter uppercase">Protocol Injection</h2>
-                <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] mt-2">Manual override active</p>
+              <div className="p-10 border-b border-folusho-cream-100 bg-gradient-to-r from-folusho-sage-500/10 to-transparent">
+                <h2 className="text-3xl font-black text-folusho-slate-900 tracking-tighter uppercase leading-none">Protocol Injection</h2>
+                <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em] mt-4">Manual override active</p>
               </div>
               <div className="p-10">
                 <SubjectResultForm

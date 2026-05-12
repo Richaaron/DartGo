@@ -37,16 +37,16 @@ import { fetchStudents, fetchResults, fetchSubjects } from "../services/api";
 import apiService from "../services/apiService";
 import { useAuthContext } from "../context/AuthContext";
 
-// School-inspired colors for charts
+// Folusho-inspired colors for charts
 const COLORS = [
-  "#FF6B6B",
-  "#FFE66D",
-  "#4ECDC4",
-  "#95E1D3",
-  "#C7A2FF",
-  "#FF9FF3",
-  "#FFA502",
-  "#87CEEB",
+  "#A8C69F", // Sage
+  "#FF8A7A", // Coral
+  "#FFF4D1", // Yellow
+  "#818cf8", // Indigo (secondary)
+  "#14b8a6", // Teal (secondary)
+  "#f472b6", // Pink (secondary)
+  "#2d2a26", // Slate
+  "#e6e2d6", // Cream
 ];
 
 const containerVariants = {
@@ -322,64 +322,64 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <motion.div variants={itemVariants} className="space-y-10">
           <div className="space-y-6">
-            <h1 className="text-5xl md:text-7xl font-black text-white leading-[0.85] tracking-tighter">
-              Future <br />
-              Intelligence <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-nebula-indigo-400 via-nebula-teal-400 to-nebula-pink-400">Nebula.</span>
+            <h1 className="text-5xl md:text-7xl font-black text-folusho-slate-900 leading-[0.85] tracking-tighter">
+              Inspiring <br />
+              Excellence <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-500 via-folusho-coral-400 to-folusho-sage-600">Folusho.</span>
             </h1>
-            <p className="text-xl text-nebula-slate-400 font-bold max-w-xl leading-relaxed tracking-tight">
-              A high-performance sanctuary for academic precision, teacher empowerment, and institutional governance.
+            <p className="text-xl text-folusho-slate-400 font-bold max-w-xl leading-relaxed tracking-tight">
+              A premium academic sanctuary designed for precision, institutional governance, and nurturing the champions of tomorrow.
             </p>
           </div>
 
           <div className="flex flex-wrap gap-8">
             {userRole === 'Admin' && (
-              <Link to="/settings" className="btn-vibrant from-nebula-indigo-600 to-nebula-indigo-800 group shadow-nebula">
+              <Link to="/settings" className="btn-vibrant from-folusho-sage-600 to-folusho-sage-800 group shadow-folusho">
                 <Lock className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                Control Panel
+                Control Center
               </Link>
             )}
             {userRole === 'Teacher' && (
-              <Link to="/subject-results" className="btn-vibrant from-nebula-teal-500 to-nebula-teal-800 !text-nebula-slate-950 group shadow-nebula">
+              <Link to="/subject-results" className="btn-vibrant from-folusho-coral-500 to-folusho-coral-700 !text-white group shadow-folusho">
                 <ClipboardList className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                Assessment Matrix
+                Academic Matrix
               </Link>
             )}
-            <button className="flex items-center gap-4 text-xs font-black uppercase tracking-[0.3em] text-nebula-indigo-400 hover:text-white transition-all group">
-              Legacy Portal
+            <button className="flex items-center gap-4 text-xs font-black uppercase tracking-[0.35em] text-folusho-sage-500 hover:text-folusho-slate-900 transition-all group">
+              Legacy Vault
               <Check className="w-4 h-4 group-hover:translate-x-3 transition-transform" />
             </button>
           </div>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="nebula-card !p-12 border-white/5 shadow-nebula-lg">
+        <motion.div variants={itemVariants} className="folusho-card !p-12 border-folusho-cream-300 shadow-folusho-lg">
            <div className="flex items-center gap-6 mb-12">
-              <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 shadow-inner">
-                <BookOpen className="w-8 h-8 text-nebula-indigo-400" />
+              <div className="w-16 h-16 bg-folusho-sage-50 rounded-3xl flex items-center justify-center border border-folusho-sage-100 shadow-inner">
+                <BookOpen className="w-8 h-8 text-folusho-sage-400" />
               </div>
-              <h2 className="text-xl font-black text-white tracking-tighter uppercase leading-none">Core <br /> <span className="text-nebula-indigo-500">Infrastructure</span></h2>
+              <h2 className="text-xl font-black text-folusho-slate-900 tracking-tighter uppercase leading-none">Global <br /> <span className="text-folusho-sage-500">Infrastructure</span></h2>
            </div>
 
            <div className="space-y-10">
               <div className="flex gap-6 group/item">
-                <div className="w-3 h-3 rounded-full bg-nebula-indigo-500 mt-2.5 flex-shrink-0 shadow-[0_0_15px_rgba(99,102,241,0.5)] group-hover/item:scale-150 transition-transform" />
+                <div className="w-3.5 h-3.5 rounded-full bg-folusho-sage-400 mt-2.5 flex-shrink-0 shadow-sm group-hover/item:scale-125 transition-transform" />
                 <div>
-                  <h3 className="text-xs font-black text-white uppercase tracking-[0.2em] mb-2">Elite Governance</h3>
-                  <p className="text-sm text-nebula-slate-500 font-bold leading-relaxed">Centralized intelligence for institutional precision.</p>
+                  <h3 className="text-xs font-black text-folusho-slate-900 uppercase tracking-[0.25em] mb-2">Elite Governance</h3>
+                  <p className="text-sm text-folusho-slate-400 font-bold leading-relaxed">Centralized intelligence for academic and institutional precision.</p>
                 </div>
               </div>
               <div className="flex gap-6 group/item">
-                <div className="w-3 h-3 rounded-full bg-nebula-teal-500 mt-2.5 flex-shrink-0 shadow-[0_0_15px_rgba(20,184,166,0.5)] group-hover/item:scale-150 transition-transform" />
+                <div className="w-3.5 h-3.5 rounded-full bg-folusho-coral-400 mt-2.5 flex-shrink-0 shadow-sm group-hover/item:scale-125 transition-transform" />
                 <div>
-                  <h3 className="text-xs font-black text-white uppercase tracking-[0.2em] mb-2">Precision Metrics</h3>
-                  <p className="text-sm text-nebula-slate-500 font-bold leading-relaxed">Advanced frameworks for character and growth.</p>
+                  <h3 className="text-xs font-black text-folusho-slate-900 uppercase tracking-[0.25em] mb-2">Precision Metrics</h3>
+                  <p className="text-sm text-folusho-slate-400 font-bold leading-relaxed">Advanced frameworks for student character and growth analysis.</p>
                 </div>
               </div>
               <div className="flex gap-6 group/item">
-                <div className="w-3 h-3 rounded-full bg-nebula-pink-500 mt-2.5 flex-shrink-0 shadow-[0_0_15px_rgba(236,72,153,0.5)] group-hover/item:scale-150 transition-transform" />
+                <div className="w-3.5 h-3.5 rounded-full bg-folusho-yellow-500 mt-2.5 flex-shrink-0 shadow-sm group-hover/item:scale-125 transition-transform" />
                 <div>
-                  <h3 className="text-xs font-black text-white uppercase tracking-[0.2em] mb-2">Strategic Alliance</h3>
-                  <p className="text-sm text-nebula-slate-500 font-bold leading-relaxed">Transparent engagement for stakeholders.</p>
+                  <h3 className="text-xs font-black text-folusho-slate-900 uppercase tracking-[0.25em] mb-2">Strategic Alliance</h3>
+                  <p className="text-sm text-folusho-slate-400 font-bold leading-relaxed">Transparent and real-time engagement for all school stakeholders.</p>
                 </div>
               </div>
            </div>
@@ -422,40 +422,40 @@ export default function Dashboard() {
         variants={itemVariants}
         className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12"
       >
-        <div className="nebula-card">
-          <h2 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em] mb-10">
+        <div className="folusho-card">
+          <h2 className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] mb-12">
             Performance Matrix
           </h2>
           <div style={{ width: '100%', height: 320 }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={classPerformanceData}>
                 <CartesianGrid
-                  strokeDasharray="3 3"
+                  strokeDasharray="4 4"
                   vertical={false}
-                  stroke="rgba(255,255,255,0.05)"
+                  stroke="rgba(45,42,38,0.05)"
                 />
                 <XAxis
                   dataKey="name"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: "#64748b", fontSize: 10, fontWeight: 800 }}
+                  tick={{ fill: "#94a3b8", fontSize: 10, fontWeight: 800 }}
                 />
                 <YAxis
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: "#64748b", fontSize: 10, fontWeight: 800 }}
+                  tick={{ fill: "#94a3b8", fontSize: 10, fontWeight: 800 }}
                   domain={[0, 100]}
                 />
                 <Tooltip
-                  cursor={{ fill: "rgba(99, 102, 241, 0.05)", radius: 12 }}
+                  cursor={{ fill: "rgba(168,198,159,0.1)", radius: 16 }}
                   content={({ active, payload }) => {
                     if (active && payload && payload.length) {
                       return (
-                        <div className="bg-nebula-slate-900/90 backdrop-blur-xl border border-white/10 p-5 rounded-3xl shadow-nebula">
-                          <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-widest mb-2">
+                        <div className="bg-white border border-folusho-cream-200 p-6 rounded-4xl shadow-folusho-lg">
+                          <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-widest mb-2">
                             {payload[0].payload.name}
                           </p>
-                          <p className="text-3xl font-black text-white tracking-tighter">
+                          <p className="text-3xl font-black text-folusho-slate-900 tracking-tighter">
                             {payload[0].value}%
                           </p>
                         </div>
@@ -466,14 +466,14 @@ export default function Dashboard() {
                 />
                 <Bar
                   dataKey="average"
-                  fill="url(#indigoGradient)"
-                  radius={[8, 8, 0, 0]}
+                  fill="url(#sageGradient)"
+                  radius={[12, 12, 12, 12]}
                   barSize={48}
                 />
                 <defs>
-                  <linearGradient id="indigoGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#6366f1" />
-                    <stop offset="100%" stopColor="#4f46e5" />
+                  <linearGradient id="sageGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#A8C69F" />
+                    <stop offset="100%" stopColor="#8fb185" />
                   </linearGradient>
                 </defs>
               </BarChart>
@@ -481,8 +481,8 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="nebula-card">
-          <h2 className="text-[10px] font-black text-nebula-teal-400 uppercase tracking-[0.4em] mb-10">
+        <div className="folusho-card">
+          <h2 className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.45em] mb-12">
             Deployment Status
           </h2>
           <div style={{ width: '100%', height: 260 }}>
@@ -492,16 +492,16 @@ export default function Dashboard() {
                   data={studentStatusData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={80}
-                  outerRadius={100}
-                  paddingAngle={12}
+                  innerRadius={85}
+                  outerRadius={105}
+                  paddingAngle={15}
                   dataKey="value"
                   stroke="none"
                 >
                   {studentStatusData.map((_, index) => (
                     <Cell
                       key={`cell-${index}`}
-                      fill={[ "#6366f1", "#14b8a6", "#ec4899", "#f59e0b" ][index % 4]}
+                      fill={COLORS[index % COLORS.length]}
                     />
                   ))}
                 </Pie>
@@ -509,11 +509,11 @@ export default function Dashboard() {
                   content={({ active, payload }) => {
                     if (active && payload && payload.length) {
                       return (
-                        <div className="bg-nebula-slate-900/90 backdrop-blur-xl border border-white/10 p-5 rounded-3xl shadow-nebula">
-                          <p className="text-[10px] font-black text-nebula-teal-400 uppercase tracking-widest mb-2">
+                        <div className="bg-white border border-folusho-cream-200 p-6 rounded-4xl shadow-folusho-lg">
+                          <p className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-widest mb-2">
                             {payload[0].name}
                           </p>
-                          <p className="text-3xl font-black text-white tracking-tighter">
+                          <p className="text-3xl font-black text-folusho-slate-900 tracking-tighter">
                             {payload[0].value}
                           </p>
                         </div>
@@ -525,18 +525,18 @@ export default function Dashboard() {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="flex flex-wrap justify-center gap-8 mt-6">
+          <div className="flex flex-wrap justify-center gap-8 mt-10">
             {studentStatusData.map((entry, index) => (
               <div key={entry.name} className="flex items-center gap-4">
                 <div
-                  className="w-3 h-3 rounded-full"
-                  style={{ backgroundColor: [ "#6366f1", "#14b8a6", "#ec4899", "#f59e0b" ][index % 4] }}
+                  className="w-3.5 h-3.5 rounded-full shadow-sm"
+                  style={{ backgroundColor: COLORS[index % COLORS.length] }}
                 />
                 <div className="flex flex-col">
-                  <span className="text-[10px] text-nebula-slate-500 font-black uppercase tracking-widest leading-none mb-1">
+                  <span className="text-[10px] text-folusho-slate-400 font-black uppercase tracking-widest leading-none mb-1">
                     {entry.name}
                   </span>
-                  <span className="text-base text-white font-black leading-none">
+                  <span className="text-base text-folusho-slate-900 font-black leading-none">
                     {String(entry.value)}
                   </span>
                 </div>
@@ -547,17 +547,17 @@ export default function Dashboard() {
       </motion.div>
 
       {/* Performance Insights Matrix */}
-      <motion.div variants={itemVariants} className="space-y-10">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/5 pb-8">
-          <h2 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em]">
+      <motion.div variants={itemVariants} className="space-y-12">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-folusho-cream-200 pb-10">
+          <h2 className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em]">
             Precision Analytics Engine
           </h2>
-          <div className="flex items-center gap-4 bg-white/5 p-2 rounded-2xl border border-white/5">
-            <span className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest ml-3">Matrix Filter:</span>
+          <div className="flex items-center gap-4 bg-folusho-yellow-200/50 p-2.5 rounded-2xl border border-folusho-yellow-300/30">
+            <span className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest ml-3">Matrix Filter:</span>
             <select
               value={selectedAnalyticsClass}
               onChange={(e) => setSelectedAnalyticsClass(e.target.value)}
-              className="bg-nebula-slate-900 text-white rounded-xl px-4 py-2 text-xs font-black uppercase tracking-widest outline-none border border-white/10 focus:ring-2 focus:ring-nebula-indigo-500 transition-all"
+              className="bg-white text-folusho-slate-900 rounded-xl px-5 py-2.5 text-xs font-black uppercase tracking-widest outline-none border border-folusho-cream-200 focus:ring-4 focus:ring-folusho-sage-400/20 transition-all"
             >
               <option value="All">Global View</option>
               {[...new Set(students.map(s => s.class))].filter(Boolean).sort().map(c => (
@@ -576,40 +576,40 @@ export default function Dashboard() {
       </motion.div>
 
       {/* Activity Monitor Section */}
-      <motion.div variants={itemVariants} className="nebula-card">
-        <h2 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em] mb-12 flex items-center gap-4">
+      <motion.div variants={itemVariants} className="folusho-card">
+        <h2 className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] mb-12 flex items-center gap-5">
           <TrendingUp className="w-5 h-5" /> Recent Sync Operations
         </h2>
         {results.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 text-nebula-slate-700">
-            <AlertCircle className="w-20 h-20 mb-6 opacity-10" />
-            <p className="font-black uppercase tracking-[0.3em] text-[10px]">
+          <div className="flex flex-col items-center justify-center py-24 text-folusho-cream-400">
+            <AlertCircle className="w-20 h-20 mb-6 opacity-20" />
+            <p className="font-black uppercase tracking-[0.35em] text-[10px]">
               No data streams available
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {recentResults.map((result) => (
               <motion.div
                 key={result.id}
-                whileHover={{ y: -5, scale: 1.02 }}
-                className="p-8 bg-white/[0.02] rounded-3xl border border-white/5 flex justify-between items-center group transition-all duration-300 shadow-lg"
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="p-10 bg-folusho-cream-100/50 rounded-4xl border border-folusho-cream-200 flex justify-between items-center group transition-all duration-500 shadow-sm hover:shadow-folusho"
               >
-                <div className="space-y-2">
-                  <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.2em]">
+                <div className="space-y-3">
+                  <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.25em]">
                     {result.term}
                   </p>
-                  <p className="text-lg font-black text-white tracking-tighter">
+                  <p className="text-xl font-black text-folusho-slate-900 tracking-tighter">
                     {result.academicYear}
                   </p>
                 </div>
                 <div className="flex flex-col items-end gap-1">
                   <span
-                    className={`text-3xl font-black ${result.percentage >= 60 ? "text-nebula-teal-500" : "text-nebula-pink-500"} tracking-tighter`}
+                    className={`text-4xl font-black ${result.percentage >= 60 ? "text-folusho-sage-500" : "text-folusho-coral-500"} tracking-tighter`}
                   >
                     {result.grade}
                   </span>
-                  <span className="text-[10px] font-black text-nebula-slate-500 tracking-widest">
+                  <span className="text-[11px] font-black text-folusho-slate-400 tracking-widest">
                     {Math.round(result.percentage)}%
                   </span>
                 </div>
@@ -621,9 +621,9 @@ export default function Dashboard() {
 
       {/* AI Performance Insights - Only for Admin/Teacher */}
       {(userRole === "Admin" || userRole === "Teacher") && (
-        <motion.div variants={itemVariants} className="pt-12">
-          <h2 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em] mb-10">
-            Nebula AI Analytics Engine
+        <motion.div variants={itemVariants} className="pt-16">
+          <h2 className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] mb-12">
+            Folusho AI Analytics Engine
           </h2>
           <PerformanceInsights />
         </motion.div>
@@ -633,18 +633,18 @@ export default function Dashboard() {
       {(userRole === "Admin" || userRole === "Teacher") && (
         <motion.div
           variants={itemVariants}
-          className="grid grid-cols-1 xl:grid-cols-2 gap-12"
+          className="grid grid-cols-1 xl:grid-cols-2 gap-16"
         >
           {userRole === "Admin" && (
-            <div className="space-y-8">
-              <h2 className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.4em]">
+            <div className="space-y-10">
+              <h2 className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em]">
                 Sentinel Monitor
               </h2>
               <TeacherActivityLog />
             </div>
           )}
-          <div className="space-y-8">
-            <h2 className="text-[10px] font-black text-nebula-teal-400 uppercase tracking-[0.4em]">
+          <div className="space-y-10">
+            <h2 className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.45em]">
               Inter-Citadel Communication
             </h2>
             <ChatSystem />
@@ -658,29 +658,29 @@ export default function Dashboard() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-nebula-slate-950/80 backdrop-blur-xl flex items-center justify-center p-8 z-50"
+          className="fixed inset-0 bg-folusho-slate-900/60 backdrop-blur-md flex items-center justify-center p-8 z-50"
           onClick={() => !isChangingPassword && setShowPasswordModal(false)}
         >
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 30 }}
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 30 }}
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
             onClick={(e) => e.stopPropagation()}
-            className="bg-nebula-slate-900 border border-white/5 rounded-5xl shadow-nebula-lg max-w-lg w-full p-12"
+            className="bg-white border border-folusho-cream-200 rounded-[3rem] shadow-folusho max-w-lg w-full p-12 overflow-hidden"
           >
             <div className="flex items-center gap-6 mb-12">
-              <div className="p-4 bg-nebula-indigo-500/10 rounded-3xl border border-nebula-indigo-500/20">
-                <Lock className="w-8 h-8 text-nebula-indigo-400" />
+              <div className="p-5 bg-folusho-sage-50 rounded-[2rem] border border-folusho-sage-100 shadow-sm">
+                <Lock className="w-8 h-8 text-folusho-sage-500" />
               </div>
-              <h2 className="text-xl font-black text-white tracking-tighter uppercase leading-none">
-                Update <br /> <span className="text-nebula-indigo-500">Credentials</span>
+              <h2 className="text-2xl font-black text-folusho-slate-900 tracking-tighter uppercase leading-none">
+                Update <br /> <span className="text-folusho-sage-500">Credentials</span>
               </h2>
             </div>
 
             <form onSubmit={handlePasswordChange} className="space-y-8">
               {/* Current Password */}
-              <div className="space-y-3">
-                <label className="text-[10px] font-black text-nebula-indigo-400/60 uppercase tracking-[0.2em] px-2">
+              <div className="space-y-4">
+                <label className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.4em] px-2">
                   Identity Verification
                 </label>
                 <div className="relative group">
@@ -694,7 +694,7 @@ export default function Dashboard() {
                       })
                     }
                     disabled={isChangingPassword}
-                    className="input-nebula !py-5"
+                    className="input-folusho !py-5"
                     placeholder="Enter current password"
                   />
                   <button
@@ -706,7 +706,7 @@ export default function Dashboard() {
                       })
                     }
                     disabled={isChangingPassword}
-                    className="absolute right-5 top-1/2 -translate-y-1/2 text-nebula-indigo-500 hover:text-white transition-colors"
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-folusho-slate-400 hover:text-folusho-sage-500 transition-colors"
                   >
                     {showPassword.current ? (
                       <EyeOff className="w-5 h-5" />
@@ -718,8 +718,8 @@ export default function Dashboard() {
               </div>
 
               {/* New Password */}
-              <div className="space-y-3">
-                <label className="text-[10px] font-black text-nebula-indigo-400/60 uppercase tracking-[0.2em] px-2">
+              <div className="space-y-4">
+                <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">
                   New Encryption Sequence
                 </label>
                 <div className="relative group">
@@ -733,7 +733,7 @@ export default function Dashboard() {
                       })
                     }
                     disabled={isChangingPassword}
-                    className="input-nebula !py-5"
+                    className="input-folusho !py-5"
                     placeholder="Enter new password"
                   />
                   <button
@@ -745,7 +745,7 @@ export default function Dashboard() {
                       })
                     }
                     disabled={isChangingPassword}
-                    className="absolute right-5 top-1/2 -translate-y-1/2 text-nebula-indigo-500 hover:text-white transition-colors"
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-folusho-slate-400 hover:text-folusho-sage-500 transition-colors"
                   >
                     {showPassword.new ? (
                       <EyeOff className="w-5 h-5" />
@@ -754,14 +754,14 @@ export default function Dashboard() {
                     )}
                   </button>
                 </div>
-                <p className="text-[10px] text-nebula-slate-600 font-black uppercase tracking-widest mt-3 px-2">
-                  Complexity Req: 12+ chars, mixed casing, symbol
+                <p className="text-[10px] text-folusho-slate-400 font-bold uppercase tracking-widest mt-3 px-2">
+                  Min 12 chars, mixed casing, symbol
                 </p>
               </div>
 
               {/* Confirm Password */}
-              <div className="space-y-3">
-                <label className="text-[10px] font-black text-nebula-indigo-400/60 uppercase tracking-[0.2em] px-2">
+              <div className="space-y-4">
+                <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">
                   Verify Sequence
                 </label>
                 <div className="relative group">
@@ -775,7 +775,7 @@ export default function Dashboard() {
                       })
                     }
                     disabled={isChangingPassword}
-                    className="input-nebula !py-5"
+                    className="input-folusho !py-5"
                     placeholder="Confirm new password"
                   />
                   <button
@@ -787,7 +787,7 @@ export default function Dashboard() {
                       })
                     }
                     disabled={isChangingPassword}
-                    className="absolute right-5 top-1/2 -translate-y-1/2 text-nebula-indigo-500 hover:text-white transition-colors"
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-folusho-slate-400 hover:text-folusho-sage-500 transition-colors"
                   >
                     {showPassword.confirm ? (
                       <EyeOff className="w-5 h-5" />
@@ -802,38 +802,31 @@ export default function Dashboard() {
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-start gap-2"
+                  className="p-5 bg-folusho-coral-50 border border-folusho-coral-100 rounded-3xl flex items-start gap-4"
                 >
-                  <X className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-red-600 dark:text-red-400">
+                  <X className="w-5 h-5 text-folusho-coral-500 flex-shrink-0 mt-0.5" />
+                  <p className="text-sm font-bold text-folusho-coral-500">
                     {passwordError}
                   </p>
                 </motion.div>
               )}
 
-              {/* Success Message */}
               {passwordSuccess && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg flex items-start gap-2"
+                  className="p-5 bg-folusho-sage-50 border border-folusho-sage-100 rounded-3xl flex items-start gap-4"
                 >
-                  <Check className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-green-600 dark:text-green-400">
-                    {passwordSuccess}
+                  <CheckCircle className="w-5 h-5 text-folusho-sage-500 flex-shrink-0 mt-0.5" />
+                  <p className="text-sm font-bold text-folusho-sage-600">
+                    Credentials updated successfully.
                   </p>
                 </motion.div>
               )}
 
-              {/* Buttons */}
-              <div className="flex gap-3 mt-6">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+              <div className="flex gap-6 pt-6">
+                <button
                   type="button"
-                  onClick={() => {
-                    setShowPasswordModal(false);
-                    setPasswordForm({
                       currentPassword: "",
                       newPassword: "",
                       confirmPassword: "",

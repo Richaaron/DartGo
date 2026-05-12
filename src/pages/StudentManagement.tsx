@@ -448,35 +448,35 @@ export default function StudentManagement() {
       {/* ── Dynamic Header ────────────────────────────── */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-nebula-indigo-500/10 border border-nebula-indigo-500/20 text-nebula-indigo-400 text-[10px] font-black tracking-[0.3em] uppercase backdrop-blur-md">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-50 border border-folusho-sage-100 text-folusho-sage-500 text-[10px] font-black tracking-[0.3em] uppercase">
             Academic Governance
           </div>
-          <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-none">
+          <h1 className="text-3xl md:text-5xl font-black text-folusho-slate-900 tracking-tighter leading-none">
             Champion <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-nebula-indigo-400 via-nebula-teal-400 to-nebula-pink-400">Inventory.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-500 via-folusho-coral-400 to-folusho-sage-600">Inventory.</span>
           </h1>
-          <p className="text-nebula-slate-400 text-sm font-bold max-w-xl leading-relaxed tracking-tight">
+          <p className="text-folusho-slate-400 text-sm font-bold max-w-xl leading-relaxed tracking-tight">
             {isTeacher
               ? isFormCapableTeacher
-                ? "Oversee the development of your assigned champions."
-                : "View the academic progress of your student cohorts."
-              : "Global institutional oversight of the student population."}
+                ? "Oversee the development and academic journey of your assigned champions."
+                : "View the academic growth and registry of your student cohorts."
+              : "Global institutional oversight and registry of the student population."}
           </p>
         </div>
 
         <div className="flex flex-wrap gap-6">
           <button
             onClick={() => setShowBulkAssign(true)}
-            className="btn-vibrant from-white/5 to-white/10 !text-white border border-white/10 hover:border-nebula-indigo-500/50 shadow-none"
+            className="btn-vibrant bg-white border border-folusho-cream-200 !text-folusho-slate-900 shadow-sm"
           >
-            <BookOpen className="w-5 h-5 text-nebula-indigo-400" />
+            <BookOpen className="w-5 h-5 text-folusho-sage-500" />
             Bulk Matrix
           </button>
           <button
             onClick={handleExport}
-            className="btn-vibrant from-white/5 to-white/10 !text-white border border-white/10 hover:border-nebula-teal-500/50 shadow-none"
+            className="btn-vibrant bg-white border border-folusho-cream-200 !text-folusho-slate-900 shadow-sm"
           >
-            <Download className="w-5 h-5 text-nebula-teal-400" />
+            <Download className="w-5 h-5 text-folusho-coral-500" />
             Vault Export
           </button>
           <button
@@ -485,7 +485,7 @@ export default function StudentManagement() {
               setShowForm(true);
             }}
             disabled={isTeacher && !isFormCapableTeacher}
-            className="btn-vibrant from-nebula-indigo-600 to-nebula-indigo-800 disabled:opacity-30"
+            className="btn-vibrant bg-folusho-sage-400 disabled:opacity-30"
           >
             <Plus className="w-5 h-5" />
             New Identity
@@ -494,26 +494,26 @@ export default function StudentManagement() {
       </div>
 
       {/* ── Intelligence Filters ───────────────────────── */}
-      <div className="nebula-card !p-10">
+      <div className="folusho-card !p-10 border-folusho-cream-200">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div className="space-y-3">
-            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em] px-2">
               Identity Search
             </label>
             <div className="relative group">
-              <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-nebula-indigo-500 group-focus-within:text-white transition-colors" />
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-sage-400 group-focus-within:text-folusho-sage-600 transition-colors" />
               <input
                 type="text"
                 placeholder="Name, ID or Registry..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="input-nebula pl-14"
+                className="input-folusho !pl-16"
               />
             </div>
           </div>
 
           <div className="space-y-3">
-            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em] px-2">
               Academic Level
             </label>
             <select
@@ -522,7 +522,7 @@ export default function StudentManagement() {
                 setSelectedLevel(e.target.value as any);
                 setSelectedClass("All");
               }}
-              className="input-nebula !py-4"
+              className="input-folusho"
             >
               <option value="All">All Operations</option>
               <option value="Pre-Nursery">Pre-Nursery</option>
@@ -533,13 +533,13 @@ export default function StudentManagement() {
           </div>
 
           <div className="space-y-3">
-            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em] px-2">
               Squad / Class
             </label>
             <select
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
-              className="input-nebula !py-4"
+              className="input-folusho"
             >
               <option value="All">Global Deployment</option>
               {(isTeacher ? assignedClasses : availableClassesForLevel).map(
@@ -555,7 +555,7 @@ export default function StudentManagement() {
       </div>
 
       {/* ── Data Matrix ────────────────────────────────── */}
-      <div className="nebula-card !p-0 overflow-hidden">
+      <div className="folusho-card !p-0 border-folusho-cream-200">
         <Table
           columns={columns}
           data={filteredStudents}
@@ -565,14 +565,14 @@ export default function StudentManagement() {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => handleOpenAdvancedEditor(student)}
-                    className="p-2.5 rounded-xl bg-white/5 hover:bg-nebula-indigo-500/20 text-nebula-indigo-400 transition-all border border-white/5"
+                    className="p-3 rounded-2xl bg-folusho-sage-50 hover:bg-folusho-sage-100 text-folusho-sage-600 transition-all border border-folusho-sage-100"
                     title="Intelligence Editor"
                   >
                     <Edit2 size={16} />
                   </button>
                   <button
                     onClick={() => handleOpenSubjectAssignment(student)}
-                    className="p-2.5 rounded-xl bg-white/5 hover:bg-nebula-teal-500/20 text-nebula-teal-400 transition-all border border-white/5"
+                    className="p-3 rounded-2xl bg-folusho-yellow-50 hover:bg-folusho-yellow-100 text-folusho-yellow-700 transition-all border border-folusho-yellow-100"
                     title="Matrix Assignment"
                   >
                     <BookOpen size={16} />
@@ -580,7 +580,7 @@ export default function StudentManagement() {
                   {permissions.canDelete && (
                     <button
                       onClick={() => handleDeleteStudent(student.id)}
-                      className="p-2.5 rounded-xl bg-white/5 hover:bg-nebula-pink-500/20 text-nebula-pink-400 transition-all border border-white/5"
+                      className="p-3 rounded-2xl bg-folusho-coral-50 hover:bg-folusho-coral-100 text-folusho-coral-600 transition-all border border-folusho-coral-100"
                       title="Terminate Identity"
                     >
                       <Trash2 size={16} />
@@ -593,17 +593,17 @@ export default function StudentManagement() {
               return (
                 <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${
                   student.status === "Active" 
-                    ? "bg-nebula-teal-500/10 text-nebula-teal-400 border border-nebula-teal-500/20" 
-                    : "bg-nebula-slate-500/10 text-nebula-slate-400 border border-nebula-slate-500/20"
+                    ? "bg-folusho-sage-100 text-folusho-sage-600 border border-folusho-sage-200" 
+                    : "bg-folusho-cream-200 text-folusho-slate-400 border border-folusho-cream-300"
                 }`}>
                   {student.status}
                 </span>
               );
             }
             if (key === "registrationNumber") {
-              return <span className="font-mono font-black text-nebula-indigo-400">{student[key]}</span>;
+              return <span className="font-mono font-black text-folusho-sage-600">{student[key]}</span>;
             }
-            return <span className="font-bold text-white">{student[key]}</span>;
+            return <span className="font-bold text-folusho-slate-900">{student[key]}</span>;
           }}
         />
       </div>
@@ -615,13 +615,13 @@ export default function StudentManagement() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-nebula-slate-950/80 backdrop-blur-xl flex items-center justify-center z-50 p-6"
+            className="fixed inset-0 bg-folusho-slate-900/60 backdrop-blur-xl flex items-center justify-center z-50 p-6"
           >
             <motion.div 
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              className="nebula-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/10"
+              className="folusho-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-folusho-cream-300 shadow-folusho-lg"
             >
               <StudentForm
                 onSubmit={handleSubmitStudent}
@@ -653,13 +653,13 @@ export default function StudentManagement() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-nebula-slate-950/80 backdrop-blur-xl flex items-center justify-center z-50 p-6"
+            className="fixed inset-0 bg-folusho-slate-900/60 backdrop-blur-xl flex items-center justify-center z-50 p-6"
           >
             <motion.div 
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              className="nebula-card max-w-4xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/10"
+              className="folusho-card max-w-4xl w-full max-h-[90vh] overflow-y-auto !p-0 border-folusho-cream-300 shadow-folusho-lg"
             >
               <StudentSubjectForm
                 student={selectedStudentForSubjects}
@@ -679,18 +679,18 @@ export default function StudentManagement() {
 
       {/* Bulk Subject Assignment Modal */}
       {showBulkAssign && (
-        <div className="fixed inset-0 bg-nebula-slate-950/80 backdrop-blur-xl flex items-center justify-center z-50 p-6">
+        <div className="fixed inset-0 bg-folusho-slate-900/60 backdrop-blur-xl flex items-center justify-center z-50 p-6">
           <motion.div 
             initial={{ scale: 0.9, y: 20 }}
             animate={{ scale: 1, y: 0 }}
-            className="nebula-card max-w-2xl w-full !p-0 overflow-hidden border-white/10 shadow-nebula-lg"
+            className="folusho-card max-w-2xl w-full !p-0 overflow-hidden border-folusho-cream-300 shadow-folusho-lg"
           >
-            <div className="p-10 bg-gradient-to-r from-nebula-indigo-600 to-nebula-indigo-900 text-white flex justify-between items-center">
+            <div className="p-10 bg-folusho-sage-400 text-white flex justify-between items-center">
               <div>
                 <h2 className="text-3xl font-black uppercase tracking-tighter leading-none">
-                  Bulk Matrix <br /> <span className="text-white/60">Synchronization</span>
+                  Bulk Matrix <br /> <span className="text-white/80">Synchronization</span>
                 </h2>
-                <p className="text-[10px] font-black uppercase tracking-[0.3em] mt-3 opacity-70">
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] mt-3 opacity-80">
                   Assign protocols to student cohorts
                 </p>
               </div>
@@ -704,7 +704,7 @@ export default function StudentManagement() {
 
             <div className="p-10 space-y-10 max-h-[70vh] overflow-y-auto custom-scrollbar">
               <div className="space-y-4">
-                <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                <label className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.35em] px-2">
                   1. Target Cohort / Class
                 </label>
                 <select
@@ -714,7 +714,7 @@ export default function StudentManagement() {
                     setBulkAssignArm("");
                     setBulkAssignSubjects([]);
                   }}
-                  className="input-nebula !py-4"
+                  className="input-folusho"
                 >
                   <option value="">Choose a target...</option>
                   {[
@@ -734,13 +734,13 @@ export default function StudentManagement() {
               {/* Arm selector – only visible for SSS classes */}
               {bulkAssignClass && bulkAssignClass.toUpperCase().includes('SSS') && (
                 <div className="space-y-4">
-                  <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                  <label className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.35em] px-2">
                     2. Strategic Department
                   </label>
-                  <p className="text-[10px] text-nebula-slate-500 font-bold uppercase tracking-widest px-2">
+                  <p className="text-[10px] text-folusho-slate-400 font-bold uppercase tracking-widest px-2">
                     General protocols are auto-mapped. Select specialized department below.
                   </p>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-3 gap-6">
                     {(['Science', 'Art', 'Commercial'] as const).map((arm) => (
                       <button
                         key={arm}
@@ -751,9 +751,9 @@ export default function StudentManagement() {
                             .map(s => s.id);
                           setBulkAssignSubjects(armIds);
                         }}
-                        className={`py-4 px-6 rounded-2xl border font-black text-xs tracking-widest uppercase transition-all ${bulkAssignArm === arm
-                            ? 'bg-nebula-indigo-600 text-white border-nebula-indigo-500 shadow-nebula' 
-                            : 'bg-white/5 border-white/5 text-nebula-slate-400 hover:border-nebula-indigo-500/50'
+                        className={`py-4 px-6 rounded-3xl border-2 font-black text-[10px] tracking-widest uppercase transition-all ${bulkAssignArm === arm
+                            ? 'bg-folusho-sage-400 text-white border-folusho-sage-500 shadow-folusho' 
+                            : 'bg-white border-folusho-cream-200 text-folusho-slate-400 hover:border-folusho-sage-300'
                           }`}
                       >
                         {arm}
@@ -771,19 +771,19 @@ export default function StudentManagement() {
                     {/* === Arm subjects (SSS only) – auto-checked, can uncheck === */}
                     {bulkAssignClass.toUpperCase().includes('SSS') && (
                       <div className="space-y-4">
-                        <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2 flex items-center gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full bg-nebula-indigo-500" />
+                        <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2 flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-folusho-sage-500" />
                           {bulkAssignArm} Specialized Matrix
                         </p>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                           {subjects
                             .filter(s => (s.code?.startsWith('SSS-') || (s.level === 'Secondary' && s.subjectCategory)) && s.subjectCategory === bulkAssignArm)
                             .map(subject => (
                               <label
                                 key={subject.id}
-                                className={`flex items-center gap-4 p-5 rounded-3xl border transition-all cursor-pointer ${bulkAssignSubjects.includes(subject.id)
-                                    ? 'bg-nebula-indigo-500/10 border-nebula-indigo-500/40 shadow-inner'
-                                    : 'bg-white/[0.02] border-white/5 opacity-40'
+                                className={`flex items-center gap-5 p-6 rounded-[2rem] border transition-all cursor-pointer ${bulkAssignSubjects.includes(subject.id)
+                                    ? 'bg-folusho-sage-50 border-folusho-sage-300 shadow-inner'
+                                    : 'bg-folusho-cream-50/30 border-folusho-cream-100 opacity-50 hover:opacity-100'
                                   }`}
                               >
                                 <input
@@ -796,11 +796,11 @@ export default function StudentManagement() {
                                         : [...prev, subject.id]
                                     );
                                   }}
-                                  className="w-5 h-5 bg-nebula-slate-900 border-white/10 text-nebula-indigo-600 rounded-lg focus:ring-nebula-indigo-500"
+                                  className="w-5 h-5 bg-white border-folusho-cream-200 text-folusho-sage-600 rounded-lg focus:ring-folusho-sage-500"
                                 />
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-black text-white truncate">{subject.name}</p>
-                                  <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">{subject.code}</p>
+                                  <p className="text-sm font-black text-folusho-slate-900 truncate">{subject.name}</p>
+                                  <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest mt-1">{subject.code}</p>
                                 </div>
                               </label>
                             ))}
@@ -811,19 +811,19 @@ export default function StudentManagement() {
                     {/* === General subjects (SSS only) – unchecked, manual pick === */}
                     {bulkAssignClass.toUpperCase().includes('SSS') && (
                       <div className="space-y-4">
-                        <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2 flex items-center gap-2">
-                           <div className="w-1.5 h-1.5 rounded-full bg-nebula-teal-500" />
+                        <label className="text-[10px] font-black text-folusho-yellow-600 uppercase tracking-[0.45em] px-2 flex items-center gap-2">
+                           <div className="w-1.5 h-1.5 rounded-full bg-folusho-yellow-500" />
                            General Core Matrix (Manual Selection)
                         </label>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                           {subjects
                             .filter(s => (s.code?.startsWith('SSS-') || (s.level === 'Secondary' && s.subjectCategory)) && s.subjectCategory === 'General')
                             .map(subject => (
                               <label
                                 key={subject.id}
-                                className={`flex items-center gap-4 p-5 rounded-3xl border transition-all cursor-pointer ${bulkAssignSubjects.includes(subject.id)
-                                    ? 'bg-nebula-teal-500/10 border-nebula-teal-500/40 shadow-inner'
-                                    : 'bg-white/[0.02] border-white/5'
+                                className={`flex items-center gap-5 p-6 rounded-[2rem] border transition-all cursor-pointer ${bulkAssignSubjects.includes(subject.id)
+                                    ? 'bg-folusho-yellow-50 border-folusho-yellow-300 shadow-inner'
+                                    : 'bg-folusho-cream-50/30 border-folusho-cream-100 hover:bg-white transition-all'
                                   }`}
                               >
                                 <input
@@ -836,11 +836,11 @@ export default function StudentManagement() {
                                         : [...prev, subject.id]
                                     );
                                   }}
-                                  className="w-5 h-5 bg-nebula-slate-900 border-white/10 text-nebula-teal-600 rounded-lg focus:ring-nebula-teal-500"
+                                  className="w-5 h-5 bg-white border-folusho-cream-200 text-folusho-yellow-600 rounded-lg focus:ring-folusho-yellow-500"
                                 />
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-black text-white truncate">{subject.name}</p>
-                                  <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">{subject.code}</p>
+                                  <p className="text-sm font-black text-folusho-slate-900 truncate">{subject.name}</p>
+                                  <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest mt-1">{subject.code}</p>
                                 </div>
                               </label>
                             ))}
@@ -851,10 +851,10 @@ export default function StudentManagement() {
                     {/* === Non-SSS classes (JSS / Primary) – standard subject picker === */}
                     {!bulkAssignClass.toUpperCase().includes('SSS') && (
                       <div className="space-y-4">
-                        <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                        <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
                           2. Synchronize Protocols
                         </label>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                           {subjects
                             .filter((s) => {
                               if (!s) return false;
@@ -870,9 +870,9 @@ export default function StudentManagement() {
                             .map((subject) => (
                               <label
                                 key={subject.id}
-                                className={`flex items-center gap-4 p-5 rounded-3xl border transition-all cursor-pointer ${bulkAssignSubjects.includes(subject.id)
-                                    ? 'bg-nebula-indigo-500/10 border-nebula-indigo-500/40 shadow-inner'
-                                    : 'bg-white/[0.02] border-white/5'
+                                className={`flex items-center gap-5 p-6 rounded-[2rem] border transition-all cursor-pointer ${bulkAssignSubjects.includes(subject.id)
+                                    ? 'bg-folusho-sage-50 border-folusho-sage-300 shadow-inner'
+                                    : 'bg-folusho-cream-50/30 border-folusho-cream-100 hover:bg-white transition-all'
                                   }`}
                               >
                                 <input
@@ -885,11 +885,11 @@ export default function StudentManagement() {
                                         : [...prev, subject.id]
                                     );
                                   }}
-                                  className="w-5 h-5 bg-nebula-slate-900 border-white/10 text-nebula-indigo-600 rounded-lg focus:ring-nebula-indigo-500"
+                                  className="w-5 h-5 bg-white border-folusho-cream-200 text-folusho-sage-600 rounded-lg focus:ring-folusho-sage-500"
                                 />
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-black text-white truncate">{subject.name}</p>
-                                  <p className="text-[10px] font-black text-nebula-slate-500 uppercase tracking-widest">{subject.code}</p>
+                                  <p className="text-sm font-black text-folusho-slate-900 truncate">{subject.name}</p>
+                                  <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest mt-1">{subject.code}</p>
                                 </div>
                               </label>
                             ))}
@@ -940,74 +940,74 @@ export default function StudentManagement() {
       )}
 
       {/* Table Replacement: Scholar Card Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {filteredStudents.length > 0 ? (
           filteredStudents.map((student) => (
             <div
               key={student.id}
-              className="professional-card p-6 group hover:bg-brand-900/60 transition-all duration-300 relative overflow-hidden"
+              className="folusho-card p-8 group hover:bg-white hover:border-folusho-sage-300 transition-all duration-300 relative overflow-hidden border-folusho-cream-200"
             >
               {/* Status Badge */}
-              <div className="absolute top-4 right-4">
-                <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest ${student.status === 'Active' ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-500 border border-rose-500/20'
+              <div className="absolute top-6 right-6">
+                <span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest ${student.status === 'Active' ? 'bg-folusho-sage-50 text-folusho-sage-600 border border-folusho-sage-100' : 'bg-folusho-coral-50 text-folusho-coral-500 border border-folusho-coral-100'
                   }`}>
                   {student.status}
                 </span>
               </div>
 
               <div className="flex flex-col items-center text-center">
-                <div className="w-16 h-16 rounded-2xl bg-indigo-600/20 flex items-center justify-center text-indigo-400 font-black text-2xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                <div className="w-20 h-20 rounded-2xl bg-folusho-sage-50 flex items-center justify-center text-folusho-sage-500 font-black text-3xl mb-6 group-hover:bg-folusho-sage-500 group-hover:text-white transition-all duration-500 shadow-inner">
                   {student.firstName[0]}{student.lastName[0]}
                 </div>
-                <h3 className="text-white font-black uppercase tracking-tight text-lg mb-1">{student.firstName} {student.lastName}</h3>
-                <p className="text-indigo-400 text-[10px] font-black uppercase tracking-[0.2em] mb-4">{student.registrationNumber}</p>
+                <h3 className="text-folusho-slate-900 font-black uppercase tracking-tight text-xl mb-1">{student.firstName} {student.lastName}</h3>
+                <p className="text-folusho-slate-400 text-[10px] font-black uppercase tracking-[0.25em] mb-6">{student.registrationNumber}</p>
 
-                <div className="w-full flex justify-center gap-2 mb-6">
-                  <span className="px-3 py-1 bg-brand-800 rounded-lg text-[10px] font-black text-gray-400 uppercase tracking-widest border border-brand-700">
+                <div className="w-full flex justify-center gap-3 mb-8">
+                  <span className="px-4 py-1.5 bg-folusho-cream-50 rounded-xl text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest border border-folusho-cream-100">
                     {student.class}
                   </span>
-                  <span className="px-3 py-1 bg-brand-800 rounded-lg text-[10px] font-black text-gray-400 uppercase tracking-widest border border-brand-700">
+                  <span className="px-4 py-1.5 bg-folusho-cream-50 rounded-xl text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest border border-folusho-cream-100">
                     {student.level}
                   </span>
                 </div>
 
-                <div className="w-full grid grid-cols-3 gap-2 pt-4 border-t border-indigo-500/10">
+                <div className="w-full grid grid-cols-3 gap-3 pt-6 border-t border-folusho-cream-100">
                   <button
                     onClick={() => handleOpenAdvancedEditor(student)}
                     disabled={!permissions.canEditStudent && !permissions.canManageSubjects}
-                    className="p-2 bg-indigo-600/10 text-indigo-400 hover:bg-indigo-600 hover:text-white rounded-xl transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="p-3 bg-folusho-sage-50 text-folusho-sage-600 hover:bg-folusho-sage-500 hover:text-white rounded-2xl transition-all disabled:opacity-30 disabled:cursor-not-allowed border border-folusho-sage-100 shadow-sm"
                     title="Edit Profile"
                   >
-                    <Edit2 size={16} className="mx-auto" />
+                    <Edit2 size={18} className="mx-auto" />
                   </button>
                   <button
                     onClick={() => handleOpenSubjectAssignment(student)}
                     disabled={!permissions.canAssignSubjectsToStudent}
-                    className="p-2 bg-emerald-600/10 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded-xl transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="p-3 bg-folusho-yellow-50 text-folusho-yellow-600 hover:bg-folusho-yellow-500 hover:text-white rounded-2xl transition-all disabled:opacity-30 disabled:cursor-not-allowed border border-folusho-yellow-100 shadow-sm"
                     title="Assign Subjects"
                   >
-                    <BookOpen size={16} className="mx-auto" />
+                    <BookOpen size={18} className="mx-auto" />
                   </button>
                   <button
                     onClick={() => handleDeleteStudent(student.id)}
                     disabled={!permissions.canDeleteStudent}
-                    className="p-2 bg-rose-600/10 text-rose-400 hover:bg-rose-600 hover:text-white rounded-xl transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="p-3 bg-folusho-coral-50 text-folusho-coral-500 hover:bg-folusho-coral-500 hover:text-white rounded-2xl transition-all disabled:opacity-30 disabled:cursor-not-allowed border border-folusho-coral-100 shadow-sm"
                     title="Delete Scholar"
                   >
-                    <Trash2 size={16} className="mx-auto" />
+                    <Trash2 size={18} className="mx-auto" />
                   </button>
                 </div>
 
                 {/* Parent Credentials */}
-                <div className="mt-4 pt-4 border-t border-indigo-500/5 w-full">
-                  <div className="flex flex-col gap-1 text-[10px]">
-                    <div className="flex justify-between">
-                      <span className="text-gray-500 font-bold uppercase tracking-widest">Username</span>
-                      <span className="text-gray-300 font-black">{student.parentUsername || 'N/A'}</span>
+                <div className="mt-6 pt-6 border-t border-folusho-cream-100 w-full bg-folusho-cream-50/50 rounded-2xl p-4">
+                  <div className="flex flex-col gap-2 text-[10px]">
+                    <div className="flex justify-between items-center">
+                      <span className="text-folusho-slate-400 font-bold uppercase tracking-widest">Username</span>
+                      <span className="text-folusho-slate-700 font-black tracking-tight">{student.parentUsername || 'N/A'}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-500 font-bold uppercase tracking-widest">Password</span>
-                      <span className="text-gray-300 font-black">{student.parentPassword || 'N/A'}</span>
+                    <div className="flex justify-between items-center">
+                      <span className="text-folusho-slate-400 font-bold uppercase tracking-widest">Password</span>
+                      <span className="text-folusho-slate-700 font-black tracking-tight">{student.parentPassword || 'N/A'}</span>
                     </div>
                   </div>
                 </div>
@@ -1015,28 +1015,28 @@ export default function StudentManagement() {
             </div>
           ))
         ) : (
-          <div className="col-span-full py-20 text-center card-lg border-brand-800/40">
-            <Search size={48} className="mx-auto text-brand-700/50 mb-4" />
-            <p className="text-brand-400 font-bold uppercase tracking-widest">No scholars found matching your filters.</p>
+          <div className="col-span-full py-32 text-center folusho-card border-folusho-cream-200">
+            <Search size={56} className="mx-auto text-folusho-cream-300 mb-6" />
+            <p className="text-folusho-slate-400 font-black uppercase tracking-widest text-sm">No scholars found matching your filters.</p>
           </div>
         )}
       </div>
 
       {/* Stats Section */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-        <div className="card-lg bg-indigo-50/50 dark:bg-indigo-900/10 text-center border-indigo-500/20">
-          <p className="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.2em] mb-2">Total Scholars</p>
-          <p className="text-3xl font-black text-gray-900 dark:text-white">{filteredStudents.length}</p>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+        <div className="folusho-card bg-folusho-sage-50/50 text-center border-folusho-sage-100 !p-10">
+          <p className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.25em] mb-3">Total Scholars</p>
+          <p className="text-4xl font-black text-folusho-slate-900 tracking-tighter">{filteredStudents.length}</p>
         </div>
-        <div className="card-lg bg-emerald-50/50 dark:bg-emerald-900/10 text-center border-emerald-500/20">
-          <p className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.2em] mb-2">Active</p>
-          <p className="text-3xl font-black text-emerald-600 dark:text-emerald-400">
+        <div className="folusho-card bg-folusho-yellow-50/50 text-center border-folusho-yellow-100 !p-10">
+          <p className="text-[10px] font-black text-folusho-yellow-600 uppercase tracking-[0.25em] mb-3">Active</p>
+          <p className="text-4xl font-black text-folusho-yellow-600 tracking-tighter">
             {filteredStudents.filter((s) => s.status === "Active").length}
           </p>
         </div>
-        <div className="card-lg bg-rose-50/50 dark:bg-rose-900/10 text-center border-rose-500/20">
-          <p className="text-[10px] font-black text-rose-600 dark:text-rose-400 uppercase tracking-[0.2em] mb-2">Inactive</p>
-          <p className="text-3xl font-black text-rose-600 dark:text-rose-400">
+        <div className="folusho-card bg-folusho-coral-50/50 text-center border-folusho-coral-100 !p-10">
+          <p className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.25em] mb-3">Inactive</p>
+          <p className="text-4xl font-black text-folusho-coral-500 tracking-tighter">
             {filteredStudents.filter((s) => s.status !== "Active").length}
           </p>
         </div>

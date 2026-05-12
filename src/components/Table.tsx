@@ -12,44 +12,48 @@ interface TableProps {
   columns: Column[]
   data: any[]
   actions?: Action[]
+  renderCell?: (row: any, key: string) => React.ReactNode
 }
 
-export default function Table({ columns, data, actions }: TableProps) {
+export default function Table({ columns, data, actions, renderCell }: TableProps) {
   return (
-    <div className="overflow-x-auto rounded-2xl border border-purple-200/40 dark:border-purple-600/60">
+    <div className="overflow-x-auto rounded-[2rem] border border-folusho-cream-200 shadow-sm bg-white">
       <table className="w-full">
         <thead>
-          <tr>
+          <tr className="bg-folusho-cream-50/50 border-b border-folusho-cream-100">
             {columns.map((column) => (
               <th
                 key={column.key}
-                className="table-header text-left"
+                className="px-8 py-6 text-left text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]"
               >
                 {column.label}
               </th>
             ))}
-            {actions && <th className="table-header text-left">Actions</th>}
+            {actions && <th className="px-8 py-6 text-left text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em]">Operational Actions</th>}
           </tr>
         </thead>
-        <tbody className="divide-y divide-purple-100 dark:divide-indigo-900/20">
+        <tbody className="divide-y divide-folusho-cream-100">
           {data.map((row, index) => (
             <tr 
               key={index} 
-              className="bg-white dark:bg-brand-900/40 hover:bg-indigo-50/30 dark:hover:bg-indigo-900/20 transition-colors duration-200 group"
+              className="group hover:bg-folusho-sage-50/30 transition-all duration-300"
             >
               {columns.map((column) => (
-                <td key={column.key} className="table-cell">
-                  {row[column.key] !== null && row[column.key] !== undefined ? row[column.key] : '-'}
+                <td key={column.key} className="px-8 py-6 text-sm font-bold text-folusho-slate-700">
+                  {renderCell 
+                    ? renderCell(row, column.key) 
+                    : (row[column.key] !== null && row[column.key] !== undefined ? row[column.key] : '-')
+                  }
                 </td>
               ))}
               {actions && (
-                <td className="table-cell">
-                  <div className="flex gap-3 opacity-70 group-hover:opacity-100 transition-opacity">
+                <td className="px-8 py-6">
+                  <div className="flex gap-4 opacity-40 group-hover:opacity-100 transition-all duration-300">
                     {actions.map((action, actionIndex) => (
                       <button
                         key={actionIndex}
                         onClick={() => action.onClick(row)}
-                        className="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 text-sm font-semibold transition-all hover:scale-110"
+                        className="text-[10px] font-black text-folusho-sage-600 hover:text-folusho-sage-700 uppercase tracking-widest px-4 py-2 bg-folusho-sage-50 rounded-xl border border-folusho-sage-100 transition-all hover:scale-105 active:scale-95"
                       >
                         {action.label}
                       </button>
@@ -59,6 +63,13 @@ export default function Table({ columns, data, actions }: TableProps) {
               )}
             </tr>
           ))}
+          {data.length === 0 && (
+            <tr>
+              <td colSpan={columns.length + (actions ? 1 : 0)} className="px-8 py-24 text-center">
+                <p className="text-[10px] font-black text-folusho-slate-300 uppercase tracking-[0.4em]">No Personnel Records Detected in Matrix</p>
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

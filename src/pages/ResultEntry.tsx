@@ -355,15 +355,15 @@ export default function ResultEntry() {
             <motion.div 
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`p-6 rounded-3xl flex items-center gap-4 backdrop-blur-xl border ${
+              className={`p-6 rounded-4xl flex items-center gap-5 backdrop-blur-xl border ${
                 sendMessage.type === 'success' 
-                  ? 'bg-nebula-teal-500/10 text-nebula-teal-400 border-nebula-teal-500/20' 
-                  : 'bg-nebula-pink-500/10 text-nebula-pink-400 border-nebula-pink-500/20'
+                  ? 'bg-folusho-sage-100 text-folusho-sage-600 border-folusho-sage-200' 
+                  : 'bg-folusho-coral-100 text-folusho-coral-600 border-folusho-coral-200'
               }`}
             >
               <AlertCircle size={24} />
               <span className="font-bold tracking-tight">{sendMessage.text}</span>
-              <button onClick={() => setSendMessage(null)} className="ml-auto p-2 hover:bg-white/10 rounded-xl transition-all">
+              <button onClick={() => setSendMessage(null)} className="ml-auto p-3 hover:bg-black/5 rounded-2xl transition-all">
                 <X size={20} />
               </button>
             </motion.div>
@@ -372,54 +372,54 @@ export default function ResultEntry() {
           {/* ── Dynamic Header ────────────────────────────── */}
           <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-10">
             <div className="space-y-4">
-              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-nebula-indigo-500/10 border border-nebula-indigo-500/20 text-nebula-indigo-400 text-[10px] font-black tracking-[0.3em] uppercase backdrop-blur-md">
+              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-50 border border-folusho-sage-100 text-folusho-sage-500 text-[10px] font-black tracking-[0.35em] uppercase">
                 Protocol Management
               </div>
-              <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-none">
+              <h1 className="text-3xl md:text-5xl font-black text-folusho-slate-900 tracking-tighter leading-none">
                 Data <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-nebula-indigo-400 via-nebula-teal-400 to-nebula-pink-400">Archival.</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-500 via-folusho-coral-400 to-folusho-sage-600">Archival.</span>
               </h1>
-              <p className="text-nebula-slate-400 text-sm font-bold max-w-xl leading-relaxed tracking-tight">
+              <p className="text-folusho-slate-400 text-sm font-bold max-w-xl leading-relaxed tracking-tight">
                 {pageDescription}
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center gap-6">
-              <div className="flex bg-white/5 p-1.5 rounded-2xl border border-white/10 backdrop-blur-md shadow-nebula">
+            <div className="flex flex-col sm:flex-row items-center gap-8">
+              <div className="flex bg-folusho-yellow-100/50 p-2 rounded-3xl border border-folusho-yellow-200 shadow-sm">
                 <button
-                  className={`flex items-center gap-3 px-6 py-3 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all ${
-                    viewMode === 'students' && activeTab === 'entry' ? 'bg-nebula-indigo-600 text-white shadow-nebula' : 'text-nebula-slate-400 hover:text-white'
+                  className={`flex items-center gap-3 px-8 py-3.5 rounded-2xl text-[10px] font-black tracking-widest uppercase transition-all ${
+                    viewMode === 'students' && activeTab === 'entry' ? 'bg-folusho-sage-400 text-white shadow-folusho' : 'text-folusho-slate-400 hover:text-folusho-sage-600'
                   }`}
                   onClick={() => { setViewMode('students'); setActiveTab('entry') }}
                 >
-                  <User size={14} /> Student View
+                  <User size={15} /> Student View
                 </button>
                 <button
-                  className={`flex items-center gap-3 px-6 py-3 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all ${
-                    viewMode === 'results' && activeTab === 'entry' ? 'bg-nebula-indigo-600 text-white shadow-nebula' : 'text-nebula-slate-400 hover:text-white'
+                  className={`flex items-center gap-3 px-8 py-3.5 rounded-2xl text-[10px] font-black tracking-widest uppercase transition-all ${
+                    viewMode === 'results' && activeTab === 'entry' ? 'bg-folusho-sage-400 text-white shadow-folusho' : 'text-folusho-slate-400 hover:text-folusho-sage-600'
                   }`}
                   onClick={() => { setViewMode('results'); setActiveTab('entry') }}
                 >
-                  <List size={14} /> Result List
+                  <List size={15} /> Result List
                 </button>
                 {(isFormTeacher || user?.role === 'Admin') && (
                   <button
-                    className={`flex items-center gap-3 px-6 py-3 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all ${
-                      activeTab === 'release' ? 'bg-nebula-teal-600 text-white shadow-nebula' : 'text-nebula-slate-400 hover:text-white'
+                    className={`flex items-center gap-3 px-8 py-3.5 rounded-2xl text-[10px] font-black tracking-widest uppercase transition-all ${
+                      activeTab === 'release' ? 'bg-folusho-coral-400 text-white shadow-folusho' : 'text-folusho-slate-400 hover:text-folusho-coral-600'
                     }`}
                     onClick={() => setActiveTab('release')}
                   >
-                    <Unlock size={14} /> Release
+                    <Unlock size={15} /> Release
                   </button>
                 )}
               </div>
               
               <div className="flex gap-4">
-                <button onClick={handleExport} className="btn-vibrant from-white/5 to-white/10 !text-white border border-white/10 hover:border-nebula-indigo-500/50 shadow-none">
-                  <Download size={20} className="text-nebula-indigo-400" /> 
+                <button onClick={handleExport} className="btn-vibrant bg-white border border-folusho-cream-200 !text-folusho-slate-900 shadow-sm">
+                  <Download size={20} className="text-folusho-sage-500" /> 
                   <span className="hidden sm:inline">Export</span>
                 </button>
-                <button onClick={() => setShowForm(true)} className="btn-vibrant from-nebula-indigo-600 to-nebula-indigo-800">
+                <button onClick={() => setShowForm(true)} className="btn-vibrant bg-folusho-sage-400">
                   <Plus size={20} /> 
                   <span className="hidden sm:inline">New Protocol</span>
                 </button>
@@ -428,7 +428,7 @@ export default function ResultEntry() {
           </div>
 
           {activeTab === 'release' && (
-            <div className="nebula-card">
+            <div className="folusho-card border-folusho-cream-200">
               <ReleaseResultsPanel students={students} results={results} onRefresh={loadData} />
             </div>
           )}
@@ -436,32 +436,32 @@ export default function ResultEntry() {
           {activeTab === 'entry' && (
             <div className="space-y-10">
               {/* Intelligence Filters */}
-              <div className="nebula-card !p-10">
+              <div className="folusho-card !p-10 border-folusho-cream-200">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                    <label className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.35em] px-2">
                       Personnel Search
                     </label>
                     <div className="relative group">
-                      <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-nebula-indigo-500 group-focus-within:text-white transition-colors" />
+                      <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-sage-500 group-focus-within:text-folusho-sage-700 transition-colors" />
                       <input
                         type="text"
                         placeholder="Scan identities..."
                         value={filterTerm}
                         onChange={(e) => setFilterTerm(e.target.value)}
-                        className="input-nebula pl-14"
+                        className="input-folusho !pl-16"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+                    <label className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.35em] px-2">
                       Operational Sector
                     </label>
                     <select
                       value={selectedClass}
                       onChange={(e) => setSelectedClass(e.target.value)}
-                      className="input-nebula !py-4"
+                      className="input-folusho"
                     >
                       <option value="All">Global Sectors</option>
                       {availableClasses.map(cls => <option key={cls} value={cls}>{cls}</option>)}
@@ -471,14 +471,14 @@ export default function ResultEntry() {
               </div>
 
               {/* Data Matrix */}
-              <div className="nebula-card !p-0 overflow-hidden">
+              <div className="folusho-card !p-0 border-folusho-cream-200">
                 {viewMode === 'students' ? (
                   <Table
                     columns={[
                       { 
                         key: 'studentName', 
                         label: 'Identity',
-                        render: (v, row) => <span className="font-bold text-white">{row.firstName} {row.lastName}</span>
+                        render: (v, row) => <span className="font-bold text-folusho-slate-900">{row.firstName} {row.lastName}</span>
                       },
                       { key: 'class', label: 'Sector' },
                       {
@@ -487,7 +487,7 @@ export default function ResultEntry() {
                         render: (v, row: Student) => (
                           <button
                             onClick={() => setSelectedStudentForEntry(row)}
-                            className="px-6 py-2.5 bg-nebula-indigo-500/10 text-nebula-indigo-400 rounded-xl text-[10px] font-black tracking-widest uppercase border border-nebula-indigo-500/20 hover:bg-nebula-indigo-500 hover:text-white transition-all"
+                            className="px-8 py-3 bg-folusho-sage-50 text-folusho-sage-600 rounded-2xl text-[10px] font-black tracking-widest uppercase border border-folusho-sage-100 hover:bg-folusho-sage-400 hover:text-white transition-all shadow-sm"
                           >
                             Synchronize Data
                           </button>
@@ -505,13 +505,13 @@ export default function ResultEntry() {
                         <div className="flex gap-3">
                           <button 
                             onClick={() => { setEditingResult(r); setShowForm(true) }} 
-                            className="p-2.5 rounded-xl bg-white/5 hover:bg-nebula-indigo-500/20 text-nebula-indigo-400 transition-all border border-white/5"
+                            className="p-3 rounded-2xl bg-folusho-sage-50 hover:bg-folusho-sage-100 text-folusho-sage-600 transition-all border border-folusho-sage-100"
                           >
                             <Plus size={16} />
                           </button>
                           <button 
                             onClick={() => handleDeleteResult(r.id)} 
-                            className="p-2.5 rounded-xl bg-white/5 hover:bg-nebula-pink-500/20 text-nebula-pink-400 transition-all border border-white/5"
+                            className="p-3 rounded-2xl bg-folusho-coral-50 hover:bg-folusho-coral-100 text-folusho-coral-600 transition-all border border-folusho-coral-100"
                           >
                             <Trash2 size={16} />
                           </button>
@@ -523,15 +523,14 @@ export default function ResultEntry() {
               </div>
 
               {/* Stats Matrix */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="nebula-card !p-8 group hover:border-nebula-indigo-500/30 transition-all">
-                  <div className="flex items-center justify-between mb-4">
-                    <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em]">Total Archive</p>
-                    <BarChart3 className="w-5 h-5 text-nebula-indigo-400 opacity-50 group-hover:opacity-100 transition-opacity" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div className="folusho-card !p-10 group hover:border-folusho-sage-300 transition-all border-folusho-cream-200">
+                  <div className="flex items-center justify-between mb-6">
+                    <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.35em]">Total Archive</p>
+                    <BarChart3 className="w-5 h-5 text-folusho-sage-400 opacity-50 group-hover:opacity-100 transition-opacity" />
                   </div>
-                  <p className="text-4xl font-black text-white">{filteredResults.length}</p>
+                  <p className="text-5xl font-black text-folusho-slate-900 tracking-tighter">{filteredResults.length}</p>
                 </div>
-                {/* Additional metrics can go here */}
               </div>
             </div>
           )}
@@ -542,19 +541,19 @@ export default function ResultEntry() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-nebula-slate-950/80 backdrop-blur-xl flex items-center justify-center z-50 p-6"
+                className="fixed inset-0 bg-folusho-slate-900/60 backdrop-blur-xl flex items-center justify-center z-50 p-6"
               >
                 <motion.div 
                   initial={{ scale: 0.9, y: 20 }}
                   animate={{ scale: 1, y: 0 }}
                   exit={{ scale: 0.9, y: 20 }}
-                  className="nebula-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/10"
+                  className="folusho-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-folusho-cream-300 shadow-folusho-lg"
                 >
-                  <div className="p-10 border-b border-white/5 bg-gradient-to-r from-nebula-indigo-600/20 to-transparent">
-                    <h2 className="text-2xl font-black text-white tracking-tighter uppercase">Protocol Entry</h2>
-                    <p className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] mt-2">Initialize synchronization</p>
+                  <div className="p-12 border-b border-folusho-cream-200 bg-folusho-sage-50">
+                    <h2 className="text-3xl font-black text-folusho-slate-900 tracking-tighter uppercase leading-none">Protocol Entry</h2>
+                    <p className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.35em] mt-3">Initialize synchronization</p>
                   </div>
-                  <div className="p-10">
+                  <div className="p-12">
                     <SubjectResultForm
                       onSubmit={handleSubmitResult}
                       initialData={editingResult || undefined}

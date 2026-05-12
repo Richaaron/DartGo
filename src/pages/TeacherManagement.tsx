@@ -169,24 +169,24 @@ export default function TeacherManagement() {
       {/* ── Dynamic Header ────────────────────────────── */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-nebula-teal-500/10 border border-nebula-teal-500/20 text-nebula-teal-400 text-[10px] font-black tracking-[0.3em] uppercase backdrop-blur-md">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-50 border border-folusho-sage-100 text-folusho-sage-500 text-[10px] font-black tracking-[0.35em] uppercase">
             Human Resources
           </div>
-          <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-none">
+          <h1 className="text-3xl md:text-5xl font-black text-folusho-slate-900 tracking-tighter leading-none">
             Faculty <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-nebula-indigo-400 via-nebula-teal-400 to-nebula-pink-400">Command.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-500 via-folusho-coral-400 to-folusho-sage-600">Command.</span>
           </h1>
-          <p className="text-nebula-slate-400 text-sm font-bold max-w-xl leading-relaxed tracking-tight">
-            Orchestrate the elite educators behind the digital citadel.
+          <p className="text-folusho-slate-400 text-base font-bold max-w-xl leading-relaxed tracking-tight">
+            Orchestrate the elite educators behind the Folusho academic citadel.
           </p>
         </div>
 
         <div className="flex flex-wrap gap-6">
           <button
             onClick={handleExport}
-            className="btn-vibrant from-white/5 to-white/10 !text-white border border-white/10 hover:border-nebula-teal-500/50 shadow-none"
+            className="btn-vibrant bg-white !text-folusho-slate-600 border border-folusho-cream-200 hover:border-folusho-sage-300 shadow-sm"
           >
-            <Download className="w-5 h-5 text-nebula-teal-400" />
+            <Download className="w-5 h-5 text-folusho-sage-500" />
             Personnel Export
           </button>
           <button
@@ -194,7 +194,7 @@ export default function TeacherManagement() {
               setEditingTeacher(null);
               setShowForm(true);
             }}
-            className="btn-vibrant from-nebula-indigo-600 to-nebula-indigo-800"
+            className="btn-vibrant bg-folusho-sage-400 shadow-folusho"
           >
             <Plus className="w-5 h-5" />
             Enlist Member
@@ -203,26 +203,26 @@ export default function TeacherManagement() {
       </div>
 
       {/* ── Intelligence Filters ───────────────────────── */}
-      <div className="nebula-card !p-10">
+      <div className="folusho-card !p-12 border-folusho-cream-200">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          <div className="space-y-3">
-            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+          <div className="space-y-4">
+            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">
               Personnel Search
             </label>
             <div className="relative group">
-              <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-nebula-indigo-500 group-focus-within:text-white transition-colors" />
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-sage-400 group-focus-within:text-folusho-sage-600 transition-colors" />
               <input
                 type="text"
                 placeholder="Name, Email or Specialized Skill..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="input-nebula pl-14"
+                className="input-folusho !pl-16"
               />
             </div>
           </div>
 
-          <div className="space-y-3">
-            <label className="text-[10px] font-black text-nebula-indigo-400 uppercase tracking-[0.3em] px-2">
+          <div className="space-y-4">
+            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">
               Operational Level
             </label>
             <select
@@ -230,7 +230,7 @@ export default function TeacherManagement() {
               onChange={(e) =>
                 setSelectedLevel(e.target.value as SchoolLevel | "All")
               }
-              className="input-nebula !py-4"
+              className="input-folusho !py-5"
             >
               <option value="All">Global Operations</option>
               <option value="Pre-Nursery">Pre-Nursery</option>
@@ -243,7 +243,7 @@ export default function TeacherManagement() {
       </div>
 
       {/* ── Data Matrix ────────────────────────────────── */}
-      <div className="nebula-card !p-0 overflow-hidden">
+      <div className="folusho-card !p-0 border-folusho-cream-200">
         <Table
           columns={columns}
           data={filteredTeachers.map((teacher) => ({
@@ -254,20 +254,20 @@ export default function TeacherManagement() {
                   getTeacherSubjects(teacher).map((subject) => (
                     <span
                       key={subject}
-                      className="px-3 py-1 bg-nebula-indigo-500/10 text-nebula-indigo-400 rounded-lg text-[10px] font-black uppercase tracking-widest border border-nebula-indigo-500/20"
+                      className="px-3 py-1 bg-folusho-sage-50 text-folusho-sage-600 rounded-lg text-[10px] font-black uppercase tracking-widest border border-folusho-sage-100"
                     >
                       {subject}
                     </span>
                   ))
                 ) : (
-                  <span className="px-3 py-1 bg-nebula-pink-500/10 text-nebula-pink-400 rounded-lg text-[10px] font-black uppercase tracking-widest border border-nebula-pink-500/20">
+                  <span className="px-3 py-1 bg-folusho-coral-50 text-folusho-coral-600 rounded-lg text-[10px] font-black uppercase tracking-widest border border-folusho-coral-100">
                     Lead Mentor
                   </span>
                 )}
               </div>
             ),
             profile: (
-              <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center overflow-hidden border border-white/10 shadow-nebula">
+              <div className="w-14 h-14 rounded-2xl bg-folusho-sage-50 flex items-center justify-center overflow-hidden border border-folusho-sage-100 shadow-sm">
                 {teacher.image ? (
                   <img
                     src={teacher.image}
@@ -275,18 +275,18 @@ export default function TeacherManagement() {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <UserIcon className="w-6 h-6 text-nebula-indigo-400" />
+                  <UserIcon className="w-6 h-6 text-folusho-sage-400" />
                 )}
               </div>
             ),
-            name: <span className="font-bold text-white text-lg">{teacher.name}</span>,
-            email: <span className="font-mono text-nebula-slate-400 text-sm">{teacher.email}</span>,
+            name: <span className="font-bold text-folusho-slate-900 text-lg">{teacher.name}</span>,
+            email: <span className="font-mono text-folusho-slate-400 text-sm">{teacher.email}</span>,
             classes: (
               <div className="flex flex-wrap gap-2">
                 {(teacher.assignedClasses || []).map((c) => (
                   <span
                     key={c}
-                    className="px-3 py-1 bg-nebula-teal-500/10 text-nebula-teal-400 rounded-lg text-[10px] font-black uppercase tracking-widest border border-nebula-teal-500/20"
+                    className="px-3 py-1 bg-folusho-yellow-50 text-folusho-yellow-700 rounded-lg text-[10px] font-black uppercase tracking-widest border border-folusho-yellow-200"
                   >
                     {c}
                   </span>
@@ -294,31 +294,31 @@ export default function TeacherManagement() {
               </div>
             ),
             actions: (
-              <div className="flex gap-3">
+              <div className="flex gap-4">
                 <button
                   onClick={() => {
                     setEditingTeacher(teacher);
                     setShowForm(true);
                   }}
-                  className="p-2.5 rounded-xl bg-white/5 hover:bg-nebula-indigo-500/20 text-nebula-indigo-400 transition-all border border-white/5"
+                  className="p-3 rounded-2xl bg-folusho-sage-50 hover:bg-folusho-sage-100 text-folusho-sage-600 transition-all border border-folusho-sage-100 shadow-sm"
                   title="Modify Entry"
                 >
-                  <Edit2 size={16} />
+                  <Edit2 size={18} />
                 </button>
                 <button
                   onClick={() => handleDeleteTeacher(teacher.id)}
-                  className="p-2.5 rounded-xl bg-white/5 hover:bg-nebula-pink-500/20 text-nebula-pink-400 transition-all border border-white/5"
+                  className="p-3 rounded-2xl bg-folusho-coral-50 hover:bg-folusho-coral-100 text-folusho-coral-500 transition-all border border-folusho-coral-100 shadow-sm"
                   title="Expel Member"
                 >
-                  <Trash2 size={16} />
+                  <Trash2 size={18} />
                 </button>
               </div>
             ),
           }))}
         />
         {filteredTeachers.length === 0 && (
-          <div className="text-center py-20">
-            <p className="text-nebula-slate-500 font-bold uppercase tracking-widest text-sm">No specialized personnel detected in this sector.</p>
+          <div className="text-center py-24">
+            <p className="text-folusho-slate-400 font-bold uppercase tracking-widest text-sm">No specialized personnel detected in this sector.</p>
           </div>
         )}
       </div>
@@ -330,13 +330,13 @@ export default function TeacherManagement() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-nebula-slate-950/80 backdrop-blur-xl flex items-center justify-center z-50 p-6"
+            className="fixed inset-0 bg-folusho-slate-900/60 backdrop-blur-md flex items-center justify-center z-50 p-8"
           >
             <motion.div 
-              initial={{ scale: 0.9, y: 20 }}
+              initial={{ scale: 0.98, y: 10 }}
               animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              className="nebula-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/10"
+              exit={{ scale: 0.98, y: 10 }}
+              className="folusho-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-folusho-cream-200"
             >
               <TeacherForm
                 onSubmit={handleSubmitTeacher}
