@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
-import { X, Plus, Search, AlertCircle } from 'lucide-react'
+import { X, Plus, Search, AlertCircle, RefreshCw } from 'lucide-react'
 import { StudentSubject, Subject, Student } from '../types'
-import { motion, AnimatePresence } from 'framer-motion'
 
 interface SubjectManagementProps {
   student: Student
@@ -121,160 +120,134 @@ export default function SubjectManagement({
   const selectedCount = Object.keys(selectedSubjectsMap).length
 
   return (
-    <div className="fixed inset-0 bg-folusho-slate-900/60 backdrop-blur-md flex items-center justify-center z-[100] p-6">
-      <motion.div 
-        initial={{ scale: 0.9, y: 20 }}
-        animate={{ scale: 1, y: 0 }}
-        className="folusho-card max-w-4xl w-full !p-0 overflow-hidden border-folusho-cream-200 shadow-folusho-lg"
-      >
+    <div className="fixed inset-0 bg-slate-900/60 flex items-center justify-center z-[100] p-4">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl max-w-4xl w-full flex flex-col shadow-lg overflow-hidden">
         {/* Header */}
-        <div className="p-10 bg-folusho-sage-500 text-white flex justify-between items-center shadow-folusho relative overflow-hidden">
-          <div className="relative z-10">
-            <h2 className="text-3xl font-black uppercase tracking-tighter leading-none">
-              Matrix <br /> <span className="text-white/70">Configuration</span>
-            </h2>
-            <div className="mt-6 flex flex-col gap-2">
-              <p className="text-[10px] font-black uppercase tracking-[0.35em] opacity-90">
-                Personnel Unit: {student.firstName} {student.lastName}
-              </p>
-              <p className="text-[10px] font-black uppercase tracking-[0.35em] opacity-60">
-                Registry: {student.registrationNumber} · {student.level} · {student.class}
-              </p>
-            </div>
+        <div className="p-6 bg-indigo-600 text-white flex justify-between items-center">
+          <div>
+            <h2 className="text-xl font-bold">Assign Subjects</h2>
+            <p className="text-xs text-indigo-100 mt-1">
+              Student: {student.firstName} {student.lastName} ({student.class})
+            </p>
           </div>
           <button
             onClick={onCancel}
             type="button"
-            className="p-4 hover:bg-white/10 rounded-[1.5rem] transition-all relative z-10"
+            className="p-2 hover:bg-white/10 rounded-lg transition-all"
           >
-            <X size={28} />
+            <X size={24} />
           </button>
-          
-          {/* Decorative Circle */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3" />
         </div>
 
         {/* Content */}
-        <div className="p-12 space-y-12 max-h-[70vh] overflow-y-auto scrollbar-folusho">
-          {/* Error Alert */}
-          <AnimatePresence>
-            {error && (
-              <motion.div 
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="p-8 bg-folusho-coral-50 border border-folusho-coral-100 rounded-[2rem] flex gap-5 items-center shadow-sm"
-              >
-                <AlertCircle size={24} className="text-folusho-coral-500 flex-shrink-0" />
-                <p className="text-folusho-coral-500 font-bold tracking-tight">{error}</p>
-              </motion.div>
-            )}
-          </AnimatePresence>
+        <div className="p-8 space-y-8 overflow-y-auto max-h-[70vh]">
+          {error && (
+            <div className="p-4 bg-rose-50 border border-rose-100 rounded-lg flex gap-4 items-center">
+              <AlertCircle size={20} className="text-rose-500 flex-shrink-0" />
+              <p className="text-rose-500 text-sm font-medium">{error}</p>
+            </div>
+          )}
 
-          {/* Academic Period */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <div className="space-y-4">
-              <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">
-                Deployment Cycle (Academic Year)
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                Academic Year
               </label>
               <input
                 type="text"
                 value={academicYear}
                 onChange={(e) => setAcademicYear(e.target.value)}
-                placeholder="2024"
-                className="input-folusho"
+                placeholder="e.g. 2024"
+                className="input"
               />
             </div>
-            <div className="space-y-4">
-              <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">
-                Operational Phase (Term)
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                Term
               </label>
               <select
                 value={term}
                 onChange={(e) => setTerm(e.target.value)}
-                className="input-folusho !py-5"
+                className="input"
               >
-                <option value="First">First Phase</option>
-                <option value="Second">Second Phase</option>
-                <option value="Third">Third Phase</option>
+                <option value="First">First Term</option>
+                <option value="Second">Second Term</option>
+                <option value="Third">Third Term</option>
               </select>
             </div>
           </div>
 
-          {/* Notes */}
-          <div className="space-y-4">
-            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">
-              Strategic Observations (Notes)
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+              Notes
             </label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Enter logistical directives for this personnel unit..."
-              rows={3}
-              className="input-folusho !py-5 resize-none"
+              placeholder="Any additional notes..."
+              rows={2}
+              className="input resize-none"
             />
           </div>
 
-          {/* Search */}
-          <div className="space-y-4">
-            <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] px-2">
-              Matrix Search
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+              Search Subjects
             </label>
-            <div className="relative group">
-              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-sage-400 group-focus-within:text-folusho-sage-600 transition-colors" />
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
                 type="text"
-                placeholder="Scan institutional protocols..."
+                placeholder="Type to filter subjects..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="input-folusho !pl-16"
+                className="input pl-10"
               />
             </div>
           </div>
 
           {/* Subjects List */}
-          <div className="space-y-8">
-            <div className="flex justify-between items-center px-2">
-              <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em]">
-                Protocol Selection ({selectedCount} active)
-              </label>
+          <div className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
+                Available Subjects ({selectedCount} selected)
+              </h3>
             </div>
 
             {sortedCategories.length === 0 ? (
-              <div className="text-center py-24 bg-folusho-cream-50 rounded-[3rem] border border-dashed border-folusho-cream-200">
-                <p className="text-folusho-slate-300 font-black uppercase tracking-[0.4em] text-xs">No protocols detected in search.</p>
+              <div className="text-center py-12 bg-slate-50 dark:bg-slate-800 rounded-xl border border-dashed border-slate-200 dark:border-slate-700">
+                <p className="text-slate-500 text-sm">No subjects found.</p>
               </div>
             ) : (
-              <div className="space-y-12">
+              <div className="space-y-8">
                 {sortedCategories.map((category) => (
-                  <div key={category} className="space-y-6">
-                    <h4 className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.4em] px-6 flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-folusho-sage-400" />
-                      {category === 'General' ? 'Core Matrix' : `${category} Specialized Matrix`}
+                  <div key={category} className="space-y-3">
+                    <h4 className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
+                      {category === 'General' ? 'Common Subjects' : `${category} Subjects`}
                     </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {subjectsByCategory[category].map((subject) => {
                         const isSelected = !!selectedSubjectsMap[subject.id]
                         return (
                           <label
                             key={subject.id}
-                            className={`flex items-center gap-5 p-6 rounded-[2rem] border transition-all cursor-pointer ${
+                            className={`flex items-center gap-4 p-4 rounded-xl border transition-all cursor-pointer ${
                               isSelected
-                                ? 'bg-folusho-sage-50 border-folusho-sage-200 shadow-sm'
-                                : 'bg-white border-folusho-cream-100 hover:border-folusho-sage-200'
+                                ? 'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-200 dark:border-indigo-800 shadow-sm'
+                                : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-indigo-200'
                             }`}
                           >
                             <input
                               type="checkbox"
                               checked={isSelected}
                               onChange={() => toggleSubject(subject.id)}
-                              className="w-6 h-6 border-folusho-cream-200 text-folusho-sage-500 rounded-lg focus:ring-folusho-sage-400"
+                              className="w-5 h-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
                             />
                             <div className="flex-1 min-w-0">
-                              <p className={`text-base font-black truncate transition-colors ${isSelected ? 'text-folusho-sage-600' : 'text-folusho-slate-900'}`}>
+                              <p className={`text-sm font-bold truncate ${isSelected ? 'text-indigo-700 dark:text-indigo-300' : 'text-slate-700 dark:text-slate-300'}`}>
                                 {subject.name}
                               </p>
-                              <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest mt-1">
+                              <p className="text-[10px] text-slate-500 font-medium uppercase tracking-tight">
                                 {subject.code}
                               </p>
                             </div>
@@ -290,28 +263,28 @@ export default function SubjectManagement({
         </div>
 
         {/* Actions */}
-        <div className="p-10 bg-folusho-cream-50/50 border-t border-folusho-cream-100 flex gap-6">
+        <div className="p-6 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-800 flex gap-4">
           <button
             type="button"
             onClick={onCancel}
-            className="btn-vibrant bg-white !text-folusho-slate-600 border border-folusho-cream-200 shadow-sm hover:border-folusho-coral-200 flex-1"
+            className="flex-1 px-6 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-xl font-semibold text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
           >
-            Abort
+            Cancel
           </button>
           <button
             onClick={handleSubmit}
             disabled={isSubmitting || selectedCount === 0}
-            className="btn-vibrant bg-folusho-sage-500 flex-1 shadow-folusho"
+            className="flex-1 px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold text-sm hover:bg-indigo-700 transition-all flex items-center justify-center gap-2 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <RefreshCw size={18} className="animate-spin" />
             ) : (
               <Plus size={18} />
             )}
-            Synchronize ({selectedCount})
+            Update Subjects ({selectedCount})
           </button>
         </div>
-      </motion.div>
+      </div>
     </div>
   )
 }

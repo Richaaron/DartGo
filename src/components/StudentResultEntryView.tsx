@@ -1,5 +1,5 @@
-import { useState, useMemo, useCallback, memo } from 'react'
-import { User, BookOpen, Save, AlertCircle, ArrowLeft, TrendingUp } from 'lucide-react'
+import { useState, useMemo } from 'react'
+import { User, BookOpen, Save, AlertCircle, ArrowLeft, TrendingUp, RefreshCw } from 'lucide-react'
 import { SubjectResult, Student, Subject, StudentSubject } from '../types'
 import { calculateGrade, calculateGradePoint, calculatePercentage } from '../utils/calculations'
 import { useAuthContext } from '../context/AuthContext'
@@ -47,33 +47,25 @@ export default function StudentResultEntryView({
 
   // Filter subjects registered for this student OR subjects that already have results
   const registeredSubjects = useMemo(() => {
-    const isPrimary = student.class.toLowerCase().includes('primary') || student.class.toLowerCase().includes('nursery')
-    const studentLevel = isPrimary ? 'Primary' : 'Secondary'
-
-    // 1. Get subjects from registration table (Ignore term here, as subjects usually span all terms)
     const registeredIds = new Set(
       studentSubjects
         .filter(sa => sa.studentId === student.id)
         .map(sa => sa.subjectId)
     )
 
-    // 2. Get subjects that already have results recorded for this student in ANY term
     const resultSubjectIds = new Set(
       existingResults
         .filter(r => r.studentId === student.id)
         .map(r => r.subjectId)
     )
 
-    // Combine both sets of subject IDs
     const allSubjectIds = new Set([...Array.from(registeredIds), ...Array.from(resultSubjectIds)])
 
-    // Helper to get exact subjects for the class
     const filterSubjectsByClass = (allSubjects: Subject[], className: string, studentArm?: string): Subject[] => {
       const isSSSClass = className.toUpperCase().startsWith('SSS') || className.toUpperCase().startsWith('SS ');
       const isJSSClass = className.toUpperCase().startsWith('JSS');
       
       if (isSSSClass) {
-        // SSS students: show General subjects + their arm-specific subjects
         return allSubjects.filter(s =>
           (s.code?.startsWith('SSS-') || s.level === 'Secondary' && s.subjectCategory) && (
             s.subjectCategory === 'General' ||
@@ -91,18 +83,9 @@ export default function StudentResultEntryView({
                     className.startsWith('Nursery') ? 'Nursery' : 
                     className.startsWith('Pre-Nursery') ? 'Pre-Nursery' : 'Primary'
       
-      return allSubjects.filter(s => {
-        if (s.level !== level) return false;
-        // Specific rule: Writing is only for P1-3
-        if (s.name === 'Writing' && (className.includes('4') || className.includes('5') || className.includes('6'))) {
-          return false;
-        }
-        return true;
-      })
+      return allSubjects.filter(s => s.level === level)
     }
 
-    // If no specific subjects found via registration or results, 
-    // show ALL appropriate subjects for the student's specific class
     const finalSubjectIds = allSubjectIds.size > 0 
       ? Array.from(allSubjectIds) 
       : filterSubjectsByClass(subjects, student.class, (student as any).arm).map(s => s.id)
@@ -113,7 +96,7 @@ export default function StudentResultEntryView({
         r.studentId === student.id && 
         r.subjectId === subjectId &&
         r.term === selectedTerm &&
-        (r.academicYear === selectedYear || selectedYear === 'All')
+        r.academicYear === selectedYear
       )
 
       if (existingResult) {
@@ -130,8 +113,8 @@ export default function StudentResultEntryView({
           subjectId: subjectId,
           subjectName: subject?.name || 'Unknown Subject',
           subjectCode: subject?.code || 'N/A',
-          term: selectedTerm === 'All' ? 'First' : selectedTerm,
-          academicYear: selectedYear === 'All' ? new Date().getFullYear().toString() : selectedYear,
+          term: selectedTerm,
+          academicYear: selectedYear,
           firstCA: 0,
           secondCA: 0,
           exam: 0,
@@ -147,11 +130,10 @@ export default function StudentResultEntryView({
         } as StudentResultRow
       }
     }).sort((a, b) => a.subjectName.localeCompare(b.subjectName))
-  }, [student.id, subjects, studentSubjects, existingResults, selectedTerm, selectedYear, user?.name])
+  }, [student.id, student.class, subjects, studentSubjects, existingResults, selectedTerm, selectedYear, user?.name, (student as any).arm])
 
   const [bulkData, setBulkData] = useState<StudentResultRow[]>([])
 
-  // Update internal state when registeredSubjects change
   useMemo(() => {
     setBulkData(registeredSubjects)
   }, [registeredSubjects])
@@ -192,24 +174,11 @@ export default function StudentResultEntryView({
     setBulkData(prev => {
       return prev.map(row => {
         if (row.subjectId === subjectId) {
-          const subject = subjects.find(s => s.id === subjectId)
-          const isTraitBased = subject?.topics?.assessment_type === 'TRAIT'
-
-          if (isTraitBased && field === 'remarks') {
-            const totals = calculateTotals(subjectId, 0, 0, 0, value)
-            return {
-              ...row,
-              remarks: value,
-              ...totals,
-              isDirty: true,
-            }
-          }
-
           const firstCA = field === 'firstCA' ? value : row.firstCA
           const secondCA = field === 'secondCA' ? value : row.secondCA
           const exam = field === 'exam' ? value : row.exam
 
-          const totals = calculateTotals(subjectId, firstCA, secondCA, exam)
+          const totals = calculateTotals(subjectId, firstCA, secondCA, exam, field === 'remarks' ? value : row.remarks)
 
           return {
             ...row,
@@ -248,12 +217,12 @@ export default function StudentResultEntryView({
 
   const handleSaveAll = async () => {
     if (bulkData.length === 0) {
-      setMessage({ type: 'error', text: 'No subjects found for this student' })
+      setMessage({ type: 'error', text: 'No subjects found' })
       return
     }
 
     if (!validateScores()) {
-      setMessage({ type: 'error', text: 'Please fix validation errors before saving' })
+      setMessage({ type: 'error', text: 'Fix errors before saving' })
       return
     }
 
@@ -291,18 +260,13 @@ export default function StudentResultEntryView({
         }
       }
 
-      setMessage({ 
-        type: 'success', 
-        text: `Successfully saved ${dirtyRows.length} result(s)` 
-      })
-      
+      setMessage({ type: 'success', text: `Saved ${dirtyRows.length} result(s)` })
       setTimeout(() => {
         onResultsSaved()
         setMessage({ type: '', text: '' })
       }, 2000)
     } catch (error: any) {
-      console.error('Failed to save results:', error)
-      setMessage({ type: 'error', text: `Failed to save results: ${error.message || 'Please try again.'}` })
+      setMessage({ type: 'error', text: 'Failed to save results' })
     } finally {
       setIsSaving(false)
     }
@@ -311,151 +275,132 @@ export default function StudentResultEntryView({
   const dirtyCount = bulkData.filter(r => r.isDirty || r.isNew).length
 
   return (
-    <div className="space-y-12 relative overflow-hidden">
-      {/* Decorative Orbs */}
-      <div className="absolute -top-24 -right-24 w-64 h-64 bg-folusho-sage-500/10 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-folusho-coral-500/10 rounded-full blur-[100px] pointer-events-none" />
-
+    <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative z-10">
-        <motion.button
-          whileHover={{ x: -5 }}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <button
           onClick={onBack}
-          className="flex items-center gap-3 text-folusho-sage-400 font-black uppercase tracking-widest text-[10px] hover:text-folusho-sage-300 transition-all"
+          className="flex items-center gap-2 text-slate-500 hover:text-slate-900 font-bold text-xs transition-colors"
         >
           <ArrowLeft size={16} />
-          Back to Personnel Registry
-        </motion.button>
-        <div className="flex gap-4">
+          Back to Students
+        </button>
+        <div className="flex gap-3">
           <select
             value={selectedTerm}
             onChange={(e) => setSelectedTerm(e.target.value)}
-            className="input-folusho !py-2 !px-4 text-[10px] min-w-[140px]"
+            className="input py-1.5 px-3 text-xs w-32"
           >
-            <option value="First">First Phase</option>
-            <option value="Second">Second Phase</option>
-            <option value="Third">Third Phase</option>
+            <option value="First">First Term</option>
+            <option value="Second">Second Term</option>
+            <option value="Third">Third Term</option>
           </select>
           <select
             value={selectedYear}
             onChange={(e) => setSelectedYear(e.target.value)}
-            className="input-folusho !py-2 !px-4 text-[10px] min-w-[120px]"
+            className="input py-1.5 px-3 text-xs w-32"
           >
-            <option value={new Date().getFullYear().toString()}>{new Date().getFullYear()} Cycle</option>
-            <option value={(new Date().getFullYear() - 1).toString()}>{new Date().getFullYear() - 1} Cycle</option>
+            <option value={new Date().getFullYear().toString()}>{new Date().getFullYear()}</option>
+            <option value={(new Date().getFullYear() - 1).toString()}>{new Date().getFullYear() - 1}</option>
           </select>
         </div>
       </div>
 
-      {/* Student Profile Info */}
-      <div className="folusho-card !p-10 bg-gradient-to-br from-folusho-sage-500 to-folusho-sage-700 text-white border-none shadow-folusho-lg relative overflow-hidden">
-        <div className="flex flex-col md:flex-row items-center gap-10 relative z-10">
-          <div className="w-24 h-24 rounded-[2.5rem] bg-white/20 backdrop-blur-xl flex items-center justify-center text-4xl font-black border-2 border-white/30 shadow-2xl group-hover:scale-105 transition-transform">
-            {student.firstName[0]}{student.lastName[0]}
-          </div>
-          <div className="text-center md:text-left">
-            <h2 className="text-4xl font-black uppercase tracking-tighter leading-none">{student.firstName} {student.lastName}</h2>
-            <div className="flex flex-wrap justify-center md:justify-start gap-6 mt-4">
-              <span className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] opacity-80"><User size={14} className="opacity-60" /> {student.registrationNumber}</span>
-              <span className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] opacity-80"><BookOpen size={14} className="opacity-60" /> {student.class}</span>
-            </div>
+      {/* Student Profile */}
+      <div className="bg-indigo-600 rounded-xl p-6 text-white shadow-sm flex items-center gap-6">
+        <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center text-2xl font-bold border-2 border-white/30">
+          {student.firstName[0]}{student.lastName[0]}
+        </div>
+        <div>
+          <h2 className="text-2xl font-bold">{student.firstName} {student.lastName}</h2>
+          <div className="flex gap-4 mt-1 text-sm text-indigo-100">
+            <span className="flex items-center gap-1.5"><User size={14} /> {student.registrationNumber}</span>
+            <span className="flex items-center gap-1.5"><BookOpen size={14} /> {student.class}</span>
           </div>
         </div>
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3" />
       </div>
 
       {/* Message */}
-      <AnimatePresence>
-        {message.text && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className={`p-6 rounded-[2.5rem] flex items-center gap-4 border shadow-sm relative z-10 ${
-              message.type === 'success' 
-                ? 'bg-folusho-sage-500/10 text-folusho-sage-400 border-folusho-sage-500/20' 
-                : 'bg-folusho-coral-500/10 text-folusho-coral-400 border-folusho-coral-500/20'
-            }`}
-          >
-            <AlertCircle size={20} className="flex-shrink-0" />
-            <p className="text-[10px] font-black uppercase tracking-widest">{message.text}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {message.text && (
+        <div className={`p-4 rounded-lg flex items-center gap-3 border ${
+          message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200'
+        }`}>
+          <AlertCircle size={18} />
+          <p className="text-sm font-medium">{message.text}</p>
+        </div>
+      )}
 
-      {/* Results Table */}
-      <div className="folusho-card !p-0 overflow-hidden relative z-10 border-white/5">
+      {/* Table */}
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-white/5 border-b border-white/5">
-                <th className="px-10 py-6 text-left text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.3em]">Operational Unit</th>
-                <th className="px-6 py-6 text-center text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.3em]">Phase I (20)</th>
-                <th className="px-6 py-6 text-center text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.3em]">Phase II (20)</th>
-                <th className="px-6 py-6 text-center text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.3em]">Logic (60)</th>
-                <th className="px-6 py-6 text-center text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.3em]">Fulfillment</th>
-                <th className="px-10 py-6 text-center text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.3em]">Grade</th>
+          <table className="w-full text-sm text-left">
+            <thead className="text-xs uppercase bg-slate-50/50 text-slate-500">
+              <tr>
+                <th className="px-6 py-4">Subject</th>
+                <th className="px-4 py-4 text-center">1st CA (20)</th>
+                <th className="px-4 py-4 text-center">2nd CA (20)</th>
+                <th className="px-4 py-4 text-center">Exam (60)</th>
+                <th className="px-4 py-4 text-center">Total</th>
+                <th className="px-6 py-4 text-center">Grade</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {bulkData.map((row) => {
                 const subject = subjects.find(s => s.id === row.subjectId)
                 const isTraitBased = subject?.topics?.assessment_type === 'TRAIT'
 
                 return (
-                  <tr key={row.subjectId} className={`group hover:bg-white/5 transition-all duration-300 ${row.isDirty ? 'bg-folusho-coral-500/5' : ''}`}>
-                    <td className="px-10 py-6">
-                      <p className="text-sm font-black text-white uppercase tracking-tighter group-hover:text-folusho-sage-400 transition-colors">{row.subjectName}</p>
-                      <p className="text-[9px] text-folusho-slate-500 font-black uppercase tracking-[0.3em] mt-1.5">{row.subjectCode}</p>
+                  <tr key={row.subjectId} className={`hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors ${row.isDirty ? 'bg-amber-50/30' : ''}`}>
+                    <td className="px-6 py-4">
+                      <p className="font-bold text-slate-900 dark:text-white">{row.subjectName}</p>
+                      <p className="text-xs text-slate-500">{row.subjectCode}</p>
                     </td>
                     {!isTraitBased ? (
                       <>
-                        <td className="px-6 py-6">
+                        <td className="px-4 py-4">
                           <input
                             type="number"
                             value={row.firstCA}
                             onChange={(e) => handleScoreChange(row.subjectId, 'firstCA', parseFloat(e.target.value) || 0)}
-                            className={`w-20 mx-auto block text-center font-black input-folusho !py-2 !px-0 ${errors[`${row.subjectId}-ca1`] ? '!border-folusho-coral-500' : ''}`}
+                            className={`w-16 mx-auto block text-center border rounded-lg py-1 ${errors[`${row.subjectId}-ca1`] ? 'border-rose-500 text-rose-600' : 'border-slate-200'}`}
                           />
                         </td>
-                        <td className="px-6 py-6">
+                        <td className="px-4 py-4">
                           <input
                             type="number"
                             value={row.secondCA}
                             onChange={(e) => handleScoreChange(row.subjectId, 'secondCA', parseFloat(e.target.value) || 0)}
-                            className={`w-20 mx-auto block text-center font-black input-folusho !py-2 !px-0 ${errors[`${row.subjectId}-ca2`] ? '!border-folusho-coral-500' : ''}`}
+                            className={`w-16 mx-auto block text-center border rounded-lg py-1 ${errors[`${row.subjectId}-ca2`] ? 'border-rose-500 text-rose-600' : 'border-slate-200'}`}
                           />
                         </td>
-                        <td className="px-6 py-6">
+                        <td className="px-4 py-4">
                           <input
                             type="number"
                             value={row.exam}
                             onChange={(e) => handleScoreChange(row.subjectId, 'exam', parseFloat(e.target.value) || 0)}
-                            className={`w-20 mx-auto block text-center font-black input-folusho !py-2 !px-0 ${errors[`${row.subjectId}-exam`] ? '!border-folusho-coral-500' : ''}`}
+                            className={`w-16 mx-auto block text-center border rounded-lg py-1 ${errors[`${row.subjectId}-exam`] ? 'border-rose-500 text-rose-600' : 'border-slate-200'}`}
                           />
                         </td>
-                        <td className="px-6 py-6 text-center">
-                          <p className="text-lg font-black text-folusho-sage-400 leading-none">{row.totalScore}</p>
-                          <p className="text-[10px] text-folusho-slate-500 font-black uppercase tracking-widest mt-1.5">{row.percentage.toFixed(0)}%</p>
+                        <td className="px-4 py-4 text-center">
+                          <p className="font-bold text-slate-900 dark:text-white">{row.totalScore}</p>
+                          <p className="text-[10px] text-slate-500">{row.percentage.toFixed(0)}%</p>
                         </td>
-                        <td className="px-10 py-6 text-center">
-                          <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border-2 ${
-                            ['A', 'B', 'C'].includes(row.grade) 
-                              ? 'bg-folusho-sage-500/10 text-folusho-sage-400 border-folusho-sage-500/20' 
-                              : 'bg-folusho-coral-500/10 text-folusho-coral-400 border-folusho-coral-500/20'
+                        <td className="px-6 py-4 text-center">
+                          <span className={`px-3 py-1 rounded-full text-xs font-bold border ${
+                            ['A', 'B', 'C'].includes(row.grade) ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : 'bg-rose-50 border-rose-100 text-rose-600'
                           }`}>
                             {row.grade}
                           </span>
                         </td>
                       </>
                     ) : (
-                      <td colSpan={5} className="px-10 py-6">
+                      <td colSpan={5} className="px-6 py-4">
                         <select
                           value={row.remarks || ''}
                           onChange={(e) => handleScoreChange(row.subjectId, 'remarks', e.target.value)}
-                          className="w-full max-w-xs mx-auto block input-folusho !py-3"
+                          className="w-full max-w-xs mx-auto block input py-1.5"
                         >
-                          <option value="">Assess Trait Fulfillment...</option>
+                          <option value="">Select Assessment...</option>
                           {TRAIT_OPTIONS.map(opt => (
                             <option key={opt} value={opt}>{opt}</option>
                           ))}
@@ -467,9 +412,9 @@ export default function StudentResultEntryView({
               })}
               {bulkData.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-10 py-24 text-center">
-                    <TrendingUp className="w-16 h-16 text-folusho-slate-700 mx-auto mb-6 opacity-30" />
-                    <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.4em]">No Registered Logic Found for Current Cycle</p>
+                  <td colSpan={6} className="px-10 py-12 text-center">
+                    <TrendingUp className="w-12 h-12 text-slate-200 mx-auto mb-4" />
+                    <p className="text-slate-500">No subjects found for this student.</p>
                   </td>
                 </tr>
               )}
@@ -478,30 +423,22 @@ export default function StudentResultEntryView({
         </div>
       </div>
 
-      {/* Footer Actions */}
-      <div className="flex justify-end gap-6 relative z-20">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+      {/* Actions */}
+      <div className="flex justify-end gap-4">
+        <button
           onClick={onBack}
-          className="px-10 py-4 bg-folusho-slate-900/40 text-folusho-slate-500 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.4em] border-2 border-white/5 hover:bg-white/5 transition-all shadow-2xl"
+          className="px-6 py-2 text-sm font-medium text-slate-600 hover:text-slate-900"
         >
-          Abort
-        </motion.button>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          Cancel
+        </button>
+        <button
           onClick={handleSaveAll}
           disabled={isSaving || dirtyCount === 0}
-          className="btn-vibrant !px-12 !py-4 shadow-folusho-lg"
+          className="px-8 py-2 bg-indigo-600 text-white rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-indigo-700 disabled:opacity-50"
         >
-          {isSaving ? (
-            <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-          ) : (
-            <Save size={18} />
-          )}
-          <span>Commit {dirtyCount > 0 ? `(${dirtyCount})` : ''}</span>
-        </motion.button>
+          {isSaving ? <RefreshCw size={18} className="animate-spin" /> : <Save size={18} />}
+          Save {dirtyCount > 0 ? `(${dirtyCount})` : ''} Changes
+        </button>
       </div>
     </div>
   )

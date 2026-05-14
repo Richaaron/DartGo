@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Mail, AlertCircle, CheckCircle, Clock } from 'lucide-react'
+import { Mail, AlertCircle, CheckCircle, Clock, Trash2, RotateCcw } from 'lucide-react'
 import notificationAPI, { Notification } from '../services/notificationAPI'
 
 export default function NotificationCenter() {
@@ -86,11 +86,11 @@ export default function NotificationCenter() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'sent':
-        return <CheckCircle className="w-4 h-4 text-green-600" />
+        return <CheckCircle className="w-4 h-4 text-emerald-600" />
       case 'failed':
-        return <AlertCircle className="w-4 h-4 text-red-600" />
+        return <AlertCircle className="w-4 h-4 text-rose-600" />
       case 'pending':
-        return <Clock className="w-4 h-4 text-yellow-600" />
+        return <Clock className="w-4 h-4 text-amber-600" />
       default:
         return null
     }
@@ -109,120 +109,123 @@ export default function NotificationCenter() {
   }
 
   if (loading && !stats) {
-    return <div className="text-center py-8">Loading notifications...</div>
+    return (
+      <div className="flex items-center justify-center py-12">
+        <RotateCcw className="w-6 h-6 animate-spin text-indigo-600" />
+        <span className="ml-3 text-sm font-medium text-slate-500">Loading notifications...</span>
+      </div>
+    )
   }
 
   return (
     <div className="space-y-6">
       {/* Stats Cards */}
       {stats && (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-white p-4 rounded-lg shadow">
-            <div className="text-sm text-gray-600">Total Sent</div>
-            <div className="text-3xl font-bold text-green-600">{stats.summary.totalSent}</div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Total Sent</p>
+            <p className="text-3xl font-bold text-emerald-600">{stats.summary.totalSent}</p>
           </div>
-          <div className="bg-white p-4 rounded-lg shadow">
-            <div className="text-sm text-gray-600">Failed</div>
-            <div className="text-3xl font-bold text-red-600">{stats.summary.totalFailed}</div>
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Failed</p>
+            <p className="text-3xl font-bold text-rose-600">{stats.summary.totalFailed}</p>
           </div>
-          <div className="bg-white p-4 rounded-lg shadow">
-            <div className="text-sm text-gray-600">Pending</div>
-            <div className="text-3xl font-bold text-yellow-600">{stats.summary.totalPending}</div>
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Pending</p>
+            <p className="text-3xl font-bold text-amber-600">{stats.summary.totalPending}</p>
           </div>
-          <div className="bg-white p-4 rounded-lg shadow">
-            <div className="text-sm text-gray-600">Total</div>
-            <div className="text-3xl font-bold text-blue-600">{stats.summary.total}</div>
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Grand Total</p>
+            <p className="text-3xl font-bold text-indigo-600">{stats.summary.total}</p>
           </div>
         </div>
       )}
 
       {/* Filter Tabs */}
-      <div className="flex gap-2 bg-white p-4 rounded-lg shadow">
+      <div className="bg-white dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-wrap gap-1">
         {(['all', 'sent', 'failed', 'pending'] as const).map((tab) => (
           <button
             key={tab}
             onClick={() => setFilter(tab)}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            className={`px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
               filter === tab
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-200'
+                : 'bg-transparent text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700'
             }`}
           >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            {tab}
           </button>
         ))}
       </div>
 
       {/* Notifications List */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm overflow-hidden">
         {notifications.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">
-            <Mail className="w-12 h-12 mx-auto mb-4 opacity-50" />
-            <p>No notifications found</p>
+          <div className="p-16 text-center">
+            <div className="bg-slate-50 dark:bg-slate-800/50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Mail className="w-10 h-10 text-slate-300" />
+            </div>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">No Notifications</h3>
+            <p className="text-sm text-slate-500">Your notification history is empty.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b">
+            <table className="w-full text-left text-sm">
+              <thead className="bg-slate-50/50 dark:bg-slate-800/50 text-slate-500 text-[10px] uppercase font-bold tracking-widest border-b border-slate-100 dark:border-slate-800">
                 <tr>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
-                    Recipient
-                  </th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
-                    Type
-                  </th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
-                    Subject
-                  </th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
-                    Status
-                  </th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
-                    Date
-                  </th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
-                    Actions
-                  </th>
+                  <th className="px-6 py-4">Recipient</th>
+                  <th className="px-6 py-4">Type</th>
+                  <th className="px-6 py-4">Subject</th>
+                  <th className="px-6 py-4">Status</th>
+                  <th className="px-6 py-4">Date</th>
+                  <th className="px-6 py-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {notifications.map((notif) => (
-                  <tr key={notif._id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 text-sm text-gray-900">
+                  <tr key={notif._id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                    <td className="px-6 py-4 text-slate-900 dark:text-white font-medium">
                       {notif.recipientEmail}
                     </td>
-                    <td className="px-6 py-4 text-sm">
-                      <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+                    <td className="px-6 py-4">
+                      <span className="px-2.5 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-indigo-100 dark:border-indigo-800">
                         {getTypeLabel(notif.type)}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-900 truncate max-w-xs">
+                    <td className="px-6 py-4 text-slate-500 dark:text-slate-400 truncate max-w-xs">
                       {notif.subject}
                     </td>
-                    <td className="px-6 py-4 text-sm">
-                      <div className="flex items-center gap-2">
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider">
                         {getStatusIcon(notif.status)}
-                        <span className="capitalize">{notif.status}</span>
+                        <span className={
+                          notif.status === 'sent' ? 'text-emerald-600' :
+                          notif.status === 'failed' ? 'text-rose-600' : 'text-amber-600'
+                        }>{notif.status}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-500">
+                    <td className="px-6 py-4 text-slate-400 dark:text-slate-500 text-xs">
                       {new Date(notif.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4 text-sm space-x-2">
-                      {notif.status === 'failed' && (
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex justify-end gap-2">
+                        {notif.status === 'failed' && (
+                          <button
+                            onClick={() => handleResend(notif._id)}
+                            className="p-2 text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition-colors"
+                            title="Retry"
+                          >
+                            <RotateCcw size={16} />
+                          </button>
+                        )}
                         <button
-                          onClick={() => handleResend(notif._id)}
-                          className="text-blue-600 hover:text-blue-700 font-medium"
+                          onClick={() => handleDelete(notif._id)}
+                          className="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/30 rounded-lg transition-colors"
+                          title="Delete"
                         >
-                          Retry
+                          <Trash2 size={16} />
                         </button>
-                      )}
-                      <button
-                        onClick={() => handleDelete(notif._id)}
-                        className="text-red-600 hover:text-red-700 font-medium"
-                      >
-                        Delete
-                      </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

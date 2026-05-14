@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { motion, AnimatePresence } from "framer-motion";
+
 
 // Define all standard classes
 const PRIMARY_CLASSES = ['Nursery 1', 'Nursery 2', 'Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6']
@@ -352,13 +352,11 @@ export default function ResultEntry() {
       ) : (
         <>
           {sendMessage && (
-            <motion.div 
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`p-6 rounded-4xl flex items-center gap-5 backdrop-blur-xl border ${
+            <div 
+              className={`p-6 rounded-4xl flex items-center gap-5 border ${
                 sendMessage.type === 'success' 
-                  ? 'bg-folusho-sage-500/10 text-folusho-sage-400 border-folusho-sage-500/20' 
-                  : 'bg-folusho-coral-500/10 text-folusho-coral-400 border-folusho-coral-500/20'
+                  ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' 
+                  : 'bg-rose-500/10 text-rose-500 border-rose-500/20'
               }`}
             >
               <AlertCircle size={24} />
@@ -366,37 +364,37 @@ export default function ResultEntry() {
               <button onClick={() => setSendMessage(null)} className="ml-auto p-3 hover:bg-black/5 rounded-2xl transition-all">
                 <X size={20} />
               </button>
-            </motion.div>
+            </div>
           )}
 
           {/* ── Dynamic Header ────────────────────────────── */}
           <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-10">
             <div className="space-y-4">
-              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-500/10 border border-folusho-sage-500/20 text-folusho-sage-400 text-[10px] font-black tracking-[0.35em] uppercase">
-                Protocol Management
+              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black tracking-[0.35em] uppercase">
+                Result Management
               </div>
               <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-none">
-                Data <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-400 via-folusho-coral-400 to-folusho-sage-500">Archival.</span>
+                Result <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-indigo-300 to-indigo-500">Center.</span>
               </h1>
-              <p className="text-folusho-slate-500 text-sm font-bold max-w-xl leading-relaxed tracking-tight">
+              <p className="text-slate-500 text-sm font-bold max-w-xl leading-relaxed tracking-tight">
                 {pageDescription}
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-8">
-              <div className="flex bg-folusho-slate-900/40 p-2 rounded-3xl border border-white/5 shadow-2xl backdrop-blur-md">
+              <div className="flex bg-slate-900 border border-white/5 p-2 rounded-3xl shadow-xl">
                 <button
                   className={`flex items-center gap-3 px-8 py-3.5 rounded-2xl text-[10px] font-black tracking-widest uppercase transition-all ${
-                    viewMode === 'students' && activeTab === 'entry' ? 'bg-folusho-sage-400 text-white shadow-folusho' : 'text-folusho-slate-500 hover:text-folusho-sage-400'
+                    viewMode === 'students' && activeTab === 'entry' ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-500 hover:text-indigo-400'
                   }`}
                   onClick={() => { setViewMode('students'); setActiveTab('entry') }}
                 >
-                  <User size={15} /> Student View
+                  <User size={15} /> Student List
                 </button>
                 <button
                   className={`flex items-center gap-3 px-8 py-3.5 rounded-2xl text-[10px] font-black tracking-widest uppercase transition-all ${
-                    viewMode === 'results' && activeTab === 'entry' ? 'bg-folusho-sage-400 text-white shadow-folusho' : 'text-folusho-slate-500 hover:text-folusho-sage-400'
+                    viewMode === 'results' && activeTab === 'entry' ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-500 hover:text-indigo-400'
                   }`}
                   onClick={() => { setViewMode('results'); setActiveTab('entry') }}
                 >
@@ -405,91 +403,93 @@ export default function ResultEntry() {
                 {(isFormTeacher || user?.role === 'Admin') && (
                   <button
                     className={`flex items-center gap-3 px-8 py-3.5 rounded-2xl text-[10px] font-black tracking-widest uppercase transition-all ${
-                      activeTab === 'release' ? 'bg-folusho-coral-400 text-white shadow-folusho' : 'text-folusho-slate-500 hover:text-folusho-coral-400'
+                      activeTab === 'release' ? 'bg-rose-500 text-white shadow-lg' : 'text-slate-500 hover:text-rose-400'
                     }`}
                     onClick={() => setActiveTab('release')}
                   >
-                    <Unlock size={15} /> Release
+                    <Unlock size={15} /> Release Results
                   </button>
                 )}
               </div>
               
               <div className="flex gap-4">
-                <button onClick={handleExport} className="btn-vibrant !bg-folusho-slate-900/40 border border-white/5 !text-white shadow-2xl backdrop-blur-md">
-                  <Download size={20} className="text-folusho-sage-400" /> 
-                  <span className="hidden sm:inline">Export</span>
+              <div className="flex gap-4">
+                <button onClick={handleExport} className="flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl border border-white/5 hover:bg-slate-800 transition-all">
+                  <Download size={20} className="text-indigo-400" /> 
+                  <span className="hidden sm:inline">Export CSV</span>
                 </button>
-                <button onClick={() => setShowForm(true)} className="btn-vibrant bg-folusho-sage-400">
+                <button onClick={() => setShowForm(true)} className="flex items-center gap-3 px-8 py-4 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg hover:bg-indigo-700 transition-all">
                   <Plus size={20} /> 
-                  <span className="hidden sm:inline">New Protocol</span>
+                  <span className="hidden sm:inline">Add Result</span>
                 </button>
+              </div>
               </div>
             </div>
           </div>
 
           {activeTab === 'release' && (
-            <div className="folusho-card border-white/5 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 shadow-lg">
               <ReleaseResultsPanel students={students} results={results} onRefresh={loadData} />
             </div>
           )}
 
           {activeTab === 'entry' && (
             <div className="space-y-10">
-              {/* Intelligence Filters */}
-              <div className="folusho-card !p-12 border-white/5 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl">
+              {/* Filters */}
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-12 shadow-lg">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                   <div className="space-y-4">
-                    <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">
-                      Personnel Search
+                    <label className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.4em] px-2">
+                      Search Student
                     </label>
                     <div className="relative group">
-                      <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-slate-500 group-focus-within:text-folusho-sage-400 transition-colors" />
+                      <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-indigo-600 transition-colors" />
                       <input
                         type="text"
-                        placeholder="Scan identities..."
+                        placeholder="Search..."
                         value={filterTerm}
                         onChange={(e) => setFilterTerm(e.target.value)}
-                        className="input-folusho !pl-16 !bg-folusho-slate-950/50"
+                        className="input !pl-16 !bg-slate-50 dark:!bg-slate-950/50"
                       />
                     </div>
                   </div>
  
                   <div className="space-y-4">
-                    <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">
-                      Operational Sector
+                    <label className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.4em] px-2">
+                      Filter by Class
                     </label>
                     <select
                       value={selectedClass}
                       onChange={(e) => setSelectedClass(e.target.value)}
-                      className="input-folusho !bg-folusho-slate-950/50"
+                      className="input !bg-slate-50 dark:!bg-slate-950/50"
                     >
-                      <option value="All" className="bg-folusho-slate-900">Global Sectors</option>
-                      {availableClasses.map(cls => <option key={cls} value={cls} className="bg-folusho-slate-900">{cls}</option>)}
+                      <option value="All" className="bg-white dark:bg-slate-900">All Classes</option>
+                      {availableClasses.map(cls => <option key={cls} value={cls} className="bg-white dark:bg-slate-900">{cls}</option>)}
                     </select>
                   </div>
                 </div>
               </div>
 
               {/* Data Matrix */}
-              <div className="folusho-card !p-0 border-white/5 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl overflow-hidden">
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-lg overflow-hidden">
                 {viewMode === 'students' ? (
                   <Table
                     columns={[
                       { 
                         key: 'studentName', 
-                        label: 'Identity',
-                        render: (v, row) => <span className="font-bold text-white">{row.firstName} {row.lastName}</span>
+                        label: 'Student Name',
+                        render: (v, row) => <span className="font-bold text-slate-900 dark:text-white">{row.firstName} {row.lastName}</span>
                       },
-                      { key: 'class', label: 'Sector' },
+                      { key: 'class', label: 'Class' },
                       {
                         key: 'actions',
-                        label: 'Entry Protocol',
+                        label: 'Action',
                         render: (v, row: Student) => (
                           <button
                             onClick={() => setSelectedStudentForEntry(row)}
-                            className="px-8 py-3 bg-folusho-sage-500/10 text-folusho-sage-400 rounded-2xl text-[10px] font-black tracking-widest uppercase border border-folusho-sage-500/20 hover:bg-folusho-sage-400 hover:text-white transition-all shadow-2xl"
+                            className="px-8 py-3 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-2xl text-[10px] font-black tracking-widest uppercase border border-indigo-500/20 hover:bg-indigo-600 hover:text-white transition-all shadow-lg"
                           >
-                            Synchronize Data
+                            Enter Results
                           </button>
                         )
                       }
@@ -505,13 +505,13 @@ export default function ResultEntry() {
                         <div className="flex gap-3">
                           <button 
                             onClick={() => { setEditingResult(r); setShowForm(true) }} 
-                            className="p-3 rounded-2xl bg-folusho-sage-500/10 hover:bg-folusho-sage-500/20 text-folusho-sage-400 transition-all border border-folusho-sage-500/20"
+                            className="p-3 rounded-2xl bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 transition-all border border-indigo-500/20"
                           >
                             <Plus size={16} />
                           </button>
                           <button 
                             onClick={() => handleDeleteResult(r.id)} 
-                            className="p-3 rounded-2xl bg-folusho-coral-500/10 hover:bg-folusho-coral-500/20 text-folusho-coral-400 transition-all border border-folusho-coral-500/20"
+                            className="p-3 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 transition-all border border-rose-500/20"
                           >
                             <Trash2 size={16} />
                           </button>
@@ -522,51 +522,38 @@ export default function ResultEntry() {
                 )}
               </div>
 
-              {/* Stats Matrix */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div className="folusho-card !p-12 group hover:border-folusho-sage-400/50 transition-all border-white/5 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl">
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-12 shadow-lg group hover:border-indigo-400 transition-all">
                   <div className="flex items-center justify-between mb-8">
-                    <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em]">Total Archive</p>
-                    <BarChart3 className="w-5 h-5 text-folusho-sage-400 opacity-50 group-hover:opacity-100 transition-opacity" />
+                    <p className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.4em]">Total Results</p>
+                    <BarChart3 className="w-5 h-5 text-indigo-600 opacity-50 group-hover:opacity-100 transition-opacity" />
                   </div>
-                  <p className="text-5xl font-black text-white tracking-tighter">{filteredResults.length}</p>
+                  <p className="text-5xl font-black text-slate-900 dark:text-white tracking-tighter">{filteredResults.length}</p>
                 </div>
               </div>
             </div>
           )}
 
-          <AnimatePresence>
-            {showForm && (
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-folusho-slate-900/60 backdrop-blur-xl flex items-center justify-center z-50 p-6"
-              >
-                <motion.div 
-                  initial={{ scale: 0.9, y: 20 }}
-                  animate={{ scale: 1, y: 0 }}
-                  exit={{ scale: 0.9, y: 20 }}
-                  className="folusho-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/5 shadow-2xl bg-folusho-slate-900"
-                >
-                  <div className="p-12 border-b border-white/5 bg-white/5">
-                    <h2 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">Protocol Entry</h2>
-                    <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.35em] mt-3">Initialize synchronization</p>
-                  </div>
-                  <div className="p-12">
-                    <SubjectResultForm
-                      onSubmit={handleSubmitResult}
-                      initialData={editingResult || undefined}
-                      onCancel={() => { setShowForm(false); setEditingResult(null) }}
-                      isEditing={!!editingResult}
-                      students={students}
-                      subjects={subjects}
-                    />
-                  </div>
-                </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {showForm && (
+            <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-6">
+              <div className="bg-white dark:bg-slate-900 max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800">
+                <div className="p-12 border-b border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-white/5">
+                  <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter uppercase leading-none">Enter Result</h2>
+                  <p className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.35em] mt-3">Add or edit student score</p>
+                </div>
+                <div className="p-12">
+                  <SubjectResultForm
+                    onSubmit={handleSubmitResult}
+                    initialData={editingResult || undefined}
+                    onCancel={() => { setShowForm(false); setEditingResult(null) }}
+                    isEditing={!!editingResult}
+                    students={students}
+                    subjects={subjects}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>

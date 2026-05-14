@@ -10,7 +10,6 @@ import {
   Download,
   BookOpen,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Student, SubjectResult, Subject } from "../types";
 import {
   fetchStudents,
@@ -26,22 +25,7 @@ import jsPDF from "jspdf";
 
 import { useAuthContext } from "../context/AuthContext";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.05 },
-  },
-};
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 15 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.4 },
-  },
-};
 
 export default function Reports() {
   const { user } = useAuthContext();
@@ -422,7 +406,7 @@ export default function Reports() {
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
           <p className="text-gray-400 font-black uppercase tracking-[0.2em] text-xs">
-            Loading...
+            Loading Report Data...
           </p>
         </div>
       </div>
@@ -431,18 +415,14 @@ export default function Reports() {
 
   if (reportType === "report-card" && selectedStudent) {
     return (
-      <motion.div
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        className="p-8 max-w-5xl mx-auto space-y-8"
-      >
+      <div className="p-8 max-w-5xl mx-auto space-y-8">
         <div className="flex justify-between items-center print:hidden">
           <button
             onClick={() => {
               setReportType("overview");
               setIsEditingObservation(false);
             }}
-            className="group flex items-center gap-2 text-folusho-sage-400 font-black text-[10px] uppercase tracking-widest hover:translate-x-[-4px] transition-all"
+            className="group flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-black text-[10px] uppercase tracking-widest hover:translate-x-[-4px] transition-all"
           >
             <ChevronLeft size={16} /> Back to Reports
           </button>
@@ -459,22 +439,16 @@ export default function Reports() {
             >
               <Download size={16} /> Download PDF
             </button>
-            <button onClick={handlePrint} className="btn-vibrant bg-folusho-sage-400 shadow-folusho text-xs">
+            <button onClick={handlePrint} className="flex items-center gap-2 px-8 py-4 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg hover:bg-indigo-700 transition-all">
               <Printer size={16} /> Print Report
             </button>
           </div>
         </div>
 
-        <AnimatePresence>
-          {isEditingObservation && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="overflow-hidden print:hidden"
-            >
-            <div className="folusho-card border-white/5 !p-12 mb-12 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl">
-                <h2 className="text-[10px] font-black text-folusho-sage-400 mb-10 uppercase tracking-[0.35em] flex items-center gap-3">
+        {isEditingObservation && (
+          <div className="overflow-hidden print:hidden">
+            <div className="bg-white dark:bg-slate-900 p-12 mb-12 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800">
+                <h2 className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.35em] flex items-center gap-3 mb-10">
                   <FileText size={16} /> Edit Observations
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8">
@@ -487,9 +461,9 @@ export default function Reports() {
                         (key) => (
                           <div
                             key={key}
-                            className="flex justify-between items-center bg-folusho-slate-950/50 p-4 rounded-2xl border border-white/5 shadow-sm"
+                            className="flex justify-between items-center bg-slate-50 dark:bg-slate-950/50 p-4 rounded-2xl border border-slate-200 dark:border-white/5 shadow-sm"
                           >
-                            <label className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest capitalize">
+                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest capitalize">
                               {key.replace(/([A-Z])/g, " $1")}
                             </label>
                             <input
@@ -506,7 +480,7 @@ export default function Reports() {
                                   },
                                 })
                               }
-                              className="w-12 h-10 text-center font-black text-folusho-sage-400 bg-folusho-sage-500/10 border-none rounded-xl focus:ring-2 focus:ring-folusho-sage-500"
+                              className="w-12 h-10 text-center font-black text-indigo-600 bg-indigo-500/10 border-none rounded-xl focus:ring-2 focus:ring-indigo-500"
                             />
                           </div>
                         ),
@@ -522,9 +496,9 @@ export default function Reports() {
                         (key) => (
                           <div
                             key={key}
-                            className="flex justify-between items-center bg-folusho-slate-950/50 p-4 rounded-2xl border border-white/5 shadow-sm"
+                            className="flex justify-between items-center bg-slate-50 dark:bg-slate-950/50 p-4 rounded-2xl border border-slate-200 dark:border-white/5 shadow-sm"
                           >
-                            <label className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest capitalize">
+                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest capitalize">
                               {key}
                             </label>
                             <input
@@ -541,7 +515,7 @@ export default function Reports() {
                                   },
                                 })
                               }
-                              className="w-12 h-10 text-center font-black text-folusho-sage-400 bg-folusho-sage-500/10 border-none rounded-xl focus:ring-2 focus:ring-folusho-sage-500"
+                              className="w-12 h-10 text-center font-black text-indigo-600 bg-indigo-500/10 border-none rounded-xl focus:ring-2 focus:ring-indigo-500"
                             />
                           </div>
                         ),
@@ -555,7 +529,7 @@ export default function Reports() {
                       Teacher's Narrative
                     </label>
                     <textarea
-                      className="input-folusho h-32 resize-none text-sm !bg-folusho-slate-950/50"
+                      className="input h-32 resize-none text-sm !bg-slate-50 dark:!bg-slate-950/50 border-slate-200 dark:border-white/5"
                       value={editObservation.teacherComment}
                       onChange={(e) =>
                         setEditObservation({
@@ -571,7 +545,7 @@ export default function Reports() {
                       Principal's Narrative
                     </label>
                     <textarea
-                      className="input-folusho h-32 resize-none text-sm !bg-folusho-slate-950/50"
+                      className="input h-32 resize-none text-sm !bg-slate-50 dark:!bg-slate-950/50 border-slate-200 dark:border-white/5"
                       value={editObservation.principalComment}
                       onChange={(e) =>
                         setEditObservation({
@@ -586,15 +560,14 @@ export default function Reports() {
                 <div className="flex justify-end">
                   <button
                     onClick={handleSaveObservation}
-                    className="btn-vibrant bg-folusho-sage-400 shadow-folusho px-12"
+                    className="flex items-center gap-3 px-12 py-4 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg hover:bg-indigo-700 transition-all"
                   >
-                    <Save size={18} /> Save Matrix
+                    <Save size={18} /> Save Observations
                   </button>
                 </div>
               </div>
-</motion.div>
-          )}
-        </AnimatePresence>
+          </div>
+        )}
 
         <div
           className="bg-white dark:bg-black p-12 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-8 border-double border-royal-gold-500/30 print:shadow-none print:border-8 print:border-royal-gold-500 relative overflow-hidden"
@@ -653,20 +626,9 @@ export default function Reports() {
           <div className="grid grid-cols-2 gap-12 mb-16 bg-royal-black-900 dark:bg-black/40 p-10 rounded-[2.5rem] border-2 border-royal-gold-500/20 shadow-inner relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-royal-gold-500/5 rotate-45 transform translate-x-16 -translate-y-16"></div>
             <div className="space-y-6 relative z-10">
-              <div>
-                <p 
-                  className="text-[10px] font-black text-royal-gold-500 uppercase tracking-[0.3em] mb-2"
-                  style={{ fontFamily: "'Cinzel', serif" }}
-                >
-                  Learner Identification
-                </p>
-                <p 
-                  className="text-3xl font-black text-white uppercase tracking-tight"
-                  style={{ fontFamily: "'Cinzel', serif" }}
-                >
+                <p className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-none">
                   {selectedStudent.firstName} {selectedStudent.lastName}
                 </p>
-              </div>
               <div className="grid grid-cols-2 gap-8">
                 <div>
                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
@@ -687,20 +649,9 @@ export default function Reports() {
               </div>
             </div>
             <div className="space-y-6 text-right relative z-10">
-              <div>
-                <p 
-                  className="text-[10px] font-black text-royal-gold-500 uppercase tracking-[0.3em] mb-2"
-                  style={{ fontFamily: "'Cinzel', serif" }}
-                >
-                  Academic Standing
-                </p>
-                <p 
-                  className="text-3xl font-black text-white uppercase tracking-tight"
-                  style={{ fontFamily: "'Cinzel', serif" }}
-                >
+                <p className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-none">
                   {selectedStudent.level}
                 </p>
-              </div>
               <div className="grid grid-cols-2 gap-8">
                 <div>
                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
@@ -978,57 +929,46 @@ export default function Reports() {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     );
   }
 
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      className="p-8 space-y-8"
-    >
-      <motion.div
-        variants={itemVariants}
-        className="flex flex-col lg:flex-row lg:items-center justify-between gap-10"
-      >
+    <div className="p-8 space-y-8">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-500/10 border border-folusho-sage-500/20 text-folusho-sage-400 text-[10px] font-black tracking-[0.35em] uppercase">
-            Institutional Registry
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black tracking-[0.35em] uppercase">
+            Results & Records
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-none">
-            Legacy <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-400 via-folusho-coral-400 to-folusho-sage-500">Vault.</span>
+            Report <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-indigo-300 to-indigo-500">Center.</span>
           </h1>
-          <p className="text-folusho-slate-500 text-sm font-bold max-w-xl leading-relaxed tracking-tight">
-            Access and generate high-fidelity performance records.
+          <p className="text-slate-500 text-sm font-bold max-w-xl leading-relaxed tracking-tight">
+            Access and generate academic performance reports.
           </p>
         </div>
         <div className="relative group">
-          <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-folusho-sage-500 group-focus-within:text-folusho-sage-400 transition-colors w-5 h-5" />
+          <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-indigo-600 transition-colors w-5 h-5" />
           <input
             type="text"
-            placeholder="Query identification..."
-            className="input-folusho !pl-16 w-full lg:w-96"
+            placeholder="Search students..."
+            className="input !pl-16 w-full lg:w-96"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-      </motion.div>
+      </div>
 
-      <motion.div
-        variants={itemVariants}
-        className="flex flex-col sm:flex-row gap-8 items-center justify-between"
-      >
+      <div className="flex flex-col sm:flex-row gap-8 items-center justify-between">
         <div className="flex flex-col sm:flex-row gap-6 items-center">
-          <div className="bg-folusho-slate-900/40 p-2 rounded-3xl flex gap-2 w-full sm:w-auto overflow-x-auto no-scrollbar border border-white/5 shadow-2xl backdrop-blur-md">
+          <div className="bg-slate-900 p-2 rounded-3xl flex gap-2 w-full sm:w-auto overflow-x-auto no-scrollbar border border-white/5 shadow-2xl backdrop-blur-md">
             <button
               onClick={() => {
                 setReportType("overview");
                 setSelectedStudentId("");
               }}
-              className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${reportType === "overview" ? "bg-folusho-sage-400 text-white shadow-folusho scale-105" : "text-folusho-slate-500 hover:text-folusho-sage-400"}`}
+              className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${reportType === "overview" ? "bg-indigo-600 text-white shadow-lg scale-105" : "text-slate-500 hover:text-indigo-400"}`}
             >
               Overview
             </button>
@@ -1040,13 +980,13 @@ export default function Reports() {
                   window.alert("Please select a student from the overview grid first.");
                 }
               }}
-              className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${reportType === "report-card" ? "bg-folusho-sage-400 text-white shadow-folusho scale-105" : "text-folusho-slate-500 hover:text-folusho-sage-400"}`}
+              className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${reportType === "report-card" ? "bg-indigo-600 text-white shadow-lg scale-105" : "text-slate-500 hover:text-indigo-400"}`}
             >
               Report Cards
             </button>
             <button
               onClick={() => setReportType("broadsheet")}
-              className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${reportType === "broadsheet" ? "bg-folusho-sage-400 text-white shadow-folusho scale-105" : "text-folusho-slate-500 hover:text-folusho-sage-400"}`}
+              className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${reportType === "broadsheet" ? "bg-indigo-600 text-white shadow-lg scale-105" : "text-slate-500 hover:text-indigo-400"}`}
             >
               Broadsheet
             </button>
@@ -1062,7 +1002,7 @@ export default function Reports() {
                   setClassFilter(e.target.value);
                 }
               }}
-              className="input-folusho !py-3.5 !text-xs"
+              className="input !py-3.5 !text-xs"
             >
               <option value="">{reportType === "broadsheet" ? "Select Class for Broadsheet..." : "Filter Overview by Class..."}</option>
               {(() => {
@@ -1086,7 +1026,7 @@ export default function Reports() {
               <select
                 value={selectedArm}
                 onChange={(e) => setSelectedArm(e.target.value)}
-                className="input-folusho !py-3.5 !text-xs"
+                className="input !py-3.5 !text-xs"
               >
                 <option value="All">All Departments</option>
                 <option value="Science">Science</option>
@@ -1096,69 +1036,61 @@ export default function Reports() {
             </div>
           )}
         </div>
-      </motion.div>
+      </div>
 
       {reportType === "overview" ? (
-        <motion.div
-          variants={itemVariants}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {studentPerformanceData.length > 0 ? (
             studentPerformanceData.map((student) => (
-              <motion.div
+              <div
                 key={student.id}
-                variants={itemVariants}
                 onClick={() => {
                   setSelectedStudentId(student.id);
                   setReportType("report-card");
                 }}
-                className="folusho-card !p-8 cursor-pointer group hover:border-folusho-sage-500/30 transition-all duration-300 border-white/5"
+                className="bg-white dark:bg-slate-900 p-8 cursor-pointer group hover:border-indigo-500/30 transition-all duration-300 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-lg"
               >
                 <div className="flex flex-col items-center text-center">
-                  <div className="w-20 h-20 rounded-[2rem] bg-folusho-sage-500/10 flex items-center justify-center text-folusho-sage-400 font-black text-2xl mb-6 group-hover:bg-folusho-sage-400 group-hover:text-white transition-all duration-300 border border-white/5 shadow-inner">
+                  <div className="w-20 h-20 rounded-[2rem] bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-black text-2xl mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 border border-indigo-500/10 shadow-inner">
                     {student.firstName[0]}{student.lastName[0]}
                   </div>
-                  <h3 className="text-white font-black uppercase tracking-tight text-xl mb-1">
+                  <h3 className="text-slate-900 dark:text-white font-black uppercase tracking-tight text-xl mb-1">
                     {student.firstName} {student.lastName}
                   </h3>
-                  <p className="text-folusho-sage-400 text-xs font-bold uppercase tracking-widest mb-6">
+                  <p className="text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-widest mb-6">
                     {student.class}
                   </p>
                   
-                  <div className="w-full pt-6 border-t border-white/5 grid grid-cols-2 gap-6">
+                  <div className="w-full pt-6 border-t border-slate-100 dark:border-slate-800 grid grid-cols-2 gap-6">
                     <div className="text-left">
-                      <p className="text-[10px] text-folusho-slate-500 uppercase font-black tracking-widest">Efficiency</p>
-                      <p className={`text-xl font-black ${student.avgScore >= 50 ? 'text-folusho-sage-400' : 'text-folusho-coral-400'} tracking-tighter`}>
+                      <p className="text-[10px] text-slate-500 uppercase font-black tracking-widest">Efficiency</p>
+                      <p className={`text-xl font-black ${student.avgScore >= 50 ? 'text-emerald-500' : 'text-rose-500'} tracking-tighter`}>
                         {student.avgScore}%
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-[10px] text-folusho-slate-500 uppercase font-black tracking-widest">Units</p>
-                      <p className="text-xl font-black text-white tracking-tighter">{student.subjectsCount}</p>
+                      <p className="text-[10px] text-slate-500 uppercase font-black tracking-widest">Units</p>
+                      <p className="text-xl font-black text-slate-900 dark:text-white tracking-tighter">{student.subjectsCount}</p>
                     </div>
                   </div>
 
                   <div className="w-full mt-8 flex justify-center">
-                    <span className="px-6 py-3 bg-white/5 text-folusho-sage-400 group-hover:bg-folusho-sage-400 group-hover:text-white rounded-2xl text-[10px] font-black uppercase tracking-widest border border-white/5 transition-all shadow-xl">
+                    <span className="px-6 py-3 bg-slate-50 dark:bg-white/5 text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white rounded-2xl text-[10px] font-black uppercase tracking-widest border border-slate-200 dark:border-white/5 transition-all shadow-sm">
                       Open Record
                     </span>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))
           ) : (
-            <div className="col-span-full py-20 text-center card-lg border-brand-800/40">
-              <Search size={48} className="mx-auto text-brand-700/50 mb-4" />
-              <p className="text-brand-400 font-bold uppercase tracking-widest">No scholars found matching your query.</p>
+            <div className="col-span-full py-20 text-center">
+              <Search size={48} className="mx-auto text-slate-300 mb-4" />
+              <p className="text-slate-500 font-bold uppercase tracking-widest">No students found matching your search.</p>
             </div>
           )}
-        </motion.div>
+        </div>
       ) : reportType === "broadsheet" ? (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="folusho-card !p-0 border-white/5 overflow-hidden"
-        >
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-2xl">
           {broadsheetData ? (
             <div className="space-y-12">
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10 p-12 border-b border-white/5 bg-white/5">
@@ -1166,12 +1098,12 @@ export default function Reports() {
                   <h2 className="text-3xl font-black text-white uppercase tracking-tighter">
                     {selectedClass} Academic Broadsheet
                   </h2>
-                  <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.35em] mt-3">
+                  <p className="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.35em] mt-3">
                     Term: {config?.currentTerm || "2nd Term"} | Session: {config?.currentAcademicYear || "2023/2024"}
                   </p>
                 </div>
                 <div className="flex gap-6">
-                  <button onClick={() => window.print()} className="btn-vibrant bg-folusho-sage-400 shadow-folusho">
+                  <button onClick={() => window.print()} className="flex items-center gap-3 px-8 py-4 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg hover:bg-indigo-700 transition-all">
                     <Printer size={18} /> Print Broadsheet
                   </button>
                 </div>
@@ -1180,27 +1112,27 @@ export default function Reports() {
               <div className="overflow-x-auto relative no-scrollbar">
                 <table className="w-full border-collapse text-[10px] uppercase font-black tracking-widest">
                   <thead className="sticky top-0 z-20">
-                    <tr className="bg-folusho-slate-900 text-white">
-                      <th className="p-6 text-left sticky left-0 z-30 bg-folusho-slate-900 border-r border-white/5 min-w-[240px]">
-                        Student Identity
+                    <tr className="bg-slate-900 text-white">
+                      <th className="p-6 text-left sticky left-0 z-30 bg-slate-900 border-r border-slate-800 min-w-[240px]">
+                        Student Name
                       </th>
                       {broadsheetData.subjects.map(sub => (
-                        <th key={sub.id} className="p-0 border-r border-white/5 min-w-[350px]" colSpan={5}>
-                          <div className="p-4 border-b border-white/5 font-black uppercase tracking-[0.2em] text-center truncate text-folusho-sage-400">
+                        <th key={sub.id} className="p-0 border-r border-slate-800 min-w-[350px]" colSpan={5}>
+                          <div className="p-4 border-b border-slate-800 font-black uppercase tracking-[0.2em] text-center truncate text-indigo-400">
                             {sub.name}
                           </div>
-                          <div className="grid grid-cols-5 text-[8px] font-black uppercase text-folusho-slate-500">
-                            <div className="p-2 border-r border-white/5">1st CA</div>
-                            <div className="p-2 border-r border-white/5">2nd CA</div>
-                            <div className="p-2 border-r border-white/5">Exam</div>
-                            <div className="p-2 border-r border-white/5 text-folusho-yellow-500">Total</div>
+                          <div className="grid grid-cols-5 text-[8px] font-black uppercase text-slate-500">
+                            <div className="p-2 border-r border-slate-800">1st CA</div>
+                            <div className="p-2 border-r border-slate-800">2nd CA</div>
+                            <div className="p-2 border-r border-slate-800">Exam</div>
+                            <div className="p-2 border-r border-slate-800 text-amber-500">Total</div>
                             <div className="p-2">Grd</div>
                           </div>
                         </th>
                       ))}
-                      <th className="p-4 bg-folusho-slate-800 border-r border-white/5 min-w-[100px]">Sum</th>
-                      <th className="p-4 bg-folusho-slate-800 border-r border-white/5 min-w-[100px]">Avg</th>
-                      <th className="p-4 bg-folusho-slate-800 min-w-[100px]">Pos</th>
+                      <th className="p-4 bg-slate-800 border-r border-slate-700 min-w-[100px]">Sum</th>
+                      <th className="p-4 bg-slate-800 border-r border-slate-700 min-w-[100px]">Avg</th>
+                      <th className="p-4 bg-slate-800 min-w-[100px]">Pos</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -1215,31 +1147,31 @@ export default function Reports() {
                       };
 
                       return (
-                        <tr key={student.id} className="hover:bg-white/5 transition-colors border-b border-white/5">
-                          <td className="p-6 font-black text-white sticky left-0 z-10 bg-folusho-slate-950 border-r border-white/5 uppercase tracking-tighter">
+                        <tr key={student.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors border-b border-slate-200 dark:border-slate-800">
+                          <td className="p-6 font-black text-slate-900 dark:text-white sticky left-0 z-10 bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 uppercase tracking-tighter">
                             {student.lastName}, {student.firstName}
                           </td>
                           {broadsheetData.subjects.map(sub => {
                             const res = broadsheetData.results.find(r => r.studentId === student.id && r.subjectId === sub.id);
                             return (
-                              <td key={sub.id} className="p-0 border-r border-white/5" colSpan={5}>
+                              <td key={sub.id} className="p-0 border-r border-slate-200 dark:border-slate-800" colSpan={5}>
                                 <div className="grid grid-cols-5 text-center font-bold h-full">
-                                  <div className="p-4 border-r border-white/5 text-folusho-slate-500">{res?.firstCA ?? '-'}</div>
-                                  <div className="p-4 border-r border-white/5 text-folusho-slate-500">{res?.secondCA ?? '-'}</div>
-                                  <div className="p-4 border-r border-white/5 text-folusho-slate-500">{res?.examScore ?? '-'}</div>
-                                  <div className="p-4 border-r border-white/5 bg-folusho-yellow-500/10 text-folusho-yellow-500 font-black">{res?.totalScore ?? '-'}</div>
-                                  <div className="p-4 font-black text-folusho-sage-400">{res?.grade ?? '-'}</div>
+                                  <div className="p-4 border-r border-slate-200 dark:border-slate-800 text-slate-500">{res?.firstCA ?? '-'}</div>
+                                  <div className="p-4 border-r border-slate-200 dark:border-slate-800 text-slate-500">{res?.secondCA ?? '-'}</div>
+                                  <div className="p-4 border-r border-slate-200 dark:border-slate-800 text-slate-500">{res?.examScore ?? '-'}</div>
+                                  <div className="p-4 border-r border-slate-200 dark:border-slate-800 bg-amber-500/10 text-amber-600 dark:text-amber-500 font-black">{res?.totalScore ?? '-'}</div>
+                                  <div className="p-4 font-black text-emerald-600 dark:text-emerald-400">{res?.grade ?? '-'}</div>
                                 </div>
                               </td>
                             );
                           })}
-                          <td className="p-6 text-center font-black bg-white/5 text-white border-r border-white/5">
+                          <td className="p-6 text-center font-black bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white border-r border-slate-200 dark:border-slate-800">
                             {studentPerformance?.total ?? 0}
                           </td>
-                          <td className="p-6 text-center font-black bg-white/5 text-folusho-sage-400 border-r border-white/5">
+                          <td className="p-6 text-center font-black bg-slate-50 dark:bg-white/5 text-indigo-600 dark:text-indigo-400 border-r border-slate-200 dark:border-slate-800">
                             {studentPerformance?.avg.toFixed(1) ?? "0.0"}
                           </td>
-                          <td className="p-6 text-center font-black bg-white/5 text-folusho-yellow-500">
+                          <td className="p-6 text-center font-black bg-slate-50 dark:bg-white/5 text-amber-600 dark:text-amber-500">
                             {position}{suffix(position)}
                           </td>
                         </tr>
@@ -1255,9 +1187,8 @@ export default function Reports() {
               <p className="text-gray-500 font-black uppercase tracking-widest">Select a class to generate the Broadsheet</p>
             </div>
           )}
-        </motion.div>
+        </div>
       ) : null}
-
-    </motion.div>
+    </div>
   );
 }

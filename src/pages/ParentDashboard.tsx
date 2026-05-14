@@ -183,65 +183,65 @@ export default function ParentDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div className="space-y-10">
           <div className="space-y-6">
-            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-500/10 border border-folusho-sage-500/20 text-folusho-sage-400 text-[10px] font-black tracking-[0.35em] uppercase">
-              Guardian Command: {parent.name}
+            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black tracking-[0.35em] uppercase">
+              Parent: {parent.name}
             </div>
             <h1 className="text-6xl md:text-8xl font-black text-white leading-[0.85] tracking-tighter">
-              Legacy <br />
-              Through <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-500 via-folusho-coral-400 to-folusho-sage-600">Excellence.</span>
+              Student <br />
+              Performance <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-indigo-400 to-indigo-600">Report.</span>
             </h1>
-            <p className="text-xl text-folusho-slate-500 font-bold max-w-lg leading-relaxed tracking-tight">
-              Monitoring the academic journey of <span className="text-white font-black">{child.firstName} {child.lastName}</span>
+            <p className="text-xl text-slate-500 font-bold max-w-lg leading-relaxed tracking-tight">
+              Viewing the academic results of <span className="text-white font-black">{child.firstName} {child.lastName}</span>
             </p>
           </div>
 
           <div className="flex flex-wrap gap-6">
             <button
               onClick={handlePrint}
-              className="btn-vibrant bg-folusho-sage-400 shadow-folusho"
+              className="flex items-center gap-3 px-8 py-4 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg hover:bg-indigo-700 transition-all"
             >
               <Printer size={18} />
-              Output Protocol
+              Print Result
             </button>
             <button
               onClick={handleDownloadPDF}
-              className="flex items-center gap-5 text-[10px] font-black uppercase tracking-[0.35em] text-folusho-slate-400 hover:text-folusho-sage-600 transition-all group"
+              className="flex items-center gap-5 text-[10px] font-black uppercase tracking-[0.35em] text-slate-400 hover:text-indigo-600 transition-all group"
             >
-              Archive Matrix (PDF)
-              <Download className="w-5 h-5 group-hover:translate-x-2 transition-transform text-folusho-sage-500" />
+              Download PDF
+              <Download className="w-5 h-5 group-hover:translate-x-2 transition-transform text-indigo-500" />
             </button>
           </div>
         </div>
 
-        <div className="folusho-card !p-12 group hover:border-folusho-sage-500/30 transition-all border-white/5">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-12 shadow-lg group hover:border-indigo-500/30 transition-all">
            <div className="flex items-center gap-8 mb-12">
-              <div className="w-24 h-24 bg-folusho-sage-500/10 rounded-[2.5rem] flex items-center justify-center border border-white/5 shadow-inner overflow-hidden">
+              <div className="w-24 h-24 bg-indigo-500/10 rounded-[2.5rem] flex items-center justify-center border border-indigo-500/20 shadow-inner overflow-hidden">
                 {child.image ? (
                   <img src={child.image} alt={child.firstName} className="w-full h-full object-cover" />
                 ) : (
-                  <User className="w-10 h-10 text-folusho-sage-400" />
+                  <User className="w-10 h-10 text-indigo-600 dark:text-indigo-400" />
                 )}
               </div>
               <div>
-                <h2 className="text-3xl font-black text-white tracking-tighter uppercase">{child.firstName} {child.lastName}</h2>
-                <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-widest mt-2 opacity-80">Sector: {child.class} · {child.level}</p>
+                <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter uppercase">{child.firstName} {child.lastName}</h2>
+                <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest mt-2 opacity-80">Class: {child.class} · {child.level}</p>
               </div>
            </div>
 
             <div className="space-y-10">
               <div className="flex gap-6 items-start">
-                <div className="w-3 h-3 rounded-full bg-folusho-sage-500 mt-1.5 shadow-folusho" />
+                <div className="w-3 h-3 rounded-full bg-indigo-500 mt-1.5 shadow-sm" />
                 <div>
-                  <h3 className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.35em] mb-2">Registry Assignment</h3>
-                  <p className="text-base text-white font-bold tracking-tight">{child.registrationNumber}</p>
+                  <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.35em] mb-2">Registration Number</h3>
+                  <p className="text-base text-slate-900 dark:text-white font-bold tracking-tight">{child.registrationNumber}</p>
                 </div>
               </div>
               <div className="flex gap-6 items-start">
-                <div className="w-3 h-3 rounded-full bg-folusho-yellow-500 mt-1.5 shadow-folusho" />
+                <div className="w-3 h-3 rounded-full bg-amber-500 mt-1.5 shadow-sm" />
                 <div>
-                  <h3 className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.35em] mb-2">Academic Standing</h3>
-                  <p className="text-base text-white font-bold tracking-tight">{stats.classPositionText}</p>
+                  <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.35em] mb-2">Class Position</h3>
+                  <p className="text-base text-slate-900 dark:text-white font-bold tracking-tight">{stats.classPositionText}</p>
                 </div>
               </div>
            </div>
@@ -250,34 +250,34 @@ export default function ParentDashboard() {
 
       {/* Metrics Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-        <div className="folusho-card !p-10 group hover:border-folusho-sage-500/30 transition-all border-white/5">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-10 shadow-lg group hover:border-indigo-500/30 transition-all">
           <div className="flex items-center justify-between mb-6">
-            <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.35em]">Protocol Units</p>
-            <BookOpen className="w-5 h-5 text-folusho-sage-400 opacity-40" />
+            <p className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.35em]">Total Subjects</p>
+            <BookOpen className="w-5 h-5 text-indigo-600 opacity-40" />
           </div>
-          <p className="text-5xl font-black text-white tracking-tighter">{stats.totalSubjects}</p>
+          <p className="text-5xl font-black text-slate-900 dark:text-white tracking-tighter">{stats.totalSubjects}</p>
         </div>
-        <div className="folusho-card !p-10 group hover:border-folusho-yellow-500/30 transition-all border-white/5">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-10 shadow-lg group hover:border-amber-500/30 transition-all">
           <div className="flex items-center justify-between mb-6">
-            <p className="text-[10px] font-black text-folusho-yellow-500 uppercase tracking-[0.35em]">Evaluations</p>
-            <TrendingUp className="w-5 h-5 text-folusho-yellow-500 opacity-40" />
+            <p className="text-[10px] font-black text-amber-500 uppercase tracking-[0.35em]">Assessments</p>
+            <TrendingUp className="w-5 h-5 text-amber-500 opacity-40" />
           </div>
-          <p className="text-5xl font-black text-white tracking-tighter">{stats.totalAssessments}</p>
+          <p className="text-5xl font-black text-slate-900 dark:text-white tracking-tighter">{stats.totalAssessments}</p>
         </div>
-        <div className="folusho-card !p-10 group hover:border-folusho-coral-500/30 transition-all border-white/5">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-10 shadow-lg group hover:border-rose-500/30 transition-all">
           <div className="flex items-center justify-between mb-6">
-            <p className="text-[10px] font-black text-folusho-coral-400 uppercase tracking-[0.35em]">Efficiency Quotient</p>
-            <GraduationCap className="w-5 h-5 text-folusho-coral-400 opacity-40" />
+            <p className="text-[10px] font-black text-rose-500 uppercase tracking-[0.35em]">Avg Score</p>
+            <GraduationCap className="w-5 h-5 text-rose-500 opacity-40" />
           </div>
-          <p className="text-5xl font-black text-white tracking-tighter">{stats.averageScore}%</p>
+          <p className="text-5xl font-black text-slate-900 dark:text-white tracking-tighter">{stats.averageScore}%</p>
         </div>
       </div>
 
       {/* Results Matrix */}
-      <div className="folusho-card !p-0 border-white/5 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl overflow-hidden">
-        <div className="p-10 border-b border-white/5 bg-folusho-slate-950/50">
-          <h2 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">
-            Performance <br /> <span className="text-folusho-slate-500">Matrix</span>
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-lg overflow-hidden">
+        <div className="p-10 border-b border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-slate-950/50">
+          <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter uppercase leading-none">
+            Subject <br /> <span className="text-slate-500">Results</span>
           </h2>
         </div>
 
@@ -294,8 +294,8 @@ export default function ParentDashboard() {
           </div>
         ) : (
           <div className="text-center py-40">
-            <AlertCircle className="w-20 h-20 text-folusho-cream-300 mx-auto mb-8" />
-            <p className="text-folusho-slate-400 font-bold uppercase tracking-widest text-sm">Zero performance protocols detected in matrix.</p>
+            <AlertCircle className="w-20 h-20 text-slate-300 mx-auto mb-8" />
+            <p className="text-slate-400 font-bold uppercase tracking-widest text-sm">No results found.</p>
           </div>
         )}
       </div>

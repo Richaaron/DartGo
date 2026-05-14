@@ -15,7 +15,6 @@ import {
   Sparkles,
   Zap,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useAuthContext } from "../context/AuthContext";
 
 interface LoginProps {
@@ -35,28 +34,28 @@ const loginTypes: {
 }[] = [
   {
     id: "admin",
-    label: "ADMIN PORTAL",
-    desc: "Centralized control of academic records and institutional intelligence.",
+    label: "ADMIN",
+    desc: "Manage school records and settings.",
     icon: <Shield className="w-5 h-5" />,
     color: "text-white",
-    iconBg: "bg-royal-purple-500",
-    gradient: "from-royal-purple-600 to-royal-purple-800",
+    iconBg: "bg-indigo-600",
+    gradient: "from-indigo-600 to-indigo-800",
   },
   {
     id: "teacher",
-    label: "TEACHER PORTAL",
-    desc: "Sophisticated evaluation frameworks for numeric and character development.",
+    label: "TEACHER",
+    desc: "Record and manage student results.",
     icon: <BookOpen className="w-5 h-5" />,
-    color: "text-royal-black-900",
-    iconBg: "bg-royal-gold-500",
-    gradient: "from-royal-gold-400 to-royal-gold-600",
+    color: "text-slate-900",
+    iconBg: "bg-amber-400",
+    gradient: "from-amber-400 to-amber-600",
   },
   {
     id: "parent",
-    label: "PARENTAL ACCESS",
-    desc: "Real-time academic updates and detailed student performance report cards.",
+    label: "PARENT",
+    desc: "View your child's academic performance.",
     icon: <Users className="w-5 h-5" />,
-    color: "text-royal-gold-400",
+    color: "text-indigo-400",
     iconBg: "bg-transparent",
     gradient: "from-transparent to-transparent",
   },
@@ -114,269 +113,192 @@ export default function Login({ onLoginSuccess }: LoginProps) {
   };
 
   return (
-    <div className="min-h-screen bg-folusho-slate-950 text-white overflow-hidden relative selection:bg-folusho-sage-500/20">
+    <div className="min-h-screen bg-slate-950 text-white overflow-hidden relative selection:bg-indigo-500/20">
       {/* ── Immersive Background ──────────────────────── */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        {/* Organic Sage Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1400px] h-[1400px] bg-folusho-sage-500/10 rounded-full blur-[180px] animate-folusho-blob" />
-        
-        {/* Dynamic Blobs */}
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.3, 1],
-            opacity: [0.1, 0.3, 0.1],
-            rotate: [0, 60, 0],
-            x: [0, 80, 0],
-            y: [0, -40, 0]
-          }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[5%] right-[10%] w-[700px] h-[700px] bg-folusho-yellow-500/10 rounded-full blur-[140px]" 
-        />
-        
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.1, 1],
-            opacity: [0.1, 0.2, 0.1],
-            x: [0, -60, 0],
-            y: [0, 80, 0]
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-          className="absolute bottom-[15%] left-[5%] w-[600px] h-[600px] bg-folusho-coral-500/10 rounded-full blur-[120px]" 
-        />
-        
-        {/* Premium Noise Pattern */}
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')] opacity-[0.1] mix-blend-overlay" />
-        
-        {/* Subtle Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-folusho-slate-900/40 to-folusho-slate-950" />
+        <div className="absolute inset-0 bg-slate-950" />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900 to-slate-950" />
       </div>
 
-      <AnimatePresence mode="wait">
-        {!loginType ? (
-          /* ── Immersive Portal Dashboard ────────────────── */
-          <motion.div
-            key="dashboard"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1 }}
-            className="relative z-10 min-h-screen flex items-center justify-center p-8 md:p-16 lg:p-32"
-          >
+      {!loginType ? (
+        <div className="relative z-10 min-h-screen flex items-center justify-center p-8 md:p-16 lg:p-32">
             <div className="max-w-7xl w-full grid lg:grid-cols-2 gap-24 items-center">
               
               {/* Left Column: Hero Intelligence */}
               <div className="space-y-12">
-                <motion.div
-                  initial={{ opacity: 0, x: -60 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 1, delay: 0.2 }}
-                  className="space-y-8"
-                >
-                  <div className="inline-flex items-center gap-4 px-6 py-2.5 rounded-full bg-white/5 border border-white/5 text-folusho-sage-400 text-[10px] font-black tracking-[0.4em] uppercase shadow-sm">
+                <div className="space-y-8">
+                  <div className="inline-flex items-center gap-4 px-6 py-2.5 rounded-full bg-white/5 border border-white/5 text-indigo-400 text-[10px] font-black tracking-[0.4em] uppercase shadow-sm">
                     <div className="w-10 h-10 bg-white/5 rounded-2xl flex items-center justify-center p-2 shadow-sm border border-white/5">
                       <img src="/school_logo.png?v=20260512" alt="Logo" className="w-full h-full object-contain" />
                     </div>
-                    FOLUSHO ACADEMIC PORTAL
+                    FOLUSHO PORTAL
                   </div>
 
                   <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.85] text-white">
-                    Nurturing <br />
-                    Intelligence <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-500 via-folusho-coral-400 to-folusho-sage-600">
-                      Harmoniously.
+                    Excellence <br />
+                    in <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-indigo-400 to-indigo-600">
+                      Education.
                     </span>
                   </h1>
 
-                  <p className="text-folusho-slate-500 text-lg md:text-xl max-w-xl font-bold leading-relaxed tracking-tight">
-                    Welcome to the Folusho Ecosystem. A refined, organic space for academic governance, transparent growth, and educational excellence.
+                  <p className="text-slate-500 text-lg md:text-xl max-w-xl font-bold leading-relaxed tracking-tight">
+                    Welcome to the Folusho Result Management System. A simple and efficient tool for academic administration.
                   </p>
-                </motion.div>
+                </div>
 
                 {/* Cyber Portal Selection */}
                 <div className="flex flex-wrap items-center gap-8">
-                  {loginTypes.map((type, i) => (
+                  {loginTypes.map((type) => (
                     type.id !== 'parent' ? (
-                      <motion.button
+                      <button
                         key={type.id}
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.6 + i * 0.1 }}
-                        whileHover={{ y: -8, scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
                         onClick={() => setLoginType(type.id)}
                         className={`group relative overflow-hidden px-12 py-7 rounded-[2.5rem] font-black text-xs tracking-[0.25em] uppercase transition-all shadow-2xl ${
                           type.id === 'admin' 
-                            ? 'bg-folusho-sage-500 text-white' 
-                            : 'bg-folusho-yellow-500 text-folusho-slate-950'
+                            ? 'bg-indigo-600 text-white' 
+                            : 'bg-amber-400 text-slate-900'
                         }`}
                       >
                         <div className="relative z-10 flex items-center gap-5">
                           {type.label}
                           <ArrowRight size={22} className="group-hover:translate-x-2 transition-transform" />
                         </div>
-                        <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </motion.button>
+                      </button>
                     ) : (
-                      <motion.button
+                      <button
                         key={type.id}
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.8 }}
-                        whileHover={{ x: 10 }}
                         onClick={() => setLoginType(type.id)}
-                        className="px-8 py-5 flex items-center gap-4 text-folusho-coral-500 hover:text-folusho-coral-600 font-black text-xs tracking-[0.25em] uppercase transition-all"
+                        className="px-8 py-5 flex items-center gap-4 text-rose-500 hover:text-rose-600 font-black text-xs tracking-[0.25em] uppercase transition-all"
                       >
                         {type.label}
                         <ArrowRight size={20} />
-                      </motion.button>
+                      </button>
                     )
                   ))}
                 </div>
               </div>
 
               {/* Right Column: Dynamic Matrix Card */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9, x: 80 }}
-                animate={{ opacity: 1, scale: 1, x: 0 }}
-                transition={{ duration: 1.2, delay: 0.4 }}
-                className="hidden lg:block relative"
-              >
-                <div className="relative z-10 p-20 rounded-[4rem] bg-folusho-slate-900/40 border border-white/5 shadow-2xl backdrop-blur-md overflow-hidden group">
-                  {/* Internal Shimmer */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1200" />
-                  
+              <div className="hidden lg:block relative">
+                <div className="relative z-10 p-20 rounded-[4rem] bg-slate-900 border border-white/5 shadow-2xl overflow-hidden group">
                   <div className="flex items-center gap-8 mb-16">
-                    <div className="w-24 h-24 rounded-[2rem] bg-folusho-sage-500/10 border border-white/5 flex items-center justify-center text-folusho-sage-400 shadow-inner">
+                    <div className="w-24 h-24 rounded-[2rem] bg-indigo-500/10 border border-white/5 flex items-center justify-center text-indigo-400 shadow-inner">
                       <Layers size={44} />
                     </div>
                     <h2 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">
-                      Core <br /> <span className="text-folusho-sage-400">Infrastructure</span>
+                      Core <br /> <span className="text-indigo-400">Features</span>
                     </h2>
                   </div>
 
                   <div className="space-y-14">
                     {[
-                      { label: "Elite Governance", desc: "Sleek intelligence for institutional precision.", color: "bg-folusho-sage-400" },
-                      { label: "Growth Metrics", desc: "Holistic frameworks for character and academic growth.", color: "bg-folusho-yellow-400" },
-                      { label: "Strategic Alliance", desc: "Transparent engagement for parental stakeholders.", color: "bg-folusho-coral-400" }
+                      { label: "Administration", desc: "Efficient tools for school management.", color: "bg-indigo-400" },
+                      { label: "Student Progress", desc: "Track academic and behavioral growth.", color: "bg-amber-400" },
+                      { label: "Communication", desc: "Stay connected with all stakeholders.", color: "bg-rose-400" }
                     ].map((item, i) => (
-                      <motion.div 
+                      <div 
                         key={i} 
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.8 + i * 0.1 }}
                         className="flex gap-8 group"
                       >
                         <div className="mt-3">
-                          <div className={`w-3 h-3 rounded-full ${item.color} shadow-[0_0_15px_rgba(255,255,255,0.3)] group-hover:scale-150 transition-transform`} />
+                          <div className={`w-3 h-3 rounded-full ${item.color} shadow-sm group-hover:scale-150 transition-transform`} />
                         </div>
                         <div className="space-y-3">
-                          <h3 className="text-lg font-black text-white tracking-widest uppercase group-hover:text-folusho-sage-400 transition-colors">
+                          <h3 className="text-lg font-black text-white tracking-widest uppercase group-hover:text-indigo-400 transition-colors">
                             {item.label}
                           </h3>
-                          <p className="text-folusho-slate-500 text-base font-bold leading-relaxed max-w-sm">
+                          <p className="text-slate-500 text-base font-bold leading-relaxed max-w-sm">
                             {item.desc}
                           </p>
                         </div>
-                      </motion.div>
+                      </div>
                     ))}
                   </div>
 
-                  {/* Operational Status */}
                   <div className="mt-20 pt-12 border-t border-white/5 flex items-center justify-between">
                     <div className="flex gap-4">
-                      <div className="w-3.5 h-3.5 rounded-full bg-folusho-sage-500 animate-pulse" />
-                      <span className="text-[10px] font-black tracking-widest uppercase text-folusho-sage-400">System Online</span>
+                      <div className="w-3.5 h-3.5 rounded-full bg-indigo-500 animate-pulse" />
+                      <span className="text-[10px] font-black tracking-widest uppercase text-indigo-400">System Ready</span>
                     </div>
-                    <p className="text-[10px] font-black tracking-widest uppercase text-folusho-slate-500">v1.1.0 PREMIUM</p>
+                    <p className="text-[10px] font-black tracking-widest uppercase text-slate-500">v1.1.0</p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </div>
-          </motion.div>
+          </div>
         ) : (
           /* ── Secure Access Interface ───────────────────── */
-          <motion.div
-            key="login-form"
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 1.1 }}
-            className="relative z-10 min-h-screen flex items-center justify-center p-8"
-          >
+        <div className="relative z-10 min-h-screen flex items-center justify-center p-8">
             <div className="w-full max-w-lg space-y-10">
-              {/* Back Navigation */}
               <button 
                 onClick={handleBack}
-                className="flex items-center gap-5 text-folusho-slate-500 hover:text-white transition-all group"
+                className="flex items-center gap-5 text-slate-500 hover:text-white transition-all group"
               >
-                <div className="w-14 h-14 rounded-3xl bg-white/5 flex items-center justify-center group-hover:bg-folusho-sage-500/10 transition-all border border-white/5 shadow-sm">
+                <div className="w-14 h-14 rounded-3xl bg-white/5 flex items-center justify-center group-hover:bg-indigo-500/10 transition-all border border-white/5 shadow-sm">
                   <ArrowRight size={26} className="rotate-180" />
                 </div>
-                <span className="text-xs font-black tracking-[0.35em] uppercase">Return to Orbit</span>
+                <span className="text-xs font-black tracking-[0.35em] uppercase">Go Back</span>
               </button>
 
-              <div className="p-16 rounded-[4rem] bg-folusho-slate-900/40 border border-white/5 shadow-2xl backdrop-blur-md">
+              <div className="p-16 rounded-[4rem] bg-slate-900 border border-white/5 shadow-2xl">
                 <div className="text-center mb-14">
-                  <motion.div 
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className={`w-28 h-28 mx-auto rounded-[2.5rem] flex items-center justify-center mb-10 shadow-inner ${
-                      loginType === 'admin' ? 'bg-folusho-sage-500/10 text-folusho-sage-400 border border-white/5' :
-                      loginType === 'teacher' ? 'bg-folusho-yellow-500/10 text-folusho-yellow-500 border border-white/5' :
-                      'bg-folusho-coral-500/10 text-folusho-coral-400 border border-white/5'
-                    }`}
-                  >
+                  <div className={`w-28 h-28 mx-auto rounded-[2.5rem] flex items-center justify-center mb-10 shadow-inner ${
+                    loginType === 'admin' ? 'bg-indigo-500/10 text-indigo-400 border border-white/5' :
+                    loginType === 'teacher' ? 'bg-amber-400/10 text-amber-500 border border-white/5' :
+                    'bg-rose-500/10 text-rose-400 border border-white/5'
+                  }`}>
                     {loginType === 'admin' ? <Shield size={56} /> : 
                      loginType === 'teacher' ? <BookOpen size={56} /> : 
                      <Users size={56} />}
-                  </motion.div>
+                  </div>
                   <h2 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">
                     {loginType} <br />
                     <span className={
-                      loginType === 'admin' ? 'text-folusho-sage-400' :
-                      loginType === 'teacher' ? 'text-folusho-yellow-500' :
-                      'text-folusho-coral-400'
+                      loginType === 'admin' ? 'text-indigo-400' :
+                      loginType === 'teacher' ? 'text-amber-500' :
+                      'text-rose-400'
                     }>Portal Access</span>
                   </h2>
-                  <p className="text-folusho-slate-500 text-base font-bold mt-5">
-                    Verify your credentials to access the academic citadel.
+                  <p className="text-slate-500 text-base font-bold mt-5">
+                    Enter your credentials to login.
                   </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-8">
                   <div className="space-y-4">
-                    <label className="text-[10px] font-black uppercase tracking-[0.4em] text-folusho-sage-500/80 px-2">
+                    <label className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-500/80 px-2">
                       Username
                     </label>
                     <div className="relative group">
-                      <User className="absolute left-6 top-1/2 -translate-y-1/2 text-folusho-slate-500 group-focus-within:text-folusho-sage-400 transition-colors" size={20} />
+                      <User className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-indigo-400 transition-colors" size={20} />
                       <input
                         type="text"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="input-folusho !pl-16 !bg-folusho-slate-950/50"
-                        placeholder="identity.code"
+                        className="input !pl-16 !bg-slate-950/50"
+                        placeholder="Username"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-4">
-                    <label className="text-[10px] font-black uppercase tracking-[0.4em] text-folusho-sage-500/80 px-2">
-                      Access Code
+                    <label className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-500/80 px-2">
+                      Password
                     </label>
                     <div className="relative group">
-                      <Shield className="absolute left-6 top-1/2 -translate-y-1/2 text-folusho-slate-500 group-focus-within:text-folusho-sage-400 transition-colors" size={20} />
+                      <Shield className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-indigo-400 transition-colors" size={20} />
                       <input
                         type={showPassword ? "text" : "password"}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="input-folusho !pl-16 !pr-16 !bg-folusho-slate-950/50"
+                        className="input !pl-16 !pr-16 !bg-slate-950/50"
                         placeholder="••••••••••••"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-6 top-1/2 -translate-y-1/2 text-folusho-slate-500 hover:text-folusho-sage-400 transition-colors"
+                        className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-500 hover:text-indigo-400 transition-colors"
                       >
                         {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
                       </button>
@@ -384,46 +306,43 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                   </div>
 
                   {error && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="bg-folusho-coral-100 border border-folusho-coral-200 text-folusho-coral-600 p-6 rounded-[2rem] text-xs font-black uppercase tracking-widest flex items-center gap-5 shadow-sm"
+                    <div
+                      className="bg-rose-100 border border-rose-200 text-rose-600 p-6 rounded-[2rem] text-xs font-black uppercase tracking-widest flex items-center gap-5 shadow-sm"
                     >
                       <Zap size={18} className="animate-pulse" />
                       {error}
-                    </motion.div>
+                    </div>
                   )}
 
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className={`btn-vibrant w-full py-7 rounded-[2rem] text-[10px] tracking-[0.4em] shadow-2xl ${
-                      loginType === 'admin' ? 'bg-folusho-sage-500 text-white' :
-                      loginType === 'teacher' ? 'bg-folusho-yellow-500 text-folusho-slate-950' :
-                      'bg-folusho-coral-500 text-white'
+                    className={`w-full py-7 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.4em] shadow-2xl transition-all ${
+                      loginType === 'admin' ? 'bg-indigo-600 text-white' :
+                      loginType === 'teacher' ? 'bg-amber-400 text-slate-900' :
+                      'bg-rose-500 text-white'
                     }`}
                   >
                     {isLoading ? (
                       <div className="flex items-center justify-center gap-4">
                         <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                        Authenticating...
+                        Logging in...
                       </div>
                     ) : (
-                      "Establish Connection"
+                      "Login"
                     )}
                   </button>
                 </form>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
 
-      {/* Corporate Footprint */}
+      {/* Footer */}
       <div className="absolute bottom-12 right-12 z-20 opacity-40 hidden xl:block">
         <p className="text-[10px] font-black tracking-[0.7em] uppercase text-white text-right leading-relaxed">
-          Folusho Academic <br /> 
-          <span className="text-folusho-sage-400 font-black">Educational Governance © 2026</span>
+          Folusho Portal <br /> 
+          <span className="text-indigo-400 font-black">© 2026</span>
         </p>
       </div>
     </div>

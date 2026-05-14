@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import { X, BookOpen, Search } from 'lucide-react'
-import { motion } from 'framer-motion'
 import { Student, Subject } from '../types'
 import { generateParentCredentials } from '../utils/calculations'
 
@@ -58,11 +57,9 @@ export default function StudentForm({
     }
   }, [defaultClass, isEditing])
 
-  // Filter subjects based on student level
   const filteredSubjects = (Array.isArray(availableSubjects) ? availableSubjects : []).filter(s => {
     if (!s || s.level !== formData.level) return false
     
-    // For Secondary level, further distinguish between JSS and SSS
     if (formData.level === 'Secondary') {
       const isSSSStudent = formData.class.toUpperCase().startsWith('SSS') || formData.class.toUpperCase().startsWith('SS ')
       const isJSSStudent = formData.class.toUpperCase().startsWith('JSS')
@@ -82,7 +79,6 @@ export default function StudentForm({
     )
   }
 
-  // Auto-generate credentials when names change (only for new students)
   useEffect(() => {
     if (!isEditing && formData.firstName && formData.lastName) {
       const creds = generateParentCredentials(formData.firstName, formData.lastName)
@@ -102,7 +98,6 @@ export default function StudentForm({
     if (!formData.firstName.trim()) newErrors.firstName = 'First name is required'
     if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required'
     
-    // Email is now optional
     if (formData.parentEmail && (!formData.parentEmail.includes('@') || !formData.parentEmail.includes('.'))) {
       newErrors.parentEmail = 'Valid email is required'
     }
@@ -112,7 +107,7 @@ export default function StudentForm({
     if (!formData.parentPhone.trim()) newErrors.parentPhone = 'Parent phone is required'
     
     if (formData.level === 'Secondary' && (formData.class.toUpperCase().startsWith('SSS') || formData.class.toUpperCase().startsWith('SS'))) {
-      if (!formData.arm) newErrors.arm = 'Department is required for SSS students'
+      if (!formData.arm) newErrors.arm = 'Department is required'
     }
 
     if (!formData.dateOfBirth) {
@@ -150,383 +145,317 @@ export default function StudentForm({
     if (validateForm()) {
       const dataToSubmit = { ...formData };
       
-      // If editing and image wasn't modified, don't send the old image to reduce payload
       if (isEditing && !dataToSubmit._imageModified && dataToSubmit.image) {
-        // Only send image if it's a new base64 (starts with 'data:')
         if (!dataToSubmit.image.startsWith('data:')) {
           delete dataToSubmit.image;
         }
       }
       
-      // Remove the _imageModified flag before sending
       delete dataToSubmit._imageModified;
-      
       onSubmit(dataToSubmit as any, selectedSubjects)
     }
   }
 
   return (
-    <motion.div 
-      className="relative overflow-hidden bg-folusho-slate-900/90 backdrop-blur-3xl border border-white/5 rounded-[3rem] p-12 shadow-folusho-lg"
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-    >
-      {/* Decorative Orbs */}
-      <div className="absolute -top-24 -right-24 w-64 h-64 bg-folusho-sage-500/10 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-folusho-coral-500/10 rounded-full blur-[100px] pointer-events-none" />
-
-      <div className="relative z-10">
-        <div className="flex justify-between items-start mb-16">
-          <div>
-            <motion.h2 
-              className="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-none text-white mb-4"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-            >
-              Student <br /> <span className="text-folusho-sage-400">Registration</span>
-            </motion.h2>
-            <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.4em]">
-              Institutional Enrollment Matrix
-            </p>
-          </div>
-          <button
-            onClick={onCancel}
-            className="p-4 hover:bg-white/5 rounded-2xl transition-all border border-white/5 text-folusho-slate-400 hover:text-white"
-          >
-            <X size={24} />
-          </button>
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 shadow-lg">
+      <div className="flex justify-between items-start mb-8">
+        <div>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+            {isEditing ? 'Edit Student' : 'Student Registration'}
+          </h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+            Fill in student and guardian details for enrollment.
+          </p>
         </div>
+        <button
+          onClick={onCancel}
+          className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors text-slate-500"
+        >
+          <X size={20} />
+        </button>
+      </div>
 
-        <form onSubmit={handleSubmit} className="space-y-16">
-          {/* Personal Information */}
-          <section className="space-y-8">
-            <h3 className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.45em] px-2 flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-folusho-sage-500" />
-              I. Personal Intelligence
-            </h3>
+      <form onSubmit={handleSubmit} className="space-y-10">
+        {/* Personal Info */}
+        <section className="space-y-4">
+          <h3 className="text-sm font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
+            Personal Information
+          </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  className={`input-folusho w-full ${errors.firstName ? 'border-folusho-coral-300' : ''}`}
-                  placeholder="e.g. Olayinka"
-                />
-                {errors.firstName && (
-                  <p className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-widest px-2">{errors.firstName}</p>
-                )}
-              </div>
-
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  className={`input-folusho w-full ${errors.lastName ? 'border-folusho-coral-300' : ''}`}
-                  placeholder="e.g. Adeyemi"
-                />
-                {errors.lastName && (
-                  <p className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-widest px-2">{errors.lastName}</p>
-                )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Date of Birth
-                </label>
-                <input
-                  type="date"
-                  name="dateOfBirth"
-                  value={formData.dateOfBirth}
-                  onChange={handleChange}
-                  className={`input-folusho w-full ${errors.dateOfBirth ? 'border-folusho-coral-300' : ''}`}
-                />
-                {errors.dateOfBirth && (
-                  <p className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-widest px-2">{errors.dateOfBirth}</p>
-                )}
-              </div>
-
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Biological Gender
-                </label>
-                <select
-                  name="gender"
-                  value={formData.gender}
-                  onChange={handleChange}
-                  className="input-folusho w-full"
-                >
-                  <option value="Male">Alpha (Male)</option>
-                  <option value="Female">Beta (Female)</option>
-                </select>
-              </div>
-            </div>
-          </section>
-
-          {/* Parent Information */}
-          <section className="space-y-8 pt-8 border-t border-white/5">
-            <h3 className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.45em] px-2 flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-folusho-coral-500" />
-              II. Guardian Protocols
-            </h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Guardian Name
-                </label>
-                <input
-                  type="text"
-                  name="parentName"
-                  value={formData.parentName}
-                  onChange={handleChange}
-                  className={`input-folusho w-full ${errors.parentName ? 'border-folusho-coral-300' : ''}`}
-                  placeholder="Enter full name..."
-                />
-                {errors.parentName && (
-                  <p className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-widest px-2">{errors.parentName}</p>
-                )}
-              </div>
-
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Contact Frequency (Phone)
-                </label>
-                <input
-                  type="tel"
-                  name="parentPhone"
-                  value={formData.parentPhone}
-                  onChange={handleChange}
-                  className={`input-folusho w-full ${errors.parentPhone ? 'border-folusho-coral-300' : ''}`}
-                  placeholder="+234..."
-                />
-                {errors.parentPhone && (
-                  <p className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-widest px-2">{errors.parentPhone}</p>
-                )}
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                Digital Contact (Email)
-              </label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">First Name</label>
               <input
-                type="email"
-                name="parentEmail"
-                value={formData.parentEmail}
+                type="text"
+                name="firstName"
+                value={formData.firstName}
                 onChange={handleChange}
-                className="input-folusho w-full"
-                placeholder="optional@folusho.com"
+                className={`input ${errors.firstName ? 'border-red-500' : ''}`}
+                placeholder="e.g. John"
+              />
+              {errors.firstName && <p className="text-xs text-red-500 mt-1">{errors.firstName}</p>}
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Last Name</label>
+              <input
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                className={`input ${errors.lastName ? 'border-red-500' : ''}`}
+                placeholder="e.g. Doe"
+              />
+              {errors.lastName && <p className="text-xs text-red-500 mt-1">{errors.lastName}</p>}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Date of Birth</label>
+              <input
+                type="date"
+                name="dateOfBirth"
+                value={formData.dateOfBirth}
+                onChange={handleChange}
+                className={`input ${errors.dateOfBirth ? 'border-red-500' : ''}`}
+              />
+              {errors.dateOfBirth && <p className="text-xs text-red-500 mt-1">{errors.dateOfBirth}</p>}
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Gender</label>
+              <select
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                className="input"
+              >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        {/* Guardian Info */}
+        <section className="space-y-4 pt-6 border-t border-slate-100 dark:border-slate-800">
+          <h3 className="text-sm font-semibold text-rose-600 dark:text-rose-400 uppercase tracking-wider">
+            Guardian Information
+          </h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Guardian Name</label>
+              <input
+                type="text"
+                name="parentName"
+                value={formData.parentName}
+                onChange={handleChange}
+                className={`input ${errors.parentName ? 'border-red-500' : ''}`}
+                placeholder="Full Name"
+              />
+              {errors.parentName && <p className="text-xs text-red-500 mt-1">{errors.parentName}</p>}
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Phone Number</label>
+              <input
+                type="tel"
+                name="parentPhone"
+                value={formData.parentPhone}
+                onChange={handleChange}
+                className={`input ${errors.parentPhone ? 'border-red-500' : ''}`}
+                placeholder="+234..."
+              />
+              {errors.parentPhone && <p className="text-xs text-red-500 mt-1">{errors.parentPhone}</p>}
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Email Address (Optional)</label>
+            <input
+              type="email"
+              name="parentEmail"
+              value={formData.parentEmail}
+              onChange={handleChange}
+              className="input"
+              placeholder="parent@example.com"
+            />
+          </div>
+        </section>
+
+        {/* Enrollment Info */}
+        <section className="space-y-4 pt-6 border-t border-slate-100 dark:border-slate-800">
+          <h3 className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+            Enrollment Details
+          </h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Reg Number</label>
+              <input
+                type="text"
+                value={formData.registrationNumber}
+                className="input bg-slate-50 dark:bg-slate-800 cursor-not-allowed opacity-60"
+                placeholder="Auto-generated"
+                disabled
               />
             </div>
-          </section>
 
-          {/* School Information */}
-          <section className="space-y-8 pt-8 border-t border-white/5">
-            <h3 className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.45em] px-2 flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-folusho-sage-500" />
-              III. Institutional Mapping
-            </h3>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Academic Level</label>
+              <select
+                name="level"
+                value={formData.level}
+                onChange={handleChange}
+                className="input"
+              >
+                <option value="Pre-Nursery">Pre-Nursery</option>
+                <option value="Nursery">Nursery</option>
+                <option value="Primary">Primary</option>
+                <option value="Secondary">Secondary</option>
+              </select>
+            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Reg Code
-                </label>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Assigned Class</label>
+              {allowedClasses.length > 0 ? (
+                <select
+                  name="class"
+                  value={formData.class}
+                  onChange={handleChange}
+                  className="input"
+                  disabled={lockClass}
+                >
+                  <option value="">Select...</option>
+                  {allowedClasses.map((className) => (
+                    <option key={className} value={className}>{className}</option>
+                  ))}
+                </select>
+              ) : (
                 <input
                   type="text"
-                  value={formData.registrationNumber}
-                  className="input-folusho w-full bg-white/5 opacity-60 cursor-not-allowed"
-                  placeholder="Auto-Matrixed"
-                  disabled
-                />
-              </div>
-
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Academic Level
-                </label>
-                <select
-                  name="level"
-                  value={formData.level}
+                  name="class"
+                  value={formData.class}
                   onChange={handleChange}
-                  className="input-folusho w-full"
-                >
-                  <option value="Pre-Nursery">Pre-Nursery</option>
-                  <option value="Nursery">Nursery</option>
-                  <option value="Primary">Primary</option>
-                  <option value="Secondary">Secondary</option>
-                </select>
-              </div>
+                  className="input"
+                  placeholder="e.g. Primary 1"
+                />
+              )}
+            </div>
+          </div>
 
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Target Class
-                </label>
-                {allowedClasses.length > 0 ? (
-                  <select
-                    name="class"
-                    value={formData.class}
-                    onChange={handleChange}
-                    className="input-folusho w-full"
-                    disabled={lockClass}
-                  >
-                    <option value="">Select...</option>
-                    {allowedClasses.map((className) => (
-                      <option key={className} value={className}>{className}</option>
-                    ))}
-                  </select>
-                ) : (
-                  <input
-                    type="text"
-                    name="class"
-                    value={formData.class}
-                    onChange={handleChange}
-                    className="input-folusho w-full"
-                    placeholder="e.g. Primary 1"
-                  />
-                )}
+          {formData.level === 'Secondary' && (formData.class.toUpperCase().startsWith('SSS') || formData.class.toUpperCase().startsWith('SS')) && (
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">Department</label>
+              <select
+                name="arm"
+                value={formData.arm || ''}
+                onChange={handleChange}
+                className={`input ${errors.arm ? 'border-red-500' : ''}`}
+              >
+                <option value="">Select Department</option>
+                <option value="Science">Science</option>
+                <option value="Art">Art</option>
+                <option value="Commercial">Commercial</option>
+              </select>
+              {errors.arm && <p className="text-xs text-red-500 mt-1">{errors.arm}</p>}
+            </div>
+          )}
+        </section>
+
+        {/* Subject Selection */}
+        {!isEditing && filteredSubjects.length > 0 && (
+          <section className="space-y-4 pt-6 border-t border-slate-100 dark:border-slate-800">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                Assign Subjects
+              </h3>
+              <div className="relative w-full md:w-64">
+                <input
+                  type="text"
+                  placeholder="Filter subjects..."
+                  value={subjectSearchTerm}
+                  onChange={(e) => setSubjectSearchTerm(e.target.value)}
+                  className="input pl-10 text-sm"
+                />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               </div>
             </div>
 
-            {/* Department selector for SSS students */}
-            {formData.level === 'Secondary' && (formData.class.toUpperCase().startsWith('SSS') || formData.class.toUpperCase().startsWith('SS')) && (
-              <motion.div
-                className="space-y-3"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Strategic Department
-                </label>
-                <select
-                  name="arm"
-                  value={formData.arm || ''}
-                  onChange={handleChange}
-                  className={`input-folusho w-full ${errors.arm ? 'border-folusho-coral-300' : ''}`}
-                >
-                  <option value="">Select Department</option>
-                  <option value="Science">Science Matrix</option>
-                  <option value="Art">Creative Arts</option>
-                  <option value="Commercial">Commercial Logistics</option>
-                </select>
-              </motion.div>
-            )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {filteredSubjects
+                .filter(s => s.name.toLowerCase().includes(subjectSearchTerm.toLowerCase()))
+                .map(subject => (
+                  <label
+                    key={subject.id}
+                    className={`flex items-center gap-3 p-3 rounded-lg border transition-all cursor-pointer ${
+                      selectedSubjects.includes(subject.id)
+                        ? 'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-200 dark:border-indigo-800 shadow-sm'
+                        : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-indigo-200'
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedSubjects.includes(subject.id)}
+                      onChange={() => toggleSubject(subject.id)}
+                      className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                    />
+                    <div className="min-w-0">
+                      <p className={`text-xs font-bold truncate ${selectedSubjects.includes(subject.id) ? 'text-indigo-700 dark:text-indigo-300' : 'text-slate-700 dark:text-slate-300'}`}>{subject.name}</p>
+                      <p className="text-[10px] text-slate-500">{subject.code}</p>
+                    </div>
+                  </label>
+                ))}
+            </div>
           </section>
+        )}
 
-          {/* Subject Selection */}
-          {!isEditing && filteredSubjects.length > 0 && (
-            <section className="space-y-8 pt-8 border-t border-white/5">
-              <div className="flex flex-col md:flex-row justify-between items-end gap-8">
-                <h3 className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.4em] px-2 flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-folusho-yellow-500" />
-                  IV. Subject Synchronization
-                </h3>
-                <div className="relative w-full md:w-80">
-                  <input
-                    type="text"
-                    placeholder="Search Protocols..."
-                    value={subjectSearchTerm}
-                    onChange={(e) => setSubjectSearchTerm(e.target.value)}
-                    className="input-folusho !pl-14 text-xs"
-                  />
-                  <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-slate-300" />
+        {/* Credentials Display */}
+        {formData.parentUsername && (
+          <div className="p-6 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg text-indigo-600">
+                <BookOpen size={20} />
+              </div>
+              <h4 className="text-sm font-bold text-slate-900 dark:text-white">Parent Portal Credentials</h4>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <p className="text-xs font-medium text-slate-500 mb-1">Username</p>
+                <div className="p-3 bg-white dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800 text-xs font-mono font-bold text-indigo-600 dark:text-indigo-400">
+                  {formData.parentUsername}
                 </div>
               </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {filteredSubjects
-                  .filter(s => s.name.toLowerCase().includes(subjectSearchTerm.toLowerCase()))
-                  .map(subject => (
-                    <label
-                      key={subject.id}
-                      className={`flex items-center gap-5 p-6 rounded-[2rem] border transition-all cursor-pointer ${
-                        selectedSubjects.includes(subject.id)
-                          ? 'bg-folusho-sage-500/10 border-folusho-sage-400/30 shadow-sm'
-                          : 'bg-white/5 border-white/5 hover:border-folusho-sage-500/30'
-                      }`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={selectedSubjects.includes(subject.id)}
-                        onChange={() => toggleSubject(subject.id)}
-                        className="w-6 h-6 border-white/10 text-folusho-sage-500 rounded-lg focus:ring-folusho-sage-400 bg-transparent"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <p className={`text-sm font-black truncate transition-colors ${selectedSubjects.includes(subject.id) ? 'text-folusho-sage-400' : 'text-white'}`}>{subject.name}</p>
-                        <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest mt-1">{subject.code}</p>
-                      </div>
-                    </label>
-                  ))}
-              </div>
-            </section>
-          )}
-
-          {/* Credentials Display */}
-          {formData.parentUsername && (
-            <motion.div 
-              className="p-10 rounded-[3rem] bg-white/5 border border-white/5 space-y-8"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
-              <div className="flex items-center gap-5">
-                <div className="p-4 bg-folusho-sage-500/10 rounded-2xl text-folusho-sage-400 border border-white/5">
-                  <BookOpen size={24} />
-                </div>
-                <div>
-                  <h4 className="text-sm font-black text-white uppercase tracking-tighter">Access Credentials</h4>
-                  <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest mt-1">Parent Portal Protocols</p>
+              <div>
+                <p className="text-xs font-medium text-slate-500 mb-1">Password</p>
+                <div className="p-3 bg-white dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800 text-xs font-mono font-bold text-rose-600 dark:text-rose-400">
+                  {formData.parentPassword}
                 </div>
               </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-3">
-                  <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest px-2">Access Key (User)</p>
-                  <div className="p-5 bg-folusho-slate-950 rounded-[1.5rem] border border-white/5 text-sm font-mono font-bold text-folusho-sage-400 shadow-sm">
-                    {formData.parentUsername}
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest px-2">Secure Cipher (Pass)</p>
-                  <div className="p-5 bg-folusho-slate-950 rounded-[1.5rem] border border-white/5 text-sm font-mono font-bold text-folusho-coral-400 shadow-sm">
-                    {formData.parentPassword}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Form Actions */}
-          <div className="flex justify-end gap-8 pt-12 border-t border-white/5">
-            <button
-              type="button"
-              onClick={onCancel}
-              className="px-10 py-5 text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.35em] hover:text-folusho-sage-600 transition-all"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-14 py-5 bg-folusho-sage-400 text-white rounded-full font-black text-[10px] uppercase tracking-[0.35em] shadow-folusho hover:bg-folusho-sage-500 hover:scale-105 active:scale-95 transition-all"
-            >
-              {isEditing ? 'Sync Matrix' : 'Initialize Student'}
-            </button>
+            </div>
           </div>
-        </form>
-      </div>
-    </motion.div>
+        )}
+
+        {/* Form Actions */}
+        <div className="flex justify-end gap-4 pt-6 border-t border-slate-100 dark:border-slate-800">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="px-6 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="px-8 py-2 bg-indigo-600 text-white rounded-lg font-semibold text-sm hover:bg-indigo-700 transition-all shadow-sm active:scale-95"
+          >
+            {isEditing ? 'Save Changes' : 'Register Student'}
+          </button>
+        </div>
+      </form>
+    </div>
   )
 }

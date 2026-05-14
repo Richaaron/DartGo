@@ -7,7 +7,6 @@ import {
   Download,
   User as UserIcon,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Teacher, SchoolLevel } from "../types";
 import TeacherForm from "../components/TeacherForm";
 import Table from "../components/Table";
@@ -169,70 +168,70 @@ export default function TeacherManagement() {
       {/* ── Dynamic Header ────────────────────────────── */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-500/10 border border-folusho-sage-500/20 text-folusho-sage-400 text-[10px] font-black tracking-[0.35em] uppercase">
-            Human Resources
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black tracking-[0.35em] uppercase">
+            Staff Management
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-none">
-            Faculty <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-500 via-folusho-coral-400 to-folusho-sage-600">Command.</span>
+            Teacher <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-indigo-300 to-indigo-500">Directory.</span>
           </h1>
-          <p className="text-folusho-slate-500 text-base font-bold max-w-xl leading-relaxed tracking-tight">
-            Orchestrate the elite educators behind the Folusho academic citadel.
+          <p className="text-slate-500 text-base font-bold max-w-xl leading-relaxed tracking-tight">
+            Manage the list of teachers and their assignments.
           </p>
         </div>
 
         <div className="flex flex-wrap gap-6">
           <button
             onClick={handleExport}
-            className="btn-vibrant bg-white/5 !text-folusho-slate-400 border border-white/5 hover:border-folusho-sage-500/30 shadow-sm"
+            className="btn-vibrant bg-white/5 !text-slate-400 border border-white/5 hover:border-indigo-500/30 shadow-sm"
           >
-            <Download className="w-5 h-5 text-folusho-sage-400" />
-            Personnel Export
+            <Download className="w-5 h-5 text-indigo-400" />
+            Export Staff CSV
           </button>
           <button
             onClick={() => {
               setEditingTeacher(null);
               setShowForm(true);
             }}
-            className="btn-vibrant bg-folusho-sage-400 shadow-folusho"
+            className="flex items-center gap-3 px-8 py-4 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg hover:bg-indigo-700 transition-all"
           >
             <Plus className="w-5 h-5" />
-            Enlist Member
+            Add Teacher
           </button>
         </div>
       </div>
 
       {/* ── Intelligence Filters ───────────────────────── */}
-      <div className="folusho-card !p-12 border-white/5 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-12 shadow-lg">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">
-              Personnel Search
+            <label className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.4em] px-2">
+              Search Staff
             </label>
             <div className="relative group">
-              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-slate-500 group-focus-within:text-folusho-sage-400 transition-colors" />
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-indigo-600 transition-colors" />
               <input
                 type="text"
-                placeholder="Name, Email or Specialized Skill..."
+                placeholder="Search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="input-folusho !pl-16 !bg-folusho-slate-950/50"
+                className="input !pl-16 !bg-slate-50 dark:!bg-slate-950/50"
               />
             </div>
           </div>
 
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">
-              Operational Level
+            <label className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.4em] px-2">
+              Filter by Level
             </label>
             <select
               value={selectedLevel}
               onChange={(e) =>
                 setSelectedLevel(e.target.value as SchoolLevel | "All")
               }
-              className="input-folusho !py-5 !bg-folusho-slate-950/50"
+              className="input !py-5 !bg-slate-50 dark:!bg-slate-950/50"
             >
-              <option value="All">Global Operations</option>
+              <option value="All">All Levels</option>
               <option value="Pre-Nursery">Pre-Nursery</option>
               <option value="Nursery">Nursery</option>
               <option value="Primary">Primary</option>
@@ -243,7 +242,7 @@ export default function TeacherManagement() {
       </div>
 
       {/* ── Data Matrix ────────────────────────────────── */}
-      <div className="folusho-card !p-0 border-white/5 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-lg overflow-hidden">
         <Table
           columns={columns}
           data={filteredTeachers.map((teacher) => ({
@@ -254,20 +253,20 @@ export default function TeacherManagement() {
                   getTeacherSubjects(teacher).map((subject) => (
                     <span
                       key={subject}
-                      className="px-3 py-1 bg-folusho-sage-500/10 text-folusho-sage-400 rounded-lg text-[10px] font-black uppercase tracking-widest border border-folusho-sage-500/20"
+                      className="px-3 py-1 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-lg text-[10px] font-black uppercase tracking-widest border border-indigo-500/20"
                     >
                       {subject}
                     </span>
                   ))
                 ) : (
-                  <span className="px-3 py-1 bg-folusho-coral-500/10 text-folusho-coral-400 rounded-lg text-[10px] font-black uppercase tracking-widest border border-folusho-coral-500/20">
-                    Lead Mentor
+                  <span className="px-3 py-1 bg-slate-100 dark:bg-white/5 text-slate-500 rounded-lg text-[10px] font-black uppercase tracking-widest border border-slate-200 dark:border-white/5">
+                    No Subject Assigned
                   </span>
                 )}
               </div>
             ),
             profile: (
-              <div className="w-14 h-14 rounded-2xl bg-folusho-sage-500/10 flex items-center justify-center overflow-hidden border border-white/5 shadow-sm">
+              <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center overflow-hidden border border-indigo-500/10 shadow-sm">
                 {teacher.image ? (
                   <img
                     src={teacher.image}
@@ -275,18 +274,18 @@ export default function TeacherManagement() {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <UserIcon className="w-6 h-6 text-folusho-sage-400" />
+                  <UserIcon className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
                 )}
               </div>
             ),
-            name: <span className="font-bold text-white text-lg">{teacher.name}</span>,
-            email: <span className="font-mono text-folusho-slate-500 text-sm">{teacher.email}</span>,
+            name: <span className="font-bold text-slate-900 dark:text-white text-lg">{teacher.name}</span>,
+            email: <span className="font-mono text-slate-500 text-sm">{teacher.email}</span>,
             classes: (
               <div className="flex flex-wrap gap-2">
                 {(teacher.assignedClasses || []).map((c) => (
                   <span
                     key={c}
-                    className="px-3 py-1 bg-folusho-yellow-500/10 text-folusho-yellow-500 rounded-lg text-[10px] font-black uppercase tracking-widest border border-folusho-yellow-500/20"
+                    className="px-3 py-1 bg-amber-500/10 text-amber-500 rounded-lg text-[10px] font-black uppercase tracking-widest border border-amber-500/20"
                   >
                     {c}
                   </span>
@@ -300,15 +299,15 @@ export default function TeacherManagement() {
                     setEditingTeacher(teacher);
                     setShowForm(true);
                   }}
-                  className="p-3 rounded-2xl bg-white/5 hover:bg-white/10 text-folusho-sage-400 transition-all border border-white/5 shadow-sm"
-                  title="Modify Entry"
+                  className="p-3 rounded-2xl bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 transition-all border border-indigo-500/10 shadow-sm"
+                  title="Edit Teacher"
                 >
                   <Edit2 size={18} />
                 </button>
                 <button
                   onClick={() => handleDeleteTeacher(teacher.id)}
-                  className="p-3 rounded-2xl bg-white/5 hover:bg-white/10 text-folusho-coral-400 transition-all border border-white/5 shadow-sm"
-                  title="Expel Member"
+                  className="p-3 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 transition-all border border-rose-500/10 shadow-sm"
+                  title="Delete Teacher"
                 >
                   <Trash2 size={18} />
                 </button>
@@ -318,36 +317,24 @@ export default function TeacherManagement() {
         />
         {filteredTeachers.length === 0 && (
           <div className="text-center py-24">
-            <p className="text-folusho-slate-500 font-bold uppercase tracking-widest text-sm">No specialized personnel detected in this sector.</p>
+            <p className="text-slate-500 font-bold uppercase tracking-widest text-sm">No teachers found.</p>
           </div>
         )}
       </div>
 
       {/* ── Modals ────────────────────────────────────── */}
-      <AnimatePresence>
         {showForm && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-folusho-slate-900/60 backdrop-blur-md flex items-center justify-center z-50 p-8"
-          >
-            <motion.div 
-              initial={{ scale: 0.98, y: 10 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.98, y: 10 }}
-              className="folusho-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/5 shadow-2xl bg-folusho-slate-900"
-            >
+          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-8">
+            <div className="bg-white dark:bg-slate-900 max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800">
               <TeacherForm
                 onSubmit={handleSubmitTeacher}
                 initialData={editingTeacher || undefined}
                 onCancel={() => setShowForm(false)}
                 isEditing={!!editingTeacher}
               />
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         )}
-      </AnimatePresence>
     </div>
   );
 }

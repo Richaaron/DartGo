@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo, useCallback, memo, useRef } from 'react'
-import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Search, AlertCircle, Filter, User, BookOpen, ClipboardList, ChevronLeft, ChevronRight, LayoutGrid, List, Loader2 } from 'lucide-react'
 import { SubjectResult, Student, Subject, StudentSubject, Teacher } from '../types'
 import SubjectResultForm from '../components/SubjectResultForm'
@@ -661,31 +660,31 @@ export default function SubjectResultEntry() {
       {/* ── Dynamic Header ────────────────────────────── */}
       <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-10">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-500/10 border border-folusho-sage-500/20 text-folusho-sage-400 text-[10px] font-black tracking-[0.35em] uppercase">
-            Evaluation Matrix
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black tracking-[0.35em] uppercase">
+            Result Management
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-none">
             Result <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-500 via-folusho-coral-400 to-folusho-sage-600">Synchronization.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-indigo-400 to-indigo-600">Entry.</span>
           </h1>
-          <p className="text-folusho-slate-500 text-base font-bold max-w-xl leading-relaxed tracking-tight">
-            Input CA and Examination scores for high-fidelity grade synthesis.
+          <p className="text-slate-500 text-base font-bold max-w-xl leading-relaxed tracking-tight">
+            Enter CA and Examination scores for student results.
           </p>
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-6">
-          <div className="flex bg-folusho-slate-900/40 p-2 rounded-3xl border border-white/5 shadow-2xl backdrop-blur-md">
+          <div className="flex bg-slate-900 border border-white/5 p-2 rounded-3xl shadow-xl">
             {(["students", "results"] as const).map((mode) => (
               <button
                 key={mode}
                 onClick={() => setViewMode(mode)}
                 className={`px-8 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${
                   viewMode === mode
-                    ? "bg-folusho-sage-400 text-white shadow-folusho"
-                    : "text-folusho-slate-500 hover:text-folusho-sage-400"
+                    ? "bg-indigo-600 text-white shadow-lg"
+                    : "text-slate-500 hover:text-indigo-400"
                 }`}
               >
-                {mode === "students" ? "Identity Matrix" : "Archival List"}
+                {mode === "students" ? "Student List" : "Result Archive"}
               </button>
             ))}
           </div>
@@ -695,20 +694,20 @@ export default function SubjectResultEntry() {
               setEditingResult(null)
               setShowForm(true)
             }}
-            className="btn-vibrant bg-folusho-sage-400 shadow-folusho"
+            className="flex items-center gap-3 px-8 py-4 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg hover:bg-indigo-700 transition-all"
           >
             <Plus size={20} />
-            Initialize Entry
+            New Entry
           </button>
         </div>
       </div>
 
       {/* Message */}
       {message.text && (
-        <div className={`p-6 rounded-[2rem] flex items-center gap-5 backdrop-blur-md border ${
+        <div className={`p-6 rounded-[2rem] flex items-center gap-5 border ${
           message.type === 'success' 
-            ? 'bg-folusho-sage-500/10 text-folusho-sage-400 border-folusho-sage-500/20 shadow-[0_0_20px_rgba(34,197,94,0.1)]' 
-            : 'bg-folusho-coral-500/10 text-folusho-coral-400 border-folusho-coral-500/20 shadow-[0_0_20px_rgba(239,68,68,0.1)]'
+            ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' 
+            : 'bg-rose-500/10 text-rose-500 border-rose-500/20'
         }`}>
           <AlertCircle size={24} />
           <p className="font-bold tracking-tight uppercase text-xs">{message.text}</p>
@@ -716,130 +715,129 @@ export default function SubjectResultEntry() {
       )}
 
       {/* ── Intelligence Filters ───────────────────────── */}
-      <div className="folusho-card !p-12 border-white/5">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-12 shadow-lg">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">Personnel Lookup</label>
+            <label className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.4em] px-2">Search Student</label>
             <div className="relative group">
-              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-sage-400 group-focus-within:text-folusho-sage-600 transition-colors" />
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-indigo-600 group-focus-within:text-indigo-400 transition-colors" />
               <input
                 type="text"
-                placeholder="Scan identities..."
+                placeholder="Search..."
                 value={filterTerm}
                 onChange={(e) => setFilterTerm(e.target.value)}
-                className="input-folusho !pl-16 !bg-folusho-slate-950/50"
+                className="input !pl-16 !bg-slate-50 dark:!bg-slate-950/50"
               />
             </div>
           </div>
 
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">Sector Focus</label>
+            <label className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.4em] px-2">Select Class</label>
             <select
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
-              className="input-folusho !py-5 !bg-folusho-slate-950/50"
+              className="input !py-5 !bg-slate-50 dark:!bg-slate-950/50"
             >
-              <option value="All" className="bg-folusho-slate-900">Global Sectors</option>
-              {availableClasses.map(cls => <option key={cls} value={cls} className="bg-folusho-slate-900">{cls}</option>)}
+              <option value="All" className="bg-white dark:bg-slate-900">All Classes</option>
+              {availableClasses.map(cls => <option key={cls} value={cls} className="bg-white dark:bg-slate-900">{cls}</option>)}
             </select>
           </div>
 
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">Matrix Focus (Subject)</label>
+            <label className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.4em] px-2">Select Subject</label>
             <select
               value={selectedSubject}
               onChange={(e) => setSelectedSubject(e.target.value)}
-              className="input-folusho !py-5 !bg-folusho-slate-950/50"
+              className="input !py-5 !bg-slate-50 dark:!bg-slate-950/50"
             >
-              <option value="All" className="bg-folusho-slate-900">All {isTeacher ? 'My' : ''} Subjects</option>
+              <option value="All" className="bg-white dark:bg-slate-900">All {isTeacher ? 'My' : ''} Subjects</option>
               {teacherSubjects.map((subject) => (
-                <option key={subject.id} value={subject.id} className="bg-folusho-slate-900">{subject.name}</option>
+                <option key={subject.id} value={subject.id} className="bg-white dark:bg-slate-900">{subject.name}</option>
               ))}
             </select>
           </div>
 
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">Temporal Phase</label>
+            <label className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.4em] px-2">Select Term</label>
             <select
               value={selectedTerm}
               onChange={(e) => setSelectedTerm(e.target.value)}
-              className="input-folusho !py-5 !bg-folusho-slate-950/50"
+              className="input !py-5 !bg-slate-50 dark:!bg-slate-950/50"
             >
-              <option value="All" className="bg-folusho-slate-900">All Phases</option>
-              <option value="First" className="bg-folusho-slate-900">First Phase</option>
-              <option value="Second" className="bg-folusho-slate-900">Second Phase</option>
-              <option value="Third" className="bg-folusho-slate-900">Third Phase</option>
+              <option value="All" className="bg-white dark:bg-slate-900">All Terms</option>
+              <option value="First" className="bg-white dark:bg-slate-900">First Term</option>
+              <option value="Second" className="bg-white dark:bg-slate-900">Second Term</option>
+              <option value="Third" className="bg-white dark:bg-slate-900">Third Term</option>
             </select>
           </div>
         </div>
       </div>
 
       {/* ── Data Matrix ────────────────────────────────── */}
-      <div className="folusho-card !p-0 border-white/5">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-lg">
         {viewMode === "students" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 p-10">
             {displayStudents.map((student) => (
-              <motion.div
+              <div
                 key={student.id}
-                layoutId={student.id}
                 onClick={() => setSelectedStudentForEntry(student)}
-                className="bg-white/5 border border-white/5 rounded-[2.5rem] p-8 hover:bg-white/10 hover:border-folusho-sage-500/30 transition-all cursor-pointer group"
+                className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-[2.5rem] p-8 hover:bg-white/10 hover:border-indigo-500/30 transition-all cursor-pointer group"
               >
-                <div className="w-16 h-16 bg-folusho-sage-500/10 rounded-2xl flex items-center justify-center border border-white/5 group-hover:border-folusho-sage-500/30 transition-colors shadow-inner mb-8">
-                  <span className="text-2xl font-black text-folusho-sage-400">{student.firstName[0]}{student.lastName[0]}</span>
+                <div className="w-16 h-16 bg-indigo-500/10 rounded-2xl flex items-center justify-center border border-indigo-500/20 group-hover:border-indigo-500/30 transition-colors shadow-inner mb-8">
+                  <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">{student.firstName[0]}{student.lastName[0]}</span>
                 </div>
-                <h3 className="text-xl font-black text-white mb-1 tracking-tight group-hover:text-folusho-sage-400 transition-colors">
+                <h3 className="text-xl font-black text-slate-900 dark:text-white mb-1 tracking-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                   {student.firstName} {student.lastName}
                 </h3>
-                <p className="text-[9px] font-black text-folusho-slate-400 uppercase tracking-widest mb-8">
+                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-8">
                   {student.registrationNumber}
                 </p>
-                <div className="pt-6 border-t border-white/5 flex items-center justify-between">
-                  <span className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-widest">{student.class}</span>
-                  <ChevronRight size={18} className="text-folusho-sage-400 group-hover:text-folusho-sage-300 group-hover:translate-x-2 transition-all" />
+                <div className="pt-6 border-t border-slate-200 dark:border-white/5 flex items-center justify-between">
+                  <span className="text-[10px] font-black text-indigo-600 uppercase tracking-widest">{student.class}</span>
+                  <ChevronRight size={18} className="text-indigo-400 group-hover:text-indigo-300 group-hover:translate-x-2 transition-all" />
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full">
-              <thead className="bg-white/5 border-b border-white/5">
+              <thead className="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-800">
                 <tr>
-                  <th className="py-6 px-8 text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.35em] text-left">Personnel</th>
-                  <th className="py-6 px-6 text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.35em] text-left">Subject</th>
-                  <th className="py-6 px-6 text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.35em] text-center">Protocol Status</th>
-                  <th className="py-6 px-6 text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.35em] text-center">Score</th>
-                  <th className="py-6 px-8 text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.35em] text-right">Actions</th>
+                  <th className="py-6 px-8 text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.35em] text-left">Student</th>
+                  <th className="py-6 px-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.35em] text-left">Subject</th>
+                  <th className="py-6 px-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.35em] text-center">Status</th>
+                  <th className="py-6 px-6 text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.35em] text-center">Score</th>
+                  <th className="py-6 px-8 text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.35em] text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
                 {displayResults.map((item) => (
-                  <tr key={item.id} className="hover:bg-white/5 transition-colors">
+                  <tr key={item.id} className="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
                     <td className="py-6 px-8">
-                      <div className="font-bold text-white text-sm">{item.studentName}</div>
-                      <div className="text-[9px] font-black text-folusho-slate-500 uppercase tracking-widest mt-1">{item.class}</div>
+                      <div className="font-bold text-slate-900 dark:text-white text-sm">{item.studentName}</div>
+                      <div className="text-[9px] font-black text-slate-500 uppercase tracking-widest mt-1">{item.class}</div>
                     </td>
-                    <td className="py-6 px-6 text-sm font-bold text-folusho-slate-400">{item.subjectName}</td>
+                    <td className="py-6 px-6 text-sm font-bold text-slate-500 dark:text-slate-400">{item.subjectName}</td>
                     <td className="py-6 px-6 text-center">
                       <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border ${
-                        item.status === "Completed" ? "bg-folusho-sage-500/10 text-folusho-sage-400 border-folusho-sage-500/20" : "bg-folusho-coral-500/10 text-folusho-coral-400 border-folusho-coral-500/20"
+                        item.status === "Completed" ? "bg-emerald-50 text-emerald-600 border-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20" : "bg-amber-50 text-amber-600 border-amber-100 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20"
                       }`}>
                         {item.status}
                       </span>
                     </td>
-                    <td className="py-6 px-6 text-center font-black text-white text-lg">{item.totalScore}</td>
+                    <td className="py-6 px-6 text-center font-black text-slate-900 dark:text-white text-lg">{item.totalScore}</td>
                     <td className="py-6 px-8 text-right">
                       <div className="flex justify-end gap-3">
                         <button
                           onClick={() => { setEditingResult(item); setShowForm(true) }}
-                          className="p-3 rounded-xl bg-white/5 hover:bg-white/10 text-folusho-sage-400 transition-all border border-white/5 shadow-sm"
+                          className="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-indigo-600 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-indigo-400 transition-all border border-slate-200 dark:border-slate-700 shadow-sm"
                         >
                           <ClipboardList size={18} />
                         </button>
                         <button
                           onClick={() => handleDeleteResult(item.id)}
-                          className="p-3 rounded-xl bg-white/5 hover:bg-white/10 text-folusho-coral-400 transition-all border border-white/5 shadow-sm"
+                          className="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-rose-500 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-rose-400 transition-all border border-slate-200 dark:border-slate-700 shadow-sm"
                         >
                           <AlertCircle size={18} />
                         </button>
@@ -859,17 +857,17 @@ export default function SubjectResultEntry() {
           <button
             disabled={currentPage === 1}
             onClick={() => setCurrentPage(p => p - 1)}
-            className="p-4 rounded-2xl bg-white/5 border border-white/5 text-folusho-sage-400 disabled:opacity-20 hover:bg-white/10 transition-all shadow-sm"
+            className="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 disabled:opacity-20 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm"
           >
             <ChevronLeft size={24} />
           </button>
-          <span className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.45em]">
-            Matrix Phase {currentPage} of {totalPages}
+          <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.45em]">
+            Page {currentPage} of {totalPages}
           </span>
           <button
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage(p => p + 1)}
-            className="p-4 rounded-2xl bg-white/5 border border-white/5 text-folusho-sage-400 disabled:opacity-20 hover:bg-white/10 transition-all shadow-sm"
+            className="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 disabled:opacity-20 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm"
           >
             <ChevronRight size={24} />
           </button>
@@ -877,38 +875,27 @@ export default function SubjectResultEntry() {
       )}
 
       {/* Modal Overlay */}
-      <AnimatePresence>
-        {showForm && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-folusho-slate-900/60 backdrop-blur-md flex items-center justify-center z-50 p-8"
-          >
-            <motion.div
-              initial={{ scale: 0.98, y: 10 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.98, y: 10 }}
-              className="folusho-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/5"
-            >
-              <div className="p-10 border-b border-white/5 bg-folusho-sage-500/10">
-                <h2 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">Protocol Injection</h2>
-                <p className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.35em] mt-4">Manual override active</p>
-              </div>
-              <div className="p-10">
-                <SubjectResultForm
-                  onSubmit={handleSubmitResult}
-                  initialData={editingResult || undefined}
-                  onCancel={handleCancel}
-                  isEditing={!!editingResult}
-                  students={students}
-                  subjects={isTeacher ? teacherSubjects : subjects}
-                />
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Modal Overlay */}
+      {showForm && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md flex items-center justify-center z-50 p-8">
+          <div className="bg-white dark:bg-slate-900 rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0">
+            <div className="p-10 border-b border-slate-200 dark:border-slate-800 bg-indigo-50 dark:bg-indigo-500/10">
+              <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter uppercase leading-none">Result Entry</h2>
+              <p className="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.35em] mt-4">Manual Entry</p>
+            </div>
+            <div className="p-10">
+              <SubjectResultForm
+                onSubmit={handleSubmitResult}
+                initialData={editingResult || undefined}
+                onCancel={handleCancel}
+                isEditing={!!editingResult}
+                students={students}
+                subjects={isTeacher ? teacherSubjects : subjects}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

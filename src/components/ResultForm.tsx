@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion } from "framer-motion";
 import type { ChangeEvent, FormEvent } from 'react'
 import { X } from 'lucide-react'
 import { Result, Student, Subject } from '../types'
@@ -53,7 +52,7 @@ export default function ResultForm({
     if (formData.score > formData.totalScore)
       newErrors.score = 'Score cannot exceed total score'
     if (formData.totalScore <= 0) newErrors.totalScore = 'Total score must be positive'
-    if (!formData.recordedBy.trim()) newErrors.recordedBy = 'Recorded by is required'
+    if (!formData.recordedBy.trim()) newErrors.recordedBy = 'Teacher name is required'
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -87,270 +86,245 @@ export default function ResultForm({
   }
 
   return (
-    <motion.div 
-      className="folusho-card !p-0 border-white/5 bg-folusho-slate-900 shadow-2xl overflow-hidden"
-      initial={{ opacity: 0, scale: 0.98 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-    >
-      <div className="relative z-10 p-12">
-        <div className="flex justify-between items-start mb-12">
-          <div>
-            <motion.h2 
-              className="text-4xl font-black uppercase tracking-tighter leading-none text-white mb-3"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-            >
-              {isEditing ? 'Sync' : 'Initialize'} <br /> <span className="text-folusho-sage-500">Result</span>
-            </motion.h2>
-            <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.35em]">
-              Academic Evaluation Protocol
-            </p>
-          </div>
-          <button
-            onClick={onCancel}
-            className="p-4 hover:bg-white/5 rounded-3xl transition-all border border-white/5 text-folusho-slate-400 hover:text-white"
-          >
-            <X size={24} />
-          </button>
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 shadow-lg max-w-4xl mx-auto">
+      <div className="flex justify-between items-start mb-8">
+        <div>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+            {isEditing ? 'Edit Result' : 'Enter New Result'}
+          </h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+            Record student academic performance for the current term.
+          </p>
         </div>
+        <button
+          onClick={onCancel}
+          className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors text-slate-500"
+        >
+          <X size={20} />
+        </button>
+      </div>
 
-        <form onSubmit={handleSubmit} className="space-y-12">
-          {/* Section I: Identity Mapping */}
-          <section className="space-y-6">
-            <h3 className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.45em] px-2 flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-folusho-sage-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
-              I. Identity Mapping
-            </h3>
+      <form onSubmit={handleSubmit} className="space-y-8">
+        {/* Selection */}
+        <section className="space-y-4">
+          <h3 className="text-sm font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
+            Student & Subject
+          </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Target Student
-                </label>
-                <select
-                  name="studentId"
-                  value={formData.studentId}
-                  onChange={handleChange}
-                  className={`input-folusho w-full !bg-folusho-slate-950/50 ${errors.studentId ? 'border-folusho-coral-500' : ''}`}
-                >
-                  <option value="" className="bg-folusho-slate-900">Choose Student Identity...</option>
-                  {students.map((student) => (
-                    <option key={student.id} value={student.id} className="bg-folusho-slate-900">
-                      {student.firstName} {student.lastName} ({student.registrationNumber})
-                    </option>
-                  ))}
-                </select>
-                {errors.studentId && (
-                  <p className="text-folusho-coral-500 text-[10px] font-black uppercase tracking-widest px-2">{errors.studentId}</p>
-                )}
-              </div>
-
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Subject Matrix
-                </label>
-                <select
-                  name="subjectId"
-                  value={formData.subjectId}
-                  onChange={handleChange}
-                  className={`input-folusho w-full !bg-folusho-slate-950/50 ${errors.subjectId ? 'border-folusho-coral-500' : ''}`}
-                >
-                  <option value="" className="bg-folusho-slate-900">Select Subject Protocol...</option>
-                  {subjects.map((subject) => (
-                    <option key={subject.id} value={subject.id} className="bg-folusho-slate-900">
-                      {subject.name} ({subject.code})
-                    </option>
-                  ))}
-                </select>
-                {errors.subjectId && (
-                  <p className="text-folusho-coral-500 text-[10px] font-black uppercase tracking-widest px-2">{errors.subjectId}</p>
-                )}
-              </div>
-            </div>
-          </section>
-
-          {/* Section II: Performance Metrics */}
-          <section className="space-y-6 pt-10 border-t border-white/5">
-            <h3 className="text-[10px] font-black text-folusho-coral-400 uppercase tracking-[0.45em] px-2 flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-folusho-coral-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
-              II. Performance Metrics
-            </h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Evaluation Category
-                </label>
-                <select
-                  name="assessmentType"
-                  value={formData.assessmentType}
-                  onChange={handleChange}
-                  className="input-folusho w-full !bg-folusho-slate-950/50"
-                >
-                  <option value="Test" className="bg-folusho-slate-900">Standard Test</option>
-                  <option value="Exam" className="bg-folusho-slate-900">Global Examination</option>
-                  <option value="Assignment" className="bg-folusho-slate-900">Cognitive Assignment</option>
-                  <option value="Project" className="bg-folusho-slate-900">Specialized Project</option>
-                </select>
-              </div>
-
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Raw Score
-                </label>
-                <input
-                  type="number"
-                  name="score"
-                  value={formData.score}
-                  onChange={handleChange}
-                  step="0.01"
-                  className={`input-folusho w-full !bg-folusho-slate-950/50 ${errors.score ? 'border-folusho-coral-500' : ''}`}
-                />
-                {errors.score && (
-                  <p className="text-folusho-coral-500 text-[10px] font-black uppercase tracking-widest px-2">{errors.score}</p>
-                )}
-              </div>
-
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Max Potential
-                </label>
-                <input
-                  type="number"
-                  name="totalScore"
-                  value={formData.totalScore}
-                  onChange={handleChange}
-                  step="0.01"
-                  className={`input-folusho w-full !bg-folusho-slate-950/50 ${errors.totalScore ? 'border-folusho-coral-500' : ''}`}
-                />
-                {errors.totalScore && (
-                  <p className="text-folusho-coral-500 text-[10px] font-black uppercase tracking-widest px-2">{errors.totalScore}</p>
-                )}
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                Student
+              </label>
+              <select
+                name="studentId"
+                value={formData.studentId}
+                onChange={handleChange}
+                className={`input ${errors.studentId ? 'border-red-500' : ''}`}
+              >
+                <option value="">Select Student...</option>
+                {students.map((student) => (
+                  <option key={student.id} value={student.id}>
+                    {student.firstName} {student.lastName} ({student.registrationNumber})
+                  </option>
+                ))}
+              </select>
+              {errors.studentId && <p className="text-xs text-red-500 mt-1">{errors.studentId}</p>}
             </div>
 
-            {/* Score Intelligence Preview */}
-            <div className="p-10 rounded-[3rem] bg-folusho-slate-950/50 border border-white/5 shadow-inner">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-10">
-                <div className="space-y-2">
-                  <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest">Efficiency</p>
-                  <p className="text-3xl font-black text-white leading-none">{preview.percentage}%</p>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest">Classification</p>
-                  <p className="text-3xl font-black text-folusho-sage-400 leading-none">{preview.grade}</p>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest">Fractional Value</p>
-                  <p className="text-3xl font-black text-folusho-coral-400 leading-none">{formData.score} <span className="text-sm opacity-30 text-white">/ {formData.totalScore}</span></p>
-                </div>
-              </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                Subject
+              </label>
+              <select
+                name="subjectId"
+                value={formData.subjectId}
+                onChange={handleChange}
+                className={`input ${errors.subjectId ? 'border-red-500' : ''}`}
+              >
+                <option value="">Select Subject...</option>
+                {subjects.map((subject) => (
+                  <option key={subject.id} value={subject.id}>
+                    {subject.name} ({subject.code})
+                  </option>
+                ))}
+              </select>
+              {errors.subjectId && <p className="text-xs text-red-500 mt-1">{errors.subjectId}</p>}
             </div>
-          </section>
+          </div>
+        </section>
 
-          {/* Section III: Contextual Data */}
-          <section className="space-y-6 pt-10 border-t border-white/5">
-            <h3 className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.45em] px-2 flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-folusho-sage-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
-              III. Contextual Intelligence
-            </h3>
+        {/* Scores */}
+        <section className="space-y-4 pt-6 border-t border-slate-100 dark:border-slate-800">
+          <h3 className="text-sm font-semibold text-rose-600 dark:text-rose-400 uppercase tracking-wider">
+            Performance Details
+          </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Session Vector (Term)
-                </label>
-                <select
-                  name="term"
-                  value={formData.term}
-                  onChange={handleChange}
-                  className="input-folusho w-full !bg-folusho-slate-950/50"
-                >
-                  <option value="First" className="bg-folusho-slate-900">First Vector</option>
-                  <option value="Second" className="bg-folusho-slate-900">Second Vector</option>
-                  <option value="Third" className="bg-folusho-slate-900">Third Vector</option>
-                </select>
-              </div>
-
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Academic Cycle
-                </label>
-                <input
-                  type="text"
-                  name="academicYear"
-                  value={formData.academicYear}
-                  onChange={handleChange}
-                  className="input-folusho w-full !bg-folusho-slate-950/50"
-                  placeholder="e.g. 2026"
-                />
-              </div>
-
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Execution Date
-                </label>
-                <input
-                  type="date"
-                  name="dateRecorded"
-                  value={formData.dateRecorded}
-                  onChange={handleChange}
-                  className="input-folusho w-full !bg-folusho-slate-950/50"
-                />
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                Assessment Type
+              </label>
+              <select
+                name="assessmentType"
+                value={formData.assessmentType}
+                onChange={handleChange}
+                className="input"
+              >
+                <option value="Test">Test</option>
+                <option value="Exam">Exam</option>
+                <option value="Assignment">Assignment</option>
+                <option value="Project">Project</option>
+              </select>
             </div>
 
-            <div className="space-y-3">
-              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                Institutional Sign-off
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                Score
+              </label>
+              <input
+                type="number"
+                name="score"
+                value={formData.score}
+                onChange={handleChange}
+                step="0.01"
+                className={`input ${errors.score ? 'border-red-500' : ''}`}
+              />
+              {errors.score && <p className="text-xs text-red-500 mt-1">{errors.score}</p>}
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                Total Score
+              </label>
+              <input
+                type="number"
+                name="totalScore"
+                value={formData.totalScore}
+                onChange={handleChange}
+                step="0.01"
+                className={`input ${errors.totalScore ? 'border-red-500' : ''}`}
+              />
+              {errors.totalScore && <p className="text-xs text-red-500 mt-1">{errors.totalScore}</p>}
+            </div>
+          </div>
+
+          <div className="p-6 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center md:text-left">
+              <div>
+                <p className="text-xs font-medium text-slate-500 mb-1">Percentage</p>
+                <p className="text-2xl font-bold text-slate-900 dark:text-white">{preview.percentage}%</p>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-slate-500 mb-1">Grade</p>
+                <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{preview.grade}</p>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-slate-500 mb-1">Ratio</p>
+                <p className="text-2xl font-bold text-slate-900 dark:text-white">{formData.score} / {formData.totalScore}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Administration */}
+        <section className="space-y-4 pt-6 border-t border-slate-100 dark:border-slate-800">
+          <h3 className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+            Record Details
+          </h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                Term
+              </label>
+              <select
+                name="term"
+                value={formData.term}
+                onChange={handleChange}
+                className="input"
+              >
+                <option value="First">First Term</option>
+                <option value="Second">Second Term</option>
+                <option value="Third">Third Term</option>
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                Academic Year
               </label>
               <input
                 type="text"
-                name="recordedBy"
-                value={formData.recordedBy}
+                name="academicYear"
+                value={formData.academicYear}
                 onChange={handleChange}
-                className={`input-folusho w-full !bg-folusho-slate-950/50 ${errors.recordedBy ? 'border-folusho-coral-500' : ''}`}
-                placeholder="Teacher Identity..."
+                className="input"
+                placeholder="e.g. 2026"
               />
-              {errors.recordedBy && (
-                <p className="text-folusho-coral-500 text-[10px] font-black uppercase tracking-widest px-2">{errors.recordedBy}</p>
-              )}
             </div>
 
-            <div className="space-y-3">
-              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                Evaluation Memo (Notes)
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                Date
               </label>
-              <textarea
-                name="notes"
-                value={formData.notes}
+              <input
+                type="date"
+                name="dateRecorded"
+                value={formData.dateRecorded}
                 onChange={handleChange}
-                rows={3}
-                className="input-folusho w-full resize-none !bg-folusho-slate-950/50"
-                placeholder="Enter specialized observations..."
+                className="input"
               />
             </div>
-          </section>
-
-          {/* Form Actions */}
-          <div className="flex justify-end gap-6 pt-12 border-t border-white/5">
-            <button
-              type="button"
-              onClick={onCancel}
-              className="px-10 py-5 text-[10px] font-black text-folusho-slate-500 uppercase tracking-[0.35em] hover:text-white transition-all"
-            >
-              Abort
-            </button>
-            <button
-              type="submit"
-              className="px-12 py-5 bg-folusho-sage-400 text-white rounded-3xl font-black text-[10px] uppercase tracking-[0.35em] shadow-folusho hover:bg-folusho-sage-500 hover:scale-105 active:scale-95 transition-all"
-            >
-              {isEditing ? 'Sync Matrix' : 'Commit Result'}
-            </button>
           </div>
-        </form>
-      </div>
-    </motion.div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+              Recorded By
+            </label>
+            <input
+              type="text"
+              name="recordedBy"
+              value={formData.recordedBy}
+              onChange={handleChange}
+              className={`input ${errors.recordedBy ? 'border-red-500' : ''}`}
+              placeholder="Enter your name"
+            />
+            {errors.recordedBy && <p className="text-xs text-red-500 mt-1">{errors.recordedBy}</p>}
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+              Notes
+            </label>
+            <textarea
+              name="notes"
+              value={formData.notes}
+              onChange={handleChange}
+              rows={3}
+              className="input resize-none"
+              placeholder="Any additional comments..."
+            />
+          </div>
+        </section>
+
+        {/* Actions */}
+        <div className="flex justify-end gap-4 pt-6 border-t border-slate-100 dark:border-slate-800">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="px-6 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="px-8 py-2 bg-indigo-600 text-white rounded-lg font-semibold text-sm hover:bg-indigo-700 transition-all shadow-sm active:scale-95"
+          >
+            {isEditing ? 'Update Result' : 'Save Result'}
+          </button>
+        </div>
+      </form>
+    </div>
   )
 }

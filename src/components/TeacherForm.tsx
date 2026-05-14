@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import type { ChangeEvent, FormEvent } from "react";
-import { X, Search } from "lucide-react";
-import { motion } from "framer-motion";
+import { X, Search, Plus, AlertCircle } from "lucide-react";
 import { Teacher, Subject, Student } from "../types";
 import { fetchSubjects, fetchStudents } from "../services/api";
 
@@ -116,13 +115,10 @@ export default function TeacherForm({
   const levelSubjects = useMemo(() => {
     const filtered = availableSubjects.filter((subject) => subject.level === formData.level);
     if (formData.level !== 'Secondary') {
-      // Non-secondary: deduplicate by name (no sub-levels)
       const unique = new Map();
       filtered.forEach(s => { if (!unique.has(s.name)) unique.set(s.name, s); });
       return Array.from(unique.values());
     }
-    // Secondary: keep JSS (no subjectCategory) and SSS (has subjectCategory) as separate items
-    // Deduplicate within each tier
     const jssMap = new Map<string, Subject>();
     const sssMap = new Map<string, Subject>();
     filtered.forEach(s => {
@@ -134,7 +130,6 @@ export default function TeacherForm({
       } else if (isJSS) {
         if (!jssMap.has(s.name)) jssMap.set(s.name, { ...s, name: `${s.name} (JSS)` });
       } else {
-        // Fallback for older data or other secondary tiers
         if (!sssMap.has(s.name)) sssMap.set(s.name, { ...s, name: s.name });
       }
     });
@@ -155,7 +150,6 @@ export default function TeacherForm({
     if (!formData.name.trim()) newErrors.name = "Full name is required";
     if (!formData.email.includes("@"))
       newErrors.email = "Valid email is required";
-    // Username/password are auto-generated for new teachers; validate only when editing.
     if (isEditing && !formData.username.trim())
       newErrors.username = "Username is required";
 
@@ -163,7 +157,6 @@ export default function TeacherForm({
       newErrors.teacherType = "Select at least one teaching assignment type";
     }
 
-    // Level-based validation
     if (formData.level === "Secondary") {
       if (isSubjectTeacher && (formData.assignedSubjects || []).length === 0) {
         newErrors.assignedSubjects =
@@ -174,7 +167,6 @@ export default function TeacherForm({
           "At least one class is required for Form Teachers";
       }
     } else {
-      // Primary, Nursery, Pre-Nursery
       if (formData.assignedClasses.length === 0) {
         newErrors.assignedClasses = `At least one class is required for ${formData.level} teachers`;
       }
@@ -210,7 +202,6 @@ export default function TeacherForm({
 
       let updatedClasses = [...prev.assignedClasses];
       
-      // Auto-sync classes for JSS/SSS subject roles
       if (isAdding) {
         if (subjectName.endsWith('(JSS)')) {
           const jssClasses = ['JSS 1', 'JSS 2', 'JSS 3'];
@@ -254,7 +245,6 @@ export default function TeacherForm({
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      // Prepare data for submission
       const dataToSubmit: any = {
         ...formData,
         assignedSubjects: isSubjectTeacher
@@ -265,21 +255,15 @@ export default function TeacherForm({
           : "",
       };
 
-      // If editing and image wasn't modified, don't send the old image to reduce payload
       if (isEditing && !dataToSubmit._imageModified && dataToSubmit.image) {
-        // Keep existing image by sending it as-is, or remove to keep database value
-        // Only send image if it's a new base64 (starts with 'data:')
         if (!dataToSubmit.image.startsWith('data:')) {
           delete dataToSubmit.image;
         }
       }
 
-      // Remove the _imageModified flag before sending
       delete dataToSubmit._imageModified;
-
       onSubmit(dataToSubmit as Teacher | Omit<Teacher, "id">);
     } else {
-      // Show alert if validation fails
       const errorMessages = Object.values(errors).join("\n");
       if (errorMessages) {
         window.alert("Please fix the following errors:\n" + errorMessages);
@@ -288,299 +272,275 @@ export default function TeacherForm({
   };
 
   return (
-    <motion.div 
-      className="relative overflow-hidden bg-white border border-folusho-cream-200 rounded-[3rem] p-12 shadow-folusho"
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-    >
-      {/* Decorative Orbs */}
-      <div className="absolute -top-24 -right-24 w-64 h-64 bg-folusho-sage-100/40 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-folusho-coral-100/40 rounded-full blur-[100px] pointer-events-none" />
-
-      <div className="relative z-10">
-        <div className="flex justify-between items-start mb-16">
-          <div>
-            <motion.h2 
-              className="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-none text-folusho-slate-900 mb-4"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-            >
-              Squad <br /> <span className="text-folusho-sage-500">Assignment</span>
-            </motion.h2>
-            <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.4em]">
-              Faculty Intelligence Mapping
-            </p>
-          </div>
-          <button
-            onClick={onCancel}
-            className="p-4 hover:bg-folusho-cream-50 rounded-2xl transition-all border border-folusho-cream-200 text-folusho-slate-400 hover:text-folusho-slate-900"
-          >
-            <X size={24} />
-          </button>
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 shadow-lg">
+      <div className="flex justify-between items-start mb-8">
+        <div>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+            {isEditing ? 'Edit Teacher' : 'Add New Teacher'}
+          </h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+            Update teacher profile and teaching assignments.
+          </p>
         </div>
+        <button
+          onClick={onCancel}
+          className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors text-slate-500"
+        >
+          <X size={20} />
+        </button>
+      </div>
 
-        <form onSubmit={handleSubmit} className="space-y-16">
-          {/* Account Information */}
-          <section className="space-y-8">
-            <h3 className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.45em] px-2 flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-folusho-sage-500" />
-              I. Identity Protocol
-            </h3>
+      <form onSubmit={handleSubmit} className="space-y-8">
+        {/* Personal Details */}
+        <section className="space-y-4">
+          <h3 className="text-sm font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
+            Personal Information
+          </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className={`input-folusho w-full ${errors.name ? "border-folusho-coral-300" : ""}`}
-                  placeholder="e.g. Dr. Emmanuel"
-                />
-              </div>
-
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Digital Identity (Email)
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`input-folusho w-full ${errors.email ? "border-folusho-coral-300" : ""}`}
-                  placeholder="name@institution.edu"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Access Key (User)
-                </label>
-                <input
-                  type="text"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  placeholder={isEditing ? "" : "Auto-Generated"}
-                  disabled={!isEditing}
-                  className={`input-folusho w-full ${!isEditing ? "bg-folusho-cream-50/50 opacity-60" : ""}`}
-                />
-              </div>
-
-              <div className="space-y-3">
-                <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                  Secure Cipher (Pass)
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder={isEditing ? "Keep Existing" : "Auto-Generated"}
-                  disabled={!isEditing}
-                  className={`input-folusho w-full ${!isEditing ? "bg-folusho-cream-50/50 opacity-60" : ""}`}
-                />
-              </div>
-            </div>
-          </section>
-
-          {/* Professional Information */}
-          <section className="space-y-10 pt-10 border-t border-folusho-cream-100">
-            <h3 className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.45em] px-2 flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-folusho-coral-500" />
-              II. Professional Matrix
-            </h3>
-
-            <div className="space-y-6">
-              <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                Teaching Assignment Protocols
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                Full Name
               </label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {/* Form Teacher Toggle */}
-                <button
-                  type="button"
-                  onClick={() => setIsFormTeacher((prev) => !prev)}
-                  className={`flex flex-col items-start p-8 rounded-[2.5rem] border transition-all text-left ${
-                    isFormTeacher
-                      ? "bg-folusho-sage-50 border-folusho-sage-200 shadow-sm"
-                      : "bg-white border-folusho-cream-100 hover:border-folusho-sage-100"
-                  }`}
-                >
-                  <div className="flex justify-between items-center w-full mb-6">
-                    <p className={`text-xs font-black uppercase tracking-tighter ${isFormTeacher ? 'text-folusho-sage-600' : 'text-folusho-slate-900'}`}>Form Governance</p>
-                    <div className={`w-3 h-3 rounded-full ${isFormTeacher ? 'bg-folusho-sage-500 shadow-[0_0_12px_rgba(107,142,35,0.4)]' : 'bg-folusho-cream-200'}`} />
-                  </div>
-                  <p className="text-[10px] font-black text-folusho-slate-400 uppercase leading-relaxed tracking-wide">
-                    Institutional oversight and student welfare synchronization for assigned cohorts.
-                  </p>
-                </button>
-
-                {/* Subject Teacher Toggle */}
-                <button
-                  type="button"
-                  onClick={() => setIsSubjectTeacher((prev) => !prev)}
-                  className={`flex flex-col items-start p-8 rounded-[2.5rem] border transition-all text-left ${
-                    isSubjectTeacher
-                      ? "bg-folusho-coral-50 border-folusho-coral-200 shadow-sm"
-                      : "bg-white border-folusho-cream-100 hover:border-folusho-sage-100"
-                  }`}
-                >
-                  <div className="flex justify-between items-center w-full mb-6">
-                    <p className={`text-xs font-black uppercase tracking-tighter ${isSubjectTeacher ? 'text-folusho-coral-600' : 'text-folusho-slate-900'}`}>Subject Specialist</p>
-                    <div className={`w-3 h-3 rounded-full ${isSubjectTeacher ? 'bg-folusho-coral-500 shadow-[0_0_12px_rgba(255,127,80,0.4)]' : 'bg-folusho-cream-200'}`} />
-                  </div>
-                  <p className="text-[10px] font-black text-folusho-slate-400 uppercase leading-relaxed tracking-wide">
-                    Precision instruction and academic matrix evaluation for specialized subjects.
-                  </p>
-                </button>
-              </div>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="input"
+                placeholder="e.g. John Doe"
+              />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              <div className="space-y-8">
-                <div className="space-y-3">
-                  <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                    Institutional Level
-                  </label>
-                  <select
-                    name="level"
-                    value={formData.level}
-                    onChange={handleChange}
-                    className="input-folusho w-full"
-                  >
-                    <option value="Pre-Nursery">Pre-Nursery</option>
-                    <option value="Nursery">Nursery</option>
-                    <option value="Primary">Primary</option>
-                    <option value="Secondary">Secondary Matrix</option>
-                  </select>
-                </div>
-
-                {(formData.level !== "Secondary" || isFormTeacher) && (
-                  <div className="space-y-4">
-                    <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                      Cohort Allocation (Classes)
-                    </label>
-                    <div className="flex gap-4">
-                      <select
-                        value={selectedClass}
-                        onChange={(e) => setSelectedClass(e.target.value)}
-                        className="input-folusho flex-1"
-                      >
-                        <option value="">Select Cohort...</option>
-                        {levelClasses.map((className) => (
-                          <option key={className} value={className}>{className}</option>
-                        ))}
-                      </select>
-                      <button
-                        type="button"
-                        onClick={addClass}
-                        className="p-4 bg-folusho-sage-400 text-white rounded-2xl hover:bg-folusho-sage-500 shadow-folusho transition-all"
-                      >
-                        <Plus size={20} />
-                      </button>
-                    </div>
-                    <div className="flex flex-wrap gap-3">
-                      {formData.assignedClasses.map((c) => (
-                        <span
-                          key={c}
-                          className="inline-flex items-center gap-3 px-5 py-2.5 bg-folusho-sage-50 border border-folusho-sage-100 text-folusho-sage-600 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm"
-                        >
-                          {c}
-                          <button onClick={() => removeClass(c)} className="hover:text-folusho-coral-500 transition-colors">
-                            <X size={12} />
-                          </button>
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="space-y-8">
-                {formData.level === "Secondary" ? (
-                  isSubjectTeacher ? (
-                    <div className="space-y-6">
-                      <label className="block text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest px-2">
-                        Subject Specialization Matrix
-                      </label>
-                      <div className="relative group">
-                        <input
-                          type="text"
-                          placeholder="Search Protocols..."
-                          value={subjectSearchTerm}
-                          onChange={(e) => setSubjectSearchTerm(e.target.value)}
-                          className="input-folusho w-full !pl-14 text-xs"
-                        />
-                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-slate-300 group-focus-within:text-folusho-sage-500 transition-colors" />
-                      </div>
-                      <div className="max-h-72 overflow-y-auto custom-scrollbar space-y-3 pr-2">
-                        {levelSubjects
-                          .filter(s => s.name.toLowerCase().includes(subjectSearchTerm.toLowerCase()))
-                          .map(subject => (
-                            <label
-                              key={subject.id}
-                              className={`flex items-center gap-5 p-5 rounded-3xl border transition-all cursor-pointer ${
-                                (formData.assignedSubjects || []).includes(subject.name)
-                                  ? 'bg-folusho-coral-50 border-folusho-coral-200 shadow-sm'
-                                  : 'bg-white border-folusho-cream-100 hover:border-folusho-sage-100'
-                              }`}
-                            >
-                              <input
-                                type="checkbox"
-                                checked={(formData.assignedSubjects || []).includes(subject.name)}
-                                onChange={() => toggleSubject(subject.name)}
-                                className="w-5 h-5 border-folusho-cream-200 text-folusho-coral-500 rounded-lg focus:ring-folusho-coral-400"
-                              />
-                              <p className={`text-xs font-black transition-colors ${(formData.assignedSubjects || []).includes(subject.name) ? 'text-folusho-coral-600' : 'text-folusho-slate-900'}`}>{subject.name}</p>
-                            </label>
-                          ))}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="p-10 rounded-[3rem] bg-folusho-cream-50 border border-folusho-cream-200 flex flex-col items-center text-center justify-center h-full">
-                      <AlertCircle className="text-folusho-slate-300 mb-6" size={40} />
-                      <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest leading-relaxed max-w-[200px]">
-                        Governance only. Subject instruction protocols disabled.
-                      </p>
-                    </div>
-                  )
-                ) : (
-                  <div className="p-10 rounded-[3rem] bg-folusho-sage-50/50 border border-folusho-sage-100 h-full flex flex-col justify-center">
-                    <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.4em] mb-6">Global Matrix Sync</p>
-                    <p className="text-[10px] font-black text-folusho-slate-400 uppercase leading-relaxed tracking-wide">
-                      As a <span className="text-folusho-slate-900">{formData.level}</span> specialist, instruction protocols for all level-relevant subjects are auto-synchronized.
-                    </p>
-                  </div>
-                )}
-              </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                Email Address
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="input"
+                placeholder="john@school.com"
+              />
             </div>
-          </section>
+          </div>
 
-          {/* Form Actions */}
-          <div className="flex justify-end gap-8 pt-12 border-t border-folusho-cream-100">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                Username
+              </label>
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                placeholder={isEditing ? "" : "Auto-generated"}
+                disabled={!isEditing}
+                className={`input ${!isEditing ? "bg-slate-50 dark:bg-slate-800 cursor-not-allowed" : ""}`}
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder={isEditing ? "Leave blank to keep current" : "Auto-generated"}
+                disabled={!isEditing}
+                className={`input ${!isEditing ? "bg-slate-50 dark:bg-slate-800 cursor-not-allowed" : ""}`}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Teaching Assignment */}
+        <section className="space-y-6 pt-6 border-t border-slate-100 dark:border-slate-800">
+          <h3 className="text-sm font-semibold text-rose-600 dark:text-rose-400 uppercase tracking-wider">
+            Teaching Assignment
+          </h3>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <button
               type="button"
-              onClick={onCancel}
-              className="px-10 py-5 text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.35em] hover:text-folusho-sage-600 transition-all"
+              onClick={() => setIsFormTeacher((prev) => !prev)}
+              className={`flex flex-col items-start p-4 rounded-xl border transition-all text-left ${
+                isFormTeacher
+                  ? "bg-indigo-50 dark:bg-indigo-900/20 border-indigo-200 dark:border-indigo-800"
+                  : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-indigo-200"
+              }`}
             >
-              Cancel
+              <div className="flex justify-between items-center w-full mb-2">
+                <span className="text-sm font-bold">Form Teacher</span>
+                <div className={`w-2 h-2 rounded-full ${isFormTeacher ? 'bg-indigo-600' : 'bg-slate-300'}`} />
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Responsible for class management and student welfare.
+              </p>
             </button>
+
             <button
-              type="submit"
-              className="px-14 py-5 bg-folusho-sage-400 text-white rounded-full font-black text-[10px] uppercase tracking-[0.35em] shadow-folusho hover:bg-folusho-sage-500 hover:scale-105 active:scale-95 transition-all"
+              type="button"
+              onClick={() => setIsSubjectTeacher((prev) => !prev)}
+              className={`flex flex-col items-start p-4 rounded-xl border transition-all text-left ${
+                isSubjectTeacher
+                  ? "bg-rose-50 dark:bg-rose-900/20 border-rose-200 dark:border-rose-800"
+                  : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-rose-200"
+              }`}
             >
-              {isEditing ? 'Sync Profile' : 'Initialize Squad Member'}
+              <div className="flex justify-between items-center w-full mb-2">
+                <span className="text-sm font-bold">Subject Teacher</span>
+                <div className={`w-2 h-2 rounded-full ${isSubjectTeacher ? 'bg-rose-600' : 'bg-slate-300'}`} />
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Responsible for specific subject instruction and grading.
+              </p>
             </button>
           </div>
-        </form>
-      </div>
-    </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                  School Level
+                </label>
+                <select
+                  name="level"
+                  value={formData.level}
+                  onChange={handleChange}
+                  className="input"
+                >
+                  <option value="Pre-Nursery">Pre-Nursery</option>
+                  <option value="Nursery">Nursery</option>
+                  <option value="Primary">Primary</option>
+                  <option value="Secondary">Secondary</option>
+                </select>
+              </div>
+
+              {(formData.level !== "Secondary" || isFormTeacher) && (
+                <div className="space-y-2">
+                  <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                    Assigned Classes
+                  </label>
+                  <div className="flex gap-2">
+                    <select
+                      value={selectedClass}
+                      onChange={(e) => setSelectedClass(e.target.value)}
+                      className="input"
+                    >
+                      <option value="">Select Class...</option>
+                      {levelClasses.map((className) => (
+                        <option key={className} value={className}>{className}</option>
+                      ))}
+                    </select>
+                    <button
+                      type="button"
+                      onClick={addClass}
+                      className="px-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                    >
+                      <Plus size={20} />
+                    </button>
+                  </div>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {formData.assignedClasses.map((c) => (
+                      <span
+                        key={c}
+                        className="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-md text-xs font-medium border border-slate-200 dark:border-slate-700"
+                      >
+                        {c}
+                        <button onClick={() => removeClass(c)} className="text-slate-400 hover:text-rose-500">
+                          <X size={14} />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-4">
+              {formData.level === "Secondary" ? (
+                isSubjectTeacher ? (
+                  <div className="space-y-3">
+                    <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                      Assigned Subjects
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        placeholder="Search subjects..."
+                        value={subjectSearchTerm}
+                        onChange={(e) => setSubjectSearchTerm(e.target.value)}
+                        className="input pl-10"
+                      />
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    </div>
+                    <div className="max-h-48 overflow-y-auto border border-slate-200 dark:border-slate-700 rounded-lg p-2 space-y-1">
+                      {levelSubjects
+                        .filter(s => s.name.toLowerCase().includes(subjectSearchTerm.toLowerCase()))
+                        .map(subject => (
+                          <label
+                            key={subject.id}
+                            className={`flex items-center gap-3 p-2 rounded-md cursor-pointer transition-colors ${
+                              (formData.assignedSubjects || []).includes(subject.name)
+                                ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300'
+                                : 'hover:bg-slate-50 dark:hover:bg-slate-800'
+                            }`}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={(formData.assignedSubjects || []).includes(subject.name)}
+                              onChange={() => toggleSubject(subject.name)}
+                              className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                            />
+                            <span className="text-xs font-medium">{subject.name}</span>
+                          </label>
+                        ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="p-6 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex flex-col items-center text-center justify-center">
+                    <AlertCircle className="text-slate-400 mb-2" size={32} />
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      Teacher is not assigned to any subjects.
+                    </p>
+                  </div>
+                )
+              ) : (
+                <div className="p-6 rounded-xl bg-indigo-50 dark:bg-indigo-900/10 border border-indigo-100 dark:border-indigo-900/30">
+                  <p className="text-xs font-medium text-indigo-600 dark:text-indigo-400 mb-2">Automatic Subject Sync</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                    As a {formData.level} teacher, all subjects for this level will be automatically assigned to you.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* Form Actions */}
+        <div className="flex justify-end gap-4 pt-6 border-t border-slate-100 dark:border-slate-800">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="px-6 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="px-8 py-2 bg-indigo-600 text-white rounded-lg font-semibold text-sm hover:bg-indigo-700 transition-all shadow-sm active:scale-95"
+          >
+            {isEditing ? 'Save Changes' : 'Add Teacher'}
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }

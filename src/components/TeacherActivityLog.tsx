@@ -66,20 +66,20 @@ function humanizeAction(action: string): { label: string; category: string } {
 
 function getActionBadgeStyle(action: string): string {
   if (action.startsWith("DELETE"))
-    return "bg-folusho-coral-500/10 text-folusho-coral-400 border-folusho-coral-500/20";
+    return "bg-rose-500/10 text-rose-400 border-rose-500/20";
   if (action.startsWith("POST"))
-    return "bg-folusho-sage-500/10 text-folusho-sage-400 border-folusho-sage-500/20";
+    return "bg-indigo-500/10 text-indigo-400 border-indigo-500/20";
   if (action.startsWith("PUT") || action.startsWith("PATCH"))
-    return "bg-folusho-yellow-500/10 text-folusho-yellow-400 border-folusho-yellow-500/20";
-  return "bg-white/5 text-folusho-slate-400 border-white/5";
+    return "bg-amber-500/10 text-amber-400 border-amber-500/20";
+  return "bg-white/5 text-slate-400 border-white/5";
 }
 
 function getActionDotColor(action: string): string {
-  if (action.startsWith("DELETE")) return "bg-folusho-coral-500";
-  if (action.startsWith("POST")) return "bg-folusho-sage-500";
+  if (action.startsWith("DELETE")) return "bg-rose-500";
+  if (action.startsWith("POST")) return "bg-indigo-500";
   if (action.startsWith("PUT") || action.startsWith("PATCH"))
-    return "bg-folusho-yellow-500";
-  return "bg-folusho-slate-300";
+    return "bg-amber-500";
+  return "bg-slate-300";
 }
 
 const FILTER_TABS = [
@@ -163,22 +163,22 @@ export default function TeacherActivityLog() {
   });
 
   return (
-    <div className="bg-folusho-slate-900/40 rounded-[2.5rem] shadow-2xl overflow-hidden border border-white/5 backdrop-blur-md">
+    <div className="bg-slate-900/40 rounded-[2.5rem] shadow-2xl overflow-hidden border border-white/5 backdrop-blur-md">
       {/* Header */}
       <div className="p-8 border-b border-white/5 bg-white/5">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
-            <div className="p-4 bg-folusho-sage-400 rounded-2xl shadow-folusho">
+            <div className="p-4 bg-indigo-400 rounded-2xl shadow-lg">
               <Eye className="w-6 h-6 text-white" />
             </div>
             <div>
               <h2 className="text-xl font-black text-white tracking-tight uppercase">
                 Academic Surveillance
               </h2>
-              <p className="text-[10px] font-black text-folusho-slate-500 mt-1 uppercase tracking-widest">
+              <p className="text-[10px] font-black text-slate-500 mt-1 uppercase tracking-widest">
                 Real-time tactical log of institutional maneuvers
                 {" · "}
-                <span className="text-folusho-sage-400 font-black">
+                <span className="text-indigo-400 font-black">
                   SYNC: {" "}
                   {lastRefreshed.toLocaleTimeString([], {
                     hour: "2-digit",
@@ -196,8 +196,8 @@ export default function TeacherActivityLog() {
               disabled={sendingDigest || digestSent}
               className={`flex items-center gap-3 px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-sm ${
                 digestSent
-                  ? "bg-folusho-sage-500/10 text-folusho-sage-400 border border-white/5"
-                  : "bg-folusho-sage-400 text-white hover:bg-folusho-sage-500 shadow-folusho"
+                  ? "bg-indigo-500/10 text-indigo-400 border border-white/5"
+                  : "bg-indigo-400 text-white hover:bg-indigo-500 shadow-lg"
               } disabled:opacity-40`}
             >
               {digestSent ? (
@@ -219,7 +219,7 @@ export default function TeacherActivityLog() {
             <button
               onClick={handleClearLog}
               disabled={clearing || activities.length === 0}
-              className="flex items-center gap-3 px-6 py-3 bg-folusho-coral-500/10 text-folusho-coral-400 border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-folusho-coral-500/20 transition-all disabled:opacity-30"
+              className="flex items-center gap-3 px-6 py-3 bg-rose-500/10 text-rose-400 border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-500/20 transition-all disabled:opacity-30"
             >
               {clearing ? (
                 <RefreshCw className="w-4 h-4 animate-spin" />
@@ -236,7 +236,7 @@ export default function TeacherActivityLog() {
               className="p-4 bg-white/5 border border-white/5 rounded-2xl hover:bg-white/10 transition-all shadow-sm group"
             >
               <RefreshCw
-                className={`w-5 h-5 text-folusho-slate-500 group-hover:text-folusho-sage-400 ${loading ? "animate-spin" : ""}`}
+                className={`w-5 h-5 text-slate-500 group-hover:text-indigo-400 ${loading ? "animate-spin" : ""}`}
               />
             </button>
           </div>
@@ -245,25 +245,25 @@ export default function TeacherActivityLog() {
         {/* Search & Filter */}
         <div className="mt-8 flex flex-col lg:flex-row gap-6">
           <div className="flex-1 relative group">
-            <Search className="w-4 h-4 absolute left-6 top-1/2 -translate-y-1/2 text-folusho-slate-500 group-focus-within:text-folusho-sage-400 transition-colors" />
+            <Search className="w-4 h-4 absolute left-6 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-indigo-400 transition-colors" />
             <input
               type="text"
               placeholder="Locate specific maneuvers by teacher or action..."
-              className="input-folusho !pl-14 !py-4 !rounded-2xl shadow-inner !text-xs !bg-folusho-slate-900/50"
+              className="input !pl-14 !py-4 !rounded-2xl shadow-inner !text-xs !bg-slate-900/50"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
 
-          <div className="flex gap-2 p-2 bg-folusho-slate-900/50 rounded-2xl border border-white/5 shadow-inner overflow-x-auto scrollbar-none">
+          <div className="flex gap-2 p-2 bg-slate-900/50 rounded-2xl border border-white/5 shadow-inner overflow-x-auto scrollbar-none">
             {FILTER_TABS.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveFilter(tab.id)}
                 className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${
                   activeFilter === tab.id
-                    ? "bg-white/10 text-folusho-sage-400 shadow-folusho border border-white/5"
-                    : "text-folusho-slate-500 hover:text-white"
+                    ? "bg-white/10 text-indigo-400 shadow-lg border border-white/5"
+                    : "text-slate-500 hover:text-white"
                 }`}
               >
                 {tab.label}
@@ -289,18 +289,18 @@ export default function TeacherActivityLog() {
             label: "Results Entered",
             value: activities.filter((a) => a.action.includes("results"))
               .length,
-            color: "text-folusho-sage-400",
+            color: "text-indigo-400",
           },
           {
             label: "Deletions",
             value: activities.filter((a) => a.action.startsWith("DELETE"))
               .length,
-            color: "text-folusho-coral-400",
+            color: "text-rose-400",
           },
         ].map((stat) => (
           <div key={stat.label} className="px-6 py-5 text-center">
             <p className={`text-2xl font-black ${stat.color} tracking-tighter`}>{stat.value}</p>
-            <p className="text-[10px] text-folusho-slate-500 font-black uppercase tracking-[0.2em] mt-1">
+            <p className="text-[10px] text-slate-500 font-black uppercase tracking-[0.2em] mt-1">
               {stat.label}
             </p>
           </div>
@@ -312,16 +312,16 @@ export default function TeacherActivityLog() {
         <table className="w-full text-left">
           <thead className="bg-white/5 border-b border-white/5">
             <tr>
-              <th className="px-10 py-6 text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.3em]">
+              <th className="px-10 py-6 text-[10px] font-black text-indigo-400 uppercase tracking-[0.3em]">
                 Tactical Unit
               </th>
-              <th className="px-10 py-6 text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.3em]">
+              <th className="px-10 py-6 text-[10px] font-black text-indigo-400 uppercase tracking-[0.3em]">
                 Operational Action
               </th>
-              <th className="px-10 py-6 text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.3em]">
+              <th className="px-10 py-6 text-[10px] font-black text-indigo-400 uppercase tracking-[0.3em]">
                 Data Payload
               </th>
-              <th className="px-10 py-6 text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.3em]">
+              <th className="px-10 py-6 text-[10px] font-black text-indigo-400 uppercase tracking-[0.3em]">
                 Time
               </th>
             </tr>
@@ -330,8 +330,8 @@ export default function TeacherActivityLog() {
             {loading && activities.length === 0 ? (
               <tr>
                 <td colSpan={4} className="px-8 py-24 text-center">
-                  <RefreshCw className="w-10 h-10 text-folusho-sage-400 animate-spin mx-auto mb-6" />
-                  <p className="text-xs font-black text-folusho-slate-500 uppercase tracking-widest">
+                  <RefreshCw className="w-10 h-10 text-indigo-400 animate-spin mx-auto mb-6" />
+                  <p className="text-xs font-black text-slate-500 uppercase tracking-widest">
                     Retrieving Institutional Logs...
                   </p>
                 </td>
@@ -340,12 +340,12 @@ export default function TeacherActivityLog() {
               <tr>
                 <td colSpan={4} className="px-8 py-24 text-center">
                   <div className="w-20 h-20 bg-white/5 rounded-[2.5rem] flex items-center justify-center mx-auto mb-6 border border-white/5 shadow-inner">
-                    <Eye className="w-10 h-10 text-folusho-slate-600" />
+                    <Eye className="w-10 h-10 text-slate-600" />
                   </div>
                   <p className="text-sm font-black text-white uppercase tracking-tight">
                     Logs Empty
                   </p>
-                  <p className="text-[10px] font-bold text-folusho-slate-500 mt-2 uppercase tracking-widest">
+                  <p className="text-[10px] font-bold text-slate-500 mt-2 uppercase tracking-widest">
                     Operational silence detected in current filter.
                   </p>
                 </td>
@@ -379,18 +379,18 @@ export default function TeacherActivityLog() {
                     <td className="px-8 py-6 whitespace-nowrap">
                       <div className="flex items-center gap-4">
                         <div className="relative">
-                          <div className="w-12 h-12 bg-folusho-sage-400/10 border border-folusho-sage-400/20 rounded-2xl flex items-center justify-center text-folusho-sage-400 font-black text-base shadow-sm">
+                          <div className="w-12 h-12 bg-indigo-400/10 border border-indigo-400/20 rounded-2xl flex items-center justify-center text-indigo-400 font-black text-base shadow-sm">
                             {activity.userName.charAt(0).toUpperCase()}
                           </div>
                           <span
-                            className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 ${dotColor} rounded-full border-[3px] border-folusho-slate-950 shadow-sm`}
+                            className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 ${dotColor} rounded-full border-[3px] border-slate-950 shadow-sm`}
                           />
                         </div>
                         <div>
                           <p className="text-base font-black text-white leading-none">
                             {activity.userName}
                           </p>
-                          <p className="text-[10px] font-black text-folusho-slate-500 mt-2 uppercase tracking-widest">
+                          <p className="text-[10px] font-black text-slate-500 mt-2 uppercase tracking-widest">
                             {activity.role}
                           </p>
                         </div>
@@ -404,7 +404,7 @@ export default function TeacherActivityLog() {
                       </span>
                     </td>
                     <td className="px-8 py-6 max-w-sm">
-                      <p className="text-xs font-bold text-folusho-slate-400 truncate leading-relaxed">
+                      <p className="text-xs font-bold text-slate-400 truncate leading-relaxed">
                         {detailSnippet || "—"}
                       </p>
                     </td>
@@ -412,7 +412,7 @@ export default function TeacherActivityLog() {
                       <p className="text-xs font-black text-white uppercase tracking-tighter">
                         {new Date(activity.createdAt).toLocaleDateString()}
                       </p>
-                      <p className="text-[10px] font-black text-folusho-sage-400 mt-1 uppercase tracking-widest">
+                      <p className="text-[10px] font-black text-indigo-400 mt-1 uppercase tracking-widest">
                         {new Date(activity.createdAt).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit",
@@ -429,7 +429,7 @@ export default function TeacherActivityLog() {
 
       {activities.length > 0 && (
         <div className="px-8 py-5 bg-white/5 border-t border-white/5 flex items-center justify-between">
-          <p className="text-[10px] font-black text-folusho-slate-500 uppercase tracking-widest">
+          <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
             Displaying {filteredActivities.length} of {activities.length}{" "}
             Operational Records
           </p>

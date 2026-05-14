@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { Bell, CheckCircle, AlertCircle, Trash2, RotateCcw } from 'lucide-react'
+import { Bell, CheckCircle, AlertCircle, Trash2, RotateCcw, Clock, Mail } from 'lucide-react'
 import notificationAPI, { Notification } from '../services/notificationAPI'
 
 export const NotificationDashboard: React.FC = () => {
@@ -55,27 +55,14 @@ export const NotificationDashboard: React.FC = () => {
     }
   }
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'sent':
-        return 'bg-folusho-sage-50/50 border-folusho-sage-100'
-      case 'failed':
-        return 'bg-folusho-coral-50/50 border-folusho-coral-100'
-      case 'pending':
-        return 'bg-folusho-yellow-50/50 border-folusho-yellow-100'
-      default:
-        return 'bg-folusho-cream-50/50 border-folusho-cream-100'
-    }
-  }
-
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'sent':
-        return <CheckCircle className="w-5 h-5 text-folusho-sage-500" />
+        return <CheckCircle className="w-5 h-5 text-emerald-600" />
       case 'failed':
-        return <AlertCircle className="w-5 h-5 text-folusho-coral-500" />
+        return <AlertCircle className="w-5 h-5 text-rose-600" />
       case 'pending':
-        return <Bell className="w-5 h-5 text-folusho-yellow-500" />
+        return <Clock className="w-5 h-5 text-amber-600" />
       default:
         return null
     }
@@ -96,69 +83,38 @@ export const NotificationDashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="folusho-card bg-folusho-sage-50 border-folusho-sage-100 !p-8">
-          <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <p className="text-folusho-sage-600 text-[10px] font-black uppercase tracking-widest">Total Sent</p>
-              <p className="text-4xl font-black text-folusho-slate-900 tracking-tighter">{stats.totalSent}</p>
-            </div>
-            <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-folusho-sage-400 border border-folusho-sage-100 shadow-sm">
-              <CheckCircle className="w-6 h-6" />
-            </div>
-          </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Sent</p>
+          <p className="text-3xl font-bold text-emerald-600">{stats.totalSent}</p>
         </div>
-
-        <div className="folusho-card bg-folusho-coral-50 border-folusho-coral-100 !p-8">
-          <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <p className="text-folusho-coral-500 text-[10px] font-black uppercase tracking-widest">Failed</p>
-              <p className="text-4xl font-black text-folusho-slate-900 tracking-tighter">{stats.totalFailed}</p>
-            </div>
-            <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-folusho-coral-400 border border-folusho-coral-100 shadow-sm">
-              <AlertCircle className="w-6 h-6" />
-            </div>
-          </div>
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Failed</p>
+          <p className="text-3xl font-bold text-rose-600">{stats.totalFailed}</p>
         </div>
-
-        <div className="folusho-card bg-folusho-yellow-50 border-folusho-yellow-100 !p-8">
-          <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <p className="text-folusho-yellow-600 text-[10px] font-black uppercase tracking-widest">Pending</p>
-              <p className="text-4xl font-black text-folusho-slate-900 tracking-tighter">{stats.totalPending}</p>
-            </div>
-            <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-folusho-yellow-500 border border-folusho-yellow-100 shadow-sm">
-              <Bell className="w-6 h-6" />
-            </div>
-          </div>
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Pending</p>
+          <p className="text-3xl font-bold text-amber-600">{stats.totalPending}</p>
         </div>
-
-        <div className="folusho-card bg-folusho-cream-50 border-folusho-cream-200 !p-8">
-          <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <p className="text-folusho-slate-400 text-[10px] font-black uppercase tracking-widest">Total</p>
-              <p className="text-4xl font-black text-folusho-slate-900 tracking-tighter">{stats.totalSent + stats.totalFailed + stats.totalPending}</p>
-            </div>
-            <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-folusho-slate-400 border border-folusho-cream-200 shadow-sm">
-              <Bell className="w-6 h-6" />
-            </div>
-          </div>
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Grand Total</p>
+          <p className="text-3xl font-bold text-indigo-600">{stats.totalSent + stats.totalFailed + stats.totalPending}</p>
         </div>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex gap-4 border-b border-folusho-cream-100 pb-0">
+      <div className="bg-white dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-wrap gap-1">
         {(['all', 'sent', 'failed', 'pending'] as const).map(f => (
           <button
             key={f}
             onClick={() => { setFilter(f); setPage(1) }}
-            className={`px-8 py-4 text-[10px] font-black uppercase tracking-[0.3em] border-b-2 transition-all ${
+            className={`px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
               filter === f
-                ? 'border-folusho-sage-500 text-folusho-sage-600 bg-folusho-sage-50/50'
-                : 'border-transparent text-folusho-slate-400 hover:text-folusho-slate-600 hover:bg-folusho-cream-50'
+                ? 'bg-indigo-600 text-white shadow-sm'
+                : 'text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700'
             }`}
           >
-            {f.charAt(0).toUpperCase() + f.slice(1)}
+            {f}
           </button>
         ))}
       </div>
@@ -166,56 +122,59 @@ export const NotificationDashboard: React.FC = () => {
       {/* Notifications List */}
       <div className="space-y-4">
         {loading ? (
-          <div className="text-center py-12 text-folusho-slate-400 font-bold uppercase tracking-widest text-xs">Loading notifications...</div>
+          <div className="flex items-center justify-center py-12">
+            <RotateCcw className="w-6 h-6 animate-spin text-indigo-600" />
+          </div>
         ) : notifications.length === 0 ? (
-          <div className="text-center py-12 text-folusho-slate-400 font-bold uppercase tracking-widest text-xs">No notifications found</div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-16 text-center shadow-sm">
+            <Mail className="w-12 h-12 text-slate-200 mx-auto mb-4" />
+            <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">No notifications found</p>
+          </div>
         ) : (
           notifications.map(notif => (
-            <div key={notif._id} className={`border rounded-[2rem] p-6 transition-all hover:shadow-folusho ${getStatusColor(notif.status)}`}>
+            <div key={notif._id} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-start justify-between gap-6">
-                <div className="flex items-start gap-5 flex-1 min-w-0">
-                  <div className="mt-1">
-                    {getStatusIcon(notif.status)}
-                  </div>
+                <div className="flex items-start gap-4 flex-1 min-w-0">
+                  <div className="mt-1">{getStatusIcon(notif.status)}</div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-4 flex-wrap">
-                      <h3 className="font-black text-folusho-slate-900 text-lg tracking-tight truncate">{notif.subject}</h3>
-                      <span className="text-[9px] font-black bg-white/60 text-folusho-slate-500 px-3 py-1 rounded-full uppercase tracking-widest border border-folusho-cream-100 shadow-sm">
+                    <div className="flex items-center gap-3 flex-wrap mb-1">
+                      <h3 className="font-bold text-slate-900 dark:text-white text-base truncate">{notif.subject}</h3>
+                      <span className="text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-0.5 rounded uppercase tracking-wider border border-slate-200 dark:border-slate-700">
                         {getTypeLabel(notif.type)}
                       </span>
                     </div>
-                    <p className="text-sm font-bold text-folusho-slate-600 mt-2 flex items-center gap-2">
-                      <span className="text-[10px] text-folusho-slate-400 uppercase tracking-widest">Recipient:</span>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mr-2">Recipient:</span>
                       {notif.recipientEmail}
                     </p>
                     {notif.errorMessage && (
-                      <div className="mt-3 p-3 rounded-xl bg-folusho-coral-50 border border-folusho-coral-100 flex items-center gap-3 text-folusho-coral-600">
+                      <div className="mt-2 p-2 rounded-lg bg-rose-50 dark:bg-rose-900/10 border border-rose-100 dark:border-rose-900/20 text-rose-600 text-xs flex items-center gap-2">
                         <AlertCircle size={14} />
-                        <p className="text-xs font-black uppercase tracking-widest leading-none">Error: {notif.errorMessage}</p>
+                        <span>{notif.errorMessage}</span>
                       </div>
                     )}
-                    <p className="text-[10px] font-black text-folusho-slate-400 mt-4 uppercase tracking-widest">
+                    <p className="text-[10px] font-bold text-slate-400 mt-3 uppercase tracking-wider">
                       {new Date(notif.sentAt || notif.createdAt).toLocaleString()}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex gap-3">
+                <div className="flex gap-1">
                   {notif.status === 'failed' && (
                     <button
                       onClick={() => handleResend(notif._id)}
-                      className="p-3 bg-white hover:bg-folusho-yellow-50 text-folusho-yellow-600 rounded-2xl transition-all border border-folusho-yellow-100 shadow-sm"
+                      className="p-2 text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition-colors"
                       title="Resend"
                     >
-                      <RotateCcw className="w-4 h-4" />
+                      <RotateCcw size={18} />
                     </button>
                   )}
                   <button
                     onClick={() => handleDelete(notif._id)}
-                    className="p-3 bg-white hover:bg-folusho-coral-50 text-folusho-coral-500 rounded-2xl transition-all border border-folusho-coral-100 shadow-sm"
+                    className="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/30 rounded-lg transition-colors"
                     title="Delete"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 size={18} />
                   </button>
                 </div>
               </div>
@@ -226,20 +185,21 @@ export const NotificationDashboard: React.FC = () => {
 
       {/* Pagination */}
       {notifications.length > 0 && (
-        <div className="flex justify-center items-center gap-6 pt-8">
+        <div className="flex justify-center items-center gap-6 pt-4">
           <button
             onClick={() => setPage(p => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="p-4 rounded-2xl bg-white border border-folusho-cream-200 text-folusho-sage-500 disabled:opacity-20 hover:bg-folusho-cream-50 transition-all shadow-sm"
+            className="px-6 py-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold uppercase tracking-wider disabled:opacity-30 hover:bg-slate-50 transition-colors shadow-sm"
           >
             Previous
           </button>
-          <span className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.4em]">Matrix Phase {page}</span>
+          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Page {page}</span>
           <button
             onClick={() => setPage(p => p + 1)}
-            className="p-4 rounded-2xl bg-white border border-folusho-cream-200 text-folusho-sage-500 hover:bg-folusho-cream-50 transition-all shadow-sm"
+            disabled={notifications.length < 20}
+            className="px-6 py-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold uppercase tracking-wider disabled:opacity-30 hover:bg-slate-50 transition-colors shadow-sm"
           >
-            Next Phase
+            Next
           </button>
         </div>
       )}

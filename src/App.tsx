@@ -25,12 +25,10 @@ import {
   Timer,
   Eye,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useAuthContext } from "./context/AuthContext";
 import { useDarkMode } from "./hooks/useLocalStorage";
 import PageTransition from "./components/PageTransition";
 import NotificationBell from "./components/NotificationBell";
-import FloatingAcademicBackground from "./components/FloatingAcademicBackground";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 
 // Page imports with lazy loading
@@ -95,12 +93,12 @@ function AppContent() {
   // Show a loading state while hydrating
   if (!isHydrated) {
     return (
-      <div className="flex items-center justify-center h-screen bg-folusho-slate-950">
+      <div className="flex items-center justify-center h-screen bg-white dark:bg-slate-950">
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-folusho-sage-500/10 border border-white/5 rounded-[2rem] mb-6 animate-pulse">
-            <GraduationCap className="w-10 h-10 text-folusho-sage-400" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-800 rounded-2xl mb-4 animate-pulse">
+            <GraduationCap className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
           </div>
-          <p className="text-folusho-sage-400 font-black uppercase tracking-[0.4em] text-[10px]">Initializing Architecture...</p>
+          <p className="text-slate-500 dark:text-slate-400 font-medium text-sm">Loading System...</p>
         </div>
       </div>
     );
@@ -149,30 +147,26 @@ function AppContent() {
 
   return (
     <div
-      className={`flex flex-col md:flex-row h-screen bg-folusho-slate-950 text-folusho-cream-100 selection:bg-folusho-sage-500/30 transition-colors duration-200 ${isDarkMode ? "dark" : ""}`}
+      className={`flex flex-col md:flex-row h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200 ${isDarkMode ? "dark" : ""}`}
     >
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(at_0%_0%,rgba(168,198,159,0.05)_0,transparent_50%),radial-gradient(at_100%_100%,rgba(255,138,122,0.03)_0,transparent_50%)]" />
-      </div>
-      <FloatingAcademicBackground />
       {/* Mobile Header */}
       {isMobile && (
-        <div className="bg-folusho-slate-900/80 backdrop-blur-xl border-b border-white/5 text-white px-6 py-4 flex items-center justify-between z-40 shadow-2xl">
+        <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 py-4 flex items-center justify-between z-40 shadow-sm">
           <button
             onClick={() => setShowMobileMenu(!showMobileMenu)}
-            className="p-2.5 hover:bg-white/5 rounded-2xl transition-all active:scale-90"
+            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
           >
             {showMobileMenu ? <X size={24} /> : <Menu size={24} />}
           </button>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center p-1.5 shadow-lg ring-1 ring-white/10">
+            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center p-1.5 shadow-sm">
               <img
                 src={config?.schoolLogo || "/school_logo.png?v=20260512"}
                 alt="Logo"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain brightness-0 invert"
               />
             </div>
-            <span className="text-sm font-black tracking-tighter uppercase">
+            <span className="text-base font-bold tracking-tight">
               {config?.schoolName?.split(" ")[0] || "FOLUSHO"}
             </span>
           </div>
@@ -182,100 +176,71 @@ function AppContent() {
 
       {/* Overlay for mobile menu */}
       {isMobile && showMobileMenu && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+        <div
           onClick={() => setShowMobileMenu(false)}
           className="fixed inset-0 bg-black/60 backdrop-blur-sm z-20 md:hidden"
         />
       )}
 
-      {/* Sidebar / Mobile Menu */}
-      <motion.aside
-        initial={false}
-        animate={{
-          x: isMobile && !showMobileMenu ? -1000 : 0,
-        }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      <aside
         className={`${
           isMobile
-            ? "fixed left-4 top-[84px] bottom-4 w-[calc(100%-32px)] max-w-72 z-30"
-            : `${isSidebarOpen ? "w-72" : "w-[92px]"} relative m-6 mr-0`
-        } bg-folusho-slate-900/60 backdrop-blur-2xl border border-white/5 rounded-[3rem] text-folusho-cream-100 transition-all duration-300 flex flex-col shadow-2xl overflow-y-auto md:overflow-visible`}
+            ? "fixed left-0 top-0 bottom-0 w-72 z-30 shadow-2xl"
+            : `${isSidebarOpen ? "w-72" : "w-20"} relative`
+        } bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transition-all duration-300 flex flex-col overflow-y-auto`}
       >
-        {/* Desktop Logo - Hidden on Mobile */}
         {!isMobile && (
-          <div className="p-6 border-b border-white/5 flex items-center justify-between flex-shrink-0">
+          <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between flex-shrink-0">
             {isSidebarOpen && (
-              <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="flex items-center gap-4"
-              >
-                <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center p-2 shadow-2xl ring-1 ring-white/10">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center p-2 shadow-sm">
                   <img
                     src={config?.schoolLogo || "/school_logo.png?v=20260512"}
                     alt="Logo"
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain brightness-0 invert"
                   />
                 </div>
                 <div className="overflow-hidden">
-                  <h1 className="text-lg font-black text-white truncate tracking-tighter uppercase leading-none">
+                  <h1 className="text-lg font-bold text-slate-900 dark:text-white truncate tracking-tight">
                     {typeof config?.schoolName === 'string' 
                       ? config.schoolName.split(" ")[0] 
                       : (config?.schoolName || "FOLUSHO")}
                   </h1>
-                  <p className="text-[10px] text-folusho-sage-400 font-black uppercase tracking-[0.2em] truncate mt-1">
-                    Excellence Defined
-                  </p>
                 </div>
-              </motion.div>
+              </div>
             )}
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className={`p-3 hover:bg-white/5 rounded-2xl transition-colors text-folusho-slate-400 hover:text-folusho-sage-400 ${!isSidebarOpen ? "mx-auto" : ""}`}
+              className={`p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors text-slate-500 hover:text-indigo-600 ${!isSidebarOpen ? "mx-auto" : ""}`}
             >
-              {isSidebarOpen ? <X size={22} /> : <Menu size={22} />}
+              {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         )}
 
-        {/* Mobile User Info */}
         {(isMobile || (isSidebarOpen && !isMobile)) && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="px-8 py-8 border-b border-white/5 bg-folusho-slate-950/30"
-          >
-            <p className="text-[10px] uppercase font-black tracking-[0.25em] text-folusho-sage-500/80">
-              Identity Verified
-            </p>
-            <p className="font-black text-white truncate text-lg mt-1 tracking-tight">
+          <div className="px-6 py-6 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/30">
+            <p className="text-xs font-semibold text-slate-900 dark:text-white truncate">
               {userName}
             </p>
-            <div className="flex items-center gap-2 mt-2">
-              <div className="w-2.5 h-2.5 rounded-full bg-folusho-sage-400 shadow-sm"></div>
-              <p className="text-xs font-bold text-folusho-slate-500">{userRole}</p>
-            </div>
-          </motion.div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{userRole}</p>
+          </div>
         )}
 
-        {/* Navigation */}
-        <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto custom-scrollbar">
+        <nav className="flex-1 px-3 py-4 space-y-1">
           {userRole === "Teacher" ? (
             <>
               <NavLink
                 to="/teacher-dashboard"
                 icon={<BarChart3 size={20} />}
-                label="Intelligence"
+                label="Dashboard"
                 isOpen={isMobile || isSidebarOpen}
                 onClick={() => setShowMobileMenu(false)}
               />
               <NavLink
                 to="/students"
                 icon={<GraduationCap size={20} />}
-                label="Champions"
+                label="Students"
                 isOpen={isMobile || isSidebarOpen}
                 onClick={() => setShowMobileMenu(false)}
               />
@@ -283,7 +248,7 @@ function AppContent() {
                 <NavLink
                   to="/results"
                   icon={<BookOpen size={20} />}
-                  label="Class Matrix"
+                  label="Results"
                   isOpen={isMobile || isSidebarOpen}
                   onClick={() => setShowMobileMenu(false)}
                 />
@@ -291,7 +256,7 @@ function AppContent() {
               <NavLink
                 to="/subject-results"
                 icon={<BookOpen size={20} />}
-                label="Core Metrics"
+                label="Subject Scores"
                 isOpen={isMobile || isSidebarOpen}
                 onClick={() => setShowMobileMenu(false)}
               />
@@ -299,7 +264,7 @@ function AppContent() {
                 <NavLink
                   to="/reports"
                   icon={<FileText size={20} />}
-                  label="Legacy Vault"
+                  label="Reports"
                   isOpen={isMobile || isSidebarOpen}
                   onClick={() => setShowMobileMenu(false)}
                 />
@@ -320,14 +285,14 @@ function AppContent() {
               <NavLink
                 to="/"
                 icon={<BarChart3 size={20} />}
-                label="Command Center"
+                label="Dashboard"
                 isOpen={isMobile || isSidebarOpen}
                 onClick={() => setShowMobileMenu(false)}
               />
               <NavLink
                 to="/students"
                 icon={<GraduationCap size={20} />}
-                label="Champions"
+                label="Students"
                 isOpen={isMobile || isSidebarOpen}
                 onClick={() => setShowMobileMenu(false)}
               />
@@ -335,7 +300,7 @@ function AppContent() {
                 <NavLink
                   to="/teachers"
                   icon={<Users size={20} />}
-                  label="Elite Squad"
+                  label="Teachers"
                   isOpen={isMobile || isSidebarOpen}
                   onClick={() => setShowMobileMenu(false)}
                 />
@@ -344,14 +309,14 @@ function AppContent() {
               <NavLink
                 to="/results"
                 icon={<BookOpen size={20} />}
-                label="Academic Matrix"
+                label="Class Results"
                 isOpen={isMobile || isSidebarOpen}
                 onClick={() => setShowMobileMenu(false)}
               />
               <NavLink
                 to="/subject-results"
                 icon={<BookOpen size={20} />}
-                label="Core Metrics"
+                label="Subject Results"
                 isOpen={isMobile || isSidebarOpen}
                 onClick={() => setShowMobileMenu(false)}
               />
@@ -359,7 +324,7 @@ function AppContent() {
                 <NavLink
                   to="/reports"
                   icon={<FileText size={20} />}
-                  label="Legacy Vault"
+                  label="Reports"
                   isOpen={isMobile || isSidebarOpen}
                   onClick={() => setShowMobileMenu(false)}
                 />
@@ -368,7 +333,7 @@ function AppContent() {
                 <NavLink
                   to="/activity-log"
                   icon={<Eye size={20} />}
-                  label="Sentinel Log"
+                  label="Activity Log"
                   isOpen={isMobile || isSidebarOpen}
                   onClick={() => setShowMobileMenu(false)}
                 />
@@ -377,7 +342,7 @@ function AppContent() {
                 <NavLink
                   to="/settings"
                   icon={<SettingsIcon size={20} />}
-                  label="System Config"
+                  label="Settings"
                   isOpen={isMobile || isSidebarOpen}
                   onClick={() => setShowMobileMenu(false)}
                 />
@@ -386,69 +351,37 @@ function AppContent() {
           )}
         </nav>
 
-        {/* Bottom Section */}
-        <div className="px-4 py-6 border-t border-white/5 space-y-1.5 flex-shrink-0">
-          {/* Dark Mode Toggle */}
+        <div className="px-3 py-4 border-t border-slate-200 dark:border-slate-800 space-y-1 flex-shrink-0">
           <button
             onClick={() => setIsDarkMode(!isDarkMode)}
-            className="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-folusho-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200"
+            className="w-full flex items-center gap-4 px-4 py-3 rounded-xl text-slate-500 hover:text-indigo-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
           >
-            {isDarkMode ? (
-              <Sun size={20} />
-            ) : (
-              <Moon size={20} />
-            )}
+            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
             {(isMobile || isSidebarOpen) && (
-              <span className="text-xs font-black uppercase tracking-widest">
+              <span className="text-sm font-medium">
                 {isDarkMode ? "Light Mode" : "Dark Mode"}
               </span>
             )}
           </button>
 
-          {/* Logout Button */}
-          <div className="relative">
-            <button
-              onClick={() => setShowLogout(!showLogout)}
-              className="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-folusho-slate-400 hover:text-folusho-coral-400 hover:bg-folusho-coral-500/10 transition-all duration-200"
-            >
-              <LogOut size={20} />
-              {(isMobile || isSidebarOpen) && (
-                <span className="text-xs font-black uppercase tracking-widest">Secure Exit</span>
-              )}
-            </button>
-            <AnimatePresence>
-              {showLogout && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95, y: 10 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                  className="absolute bottom-full mb-3 left-0 right-0 bg-folusho-slate-900 border border-white/10 rounded-3xl shadow-folusho-lg z-50 p-3"
-                >
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-xs font-black uppercase tracking-widest text-white bg-folusho-coral-500 hover:bg-folusho-coral-600 px-4 py-3.5 rounded-2xl transition-all shadow-lg active:scale-95"
-                  >
-                    Confirm Exit
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-          {(isMobile || isSidebarOpen) && (
-            <p className="text-[10px] text-folusho-cream-500 mt-6 text-center font-black tracking-[0.35em] uppercase">
-              FOLUSHO ACADEMIC © 2026
-            </p>
-          )}
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-4 px-4 py-3 rounded-xl text-slate-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors"
+          >
+            <LogOut size={20} />
+            {(isMobile || isSidebarOpen) && (
+              <span className="text-sm font-medium">Logout</span>
+            )}
+          </button>
         </div>
-      </motion.aside>
+      </aside>
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto bg-transparent">
         <div
           className={`max-w-7xl mx-auto ${isMobile ? "p-6 pt-2" : "p-10 md:p-16"}`}
         >
-          <AnimatePresence mode="wait">
-            <Routes location={location} key={location.pathname}>
+          <Routes location={location} key={location.pathname}>
               {userRole === "Teacher" ? (
                 <>
                   <Route
@@ -630,7 +563,6 @@ function AppContent() {
                 </>
               )}
               </Routes>
-          </AnimatePresence>
         </div>
       </main>
     </div>
@@ -651,14 +583,14 @@ function NavLink({ to, icon, label, isOpen, onClick }: NavLinkProps & { onClick?
       to={to}
       onClick={onClick}
       className={({ isActive }: { isActive: boolean }) =>
-        `flex items-center gap-5 px-6 py-4 rounded-2xl transition-all duration-300 text-xs font-black uppercase tracking-widest ${
+        `flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 text-sm font-medium ${
           isActive
-            ? "bg-folusho-sage-400 text-white shadow-folusho scale-[1.02]"
-            : "text-folusho-slate-400 hover:text-folusho-sage-400 hover:bg-white/5"
+            ? "bg-indigo-600 text-white shadow-sm"
+            : "text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-800"
         }`
       }
     >
-      <span className="flex-shrink-0 w-6 flex items-center justify-center">
+      <span className="flex-shrink-0 w-5 flex items-center justify-center">
         {icon}
       </span>
       {isOpen && <span className="truncate">{label}</span>}
@@ -671,9 +603,9 @@ export default function App() {
     <ErrorBoundary showDetails={true}>
       <Router>
         <React.Suspense fallback={
-          <div className="fixed inset-0 bg-folusho-slate-900 flex flex-col items-center justify-center z-[9999]">
-            <div className="w-16 h-16 border-4 border-folusho-sage-500/20 border-t-folusho-sage-500 rounded-full animate-spin mb-6" />
-            <p className="text-folusho-sage-400 font-black uppercase tracking-[0.3em] text-xs animate-pulse">Initializing Digital Citadel...</p>
+          <div className="fixed inset-0 bg-slate-900 flex flex-col items-center justify-center z-[9999]">
+            <div className="w-16 h-16 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin mb-6" />
+            <p className="text-indigo-400 font-black uppercase tracking-[0.3em] text-xs animate-pulse">Initializing Digital Citadel...</p>
           </div>
         }>
           <AppContent />

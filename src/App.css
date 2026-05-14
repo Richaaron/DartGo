@@ -1,48 +1,48 @@
 :root {
-    --folusho-sage: #a8c69f;
-    --folusho-coral: #ff8a7a;
-    --folusho-cream: #faf9f6;
-    --folusho-slate: #1a1816;
+    --indigo: #a8c69f;
+    --rose: #ff8a7a;
+    --slate: #faf9f6;
+    --slate: #1a1816;
 }
 
 /* ── Institutional Scrollbar ──────────────────── */
-.scrollbar-folusho::-webkit-scrollbar {
+.scrollbar-custom::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
-.scrollbar-folusho::-webkit-scrollbar-track {
+.scrollbar-custom::-webkit-scrollbar-track {
     background: #1a1816;
 }
-.scrollbar-folusho::-webkit-scrollbar-thumb {
+.scrollbar-custom::-webkit-scrollbar-thumb {
     background: #36322d;
     border-radius: 100px;
     border: 2px solid #1a1816;
 }
-.scrollbar-folusho::-webkit-scrollbar-thumb:hover {
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
     background: #4d4740;
 }
 
-/* ── Folusho Layout Utilities ────────────────────── */
-.folusho-card {
-    @apply bg-folusho-slate-900/60 backdrop-blur-2xl border border-white/5
+/* ── Layout Utilities ────────────────────── */
+.card {
+    @apply bg-slate-900/60 backdrop-blur-2xl border border-white/5
            rounded-[3rem] p-12 shadow-2xl transition-all duration-500
-           hover:border-folusho-sage-400/20 hover:shadow-folusho-lg;
+           hover:border-indigo-400/20 hover:shadow-xl;
 }
 
-.input-folusho {
-    @apply w-full bg-folusho-slate-900/80 border border-white/5 rounded-[1.5rem] px-8 py-5
-           text-folusho-cream-100 text-sm font-bold tracking-tight outline-none
-           transition-all duration-300 placeholder:text-folusho-slate-500
-           focus:bg-folusho-slate-800 focus:border-folusho-sage-400
+.input {
+    @apply w-full bg-slate-900/80 border border-white/5 rounded-[1.5rem] px-8 py-5
+           text-slate-100 text-sm font-bold tracking-tight outline-none
+           transition-all duration-300 placeholder:text-slate-500
+           focus:bg-slate-800 focus:border-indigo-400
            focus:shadow-[0_0_30px_rgba(74,222,128,0.1)]
            disabled:opacity-50 disabled:cursor-not-allowed;
 }
 
 .btn-vibrant {
     @apply inline-flex items-center justify-center gap-4 px-10 py-5
-           bg-folusho-slate-900 text-white text-[11px] font-black uppercase tracking-[0.3em]
-           rounded-[1.5rem] transition-all duration-300 shadow-folusho
-           hover:shadow-folusho-lg hover:scale-[1.03] active:scale-[0.97]
+           bg-slate-900 text-white text-[11px] font-black uppercase tracking-[0.3em]
+           rounded-[1.5rem] transition-all duration-300 shadow-lg
+           hover:shadow-xl hover:scale-[1.03] active:scale-[0.97]
            disabled:opacity-40 disabled:grayscale disabled:cursor-not-allowed;
 }
 
@@ -61,11 +61,11 @@
 
 /* ── Form Controls ────────────────────────────── */
 select {
-    @apply bg-folusho-slate-900 text-folusho-cream-100 cursor-pointer;
+    @apply bg-slate-900 text-slate-100 cursor-pointer;
 }
 
 option {
-    @apply bg-folusho-slate-900 text-folusho-cream-100 py-4;
+    @apply bg-slate-900 text-slate-100 py-4;
 }
 
 /* ── Institutional Print Engine ───────────────── */
@@ -79,7 +79,7 @@ option {
         color: #0f172a !important;
     }
 
-    .folusho-card {
+    .card {
         background: white !important;
         border: 1px solid #f1f5f9 !important;
         box-shadow: none !important;
@@ -87,7 +87,7 @@ option {
         padding: 3rem !important;
     }
 
-    .text-folusho-slate-900, .text-folusho-sage-500 {
+    .text-slate-900, .text-indigo-500 {
         color: #0f172a !important;
     }
 

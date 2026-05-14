@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import type { FormEvent } from 'react'
 import { messageService, Message, Conversation } from '../services/messageService'
 import { useAuthContext } from '../context/AuthContext'
-import { Send, User, Clock, AlertTriangle, CheckCircle, Search } from 'lucide-react'
+import { Send, User, Clock, AlertTriangle, CheckCircle, Search, MessageSquare } from 'lucide-react'
 
 export default function ChatSystem() {
   const { user } = useAuthContext()
@@ -25,7 +25,6 @@ export default function ChatSystem() {
       )
       setMessages(filtered)
       
-      // Mark unread messages as read
       const unread = filtered.filter(m => !m.isRead && m.recipientId && m.recipientId._id === user?._id)
       for (const msg of unread) {
         if (msg && msg._id) {
@@ -42,7 +41,6 @@ export default function ChatSystem() {
       const data = await messageService.getConversations()
       setConversations(data)
       
-      // If teacher, automatically select admin conversation if it exists
       if (user?.role === 'Teacher' && !selectedConvo && data.length > 0) {
         const adminConvo = data.find(c => c.user.role === 'Admin')
         if (adminConvo) setSelectedConvo(adminConvo)
@@ -54,7 +52,7 @@ export default function ChatSystem() {
 
   useEffect(() => {
     loadConversations()
-    const interval = window.setInterval(loadConversations, 10000) // Poll for new messages
+    const interval = window.setInterval(loadConversations, 10000)
     return () => window.clearInterval(interval)
   }, [loadConversations])
 
@@ -99,56 +97,56 @@ export default function ChatSystem() {
   )
 
   return (
-    <div className="flex h-[600px] bg-folusho-slate-900/40 rounded-[2rem] shadow-2xl overflow-hidden border border-white/5 backdrop-blur-xl">
-      {/* Sidebar - Conversations List */}
-      <div className={`w-1/3 border-r border-white/5 flex flex-col ${user?.role === 'Teacher' ? 'hidden md:flex' : ''}`}>
-        <div className="p-8 border-b border-white/5 bg-white/5">
-          <h2 className="text-xl font-black text-white mb-6 tracking-tight uppercase tracking-[0.3em] text-[10px]">Operations Console</h2>
-          <div className="relative group">
-            <Search className="w-4 h-4 absolute left-5 top-1/2 transform -translate-y-1/2 text-folusho-slate-500 group-focus-within:text-folusho-sage-400 transition-colors" />
+    <div className="flex h-[600px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm overflow-hidden">
+      {/* Sidebar */}
+      <div className={`w-1/3 border-r border-slate-200 dark:border-slate-800 flex flex-col ${user?.role === 'Teacher' ? 'hidden md:flex' : ''}`}>
+        <div className="p-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
+          <h2 className="text-sm font-bold text-slate-900 dark:text-white mb-4 uppercase tracking-wider">Messages</h2>
+          <div className="relative">
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
-              placeholder="Locate Personnel..."
-              className="input-folusho !pl-14 !py-4 !text-xs !bg-folusho-slate-900/50"
+              placeholder="Search contacts..."
+              className="input pl-9 py-1.5 text-xs"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto scrollbar-folusho">
+        <div className="flex-1 overflow-y-auto">
           {filteredConversations.length === 0 ? (
-            <div className="p-12 text-center text-folusho-slate-500 text-[10px] font-black uppercase tracking-[0.2em] leading-relaxed">
-              No tactical units detected.
+            <div className="p-8 text-center text-slate-400 text-xs">
+              No contacts found.
             </div>
           ) : (
             filteredConversations.map((convo) => (
               <button
                 key={convo.user._id}
                 onClick={() => setSelectedConvo(convo)}
-                className={`w-full p-8 flex items-start gap-5 hover:bg-white/5 transition-all border-b border-white/5 relative ${
-                  selectedConvo?.user._id === convo.user._id ? 'bg-white/10 border-l-[6px] border-l-folusho-sage-400' : ''
+                className={`w-full p-4 flex items-start gap-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border-b border-slate-50 dark:border-slate-800/50 ${
+                  selectedConvo?.user._id === convo.user._id ? 'bg-indigo-50/50 dark:bg-indigo-900/10 border-l-4 border-l-indigo-600' : ''
                 }`}
               >
-                <div className="bg-folusho-sage-400/10 p-3.5 rounded-2xl border border-folusho-sage-400/20 text-folusho-sage-400 shadow-sm">
-                  <User className="w-5 h-5" />
+                <div className="bg-slate-100 dark:bg-slate-800 p-2 rounded-lg text-slate-500">
+                  <User size={18} />
                 </div>
                 <div className="flex-1 text-left min-w-0">
-                  <div className="flex justify-between items-baseline mb-2">
-                    <h3 className="font-black text-white text-base tracking-tight truncate">{convo.user.name}</h3>
-                    <span className="text-[10px] font-black text-folusho-slate-500 whitespace-nowrap uppercase tracking-widest">
+                  <div className="flex justify-between items-baseline mb-0.5">
+                    <h3 className="font-bold text-slate-900 dark:text-white text-sm truncate">{convo.user.name}</h3>
+                    <span className="text-[10px] text-slate-400">
                       {new Date(convo.lastMessageAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
-                  <p className="text-xs font-bold text-folusho-slate-400 truncate leading-relaxed">{convo.lastMessage}</p>
-                  <div className="flex items-center gap-3 mt-3">
-                    <span className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${
-                      convo.user.role === 'Admin' ? 'bg-folusho-coral-500/10 text-folusho-coral-400 border-folusho-coral-500/20' : 'bg-folusho-sage-500/10 text-folusho-sage-400 border-folusho-sage-500/20'
+                  <p className="text-xs text-slate-500 truncate">{convo.lastMessage}</p>
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase border ${
+                      convo.user.role === 'Admin' ? 'bg-rose-50 border-rose-100 text-rose-600' : 'bg-indigo-50 border-indigo-100 text-indigo-600'
                     }`}>
                       {convo.user.role}
                     </span>
                     {convo.unreadCount > 0 && (
-                      <span className="bg-folusho-coral-500 text-white text-[9px] font-black px-2.5 py-1 rounded-full shadow-folusho">
-                        {convo.unreadCount} NEW
+                      <span className="bg-indigo-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                        {convo.unreadCount}
                       </span>
                     )}
                   </div>
@@ -159,85 +157,72 @@ export default function ChatSystem() {
         </div>
       </div>
 
-      {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col bg-folusho-slate-950/20 backdrop-blur-md">
+      {/* Main Chat */}
+      <div className="flex-1 flex flex-col bg-white dark:bg-slate-900">
         {selectedConvo ? (
           <>
-            {/* Chat Header */}
-            <div className="p-8 border-b border-white/5 flex justify-between items-center bg-white/5 backdrop-blur-xl sticky top-0 z-10">
-              <div className="flex items-center gap-5">
-                <div className="bg-folusho-sage-400/10 p-4 rounded-2xl border border-folusho-sage-400/20 text-folusho-sage-400 shadow-sm">
-                  <User className="w-5 h-5" />
+            {/* Header */}
+            <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-900">
+              <div className="flex items-center gap-3">
+                <div className="bg-indigo-100 dark:bg-indigo-900/30 p-2 rounded-lg text-indigo-600">
+                  <User size={20} />
                 </div>
                 <div>
-                  <h3 className="font-black text-white text-xl tracking-tight">{selectedConvo.user.name}</h3>
-                  <p className="text-[10px] text-folusho-sage-400 font-black uppercase tracking-widest flex items-center gap-3 mt-1.5">
-                    <span className="w-2 h-2 bg-folusho-sage-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.6)]"></span>
-                    Operational
-                  </p>
+                  <h3 className="font-bold text-slate-900 dark:text-white text-sm">{selectedConvo.user.name}</h3>
+                  <div className="flex items-center gap-1.5 mt-0.5">
+                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                    <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Online</span>
+                  </div>
                 </div>
               </div>
-              <div className="flex gap-2">
-                {user?.role === 'Admin' && (
-                  <div className="flex bg-white/5 p-1.5 rounded-2xl border border-white/5 shadow-inner">
-                    <button 
-                      onClick={() => setMessageType('general')}
-                      className={`px-5 py-2 text-[9px] font-black uppercase tracking-widest rounded-xl transition-all ${messageType === 'general' ? 'bg-white/10 shadow-folusho text-folusho-sage-400' : 'text-folusho-slate-500 hover:text-white'}`}
-                    >
-                      General
-                    </button>
-                    <button 
-                      onClick={() => setMessageType('deadline')}
-                      className={`px-5 py-2 text-[9px] font-black uppercase tracking-widest rounded-xl transition-all ${messageType === 'deadline' ? 'bg-white/10 shadow-folusho text-folusho-yellow-500' : 'text-folusho-slate-500 hover:text-white'}`}
-                    >
-                      Deadline
-                    </button>
-                    <button 
-                      onClick={() => setMessageType('caution')}
-                      className={`px-5 py-2 text-[9px] font-black uppercase tracking-widest rounded-xl transition-all ${messageType === 'caution' ? 'bg-white/10 shadow-folusho text-folusho-coral-400' : 'text-folusho-slate-500 hover:text-white'}`}
-                    >
-                      Caution
-                    </button>
-                  </div>
-                )}
+              <div className="flex gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
+                {(['general', 'deadline', 'caution'] as const).map((type) => (
+                  <button 
+                    key={type}
+                    onClick={() => setMessageType(type)}
+                    className={`px-3 py-1 text-[10px] font-bold uppercase rounded-md transition-all ${
+                      messageType === type 
+                        ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' 
+                        : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                    }`}
+                  >
+                    {type}
+                  </button>
+                ))}
               </div>
             </div>
 
-            {/* Messages Display */}
-            <div className="flex-1 overflow-y-auto p-10 space-y-8 bg-transparent scrollbar-folusho">
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-4">
               {messages.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-folusho-slate-600 space-y-6">
-                  <div className="w-24 h-24 rounded-[3rem] bg-white/5 flex items-center justify-center border border-white/5 shadow-inner">
-                    <Send className="w-10 h-10 opacity-20" />
-                  </div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.3em]">Start a conversation with {selectedConvo.user.name}</p>
+                <div className="h-full flex flex-col items-center justify-center text-slate-300">
+                  <MessageSquare size={48} className="mb-4 opacity-20" />
+                  <p className="text-xs font-bold uppercase tracking-wider">No messages yet</p>
                 </div>
               ) : (
                 messages.map((msg) => {
                   const isOwn = msg.senderId._id === user?._id
                   return (
                     <div key={msg._id} className={`flex ${isOwn ? 'justify-end' : 'justify-start'}`}>
-                      <div className={`max-w-[75%] rounded-4xl p-6 shadow-2xl relative border ${
+                      <div className={`max-w-[80%] rounded-xl p-3 shadow-sm border ${
                         isOwn 
-                          ? 'bg-folusho-sage-500 text-white rounded-tr-none border-folusho-sage-400' 
-                          : 'bg-white/5 text-white rounded-tl-none border-white/5 backdrop-blur-md'
+                          ? 'bg-indigo-600 text-white border-indigo-500' 
+                          : 'bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border-slate-100 dark:border-slate-700'
                       }`}>
                         {msg.type !== 'general' && (
-                          <div className={`flex items-center gap-2 text-[9px] font-black uppercase mb-3 tracking-[0.2em] ${
-                            isOwn ? 'text-folusho-sage-100' : msg.type === 'deadline' ? 'text-folusho-yellow-500' : 'text-folusho-coral-400'
+                          <div className={`flex items-center gap-1 text-[10px] font-bold uppercase mb-1.5 ${
+                            isOwn ? 'text-indigo-100' : msg.type === 'deadline' ? 'text-amber-600' : 'text-rose-600'
                           }`}>
-                            {msg.type === 'deadline' ? <Clock className="w-3.5 h-3.5" /> : <AlertTriangle className="w-3.5 h-3.5" />}
-                            {msg.type} PROTOCOL
+                            {msg.type === 'deadline' ? <Clock size={12} /> : <AlertTriangle size={12} />}
+                            {msg.type}
                           </div>
                         )}
-                        <p className="text-base font-bold leading-relaxed whitespace-pre-wrap">{msg.content}</p>
-                        <div className={`flex items-center justify-end gap-2 mt-4 ${isOwn ? 'text-folusho-sage-100' : 'text-folusho-slate-500'}`}>
-                          <span className="text-[9px] font-black uppercase tracking-[0.2em]">
+                        <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+                        <div className={`flex items-center justify-end gap-1.5 mt-2 ${isOwn ? 'text-indigo-100' : 'text-slate-400'}`}>
+                          <span className="text-[9px] font-bold uppercase">
                             {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                           </span>
-                          {isOwn && (
-                            msg.isRead ? <CheckCircle className="w-3.5 h-3.5 text-white/80" /> : <div className="w-3.5 h-3.5" />
-                          )}
+                          {isOwn && msg.isRead && <CheckCircle size={10} />}
                         </div>
                       </div>
                     </div>
@@ -247,43 +232,39 @@ export default function ChatSystem() {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Message Input */}
-            <form onSubmit={handleSendMessage} className="p-8 border-t border-white/5 bg-white/5">
-              <div className="flex gap-4 items-end">
-                <div className="flex-1 relative group">
-                  <textarea
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder={user?.role === 'Admin' ? `Transmit ${messageType} directive...` : "Compose tactical response..."}
-                    className="w-full bg-folusho-slate-900/50 border border-white/5 rounded-3xl px-8 py-5 text-base font-bold text-white focus:ring-4 focus:ring-folusho-sage-500/10 focus:border-folusho-sage-400 transition-all resize-none min-h-[60px] max-h-48 scrollbar-none shadow-inner"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault()
-                        handleSendMessage(e)
-                      }
-                    }}
-                  />
-                </div>
+            {/* Input */}
+            <form onSubmit={handleSendMessage} className="p-4 border-t border-slate-100 dark:border-slate-800">
+              <div className="flex gap-2 items-end">
+                <textarea
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  placeholder="Type a message..."
+                  className="flex-1 input py-2 px-4 text-sm min-h-[40px] max-h-32 resize-none"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault()
+                      handleSendMessage(e)
+                    }
+                  }}
+                />
                 <button
                   type="submit"
                   disabled={loading || !newMessage.trim()}
-                  className="bg-folusho-sage-400 text-white p-5 rounded-3xl hover:bg-folusho-sage-500 transition-all disabled:opacity-10 disabled:cursor-not-allowed shadow-folusho hover:scale-105 active:scale-95"
+                  className="bg-indigo-600 text-white p-2.5 rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition-colors shadow-sm"
                 >
-                  <Send className="w-7 h-7" />
+                  <Send size={20} />
                 </button>
               </div>
             </form>
           </>
         ) : (
-          <div className="flex-1 flex flex-col items-center justify-center text-folusho-slate-600 p-16 text-center bg-transparent">
-            <div className="bg-white/5 p-12 rounded-[4rem] mb-10 border border-white/5 shadow-2xl group backdrop-blur-md">
-              <Send className="w-24 h-24 opacity-10 group-hover:opacity-30 transition-all duration-500" />
+          <div className="flex-1 flex flex-col items-center justify-center p-12 text-center text-slate-400">
+            <div className="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-full mb-6 border border-slate-100 dark:border-slate-800">
+              <MessageSquare size={64} className="opacity-10" />
             </div>
-            <h3 className="text-3xl font-black text-white mb-4 tracking-tighter uppercase">Tactical Messaging Hub</h3>
-            <p className="max-w-md text-sm font-bold text-folusho-slate-500 leading-relaxed uppercase tracking-widest">
-              {user?.role === 'Admin' 
-                ? "Select an academic unit from the tactical manifest to transmit deadlines, cautions, or general directives." 
-                : "Operational directives from institutional command will appear here. Synchronize and respond to maintain academic integrity."}
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Select a Conversation</h3>
+            <p className="max-w-xs text-sm leading-relaxed">
+              Choose a contact from the list to start messaging.
             </p>
           </div>
         )}

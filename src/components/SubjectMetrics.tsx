@@ -11,11 +11,8 @@ import {
   Pie,
   Cell,
   Legend,
-  ComposedChart,
-  Area
 } from 'recharts'
 import { Student, SubjectResult, Subject } from '../types'
-import { motion, AnimatePresence } from 'framer-motion'
 import { BarChart3, PieChart as PieChartIcon, Activity, AlertTriangle } from 'lucide-react'
 
 interface SubjectMetricsProps {
@@ -25,14 +22,14 @@ interface SubjectMetricsProps {
   selectedClass: string
 }
 
-const COLORS = ['#749f82', '#ff8a71', '#94a3b8', '#e2e8f0', '#f8fafc'];
+const COLORS = ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#64748b'];
 const GRADE_COLORS: Record<string, string> = {
-  'A': '#749f82', // Sage
-  'B': '#8fb39a', 
-  'C': '#a9c7b3',
-  'D': '#ff8a71', // Coral
-  'E': '#ffa18d',
-  'F': '#ffb9aa',
+  'A': '#10b981', 
+  'B': '#34d399', 
+  'C': '#6366f1',
+  'D': '#f59e0b', 
+  'E': '#f97316',
+  'F': '#ef4444',
 };
 
 export default function SubjectMetrics({ students, results, subjects, selectedClass }: SubjectMetricsProps) {
@@ -117,67 +114,52 @@ export default function SubjectMetrics({ students, results, subjects, selectedCl
 
   if (classResults.length === 0) {
     return (
-      <div className="folusho-card flex flex-col items-center justify-center py-32 bg-folusho-cream-50/20 border-dashed">
-        <div className="p-8 bg-folusho-cream-50 rounded-full w-fit mx-auto mb-8 border border-folusho-cream-100 shadow-inner">
-          <Activity className="w-12 h-12 text-folusho-slate-300 opacity-50" />
-        </div>
-        <p className="text-sm font-black text-folusho-slate-400 uppercase tracking-[0.4em]">No Personnel Intelligence Found</p>
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-12 text-center">
+        <Activity className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+        <p className="text-slate-500">No result data available for this selection.</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-12 relative overflow-hidden">
-      {/* Decorative Orbs */}
-      <div className="absolute -top-24 -right-24 w-64 h-64 bg-folusho-sage-100/30 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-folusho-coral-100/30 rounded-full blur-[100px] pointer-events-none" />
-
+    <div className="space-y-8">
       {/* Alert for Lagging Subjects */}
-      <AnimatePresence>
-        {laggingSubjects.length > 0 && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="p-8 bg-folusho-coral-50 border border-folusho-coral-200 rounded-[2.5rem] flex items-start gap-6 relative z-10 shadow-sm"
-          >
-            <div className="p-3 bg-white rounded-2xl text-folusho-coral-500 shadow-sm border border-folusho-coral-100">
-              <AlertTriangle className="w-6 h-6 flex-shrink-0" />
-            </div>
-            <div>
-              <h3 className="text-[10px] font-black text-folusho-coral-600 uppercase tracking-[0.4em]">Critical Protocol Alert: Lagging Logic</h3>
-              <p className="text-xs font-black text-folusho-slate-600 uppercase tracking-widest mt-2 leading-relaxed">
-                The following operational sectors have an efficiency rate below <span className="text-folusho-coral-500">50%</span>: 
-                <span className="text-folusho-slate-900 ml-2 bg-white px-3 py-1 rounded-lg border border-folusho-coral-100">
-                  {laggingSubjects.map(s => s.name).join(', ')}
-                </span>
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {laggingSubjects.length > 0 && (
+        <div className="p-4 bg-rose-50 dark:bg-rose-900/10 border border-rose-200 dark:border-rose-900/30 rounded-xl flex items-start gap-4">
+          <div className="p-2 bg-white dark:bg-slate-900 rounded-lg text-rose-600 shadow-sm">
+            <AlertTriangle size={20} />
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-rose-700 dark:text-rose-400">Attention Required</h3>
+            <p className="text-xs text-rose-600 dark:text-rose-500 mt-1">
+              Low pass rate (under 50%) in: {laggingSubjects.map(s => s.name).join(', ')}
+            </p>
+          </div>
+        </div>
+      )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 relative z-10">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Subject Performance Bar Chart */}
-        <div className="folusho-card !p-10">
-          <div className="flex items-center gap-4 mb-10">
-            <div className="p-3 bg-folusho-sage-100 rounded-2xl text-folusho-sage-600 border border-folusho-sage-200">
-              <BarChart3 className="w-5 h-5" />
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-lg">
+              <BarChart3 size={20} />
             </div>
             <div>
-              <h3 className="text-xl font-black uppercase tracking-tighter text-folusho-slate-900 leading-none">Sector <br /> <span className="text-folusho-sage-500">Efficiency</span></h3>
-              <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest mt-1">Pass Rates (%)</p>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">Subject Pass Rates</h3>
+              <p className="text-xs text-slate-500">Percentage of students who passed (50%+)</p>
             </div>
           </div>
-          <div className="h-[350px] w-full">
+          <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={subjectPerformanceData} layout="vertical" margin={{ left: 40, right: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#f1f5f9" />
+              <BarChart data={subjectPerformanceData} layout="vertical" margin={{ left: 20, right: 20 }}>
+                <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#e2e8f0" />
                 <XAxis type="number" domain={[0, 100]} hide />
                 <YAxis 
                   dataKey="name" 
                   type="category" 
-                  tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 900 }}
-                  width={100}
+                  tick={{ fill: '#64748b', fontSize: 10, fontWeight: 600 }}
+                  width={80}
                 />
                 <Tooltip 
                   cursor={{ fill: '#f8fafc' }}
@@ -185,18 +167,17 @@ export default function SubjectMetrics({ students, results, subjects, selectedCl
                     if (active && payload && payload.length) {
                       const data = payload[0].payload;
                       return (
-                        <div className="bg-white p-6 shadow-folusho rounded-[2rem] border border-folusho-cream-200 min-w-[240px]">
-                          <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.3em] mb-4 border-b border-folusho-cream-100 pb-3">{data.name}</p>
-                          <div className="space-y-4">
-                            <div className="flex justify-between items-center">
-                              <span className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Efficiency:</span>
-                              <span className={`text-sm font-black ${data.passRate < 50 ? 'text-folusho-coral-500' : 'text-folusho-sage-600'}`}>{data.passRate}%</span>
+                        <div className="bg-white dark:bg-slate-900 p-4 shadow-xl rounded-lg border border-slate-200 dark:border-slate-800">
+                          <p className="text-xs font-bold text-slate-900 dark:text-white mb-2">{data.name}</p>
+                          <div className="space-y-1">
+                            <div className="flex justify-between gap-4">
+                              <span className="text-[10px] text-slate-500 uppercase font-bold">Pass Rate:</span>
+                              <span className={`text-xs font-bold ${data.passRate < 50 ? 'text-rose-600' : 'text-emerald-600'}`}>{data.passRate}%</span>
                             </div>
-                            <div className="flex justify-between items-center">
-                              <span className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Logic Score:</span>
-                              <span className="text-sm font-black text-folusho-slate-900">{data.average}%</span>
+                            <div className="flex justify-between gap-4">
+                              <span className="text-[10px] text-slate-500 uppercase font-bold">Avg Score:</span>
+                              <span className="text-xs font-bold text-slate-900 dark:text-white">{data.average}%</span>
                             </div>
-                            <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest opacity-50 mt-2">{data.count} Personnel Recorded</p>
                           </div>
                         </div>
                       )
@@ -206,55 +187,52 @@ export default function SubjectMetrics({ students, results, subjects, selectedCl
                 />
                 <Bar 
                   dataKey="passRate" 
-                  radius={[0, 10, 10, 0]}
-                  barSize={16}
+                  radius={[0, 4, 4, 0]}
+                  barSize={12}
                 >
                   {subjectPerformanceData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.passRate < 50 ? '#ff8a71' : '#749f82'} />
+                    <Cell key={`cell-${index}`} fill={entry.passRate < 50 ? '#f43f5e' : '#6366f1'} />
                   ))}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest mt-6 opacity-60">
-            * Operational Efficiency threshold: 50% Protocol Fulfillment.
-          </p>
         </div>
 
         {/* Grade Distribution Pie Chart */}
-        <div className="folusho-card !p-10">
-          <div className="flex items-center gap-4 mb-10">
-            <div className="p-3 bg-folusho-coral-100 rounded-2xl text-folusho-coral-600 border border-folusho-coral-200">
-              <PieChartIcon className="w-5 h-5" />
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="p-2 bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 rounded-lg">
+              <PieChartIcon size={20} />
             </div>
             <div>
-              <h3 className="text-xl font-black uppercase tracking-tighter text-folusho-slate-900 leading-none">Grade <br /> <span className="text-folusho-coral-500">Consolidated</span></h3>
-              <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest mt-1">Institutional Breakdown</p>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">Grade Distribution</h3>
+              <p className="text-xs text-slate-500">Breakdown of student grades across the class.</p>
             </div>
           </div>
-          <div className="h-[350px] w-full flex flex-col items-center">
-            <ResponsiveContainer width="100%" height="80%">
+          <div className="h-[300px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={gradeDistributionData}
                   cx="50%"
-                  cy="50%"
-                  innerRadius={70}
-                  outerRadius={100}
-                  paddingAngle={8}
+                  cy="45%"
+                  innerRadius={60}
+                  outerRadius={80}
+                  paddingAngle={5}
                   dataKey="value"
                 >
                   {gradeDistributionData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={GRADE_COLORS[entry.name] || COLORS[index % COLORS.length]} strokeWidth={0} />
+                    <Cell key={`cell-${index}`} fill={GRADE_COLORS[entry.name] || COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
                 <Tooltip 
                   content={({ active, payload }) => {
                     if (active && payload && payload.length) {
                       return (
-                        <div className="bg-white p-4 shadow-folusho rounded-2xl border border-folusho-cream-200">
-                          <p className="text-[10px] font-black text-folusho-slate-900 uppercase tracking-widest">
-                            Grade {payload[0].name}: <span className="text-folusho-sage-600">{payload[0].value}</span> Units
+                        <div className="bg-white dark:bg-slate-900 p-2 shadow-lg rounded-lg border border-slate-200 dark:border-slate-800">
+                          <p className="text-xs font-bold text-slate-900 dark:text-white">
+                            Grade {payload[0].name}: {payload[0].value} Students
                           </p>
                         </div>
                       )
@@ -265,74 +243,59 @@ export default function SubjectMetrics({ students, results, subjects, selectedCl
                 <Legend 
                   verticalAlign="bottom" 
                   height={36} 
-                  formatter={(value) => <span className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Grade {value}</span>}
+                  formatter={(value) => <span className="text-[10px] font-bold text-slate-500 uppercase">Grade {value}</span>}
                 />
               </PieChart>
             </ResponsiveContainer>
-            <div className="text-center mt-6">
-              <p className="text-[10px] font-black text-folusho-slate-300 uppercase tracking-widest italic">Breakdown across all specialized sectors in {selectedClass}</p>
-            </div>
           </div>
         </div>
 
         {/* Score Range Histogram */}
-        <div className="folusho-card !p-10 lg:col-span-2">
-          <div className="flex items-center gap-4 mb-10">
-            <div className="p-3 bg-folusho-cream-100 rounded-2xl text-folusho-slate-600 border border-folusho-cream-200">
-              <Activity className="w-5 h-5" />
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm lg:col-span-2">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="p-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-lg">
+              <Activity size={20} />
             </div>
             <div>
-              <h3 className="text-xl font-black uppercase tracking-tighter text-folusho-slate-900 leading-none">Logic <br /> <span className="text-folusho-slate-400">Distribution</span></h3>
-              <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest mt-1">Operational Histogram</p>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">Score Ranges</h3>
+              <p className="text-xs text-slate-500">Number of students in each score bracket.</p>
             </div>
           </div>
-          <div className="h-[350px] w-full">
+          <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={scoreRangeData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+              <BarChart data={scoreRangeData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                 <XAxis 
                   dataKey="name" 
-                  tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 900 }} 
+                  tick={{ fill: '#64748b', fontSize: 10, fontWeight: 600 }} 
                   axisLine={false}
                   tickLine={false}
                 />
                 <YAxis 
-                  tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 900 }} 
+                  tick={{ fill: '#64748b', fontSize: 10, fontWeight: 600 }} 
                   axisLine={false}
                   tickLine={false}
                 />
                 <Tooltip 
                    cursor={{ fill: '#f8fafc' }}
                    contentStyle={{ 
-                     borderRadius: '2rem', 
-                     border: '1px solid #f1f5f9', 
-                     boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.08)',
-                     padding: '24px'
+                     borderRadius: '12px', 
+                     border: '1px solid #e2e8f0', 
+                     boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                     padding: '12px'
                    }}
                    labelStyle={{ 
                      fontSize: '10px', 
-                     fontWeight: 900, 
+                     fontWeight: 700, 
                      textTransform: 'uppercase', 
-                     letterSpacing: '0.3em', 
-                     color: '#94a3b8',
-                     marginBottom: '12px',
-                     display: 'block',
-                     borderBottom: '1px solid #f1f5f9',
-                     paddingBottom: '12px'
-                   }}
-                   itemStyle={{
-                     fontSize: '14px',
-                     fontWeight: 900,
-                     color: '#749f82'
+                     color: '#64748b',
+                     marginBottom: '4px'
                    }}
                 />
-                <Bar dataKey="count" name="Personnel Units" fill="#749f82" radius={[12, 12, 0, 0]} barSize={40} />
+                <Bar dataKey="count" name="Students" fill="#6366f1" radius={[4, 4, 0, 0]} barSize={40} />
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <p className="text-[10px] font-black text-center text-folusho-slate-400 uppercase tracking-[0.4em] mt-8">
-            Personnel fulfillment variance across operational sectors.
-          </p>
         </div>
       </div>
     </div>

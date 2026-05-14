@@ -1,8 +1,7 @@
 /* global confirm */
 
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { BookOpen, Plus, Edit, Trash2, CheckCircle, Eye } from 'lucide-react'
+import { BookOpen, Plus, Edit, Trash2, Eye, X } from 'lucide-react'
 import { Curriculum } from '../types'
 import { fetchCurriculums, deleteCurriculum } from '../services/api'
 
@@ -47,333 +46,216 @@ export default function CurriculumManager({ level }: CurriculumManagerProps) {
   }
 
   if (isLoading) {
-    return <div className="p-4 text-center text-gray-500">Loading curriculums...</div>
+    return (
+      <div className="py-12 text-center text-slate-500">
+        <div className="animate-spin w-8 h-8 border-2 border-indigo-600 border-t-transparent rounded-full mx-auto mb-4"></div>
+        Loading...
+      </div>
+    )
   }
 
   return (
-    <div className="space-y-12 relative">
-      {/* Decorative Orbs */}
-      <div className="absolute -top-24 -right-24 w-64 h-64 bg-folusho-sage-100/30 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-folusho-coral-100/30 rounded-full blur-[100px] pointer-events-none" />
-
-      <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-12">
-        <div className="flex items-center gap-5">
-          <div className="p-4 bg-folusho-sage-100/50 rounded-2xl text-folusho-sage-600 border border-folusho-sage-200 shadow-sm">
+    <div className="space-y-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div className="flex items-center gap-4">
+          <div className="p-2.5 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-xl">
             <BookOpen size={24} />
           </div>
           <div>
-            <h2 className="text-3xl font-black uppercase tracking-tighter text-folusho-slate-900 leading-none">Curriculum <br /> <span className="text-folusho-sage-500">Catalog</span></h2>
-            <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-[0.4em] mt-1">Institutional Academic Blueprint</p>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Curriculum Management</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Manage academic plans and subjects for {level}.</p>
           </div>
         </div>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="btn-vibrant !px-12 !py-5"
-        >
-          <Plus className="w-5 h-5" />
-          <span>New Matrix</span>
-        </motion.button>
+        <button className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold transition-all">
+          <Plus size={20} />
+          <span>Add Curriculum</span>
+        </button>
       </div>
 
       {curriculums.length === 0 ? (
-        <div className="folusho-card flex flex-col items-center justify-center py-32 bg-folusho-cream-50/20 border-dashed">
-          <div className="p-8 bg-folusho-cream-50 rounded-full w-fit mx-auto mb-8 border border-folusho-cream-100 shadow-inner">
-            <BookOpen className="w-12 h-12 text-folusho-slate-300 opacity-50" />
-          </div>
-          <p className="text-sm font-black text-folusho-slate-400 uppercase tracking-[0.4em]">No Active Matrix for {level}</p>
+        <div className="bg-white dark:bg-slate-900 border border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-16 text-center">
+          <BookOpen className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+          <p className="text-slate-500">No active curriculums found for {level}.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {curriculums.map((curriculum) => (
-            <motion.div
+            <div
               key={curriculum.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="folusho-card !p-8 group hover:border-folusho-sage-300"
+              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 hover:border-indigo-300 dark:hover:border-indigo-900 transition-all shadow-sm group"
             >
-              <div className="flex justify-between items-start mb-6">
+              <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h3 className="text-xl font-black text-folusho-slate-900 uppercase tracking-tighter leading-none group-hover:text-folusho-sage-600 transition-colors">{curriculum.name}</h3>
-                  <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest mt-2">Matrix Protocol v{curriculum.version}</p>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 transition-colors">{curriculum.name}</h3>
+                  <p className="text-xs text-slate-500 mt-1">Version {curriculum.version}</p>
                 </div>
-                <span className={`px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest border shadow-sm ${
-                  curriculum.status === 'ACTIVE' 
-                    ? 'bg-folusho-sage-50 border-folusho-sage-100 text-folusho-sage-600' 
-                    : 'bg-folusho-cream-50 border-folusho-cream-100 text-folusho-slate-400'
-                }`}>
+                <span className="px-3 py-1 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold rounded-full border border-emerald-100 dark:border-emerald-900/30 uppercase">
                   {curriculum.status}
                 </span>
               </div>
 
-              <p className="text-xs font-black text-folusho-slate-400 uppercase leading-relaxed tracking-wide mb-8 h-12 overflow-hidden line-clamp-2">{curriculum.description}</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-6">{curriculum.description}</p>
 
-              <div className="grid grid-cols-2 gap-6 mb-8">
-                <div className="p-4 bg-folusho-cream-50 rounded-2xl border border-folusho-cream-100">
-                  <span className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Duration Cycle</span>
-                  <p className="text-sm font-black text-folusho-slate-900 mt-1">{curriculum.yearsOfStudy} Academic Years</p>
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-100 dark:border-slate-800">
+                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Duration</p>
+                  <p className="text-sm font-bold text-slate-900 dark:text-white mt-0.5">{curriculum.yearsOfStudy} Years</p>
                 </div>
-                <div className="p-4 bg-folusho-cream-50 rounded-2xl border border-folusho-cream-100">
-                  <span className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Unit Count</span>
-                  <p className="text-sm font-black text-folusho-slate-900 mt-1">{curriculum.subjects.length} Subjects</p>
+                <div className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-100 dark:border-slate-800">
+                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Subjects</p>
+                  <p className="text-sm font-bold text-slate-900 dark:text-white mt-0.5">{curriculum.subjects.length} Units</p>
                 </div>
               </div>
 
-              <div className="flex gap-4">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
+              <div className="flex gap-2">
+                <button
                   onClick={() => setSelectedCurriculum(curriculum)}
-                  className="flex-1 flex items-center justify-center gap-3 bg-folusho-sage-50 text-folusho-sage-600 px-4 py-3 rounded-2xl border border-folusho-sage-100 text-[10px] font-black uppercase tracking-widest hover:bg-folusho-sage-100 transition shadow-sm"
+                  className="flex-1 flex items-center justify-center gap-2 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 py-2 rounded-lg text-sm font-bold hover:bg-indigo-100 transition shadow-sm"
                 >
-                  <Eye className="w-4 h-4" />
-                  <span>Inspect</span>
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  className="px-4 py-3 bg-folusho-cream-50 text-folusho-slate-400 rounded-2xl border border-folusho-cream-100 hover:bg-white hover:text-folusho-sage-600 transition"
-                >
-                  <Edit className="w-4 h-4" />
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
+                  <Eye size={18} />
+                  <span>View Details</span>
+                </button>
+                <button className="p-2 bg-slate-50 dark:bg-slate-800 text-slate-400 rounded-lg border border-slate-100 dark:border-slate-800 hover:text-indigo-600 transition">
+                  <Edit size={18} />
+                </button>
+                <button
                   onClick={() => handleDelete(curriculum.id)}
-                  className="px-4 py-3 bg-folusho-coral-50 text-folusho-coral-600 rounded-2xl border border-folusho-coral-100 hover:bg-folusho-coral-100 transition"
+                  className="p-2 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 rounded-lg border border-rose-100 dark:border-rose-900/30 hover:bg-rose-100 transition"
                 >
-                  <Trash2 className="w-4 h-4" />
-                </motion.button>
+                  <Trash2 size={18} />
+                </button>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       )}
 
-      <AnimatePresence>
-        {selectedCurriculum && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-folusho-slate-900/60 backdrop-blur-md flex items-center justify-center p-6 z-50"
-            onClick={() => setSelectedCurriculum(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              className="folusho-card max-w-2xl w-full !p-0 overflow-hidden shadow-folusho-lg"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="p-10 bg-folusho-sage-500 text-white flex justify-between items-center relative overflow-hidden">
-                <div className="relative z-10">
-                  <h3 className="text-2xl font-black uppercase tracking-tighter leading-none">{selectedCurriculum.name}</h3>
-                  <p className="text-[10px] font-black uppercase tracking-[0.4em] opacity-70 mt-3">Matrix Detailed Protocol</p>
-                </div>
-                <button
-                  onClick={() => setSelectedCurriculum(null)}
-                  className="p-4 hover:bg-white/10 rounded-2xl transition-all relative z-10"
-                >
-                  <X size={24} />
-                </button>
-                <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3" />
+      {/* Curriculum Details Modal */}
+      {selectedCurriculum && (
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-6 z-50">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl">
+            <div className="p-6 bg-indigo-600 text-white flex justify-between items-center">
+              <div>
+                <h3 className="text-xl font-bold">{selectedCurriculum.name}</h3>
+                <p className="text-xs text-indigo-100 mt-1 uppercase tracking-wider font-bold">Curriculum Details</p>
+              </div>
+              <button
+                onClick={() => setSelectedCurriculum(null)}
+                className="p-2 hover:bg-white/10 rounded-lg transition-all"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="p-8 space-y-8 max-h-[70vh] overflow-y-auto">
+              <div>
+                <h4 className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-2">Description</h4>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{selectedCurriculum.description}</p>
               </div>
 
-              <div className="p-10 space-y-10 max-h-[70vh] overflow-y-auto custom-scrollbar">
-                <div className="space-y-4">
-                  <h4 className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.4em] px-2">Mission Parameters</h4>
-                  <p className="text-xs font-black text-folusho-slate-400 uppercase leading-relaxed tracking-wide px-2">{selectedCurriculum.description}</p>
-                </div>
-
-                <div className="space-y-6">
-                  <h4 className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.4em] px-2 flex items-center gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-folusho-sage-500" />
-                    Protocol Units ({selectedCurriculum.subjects.length})
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {selectedCurriculum.subjects.map((subject: any, index: number) => {
-                      const normalizedSubject = typeof subject === 'string'
-                        ? {
-                            id: `${selectedCurriculum.id}-subject-${index}`,
-                            name: subject,
-                            code: subject.slice(0, 3).toUpperCase(),
-                            description: `${subject} curriculum content overview`,
-                            topics: [
-                              {
-                                weekNumber: 1,
-                                topicName: `Introduction to ${subject}`,
-                                duration: 1,
-                                objectives: [`Understand the basic ideas in ${subject}`],
-                                resources: ['Teacher guide', 'Workbook'],
-                                assessmentMethod: 'Class discussion',
-                              },
-                              {
-                                weekNumber: 2,
-                                topicName: `${subject} practical activities`,
-                                duration: 1,
-                                objectives: [`Apply foundational knowledge in ${subject}`],
-                                resources: ['Class notes', 'Practice exercise'],
-                                assessmentMethod: 'Worksheet',
-                              },
-                            ],
-                          }
-                        : {
-                            ...subject,
-                            topics: subject.topics && subject.topics.length > 0
-                              ? subject.topics
-                              : [
-                                  {
-                                    weekNumber: 1,
-                                    topicName: `Introduction to ${subject.name || subject.code || 'this subject'}`,
-                                    duration: 1,
-                                    objectives: [`Understand the foundational concepts in ${subject.name || 'this subject'}`],
-                                    resources: ['Teacher guide', 'Class notes'],
-                                    assessmentMethod: 'Class exercise',
-                                  },
-                                  {
-                                    weekNumber: 2,
-                                    topicName: `${subject.name || subject.code || 'Subject'} activities and examples`,
-                                    duration: 1,
-                                    objectives: [`Practice and explain key points in ${subject.name || 'this subject'}`],
-                                    resources: ['Workbook', 'Board work'],
-                                    assessmentMethod: 'Oral assessment',
-                                  },
-                                ],
-                          }
-
-                      return (
-                        <motion.button
-                          key={normalizedSubject._id || normalizedSubject.id || normalizedSubject.name}
-                          whileHover={{ scale: 1.02 }}
-                          onClick={() => setSelectedSubject(normalizedSubject)}
-                          className="p-5 bg-folusho-cream-50 border border-folusho-cream-200 rounded-3xl text-left hover:bg-folusho-sage-50 hover:border-folusho-sage-200 transition-all group"
-                        >
-                          <p className="text-sm font-black text-folusho-slate-900 uppercase tracking-tighter group-hover:text-folusho-sage-600 transition-colors">
-                            {normalizedSubject.name || normalizedSubject.code || normalizedSubject._id}
-                          </p>
-                          <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest mt-1.5">
-                            {normalizedSubject.topics?.length || 0} Phase Operations
-                          </p>
-                        </motion.button>
-                      )
-                    })}
-                  </div>
+              <div>
+                <h4 className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-4">Subjects ({selectedCurriculum.subjects.length})</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {selectedCurriculum.subjects.map((subject: any, index: number) => {
+                    const name = typeof subject === 'string' ? subject : (subject.name || subject.code || 'Unnamed Subject');
+                    return (
+                      <button
+                        key={index}
+                        onClick={() => setSelectedSubject(typeof subject === 'string' ? { name: subject, topics: [] } : subject)}
+                        className="p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-xl text-left hover:border-indigo-300 transition-all"
+                      >
+                        <p className="text-sm font-bold text-slate-900 dark:text-white">{name}</p>
+                        <p className="text-[10px] text-slate-500 uppercase mt-1">Click to view topics</p>
+                      </button>
+                    )
+                  })}
                 </div>
               </div>
+            </div>
 
-              <div className="p-8 bg-folusho-cream-50/50 border-t border-folusho-cream-100">
-                <button
-                  onClick={() => setSelectedCurriculum(null)}
-                  className="btn-vibrant !bg-white !text-folusho-slate-600 border border-folusho-cream-200 w-full shadow-sm hover:border-folusho-coral-200"
-                >
-                  Close Registry
-                </button>
+            <div className="p-6 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 text-right">
+              <button
+                onClick={() => setSelectedCurriculum(null)}
+                className="px-6 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-bold text-slate-600 dark:text-slate-400 hover:border-rose-300 transition-all"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Subject Details Modal */}
+      {selectedSubject && (
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-6 z-[60]">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl">
+            <div className="p-6 bg-slate-900 text-white flex justify-between items-center">
+              <div>
+                <h3 className="text-lg font-bold">{selectedSubject.name}</h3>
+                <p className="text-[10px] text-slate-400 uppercase tracking-wider font-bold mt-1">Subject Details</p>
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {selectedSubject && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-folusho-slate-900/60 backdrop-blur-md flex items-center justify-center p-6 z-[60]"
-            onClick={() => setSelectedSubject(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              className="folusho-card max-w-md w-full !p-0 overflow-hidden shadow-folusho-lg border-folusho-coral-200"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="p-8 bg-folusho-coral-500 text-white flex justify-between items-center relative overflow-hidden">
-                <div className="relative z-10">
-                  <h3 className="text-xl font-black uppercase tracking-tighter leading-none">
-                    {typeof selectedSubject === 'string' ? selectedSubject : selectedSubject.name}
-                  </h3>
-                  <p className="text-[10px] font-black uppercase tracking-[0.4em] opacity-70 mt-2">Unit Protocol Detail</p>
+              <button
+                onClick={() => setSelectedSubject(null)}
+                className="p-2 hover:bg-white/10 rounded-lg transition-all"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div className="p-8 space-y-6 max-h-[60vh] overflow-y-auto">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-100 dark:border-slate-800">
+                  <p className="text-[10px] text-slate-400 font-bold uppercase">Code</p>
+                  <p className="text-sm font-bold text-slate-900 dark:text-white mt-0.5">{selectedSubject.code || 'N/A'}</p>
                 </div>
-                <button
-                  onClick={() => setSelectedSubject(null)}
-                  className="p-3 hover:bg-white/10 rounded-xl transition-all relative z-10"
-                >
-                  <X size={20} />
-                </button>
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3" />
+                <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-100 dark:border-slate-800">
+                  <p className="text-[10px] text-slate-400 font-bold uppercase">Weight</p>
+                  <p className="text-sm font-bold text-slate-900 dark:text-white mt-0.5">{selectedSubject.creditUnits || 'N/A'} Units</p>
+                </div>
               </div>
               
-              <div className="p-8 space-y-8 max-h-[60vh] overflow-y-auto custom-scrollbar">
-                {typeof selectedSubject !== 'string' && (
-                  <div className="space-y-6">
-                    <div className="grid grid-cols-2 gap-6">
-                      <div className="p-4 bg-folusho-cream-50 rounded-2xl border border-folusho-cream-100">
-                        <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Logic Code</p>
-                        <p className="text-sm font-black text-folusho-slate-900 mt-1">{selectedSubject.code || 'N/A'}</p>
+              <div>
+                <p className="text-[10px] text-indigo-600 dark:text-indigo-400 font-bold uppercase mb-2">Description</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{selectedSubject.description || 'No description available.'}</p>
+              </div>
+              
+              {selectedSubject.topics && selectedSubject.topics.length > 0 && (
+                <div className="space-y-4">
+                  <h4 className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Topics ({selectedSubject.topics.length})</h4>
+                  <div className="space-y-3">
+                    {selectedSubject.topics.map((topic: any, idx: number) => (
+                      <div key={idx} className="p-4 bg-slate-50 dark:bg-slate-800 border-l-4 border-indigo-500 rounded-r-lg">
+                        <h5 className="text-xs font-bold text-slate-900 dark:text-white">Week {topic.weekNumber}: {topic.topicName}</h5>
+                        <p className="text-[10px] text-slate-500 mt-1">Duration: {topic.duration} Week(s)</p>
+                        
+                        {topic.objectives && topic.objectives.length > 0 && (
+                          <div className="mt-3">
+                            <p className="text-[10px] font-bold text-slate-400 uppercase mb-1">Objectives:</p>
+                            <ul className="list-disc list-inside space-y-0.5">
+                              {topic.objectives.map((obj: string, i: number) => (
+                                <li key={i} className="text-[10px] text-slate-500">{obj}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
                       </div>
-                      <div className="p-4 bg-folusho-cream-50 rounded-2xl border border-folusho-cream-100">
-                        <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Weighting</p>
-                        <p className="text-sm font-black text-folusho-slate-900 mt-1">{selectedSubject.creditUnits || 'N/A'} Units</p>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-3">
-                      <p className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-widest px-2">Operational Description</p>
-                      <p className="text-xs font-black text-folusho-slate-400 uppercase leading-relaxed tracking-wide px-2">{selectedSubject.description || 'No description available for this unit protocol.'}</p>
-                    </div>
-                    
-                    {selectedSubject.topics && selectedSubject.topics.length > 0 && (
-                      <div className="space-y-6">
-                        <h4 className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.4em] px-2 flex items-center gap-3">
-                          <div className="w-1.5 h-1.5 rounded-full bg-folusho-coral-500" />
-                          Phase Operations
-                        </h4>
-                        <div className="space-y-4">
-                          {selectedSubject.topics.map((topic: any, idx: number) => (
-                            <div key={idx} className="p-5 bg-folusho-cream-50 border-l-4 border-folusho-coral-400 rounded-r-2xl shadow-sm">
-                              <h5 className="text-xs font-black text-folusho-slate-900 uppercase tracking-tight">Phase {topic.weekNumber}: {topic.topicName}</h5>
-                              <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest mt-2">Duration: {topic.duration} Operation Hours</p>
-                              
-                              {topic.objectives && topic.objectives.length > 0 && (
-                                <div className="mt-4">
-                                  <p className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-widest mb-2">Objectives:</p>
-                                  <ul className="space-y-1.5">
-                                    {topic.objectives.map((obj: string, i: number) => (
-                                      <li key={i} className="text-[10px] font-black text-folusho-slate-400 uppercase leading-tight flex gap-2">
-                                        <div className="w-1 h-1 rounded-full bg-folusho-cream-300 mt-1" />
-                                        {obj}
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div>
-                              )}
-                              
-                              {topic.assessmentMethod && (
-                                <div className="mt-4 pt-4 border-t border-folusho-cream-100 flex items-center justify-between">
-                                  <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest">Assessment</p>
-                                  <span className="px-3 py-1 bg-folusho-coral-50 text-folusho-coral-600 rounded-lg text-[10px] font-black uppercase tracking-widest border border-folusho-coral-100">{topic.assessmentMethod}</span>
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                    ))}
                   </div>
-                )}
-              </div>
+                </div>
+              )}
+            </div>
 
-              <div className="p-8 bg-folusho-cream-50/50 border-t border-folusho-cream-100">
-                <button
-                  onClick={() => setSelectedSubject(null)}
-                  className="btn-vibrant !bg-white !text-folusho-slate-600 border border-folusho-cream-200 w-full shadow-sm hover:border-folusho-coral-200"
-                >
-                  Return to Matrix
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <div className="p-6 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800">
+              <button
+                onClick={() => setSelectedSubject(null)}
+                className="w-full py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-bold text-slate-600 dark:text-slate-400 hover:border-indigo-300 transition-all"
+              >
+                Back to Curriculum
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

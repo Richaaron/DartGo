@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   Plus,
   Edit2,
@@ -448,36 +447,38 @@ export default function StudentManagement() {
       {/* ── Dynamic Header ────────────────────────────── */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-folusho-sage-500/10 border border-folusho-sage-500/20 text-folusho-sage-400 text-[10px] font-black tracking-[0.3em] uppercase">
-            Academic Governance
+        <div className="space-y-4">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black tracking-[0.3em] uppercase">
+            School Management
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-none">
-            Champion <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-folusho-sage-400 via-folusho-coral-400 to-folusho-sage-500">Inventory.</span>
+            Student <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-indigo-300 to-indigo-500">Database.</span>
           </h1>
-          <p className="text-folusho-slate-500 text-sm font-bold max-w-xl leading-relaxed tracking-tight">
+          <p className="text-slate-500 text-sm font-bold max-w-xl leading-relaxed tracking-tight">
             {isTeacher
               ? isFormCapableTeacher
-                ? "Oversee the development and academic journey of your assigned champions."
-                : "View the academic growth and registry of your student cohorts."
-              : "Global institutional oversight and registry of the student population."}
+                ? "Manage students and academic records for your assigned classes."
+                : "View student information and class lists."
+              : "Complete institutional registry and student management system."}
           </p>
+        </div>
         </div>
 
         <div className="flex flex-wrap gap-6">
           <button
             onClick={() => setShowBulkAssign(true)}
-            className="btn-vibrant !bg-folusho-slate-900/40 border border-white/5 !text-white shadow-2xl backdrop-blur-md"
+            className="btn-vibrant !bg-slate-900/40 border border-white/5 !text-white shadow-2xl backdrop-blur-md"
           >
-            <BookOpen className="w-5 h-5 text-folusho-sage-400" />
-            Bulk Matrix
+            <BookOpen className="w-5 h-5 text-indigo-400" />
+            Bulk Assign
           </button>
           <button
             onClick={handleExport}
-            className="btn-vibrant !bg-folusho-slate-900/40 border border-white/5 !text-white shadow-2xl backdrop-blur-md"
+            className="flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl border border-white/5 hover:bg-slate-800 transition-all"
           >
-            <Download className="w-5 h-5 text-folusho-coral-400" />
-            Vault Export
+            <Download className="w-5 h-5 text-rose-500" />
+            Export CSV
           </button>
           <button
             onClick={() => {
@@ -485,35 +486,35 @@ export default function StudentManagement() {
               setShowForm(true);
             }}
             disabled={isTeacher && !isFormCapableTeacher}
-            className="btn-vibrant bg-folusho-sage-400 disabled:opacity-30"
+            className="flex items-center gap-3 px-8 py-4 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg hover:bg-indigo-700 transition-all disabled:opacity-30"
           >
             <Plus className="w-5 h-5" />
-            New Identity
+            Add Student
           </button>
         </div>
       </div>
 
       {/* ── Intelligence Filters ───────────────────────── */}
-      <div className="folusho-card !p-12 border-white/5 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-12 shadow-lg">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">
-              Identity Search
+            <label className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.4em] px-2">
+              Search Student
             </label>
             <div className="relative group">
-              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-folusho-slate-500 group-focus-within:text-folusho-sage-400 transition-colors" />
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-indigo-600 transition-colors" />
               <input
                 type="text"
-                placeholder="Name, ID or Registry..."
+                placeholder="Search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="input-folusho !pl-16 !bg-folusho-slate-950/50"
+                className="input !pl-16 !bg-slate-50 dark:!bg-slate-950/50"
               />
             </div>
           </div>
 
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">
+            <label className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.4em] px-2">
               Academic Level
             </label>
             <select
@@ -522,9 +523,9 @@ export default function StudentManagement() {
                 setSelectedLevel(e.target.value as any);
                 setSelectedClass("All");
               }}
-              className="input-folusho !bg-folusho-slate-950/50"
+              className="input !bg-slate-50 dark:!bg-slate-950/50"
             >
-              <option value="All">All Operations</option>
+              <option value="All">All Levels</option>
               <option value="Pre-Nursery">Pre-Nursery</option>
               <option value="Nursery">Nursery</option>
               <option value="Primary">Primary</option>
@@ -533,15 +534,15 @@ export default function StudentManagement() {
           </div>
 
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-folusho-sage-400 uppercase tracking-[0.4em] px-2">
-              Squad / Class
+            <label className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.4em] px-2">
+              Filter by Class
             </label>
             <select
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
-              className="input-folusho !bg-folusho-slate-950/50"
+              className="input !bg-slate-50 dark:!bg-slate-950/50"
             >
-              <option value="All">Global Deployment</option>
+              <option value="All">All Classes</option>
               {(isTeacher ? assignedClasses : availableClassesForLevel).map(
                 (className: string) => (
                   <option key={className} value={className}>
@@ -555,7 +556,7 @@ export default function StudentManagement() {
       </div>
 
       {/* ── Data Matrix ────────────────────────────────── */}
-      <div className="folusho-card !p-0 border-white/5 bg-folusho-slate-900/40 backdrop-blur-md shadow-2xl overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-lg overflow-hidden">
         <Table
           columns={columns}
           data={filteredStudents}
@@ -565,23 +566,23 @@ export default function StudentManagement() {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => handleOpenAdvancedEditor(student)}
-                    className="p-3 rounded-2xl bg-folusho-sage-500/10 hover:bg-folusho-sage-500/20 text-folusho-sage-400 transition-all border border-white/5"
-                    title="Intelligence Editor"
+                    className="p-3 rounded-2xl bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 transition-all border border-indigo-500/10"
+                    title="Edit Student"
                   >
                     <Edit2 size={16} />
                   </button>
                   <button
                     onClick={() => handleOpenSubjectAssignment(student)}
-                    className="p-3 rounded-2xl bg-folusho-yellow-500/10 hover:bg-folusho-yellow-500/20 text-folusho-yellow-500 transition-all border border-white/5"
-                    title="Matrix Assignment"
+                    className="p-3 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 transition-all border border-amber-500/10"
+                    title="Assign Subjects"
                   >
                     <BookOpen size={16} />
                   </button>
                   {permissions.canDelete && (
                     <button
                       onClick={() => handleDeleteStudent(student.id)}
-                      className="p-3 rounded-2xl bg-folusho-coral-500/10 hover:bg-folusho-coral-500/20 text-folusho-coral-400 transition-all border border-white/5"
-                      title="Terminate Identity"
+                      className="p-3 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 transition-all border border-rose-500/10"
+                      title="Delete Student"
                     >
                       <Trash2 size={16} />
                     </button>
@@ -593,15 +594,15 @@ export default function StudentManagement() {
               return (
                 <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${
                   student.status === "Active" 
-                    ? "bg-folusho-sage-500/10 text-folusho-sage-400 border border-folusho-sage-500/20" 
-                    : "bg-white/5 text-folusho-slate-500 border border-white/5"
+                    ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20" 
+                    : "bg-slate-100 dark:bg-white/5 text-slate-500 border border-slate-200 dark:border-white/5"
                 }`}>
                   {student.status}
                 </span>
               );
             }
             if (key === "registrationNumber") {
-              return <span className="font-mono font-black text-folusho-sage-400">{student[key]}</span>;
+              return <span className="font-mono font-black text-indigo-600 dark:text-indigo-400">{student[key]}</span>;
             }
             return <span className="font-bold text-white">{student[key]}</span>;
           }}
@@ -609,20 +610,9 @@ export default function StudentManagement() {
       </div>
 
       {/* ── Modals ────────────────────────────────────── */}
-      <AnimatePresence>
         {showForm && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-folusho-slate-900/60 backdrop-blur-xl flex items-center justify-center z-50 p-6"
-          >
-            <motion.div 
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              className="folusho-card max-w-2xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/5 shadow-2xl bg-folusho-slate-900"
-            >
+          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-6">
+            <div className="bg-white dark:bg-slate-900 max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800">
               <StudentForm
                 onSubmit={handleSubmitStudent}
                 initialData={editingStudent || undefined}
@@ -644,23 +634,13 @@ export default function StudentManagement() {
                 }
                 availableSubjects={subjects}
               />
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         )}
 
         {showSubjectForm && selectedStudentForSubjects && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-folusho-slate-900/60 backdrop-blur-xl flex items-center justify-center z-50 p-6"
-          >
-            <motion.div 
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              className="folusho-card max-w-4xl w-full max-h-[90vh] overflow-y-auto !p-0 border-white/5 shadow-2xl bg-folusho-slate-900"
-            >
+          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-6">
+            <div className="bg-white dark:bg-slate-900 max-w-4xl w-full max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800">
               <StudentSubjectForm
                 student={selectedStudentForSubjects}
                 subjects={subjects}
@@ -672,26 +652,20 @@ export default function StudentManagement() {
                   setStudentSubjects([]);
                 }}
               />
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         )}
-      </AnimatePresence>
 
-      {/* Bulk Subject Assignment Modal */}
       {showBulkAssign && (
-        <div className="fixed inset-0 bg-folusho-slate-900/60 backdrop-blur-xl flex items-center justify-center z-50 p-6">
-          <motion.div 
-            initial={{ scale: 0.9, y: 20 }}
-            animate={{ scale: 1, y: 0 }}
-            className="folusho-card max-w-2xl w-full !p-0 overflow-hidden border-white/5 shadow-2xl bg-folusho-slate-900"
-          >
-            <div className="p-10 bg-folusho-sage-400 text-white flex justify-between items-center">
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-6">
+          <div className="bg-white dark:bg-slate-900 max-w-2xl w-full !p-0 overflow-hidden rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800">
+            <div className="p-10 bg-indigo-600 text-white flex justify-between items-center">
               <div>
                 <h2 className="text-3xl font-black uppercase tracking-tighter leading-none">
-                  Bulk Matrix <br /> <span className="text-white/80">Synchronization</span>
+                  Bulk Subject <br /> <span className="text-white/80">Assignment</span>
                 </h2>
                 <p className="text-[10px] font-black uppercase tracking-[0.3em] mt-3 opacity-80">
-                  Assign protocols to student cohorts
+                  Assign subjects to students in a class
                 </p>
               </div>
               <button
@@ -702,44 +676,44 @@ export default function StudentManagement() {
               </button>
             </div>
 
-            <div className="p-10 space-y-10 max-h-[70vh] overflow-y-auto custom-scrollbar">
-              <div className="space-y-4">
-                <label className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.35em] px-2">
-                  1. Target Cohort / Class
-                </label>
-                <select
-                  value={bulkAssignClass}
-                  onChange={(e) => {
-                    setBulkAssignClass(e.target.value);
-                    setBulkAssignArm("");
-                    setBulkAssignSubjects([]);
-                  }}
-                  className="input-folusho !bg-folusho-slate-950/50"
-                >
-                  <option value="">Choose a target...</option>
-                  {[
-                    ...new Set(
-                      students.filter((s) => s && s.class).map((s) => s.class),
-                    ),
-                  ]
-                    .sort()
-                    .map((className) => (
-                      <option key={className} value={className}>
-                        {className}
-                      </option>
-                    ))}
-                </select>
-              </div>
+              <div className="p-10 space-y-10 max-h-[70vh] overflow-y-auto custom-scrollbar">
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.35em] px-2">
+                    1. Select Class
+                  </label>
+                  <select
+                    value={bulkAssignClass}
+                    onChange={(e) => {
+                      setBulkAssignClass(e.target.value);
+                      setBulkAssignArm("");
+                      setBulkAssignSubjects([]);
+                    }}
+                    className="input !bg-slate-50 dark:!bg-slate-950/50"
+                  >
+                    <option value="">Choose a class...</option>
+                    {[
+                      ...new Set(
+                        students.filter((s) => s && s.class).map((s) => s.class),
+                      ),
+                    ]
+                      .sort()
+                      .map((className) => (
+                        <option key={className} value={className}>
+                          {className}
+                        </option>
+                      ))}
+                  </select>
+                </div>
 
               {/* Arm selector – only visible for SSS classes */}
               {bulkAssignClass && bulkAssignClass.toUpperCase().includes('SSS') && (
-                <div className="space-y-4">
-                  <label className="text-[10px] font-black text-folusho-sage-600 uppercase tracking-[0.35em] px-2">
-                    2. Strategic Department
-                  </label>
-                  <p className="text-[10px] text-folusho-slate-400 font-bold uppercase tracking-widest px-2">
-                    General protocols are auto-mapped. Select specialized department below.
-                  </p>
+                  <div className="space-y-4">
+                    <label className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.35em] px-2">
+                      2. Select Department
+                    </label>
+                    <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest px-2">
+                      Common subjects are auto-mapped. Select department below.
+                    </p>
                   <div className="grid grid-cols-3 gap-6">
                     {(['Science', 'Art', 'Commercial'] as const).map((arm) => (
                       <button
@@ -752,8 +726,8 @@ export default function StudentManagement() {
                           setBulkAssignSubjects(armIds);
                         }}
                         className={`py-4 px-6 rounded-3xl border-2 font-black text-[10px] tracking-widest uppercase transition-all ${bulkAssignArm === arm
-                            ? 'bg-folusho-sage-500 text-white border-folusho-sage-400 shadow-folusho' 
-                            : 'bg-white/5 border-white/5 text-folusho-slate-400 hover:border-folusho-sage-500/30'
+                            ? 'bg-indigo-600 text-white border-indigo-500 shadow-lg' 
+                            : 'bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/5 text-slate-500 hover:border-indigo-500/30'
                           }`}
                       >
                         {arm}
@@ -771,9 +745,9 @@ export default function StudentManagement() {
                     {/* === Arm subjects (SSS only) – auto-checked, can uncheck === */}
                     {bulkAssignClass.toUpperCase().includes('SSS') && (
                       <div className="space-y-4">
-                        <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2 flex items-center gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full bg-folusho-sage-500" />
-                          {bulkAssignArm} Specialized Matrix
+                        <p className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.45em] px-2 flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+                          {bulkAssignArm} Subjects
                         </p>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                           {subjects
@@ -782,8 +756,8 @@ export default function StudentManagement() {
                               <label
                                 key={subject.id}
                                 className={`flex items-center gap-5 p-6 rounded-[2rem] border transition-all cursor-pointer ${bulkAssignSubjects.includes(subject.id)
-                                    ? 'bg-folusho-sage-500/10 border-folusho-sage-500/30 shadow-inner'
-                                    : 'bg-white/5 border-white/5 opacity-50 hover:opacity-100'
+                                    ? 'bg-indigo-500/10 border-indigo-500/30 shadow-inner'
+                                    : 'bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/5 opacity-50 hover:opacity-100'
                                   }`}
                               >
                                 <input
@@ -796,11 +770,11 @@ export default function StudentManagement() {
                                         : [...prev, subject.id]
                                     );
                                   }}
-                                  className="w-5 h-5 bg-white border-folusho-cream-200 text-folusho-sage-600 rounded-lg focus:ring-folusho-sage-500"
+                                  className="w-5 h-5 bg-white border-slate-300 text-indigo-600 rounded-lg focus:ring-indigo-500"
                                 />
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-black text-folusho-slate-900 truncate">{subject.name}</p>
-                                  <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest mt-1">{subject.code}</p>
+                                  <p className="text-sm font-black text-slate-900 truncate">{subject.name}</p>
+                                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">{subject.code}</p>
                                 </div>
                               </label>
                             ))}
@@ -811,8 +785,8 @@ export default function StudentManagement() {
                     {/* === General subjects (SSS only) – unchecked, manual pick === */}
                     {bulkAssignClass.toUpperCase().includes('SSS') && (
                       <div className="space-y-4">
-                        <label className="text-[10px] font-black text-folusho-yellow-600 uppercase tracking-[0.45em] px-2 flex items-center gap-2">
-                           <div className="w-1.5 h-1.5 rounded-full bg-folusho-yellow-500" />
+                        <label className="text-[10px] font-black text-amber-600 uppercase tracking-[0.45em] px-2 flex items-center gap-2">
+                           <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
                            General Core Matrix (Manual Selection)
                         </label>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -822,8 +796,8 @@ export default function StudentManagement() {
                               <label
                                 key={subject.id}
                                 className={`flex items-center gap-5 p-6 rounded-[2rem] border transition-all cursor-pointer ${bulkAssignSubjects.includes(subject.id)
-                                    ? 'bg-folusho-yellow-50 border-folusho-yellow-300 shadow-inner'
-                                    : 'bg-folusho-cream-50/30 border-folusho-cream-100 hover:bg-white transition-all'
+                                    ? 'bg-amber-50 border-amber-300 shadow-inner'
+                                    : 'bg-slate-50/30 border-slate-100 hover:bg-white transition-all'
                                   }`}
                               >
                                 <input
@@ -836,11 +810,11 @@ export default function StudentManagement() {
                                         : [...prev, subject.id]
                                     );
                                   }}
-                                  className="w-5 h-5 bg-white border-folusho-cream-200 text-folusho-yellow-600 rounded-lg focus:ring-folusho-yellow-500"
+                                  className="w-5 h-5 bg-white border-slate-200 text-amber-600 rounded-lg focus:ring-amber-500"
                                 />
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-black text-folusho-slate-900 truncate">{subject.name}</p>
-                                  <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest mt-1">{subject.code}</p>
+                                  <p className="text-sm font-black text-slate-900 truncate">{subject.name}</p>
+                                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">{subject.code}</p>
                                 </div>
                               </label>
                             ))}
@@ -851,7 +825,7 @@ export default function StudentManagement() {
                     {/* === Non-SSS classes (JSS / Primary) – standard subject picker === */}
                     {!bulkAssignClass.toUpperCase().includes('SSS') && (
                       <div className="space-y-4">
-                        <label className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.45em] px-2">
+                        <label className="text-[10px] font-black text-indigo-500 uppercase tracking-[0.45em] px-2">
                           2. Synchronize Protocols
                         </label>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -871,8 +845,8 @@ export default function StudentManagement() {
                               <label
                                 key={subject.id}
                                 className={`flex items-center gap-5 p-6 rounded-[2rem] border transition-all cursor-pointer ${bulkAssignSubjects.includes(subject.id)
-                                    ? 'bg-folusho-sage-50 border-folusho-sage-300 shadow-inner'
-                                    : 'bg-folusho-cream-50/30 border-folusho-cream-100 hover:bg-white transition-all'
+                                    ? 'bg-indigo-50 border-indigo-300 shadow-inner'
+                                    : 'bg-slate-50/30 border-slate-100 hover:bg-white transition-all'
                                   }`}
                               >
                                 <input
@@ -885,11 +859,11 @@ export default function StudentManagement() {
                                         : [...prev, subject.id]
                                     );
                                   }}
-                                  className="w-5 h-5 bg-white border-folusho-cream-200 text-folusho-sage-600 rounded-lg focus:ring-folusho-sage-500"
+                                  className="w-5 h-5 bg-white border-slate-200 text-indigo-600 rounded-lg focus:ring-indigo-500"
                                 />
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-black text-folusho-slate-900 truncate">{subject.name}</p>
-                                  <p className="text-[10px] font-black text-folusho-slate-400 uppercase tracking-widest mt-1">{subject.code}</p>
+                                  <p className="text-sm font-black text-slate-900 truncate">{subject.name}</p>
+                                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">{subject.code}</p>
                                 </div>
                               </label>
                             ))}
@@ -904,19 +878,19 @@ export default function StudentManagement() {
               <button
                 type="button"
                 onClick={() => setShowBulkAssign(false)}
-                className="flex-1 py-4 px-8 bg-white/5 border border-white/10 text-folusho-slate-400 rounded-[2rem] font-black uppercase tracking-widest text-[10px] hover:bg-white/10 transition-all"
+                className="flex-1 py-4 px-8 bg-white/5 border border-white/10 text-slate-400 rounded-[2rem] font-black uppercase tracking-widest text-[10px] hover:bg-white/10 transition-all"
               >
                 Cancel Protocol
               </button>
               <button
                 onClick={handleBulkAssign}
                 disabled={!bulkAssignClass || bulkAssignSubjects.length === 0}
-                className="flex-1 py-4 px-8 bg-folusho-sage-400 text-white rounded-[2rem] font-black shadow-2xl hover:bg-folusho-sage-500 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest text-[10px] disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:scale-100"
+                className="flex-1 py-4 px-8 bg-indigo-400 text-white rounded-[2rem] font-black shadow-2xl hover:bg-indigo-500 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest text-[10px] disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 Synchronize Matrix
               </button>
             </div>
-          </motion.div>
+          </div>
         </div>
       )}
 
@@ -943,19 +917,19 @@ export default function StudentManagement() {
 
       {/* Stats Section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-        <div className="folusho-card bg-folusho-sage-500/5 text-center border-folusho-sage-500/10 !p-10">
-          <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.25em] mb-4">Total Scholars</p>
+        <div className="card bg-indigo-500/5 text-center border-indigo-500/10 !p-10">
+          <p className="text-[10px] font-black text-indigo-500 uppercase tracking-[0.25em] mb-4">Total Scholars</p>
           <p className="text-5xl font-black text-white tracking-tighter">{filteredStudents.length}</p>
         </div>
-        <div className="folusho-card bg-folusho-sage-500/5 text-center border-folusho-sage-500/10 !p-10">
-          <p className="text-[10px] font-black text-folusho-sage-500 uppercase tracking-[0.25em] mb-4">Active Registry</p>
-          <p className="text-5xl font-black text-folusho-sage-400 tracking-tighter">
+        <div className="card bg-indigo-500/5 text-center border-indigo-500/10 !p-10">
+          <p className="text-[10px] font-black text-indigo-500 uppercase tracking-[0.25em] mb-4">Active Registry</p>
+          <p className="text-5xl font-black text-indigo-400 tracking-tighter">
             {filteredStudents.filter((s) => s.status === "Active").length}
           </p>
         </div>
-        <div className="folusho-card bg-folusho-coral-500/5 text-center border-folusho-coral-500/10 !p-10">
-          <p className="text-[10px] font-black text-folusho-coral-500 uppercase tracking-[0.25em] mb-4">Inactive Protocols</p>
-          <p className="text-5xl font-black text-folusho-coral-400 tracking-tighter">
+        <div className="card bg-rose-500/5 text-center border-rose-500/10 !p-10">
+          <p className="text-[10px] font-black text-rose-500 uppercase tracking-[0.25em] mb-4">Inactive Protocols</p>
+          <p className="text-5xl font-black text-rose-400 tracking-tighter">
             {filteredStudents.filter((s) => s.status !== "Active").length}
           </p>
         </div>

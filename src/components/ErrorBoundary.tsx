@@ -97,22 +97,22 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-screen flex items-center justify-center bg-folusho-slate-950 p-4">
-          <div className="max-w-md w-full bg-folusho-slate-900/80 backdrop-blur-3xl rounded-[3rem] shadow-2xl p-12 text-center border border-white/5">
-            <div className="w-24 h-24 mx-auto mb-10 rounded-full bg-folusho-coral-500/20 flex items-center justify-center shadow-2xl animate-pulse border border-folusho-coral-500/30">
-              <AlertTriangle className="w-10 h-10 text-folusho-coral-400" />
+        <div className="min-h-screen flex items-center justify-center bg-slate-950 p-4">
+          <div className="max-w-md w-full bg-slate-900/80 backdrop-blur-3xl rounded-[3rem] shadow-2xl p-12 text-center border border-white/5">
+            <div className="w-24 h-24 mx-auto mb-10 rounded-full bg-rose-500/20 flex items-center justify-center shadow-2xl animate-pulse border border-rose-500/30">
+              <AlertTriangle className="w-10 h-10 text-rose-400" />
             </div>
             <h2 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">Oops! Something went wrong</h2>
-            <p className="text-folusho-slate-400 mb-10 leading-relaxed font-bold">
+            <p className="text-slate-400 mb-10 leading-relaxed font-bold">
               We encountered an unexpected error. Don't worry, our team has been notified and is working on it.
             </p>
             {(import.meta.env.DEV || this.props.showDetails) && this.state.error && (
-              <div className="mb-10 p-6 bg-folusho-coral-500/5 rounded-3xl text-left border border-folusho-coral-500/10">
-                <p className="font-mono text-xs text-folusho-coral-400 break-all leading-relaxed">
+              <div className="mb-10 p-6 bg-rose-500/5 rounded-3xl text-left border border-rose-500/10">
+                <p className="font-mono text-xs text-rose-400 break-all leading-relaxed">
                   {this.state.error.message}
                 </p>
                 {this.state.errorInfo && (
-                  <p className="font-mono text-[9px] text-folusho-slate-500 mt-4 line-clamp-3 uppercase tracking-wider">
+                  <p className="font-mono text-[9px] text-slate-500 mt-4 line-clamp-3 uppercase tracking-wider">
                     {this.state.errorInfo.componentStack}
                   </p>
                 )}
@@ -122,7 +122,7 @@ export class ErrorBoundary extends Component<Props, State> {
               {this.props.enableRetry !== false && (
                 <button
                   onClick={this.handleRetry}
-                  className="px-10 py-4 bg-folusho-sage-400 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-folusho-sage-500 transition-all flex items-center justify-center gap-3 shadow-lg"
+                  className="px-10 py-4 bg-indigo-400 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-indigo-500 transition-all flex items-center justify-center gap-3 shadow-lg"
                 >
                   <RefreshCw className="w-4 h-4" />
                   Try Again
@@ -131,7 +131,7 @@ export class ErrorBoundary extends Component<Props, State> {
               <div className="flex gap-4">
                 <button
                   onClick={() => (window.location.href = "/")}
-                  className="flex-1 px-6 py-4 bg-folusho-slate-800 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-folusho-slate-700 transition-all border border-white/5"
+                  className="flex-1 px-6 py-4 bg-slate-800 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-slate-700 transition-all border border-white/5"
                 >
                   Return Home
                 </button>
@@ -140,7 +140,7 @@ export class ErrorBoundary extends Component<Props, State> {
                     localStorage.clear();
                     window.location.href = "/";
                   }}
-                  className="flex-1 px-6 py-4 bg-folusho-coral-500/10 text-folusho-coral-400 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-folusho-coral-500/20 transition-all border border-folusho-coral-500/20"
+                  className="flex-1 px-6 py-4 bg-rose-500/10 text-rose-400 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-rose-500/20 transition-all border border-rose-500/20"
                 >
                   Reset State
                 </button>
