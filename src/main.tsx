@@ -41,9 +41,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ErrorBoundary showDetails={true}>
       <ToastProvider />
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+      <App />
     </ErrorBoundary>
   </StrictMode>,
 )
